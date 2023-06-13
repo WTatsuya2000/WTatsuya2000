@@ -313,8 +313,28 @@
 <br>splitについてをここで調べた。</li>
 </ul>
 <h2 id="iguanatex">IguanaTex</h2>
-<p>PowerPointにLaTeXを導入するための方法。
-windowsなら<a href="https://itblogger-note.blogspot.com/2020/09/powerpoint-iguanatex.html"></a></p>
+<p>PowerPointにLaTeXを導入するための方法。<br>
+windowsなら<a href="https://itblogger-note.blogspot.com/2020/09/powerpoint-iguanatex.html">ここ</a>から飛べるよ。<br>
+Macだと日本語の方法がないので、以下でまとめる。</p>
+<p>brew を用いて</p>
+<pre><code>brew tap tsung-ju/iguanatexmac
+brew install --cask --no-quarantine iguanatexmac latexit-metadata
+</code></pre>
+<p>でインストール。<br>
+<a href="https://github.com/Jonathan-LeRoux/IguanaTex/releases">https://github.com/Jonathan-LeRoux/IguanaTex/releases</a>
+からアドインのためのファイルを入れる。(.zip)を選択</p>
+<p>.zipを開いて、そのファイルがある場所で、</p>
+<pre><code>mkdir -p ~/Library/Application\ Scripts/com.microsoft.Powerpoint
+cp ./IguanaTex.scpt ~/Library/Application\ Scripts/com.microsoft.Powerpoint/IguanaTex.scpt
+</code></pre>
+<p>と</p>
+<pre><code>sudo mkdir -p '/Library/Application Support/Microsoft/Office365/User Content.localized/Add-Ins.localized'
+sudo cp ./libIguanaTexHelper.dylib '/Library/Application Support/Microsoft/Office365/User Content.localized/Add-Ins.localized/libIguanaTexHelper.dylib'
+</code></pre>
+<p>を実行する。</p>
+<p>後はアドインを追加すればいけるはず。
+(参考)
+<a href="https://github.com/Jonathan-LeRoux/IguanaTex/blob/v1.60.2/README.md">公式github</a></p>
 
 
 
