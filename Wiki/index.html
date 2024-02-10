@@ -9,7 +9,7 @@
       
       
       
-        <link rel="prev" href="../Diary/">
+        <link rel="prev" href="../History/">
       
       
       <link rel="icon" href="../syaritatsu.JPG">
@@ -22,9 +22,6 @@
     
     
       <link rel="stylesheet" href="../assets/stylesheets/main.26e3688c.min.css">
-      
-        
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ecc896b0.min.css">
       
       
 
@@ -50,14 +47,11 @@
   </head>
   
   
-    
-    
-    
-    
-    
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="purple" data-md-color-accent="indigo">
+    <body dir="ltr">
   
     
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -84,7 +78,7 @@
     <a href=".." title="W.Tatsuya" class="md-header__button md-logo" aria-label="W.Tatsuya" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82Z"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C9 7 4 9 4 14c0 2 2 4 4 4 1 0 2 0 3-1 0 0 .32 2-2 5h6c-2-3-2-5-2-5 1 1 2 1 3 1 2 0 4-2 4-4 0-5-5-7-8-12Z"/></svg>
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -106,8 +100,6 @@
         </div>
       </div>
     </div>
-    
-      
     
     
     
@@ -172,7 +164,7 @@
     <a href=".." title="W.Tatsuya" class="md-nav__button md-logo" aria-label="W.Tatsuya" data-md-component="logo">
       
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82Z"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C9 7 4 9 4 14c0 2 2 4 4 4 1 0 2 0 3-1 0 0 .32 2-2 5h6c-2-3-2-5-2-5 1 1 2 1 3 1 2 0 4-2 4-4 0-5-5-7-8-12Z"/></svg>
 
     </a>
     W.Tatsuya
@@ -204,22 +196,7 @@
   
     <li class="md-nav__item">
       <a href="../History/" class="md-nav__link">
-        History
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Diary/" class="md-nav__link">
-        Diary
+        Resume
       </a>
     </li>
   
@@ -242,9 +219,121 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Wiki
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         Wiki
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目次">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目次
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#julia" class="md-nav__link">
+    Julia 
+  </a>
+  
+    <nav class="md-nav" aria-label="Julia">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#packages" class="md-nav__link">
+    Packages
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    テクニック
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#latex" class="md-nav__link">
+    LaTeX 
+  </a>
+  
+    <nav class="md-nav" aria-label="LaTeX">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#package" class="md-nav__link">
+    Package
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#text" class="md-nav__link">
+    Text関連
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iguanatex" class="md-nav__link">
+    IguanaTex
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkdocs" class="md-nav__link">
+    Mkdocs
+  </a>
+  
+    <nav class="md-nav" aria-label="Mkdocs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alert" class="md-nav__link">
+    Alert
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#icon-design" class="md-nav__link">
+    icon design
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -270,6 +359,102 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目次
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#julia" class="md-nav__link">
+    Julia 
+  </a>
+  
+    <nav class="md-nav" aria-label="Julia">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#packages" class="md-nav__link">
+    Packages
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    テクニック
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#latex" class="md-nav__link">
+    LaTeX 
+  </a>
+  
+    <nav class="md-nav" aria-label="LaTeX">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#package" class="md-nav__link">
+    Package
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#text" class="md-nav__link">
+    Text関連
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iguanatex" class="md-nav__link">
+    IguanaTex
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkdocs" class="md-nav__link">
+    Mkdocs
+  </a>
+  
+    <nav class="md-nav" aria-label="Mkdocs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alert" class="md-nav__link">
+    Alert
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#icon-design" class="md-nav__link">
+    icon design
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -284,11 +469,130 @@
 
 
 <h1 id="wiki">Wiki</h1>
+<h2 id="julia">Julia <!--(Wiki/julia.md)--></h2>
+<h3 id="packages">Packages</h3>
 <ul>
-<li><a href="julia/">Julia</a></li>
-<li><a href="Latex/">LaTeX</a></li>
+<li><a href="https://qiita.com/I_ppp/items/dca3552affa6a672e4bd">plots</a></li>
+<li><a href="https://juliaci.github.io/BenchmarkTools.jl/stable/">Benchmarktools</a></li>
+<li><a href="julia/sekibun.md">積分pkg</a></li>
 </ul>
+<h3 id="_1">テクニック</h3>
+<ul>
+<li>
+<p><a href="julia/dat_read.md">データの読み取り</a></p>
+</li>
+<li>
+<p><a href="https://hydrocoast.jp/index.php?Julia/%E6%95%B0%E5%80%A4%E3%81%AE%E4%B8%B8%E3%82%81">数値の丸め</a></p>
+</li>
+<li><a href="https://zenn.dev/ohno/articles/f352f354e5cf96">特殊関数</a></li>
+</ul>
+<h2 id="latex">LaTeX <!--(Wiki/Latex.md)--></h2>
+<h3 id="package">Package</h3>
+<ul>
+<li><a href="https://qiita.com/yetput_ikura/items/912cc9d9496ebefcccd9">Physics</a>パッケージの解説。<br />
+    東大のアドベントカレンダーを参考にしている。</li>
+</ul>
+<div class="admonition alert">
+<p class="admonition-title">Alert</p>
+<p>Physicsは推奨できない.Physics2を使おう</p>
+</div>
+<ul>
+<li><a href="https://qiita.com/Yarakashi_Kikohshi/items/131e2324f401c3effb84">Physics2</a></li>
+</ul>
+<h3 id="text">Text関連</h3>
+<ul>
+<li><a href="https://tex2e.github.io/blog/math/math-symbols">ギリシャ文字,花文字</a></li>
+<li><a href="https://medemanabu.net/latex/vector/">ベクトル</a></li>
+<li><a href="https://mathlandscape.com/latex-eq/">数式の環境</a>
+<br>splitについてをここで調べた。</li>
+<li><a href="https://math-note.xyz/category/latex/tikz/">TikZ</a></li>
+</ul>
+<h3 id="iguanatex">IguanaTex</h3>
+<p>PowerPointにLaTeXを導入するための方法。  </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>windowsなら<a href="https://itblogger-note.blogspot.com/2020/09/powerpoint-iguanatex.html">ここ</a>から飛べるよ。<br></p>
+</div>
+<p>Macだと日本語の方法がないので、以下でまとめる。</p>
+<p>brew を用いて</p>
+<pre><code>brew tap tsung-ju/iguanatexmac
+brew install --cask --no-quarantine iguanatexmac latexit-metadata
+</code></pre>
+<p>でインストール。<br />
+<a href="https://github.com/Jonathan-LeRoux/IguanaTex/releases">https://github.com/Jonathan-LeRoux/IguanaTex/releases</a>
+からアドインのためのファイルを入れる。(.zip)を選択</p>
+<p>.zipを開いて、そのファイルがある場所で、</p>
+<pre><code>mkdir -p ~/Library/Application\ Scripts/com.microsoft.Powerpoint
+cp ./IguanaTex.scpt ~/Library/Application\ Scripts/com.microsoft.Powerpoint/IguanaTex.scpt
+</code></pre>
+<p>と</p>
+<pre><code>sudo mkdir -p '/Library/Application Support/Microsoft/Office365/User Content.localized/Add-Ins.localized'
+sudo cp ./libIguanaTexHelper.dylib '/Library/Application Support/Microsoft/Office365/User Content.localized/Add-Ins.localized/libIguanaTexHelper.dylib'
+</code></pre>
+<p>を実行する。後はアドインを追加すればいけるはず。<br />
+(参考)
+<a href="https://github.com/Jonathan-LeRoux/IguanaTex/blob/v1.60.2/README.md">公式github</a></p>
 <!-- - [Root](Wiki/Root.md) -->
+
+<h2 id="mkdocs">Mkdocs</h2>
+<h3 id="alert">Alert</h3>
+<pre><code>!!! Note
+    これはノートです。
+
+!!! Tip
+    ヒントです。
+
+!!! Warning
+    これは警告です
+
+!!! Danger
+    これは危険です。
+
+!!! Success
+    これは成功です。
+
+!!! Failure
+    これは失敗です。
+
+!!! Bug
+    これはバグです。
+
+!!! summary
+    これは概要です。
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>これはノートです。</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>ヒントです。</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>これは警告です</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>これは危険です。</p>
+</div>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>これは成功です。</p>
+</div>
+<div class="admonition failure">
+<p class="admonition-title">Failure</p>
+<p>これは失敗です。</p>
+</div>
+<div class="admonition bug">
+<p class="admonition-title">Bug</p>
+<p>これはバグです。</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">Summary</p>
+<p>これは概要です。</p>
+</div>
+<h3 id="icon-design"><a href="https://pictogrammers.com/library/mdi/">icon design</a></h3>
 
 
 
