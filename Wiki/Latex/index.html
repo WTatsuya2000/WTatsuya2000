@@ -35,8 +35,6 @@
       
     
     
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
-    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -297,22 +295,22 @@
 <p>PowerPointにLaTeXを導入するための方法。<br>
 windowsなら<a href="https://itblogger-note.blogspot.com/2020/09/powerpoint-iguanatex.html">ここ</a>から飛べるよ。<br>
 Macだと日本語の方法がないので、以下でまとめる。</p>
-<p>brew を用いて</p>
-<pre><code>brew tap tsung-ju/iguanatexmac
+<p>brew を用いて
+<div class="highlight"><pre><span></span><code>brew tap tsung-ju/iguanatexmac
 brew install --cask --no-quarantine iguanatexmac latexit-metadata
-</code></pre>
-<p>でインストール。<br>
+</code></pre></div>
+でインストール。<br>
 <a href="https://github.com/Jonathan-LeRoux/IguanaTex/releases">https://github.com/Jonathan-LeRoux/IguanaTex/releases</a>
 からアドインのためのファイルを入れる。(.zip)を選択</p>
-<p>.zipを開いて、そのファイルがある場所で、</p>
-<pre><code>mkdir -p ~/Library/Application\ Scripts/com.microsoft.Powerpoint
+<p>.zipを開いて、そのファイルがある場所で、
+<div class="highlight"><pre><span></span><code>mkdir -p ~/Library/Application\ Scripts/com.microsoft.Powerpoint
 cp ./IguanaTex.scpt ~/Library/Application\ Scripts/com.microsoft.Powerpoint/IguanaTex.scpt
-</code></pre>
-<p>と</p>
-<pre><code>sudo mkdir -p '/Library/Application Support/Microsoft/Office365/User Content.localized/Add-Ins.localized'
-sudo cp ./libIguanaTexHelper.dylib '/Library/Application Support/Microsoft/Office365/User Content.localized/Add-Ins.localized/libIguanaTexHelper.dylib'
-</code></pre>
-<p>を実行する。</p>
+</code></pre></div>
+と
+<div class="highlight"><pre><span></span><code>sudo mkdir -p &#39;/Library/Application Support/Microsoft/Office365/User Content.localized/Add-Ins.localized&#39;
+sudo cp ./libIguanaTexHelper.dylib &#39;/Library/Application Support/Microsoft/Office365/User Content.localized/Add-Ins.localized/libIguanaTexHelper.dylib&#39;
+</code></pre></div>
+を実行する。</p>
 <p>後はアドインを追加すればいけるはず。
 (参考)
 <a href="https://github.com/Jonathan-LeRoux/IguanaTex/blob/v1.60.2/README.md">公式github</a></p>
@@ -356,10 +354,6 @@ sudo cp ./libIguanaTexHelper.dylib '/Library/Application Support/Microsoft/Offic
     
     
       <script src="../../assets/javascripts/bundle.b4d07000.min.js"></script>
-      
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
-      
-        <script src="../../javascripts/config.js"></script>
       
     
   </body>

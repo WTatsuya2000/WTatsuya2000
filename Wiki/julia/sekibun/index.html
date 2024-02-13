@@ -35,8 +35,6 @@
       
     
     
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
-    
     <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -273,15 +271,15 @@
 
 
 <h1 id="juliaquadgkpkg">Juliaで積分(QuadGK)pkgを使う</h1>
-<p>QuadGK.jlを用いる</p>
-<pre><code class="language-jl">pkg&gt; add QuadGK
-</code></pre>
+<p>QuadGK.jlを用いる
+<div class="highlight"><pre><span></span><code><span class="n">pkg</span><span class="o">&gt;</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">QuadGK</span>
+</code></pre></div></p>
 <h2 id="_1">使い方</h2>
-<pre><code class="language-jl">f(x) = 4/(1+x^2)
-result = quadgk(f,0,1)
-println(result[1],&quot;\t error:&quot;,sekibun[2])
-</code></pre>
-<p><code>result[1]</code>に積分値が入っている。<code>result[2]</code>にerrorが入る。</p>
+<p><div class="highlight"><pre><span></span><code><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">quadgk</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">println</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s">&quot;</span><span class="se">\t</span><span class="s"> error:&quot;</span><span class="p">,</span><span class="n">sekibun</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</code></pre></div>
+<code>result[1]</code>に積分値が入っている。<code>result[2]</code>にerrorが入る。</p>
 <h2 id="_2">疑問点</h2>
 <p>積分範囲はどこまで?
 答えは<a href="https://juliamath.github.io/QuadGK.jl/stable/">こちら</a></p>
@@ -325,10 +323,6 @@ println(result[1],&quot;\t error:&quot;,sekibun[2])
     
     
       <script src="../../../assets/javascripts/bundle.b4d07000.min.js"></script>
-      
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
-      
-        <script src="../../../javascripts/config.js"></script>
       
     
   </body>

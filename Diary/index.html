@@ -35,8 +35,6 @@
       
     
     
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
-    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -391,10 +389,10 @@ CreepyNutsのラジオ。裏ではW杯日本vsクロアチア戦がやってる�
 <p>液体シンチレータのn/gamma PSDの手法準備<br>
 rootの使い方を思い出す必要がある。</p>
 <h4 id="mkdocs">mkdocs</h4>
-<p>これは完全に忘れていた。GitHubの使い方もなんとなくわかってきたが、アカウントの使い分けには注意が必要そうである。</p>
-<pre><code>mkdocs gh-deploy
-</code></pre>
-<p>基本はこれ。これでエラーが出る場合は2つくらい可能性あり。</p>
+<p>これは完全に忘れていた。GitHubの使い方もなんとなくわかってきたが、アカウントの使い分けには注意が必要そうである。
+<div class="highlight"><pre><span></span><code>mkdocs gh-deploy
+</code></pre></div>
+基本はこれ。これでエラーが出る場合は2つくらい可能性あり。</p>
 <ul>
 <li>
 <p>トークンの期限切れ
@@ -402,20 +400,20 @@ githubの行って更新する。developerのとこから入る。最近新し�
 </li>
 <li>
 <p>アカウントとpush先の入れ違い<br>
-これがめんどかった。</p>
+これがめんどかった。
+<div class="highlight"><pre><span></span><code>~/.gitconfig
+</code></pre></div>
+の編集でいける。(mac)特定のとこだけ別垢を使うなら
+<div class="highlight"><pre><span></span><code>~/.gitconfig_@@@@
+</code></pre></div>
+に書き込めばいい。
+ついでに
+<div class="highlight"><pre><span></span><code>git config --list
+git config --local -e
+</code></pre></div>
+も確認すると大体解決するはず</p>
 </li>
 </ul>
-<pre><code>~/.gitconfig
-</code></pre>
-<p>の編集でいける。(mac)特定のとこだけ別垢を使うなら</p>
-<pre><code>~/.gitconfig_@@@@
-</code></pre>
-<p>に書き込めばいい。
-ついでに</p>
-<pre><code>git config --list
-git config --local -e
-</code></pre>
-<p>も確認すると大体解決するはず</p>
 <h2 id="2023">2023</h2>
 <h3 id="jun-19">Jun 19</h3>
 <p>ゲージ場固定はゲージが自由に取れる時に、ある制限をかけることである部分を切り取ってゲージ場を見ることができる。
@@ -439,10 +437,10 @@ zoomなどのGUIのソフトウェアについてもHomebrewでいけるので�
 最後のとこで10倍してるのはオーダーの問題</p>
 <h3 id="jun-28">Jun 28</h3>
 <p><code>./ana &lt;RUNNUBER&gt;</code>の問題が解決。<code>anaevt.c</code>をいじるのは難しい感じがするので、マクロを組むことで解決策を出していこうと思う。
-とりあえず、JupyterNotebookを使う。</p>
-<pre><code>&gt; jupyter lab .
-</code></pre>
-<p>で今いるdirでjupyterが開ける。作業は自分のPCでもできる。</p>
+とりあえず、JupyterNotebookを使う。
+<div class="highlight"><pre><span></span><code>&gt; jupyter lab .
+</code></pre></div>
+で今いるdirでjupyterが開ける。作業は自分のPCでもできる。</p>
 
 
 
@@ -483,10 +481,6 @@ zoomなどのGUIのソフトウェアについてもHomebrewでいけるので�
     
     
       <script src="../assets/javascripts/bundle.b4d07000.min.js"></script>
-      
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
-      
-        <script src="../javascripts/config.js"></script>
       
     
   </body>

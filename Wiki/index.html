@@ -37,8 +37,6 @@
       
     
     
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
-    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -487,25 +485,29 @@
 <p><a href="https://hydrocoast.jp/index.php?Julia/%E6%95%B0%E5%80%A4%E3%81%AE%E4%B8%B8%E3%82%81">数値の丸め</a></p>
 </li>
 <li><a href="https://zenn.dev/ohno/articles/f352f354e5cf96">特殊関数</a></li>
-<li>データの取得に関するコード</li>
+<li>データの取得に関するコード
+<div class="highlight"><pre><span></span><code><span class="n">x</span><span class="o">=</span><span class="n">zeros</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">dat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">file_loc</span><span class="p">,</span><span class="s">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">y</span><span class="o">=</span><span class="n">zeros</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">300</span>
+<span class="w">        </span><span class="n">all_ave</span><span class="w"> </span><span class="o">=</span><span class="n">split</span><span class="p">(</span><span class="n">readline</span><span class="p">(</span><span class="n">dat</span><span class="p">))</span>
+<span class="w">        </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="w"> </span><span class="n">parse</span><span class="p">(</span><span class="kt">Float64</span><span class="p">,</span><span class="n">all_ave</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="w">        </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="w"> </span><span class="n">parse</span><span class="p">(</span><span class="kt">Float64</span><span class="p">,</span><span class="n">all_ave</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="n">close</span><span class="p">(</span><span class="n">dat</span><span class="p">)</span>
+</code></pre></div></li>
 </ul>
-<pre><code class="language-julia">x=zeros(300)
-dat = open(file_loc,&quot;r&quot;)
-y=zeros(300)
-    for i=1:300
-        all_ave =split(readline(dat))
-        x[i]= parse(Float64,all_ave[2])
-        y[i]= parse(Float64,all_ave[3])
-    end
-close(dat)
-</code></pre>
 <h2 id="latex">LaTeX <!--(Wiki/Latex.md)--></h2>
 <h3 id="package">Package</h3>
 <ul>
 <li><a href="https://qiita.com/yetput_ikura/items/912cc9d9496ebefcccd9">Physics</a>パッケージの解説。<br />
-    東大のアドベントカレンダーを参考にしている。
-!!! Alert
-    Physicsは推奨できない.Physics2を使おう</li>
+    東大のアドベントカレンダーを参考にしている。</li>
+</ul>
+<div class="admonition alert">
+<p class="admonition-title">Alert</p>
+<p>Physicsは推奨できない.Physics2を使おう</p>
+</div>
+<ul>
 <li><a href="https://qiita.com/Yarakashi_Kikohshi/items/131e2324f401c3effb84">Physics2</a></li>
 </ul>
 <h3 id="text">Text関連</h3>
@@ -517,33 +519,35 @@ close(dat)
 <li><a href="https://math-note.xyz/category/latex/tikz/">TikZ</a></li>
 </ul>
 <h3 id="iguanatex">IguanaTex</h3>
-<p>PowerPointにLaTeXを導入するための方法。<br />
-!!! Note
-    windowsなら<a href="https://itblogger-note.blogspot.com/2020/09/powerpoint-iguanatex.html">ここ</a>から飛べるよ。<br>
-Macだと日本語の方法がないので、以下でまとめる。</p>
-<p>brew を用いて</p>
-<pre><code>brew tap tsung-ju/iguanatexmac
+<p>PowerPointにLaTeXを導入するための方法。  </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>windowsなら<a href="https://itblogger-note.blogspot.com/2020/09/powerpoint-iguanatex.html">ここ</a>から飛べるよ。<br></p>
+</div>
+<p>Macだと日本語の方法がないので、以下でまとめる。</p>
+<p>brew を用いて
+<div class="highlight"><pre><span></span><code>brew tap tsung-ju/iguanatexmac
 brew install --cask --no-quarantine iguanatexmac latexit-metadata
-</code></pre>
-<p>でインストール。<br />
+</code></pre></div>
+でインストール。<br />
 <a href="https://github.com/Jonathan-LeRoux/IguanaTex/releases">https://github.com/Jonathan-LeRoux/IguanaTex/releases</a>
 からアドインのためのファイルを入れる。(.zip)を選択</p>
-<p>.zipを開いて、そのファイルがある場所で、</p>
-<pre><code>mkdir -p ~/Library/Application\ Scripts/com.microsoft.Powerpoint
+<p>.zipを開いて、そのファイルがある場所で、
+<div class="highlight"><pre><span></span><code>mkdir -p ~/Library/Application\ Scripts/com.microsoft.Powerpoint
 cp ./IguanaTex.scpt ~/Library/Application\ Scripts/com.microsoft.Powerpoint/IguanaTex.scpt
-</code></pre>
-<p>と</p>
-<pre><code>sudo mkdir -p '/Library/Application Support/Microsoft/Office365/User Content.localized/Add-Ins.localized'
-sudo cp ./libIguanaTexHelper.dylib '/Library/Application Support/Microsoft/Office365/User Content.localized/Add-Ins.localized/libIguanaTexHelper.dylib'
-</code></pre>
-<p>を実行する。後はアドインを追加すればいけるはず。<br />
+</code></pre></div>
+と
+<div class="highlight"><pre><span></span><code>sudo mkdir -p &#39;/Library/Application Support/Microsoft/Office365/User Content.localized/Add-Ins.localized&#39;
+sudo cp ./libIguanaTexHelper.dylib &#39;/Library/Application Support/Microsoft/Office365/User Content.localized/Add-Ins.localized/libIguanaTexHelper.dylib&#39;
+</code></pre></div>
+を実行する。後はアドインを追加すればいけるはず。<br />
 (参考)
 <a href="https://github.com/Jonathan-LeRoux/IguanaTex/blob/v1.60.2/README.md">公式github</a></p>
 <!-- - [Root](Wiki/Root.md) -->
 
 <h2 id="mkdocs">Mkdocs</h2>
 <h3 id="alert">Alert</h3>
-<pre><code>!!! Note
+<div class="highlight"><pre><span></span><code>!!! Note
     これはノートです。
 
 !!! Tip
@@ -566,23 +570,39 @@ sudo cp ./libIguanaTexHelper.dylib '/Library/Application Support/Microsoft/Offic
 
 !!! summary
     これは概要です。
-</code></pre>
-<p>!!! Note
-    これはノートです。</p>
-<p>!!! Tip
-    ヒントです。</p>
-<p>!!! Warning
-    これは警告です</p>
-<p>!!! Danger
-    これは危険です。</p>
-<p>!!! Success
-    これは成功です。</p>
-<p>!!! Failure
-    これは失敗です。</p>
-<p>!!! Bug
-    これはバグです。</p>
-<p>!!! summary
-    これは概要です。</p>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>これはノートです。</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>ヒントです。</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>これは警告です</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>これは危険です。</p>
+</div>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>これは成功です。</p>
+</div>
+<div class="admonition failure">
+<p class="admonition-title">Failure</p>
+<p>これは失敗です。</p>
+</div>
+<div class="admonition bug">
+<p class="admonition-title">Bug</p>
+<p>これはバグです。</p>
+</div>
+<div class="admonition summary">
+<p class="admonition-title">Summary</p>
+<p>これは概要です。</p>
+</div>
 <h3 id="icon-design"><a href="https://pictogrammers.com/library/mdi/">icon design</a></h3>
 
 
@@ -624,10 +644,6 @@ sudo cp ./libIguanaTexHelper.dylib '/Library/Application Support/Microsoft/Offic
     
     
       <script src="../assets/javascripts/bundle.b4d07000.min.js"></script>
-      
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
-      
-        <script src="../javascripts/config.js"></script>
       
     
   </body>
