@@ -235,6 +235,28 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目次
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#packages" class="md-nav__link">
+    Packages
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    テクニック
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -249,25 +271,34 @@
 
 
 <h1 id="julia">Julia</h1>
+<h2 id="packages">Packages</h2>
 <ul>
-<li>
-<p><a href="https://hydrocoast.jp/index.php?Julia/%E6%95%B0%E5%80%A4%E3%81%AE%E4%B8%B8%E3%82%81">数値の丸め</a></p>
-</li>
-<li>
-<p><a href="https://zenn.dev/ohno/articles/f352f354e5cf96">特殊関数</a></p>
-</li>
-<li>
-<p><a href="https://qiita.com/I_ppp/items/dca3552affa6a672e4bd">plots</a></p>
-</li>
-<li>
-<p><a href="sekibun/">積分pkg</a></p>
-</li>
+<li><a href="sekibun/">積分pkg</a></li>
+<li><a href="https://qiita.com/I_ppp/items/dca3552affa6a672e4bd">plots</a></li>
+<li><a href="https://docs.juliaplots.org/latest/series_types/contour/">contour plots</a></li>
+<li><a href="https://juliaci.github.io/BenchmarkTools.jl/stable/">Benchmarktools</a></li>
+<li><a href="sekibun/">積分pkg</a></li>
+</ul>
+<h2 id="_1">テクニック</h2>
+<ul>
 <li>
 <p><a href="dat_read/">データの読み取り</a></p>
 </li>
 <li>
-<p><a href="https://juliaci.github.io/BenchmarkTools.jl/stable/">Benchmarktools</a></p>
+<p><a href="https://hydrocoast.jp/index.php?Julia/%E6%95%B0%E5%80%A4%E3%81%AE%E4%B8%B8%E3%82%81">数値の丸め</a></p>
 </li>
+<li><a href="https://zenn.dev/ohno/articles/f352f354e5cf96">特殊関数</a></li>
+<li>データの取得に関するコード
+<div class="highlight"><pre><span></span><code><span class="n">x</span><span class="o">=</span><span class="n">zeros</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">dat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">file_loc</span><span class="p">,</span><span class="s">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">y</span><span class="o">=</span><span class="n">zeros</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">300</span>
+<span class="w">        </span><span class="n">all_ave</span><span class="w"> </span><span class="o">=</span><span class="n">split</span><span class="p">(</span><span class="n">readline</span><span class="p">(</span><span class="n">dat</span><span class="p">))</span>
+<span class="w">        </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="w"> </span><span class="n">parse</span><span class="p">(</span><span class="kt">Float64</span><span class="p">,</span><span class="n">all_ave</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="w">        </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="w"> </span><span class="n">parse</span><span class="p">(</span><span class="kt">Float64</span><span class="p">,</span><span class="n">all_ave</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="n">close</span><span class="p">(</span><span class="n">dat</span><span class="p">)</span>
+</code></pre></div></li>
 </ul>
 
 
