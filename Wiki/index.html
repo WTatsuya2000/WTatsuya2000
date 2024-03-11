@@ -12,6 +12,8 @@
         <link rel="prev" href="../History/">
       
       
+        <link rel="next" href="../Talks/">
+      
       <link rel="icon" href="../syaritatsu.JPG">
       <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.15">
     
@@ -248,26 +250,6 @@
     Julia
   </a>
   
-    <nav class="md-nav" aria-label="Julia">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#packages" class="md-nav__link">
-    Packages
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    テクニック
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -339,6 +321,21 @@
   
 
     
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Talks/" class="md-nav__link">
+        Talks
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -369,26 +366,6 @@
   <a href="#julia" class="md-nav__link">
     Julia
   </a>
-  
-    <nav class="md-nav" aria-label="Julia">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#packages" class="md-nav__link">
-    Packages
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    テクニック
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -470,33 +447,6 @@
 
 <h1 id="wiki">Wiki</h1>
 <h2 id="julia"><a href="julia/">Julia</a></h2>
-<h3 id="packages">Packages</h3>
-<ul>
-<li><a href="https://qiita.com/I_ppp/items/dca3552affa6a672e4bd">plots</a></li>
-<li><a href="https://juliaci.github.io/BenchmarkTools.jl/stable/">Benchmarktools</a></li>
-<li><a href="julia/sekibun.md">積分pkg</a></li>
-</ul>
-<h3 id="_1">テクニック</h3>
-<ul>
-<li>
-<p><a href="julia/dat_read.md">データの読み取り</a></p>
-</li>
-<li>
-<p><a href="https://hydrocoast.jp/index.php?Julia/%E6%95%B0%E5%80%A4%E3%81%AE%E4%B8%B8%E3%82%81">数値の丸め</a></p>
-</li>
-<li><a href="https://zenn.dev/ohno/articles/f352f354e5cf96">特殊関数</a></li>
-<li>データの取得に関するコード
-<div class="highlight"><pre><span></span><code><span class="n">x</span><span class="o">=</span><span class="n">zeros</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span>
-<span class="n">dat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">file_loc</span><span class="p">,</span><span class="s">&quot;r&quot;</span><span class="p">)</span>
-<span class="n">y</span><span class="o">=</span><span class="n">zeros</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="o">:</span><span class="mi">300</span>
-<span class="w">        </span><span class="n">all_ave</span><span class="w"> </span><span class="o">=</span><span class="n">split</span><span class="p">(</span><span class="n">readline</span><span class="p">(</span><span class="n">dat</span><span class="p">))</span>
-<span class="w">        </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="w"> </span><span class="n">parse</span><span class="p">(</span><span class="kt">Float64</span><span class="p">,</span><span class="n">all_ave</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-<span class="w">        </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="w"> </span><span class="n">parse</span><span class="p">(</span><span class="kt">Float64</span><span class="p">,</span><span class="n">all_ave</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
-<span class="w">    </span><span class="k">end</span>
-<span class="n">close</span><span class="p">(</span><span class="n">dat</span><span class="p">)</span>
-</code></pre></div></li>
-</ul>
 <h2 id="latex">LaTeX <!--(Wiki/Latex.md)--></h2>
 <h3 id="package">Package</h3>
 <ul>
