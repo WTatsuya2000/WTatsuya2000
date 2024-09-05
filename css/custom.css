@@ -1,6 +1,6 @@
-/* .md-sidebar { */
-    /* display: none; サイドバーを非表示に */
-/* } */
+.md-sidebar {
+    display: none; サイドバーを非表示に
+}
 
 .md-content {
     margin-left: 0; /* コンテンツを画面全体に広げる */
