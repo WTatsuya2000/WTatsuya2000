@@ -512,6 +512,57 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#1-load-average" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. ロードアベレージ (load average)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-cpu-cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. CPU 使用率 (%CPU)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. スレッド・プロセス数
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. メモリ・スワップ
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. メモリ・スワップ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      まとめ：
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -628,6 +679,44 @@ ps<span class="w"> </span>-ax<span class="w"> </span>-o<span class="w"> </span>p
 <li><strong>使用中</strong>: 436.7  </li>
 <li><strong>空き</strong>: 7 755.3  </li>
 </ul>
+<p>システムが「忙しい (busy)」状態にあるかどうかは、主に以下の指標で判断します。</p>
+<hr />
+<h2 id="1-load-average">1. ロードアベレージ (load average)</h2>
+<ul>
+<li><strong>値</strong> が CPU コア数以上に近い／超えている  </li>
+<li>例：4 コアマシンで load average が 4.0 を超えると、常に４つ以上のプロセスが実行待ち → 忙しい  </li>
+<li><strong>1 分・5 分・15 分</strong> のうちいずれか、特に 1 分値が高いと即時的に負荷が高いことを示す</li>
+</ul>
+<hr />
+<h2 id="2-cpu-cpu">2. CPU 使用率 (%CPU)</h2>
+<ul>
+<li><strong><code>id</code>（idle）</strong> が低いほど忙しい  </li>
+<li>例：<code>id</code> が 5% → 95% がユーザー／システム処理に使われている → 非常に忙しい  </li>
+<li><strong><code>us</code>（user）</strong>・<strong><code>sy</code>（system）</strong> が高いと、多くの計算やカーネル処理に CPU 時間を取られている  </li>
+<li><strong><code>wa</code>（I/O wait）</strong> が高いと、ディスク／ネットワーク待ちで停滞している</li>
+</ul>
+<hr />
+<h2 id="3">3. スレッド・プロセス数</h2>
+<ul>
+<li><strong>実行中 (running)</strong> が多いほど並列に CPU を使おうとしている  </li>
+<li><strong><code>D</code> (uninterruptible sleep: I/O 待ち) が多いと I/O ボトルネック発生中</strong></li>
+</ul>
+<hr />
+<h2 id="4">4. メモリ・スワップ</h2>
+<ul>
+<li><strong>物理メモリの使用率</strong> が非常に高く（<code>used</code>＋<code>buff/cache</code> ≃ <code>total</code>）、<strong><code>free</code></strong> がほぼ 0  </li>
+<li><strong>スワップ使用量 (<code>Swap used</code>)</strong> が増えていると、物理メモリ不足でディスクを参照 → 大幅に遅くなる</li>
+</ul>
+<hr />
+<h3 id="_3">まとめ：</h3>
+<ul>
+<li><strong>忙しい状態</strong>  </li>
+<li>Load average ≥ CPU コア数  </li>
+<li><code>%idle</code> が 10% 未満（または <code>us</code>＋<code>sy</code>＋<code>wa</code> 合計が高い）  </li>
+<li>スワップ使用量が増加中  </li>
+<li>実行中プロセス数が多い or 多数のプロセスが I/O 待ち  </li>
+</ul>
+<p>これらの指標が一つでも目立って高／低になっていれば、システムは「busy」と判断できます。```</p>
 
 
 
