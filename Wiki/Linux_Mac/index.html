@@ -16,7 +16,7 @@
     
     
       
-        <title>root - W.Tatsuya</title>
+        <title>Linux Mac - W.Tatsuya</title>
       
     
     
@@ -60,7 +60,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#root" class="md-skip">
+        <a href="#linuxmacshell-script" class="md-skip">
           コンテンツにスキップ
         </a>
       
@@ -94,7 +94,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              root
+              Linux Mac
             
           </span>
         </div>
@@ -430,8 +430,89 @@
   
   
   
-    
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目次
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#linuxmacshell-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linux/Macでshell scriptを用いた並列処理
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Linux/Macでshell scriptを用いた並列処理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sh77ver" class="md-nav__link">
+    <span class="md-ellipsis">
+      shファイルの書き方(7/7ver.)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      処理状況の確認
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="処理状況の確認">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      スレッド状況
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpu-cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      CPU 使用率 (%CPU)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mib" class="md-nav__link">
+    <span class="md-ellipsis">
+      メモリ (MiB)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mib_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      スワップ (MiB)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -446,9 +527,106 @@
                   
 
 
-<h1 id="root">root</h1>
+  <h1>Linux Mac</h1>
+
+<h2 id="linuxmacshell-script">Linux/Macでshell scriptを用いた並列処理</h2>
+<h3 id="sh77ver">shファイルの書き方(7/7ver.)</h3>
+<p>実行ファイルには許可が必要なので
+<div class="highlight"><pre><span></span><code><span class="w">    </span>chmod<span class="w"> </span>+x<span class="w"> </span>run_estimate.sh
+</code></pre></div>
+を実行する。</p>
+<p>shファイルの一つの例</p>
 <ul>
-<li><a href=""></a></li>
+<li>例1
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="c1">#!/usr/bin/env bash</span>
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">JULIA_NUM_THREADS</span><span class="o">=</span><span class="m">16</span><span class="w">  </span><span class="c1"># スレッド数を決定する</span>
+<span class="w">    </span>mkdir<span class="w"> </span>-p<span class="w"> </span>Zs/RW<span class="w">               </span><span class="c1"># 必要なディレクトリの作成</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span>p<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>seq<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">10</span><span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[start] p = </span><span class="si">${</span><span class="nv">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="w">    </span><span class="c1"># echoで書くことができる</span>
+<span class="w">        </span><span class="c1"># バックグラウンドで起動</span>
+<span class="w">        </span>nohup<span class="w"> </span>julia<span class="w"> </span>estimate_RW.jl<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;Z</span><span class="si">${</span><span class="nv">p</span><span class="si">}</span><span class="s2">_RW.csv&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>logs/log_<span class="si">${</span><span class="nv">p</span><span class="si">}</span>_RW.txt<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">        </span><span class="nv">pid</span><span class="o">=</span><span class="nv">$!</span><span class="w">                     </span><span class="c1"># 直近のバックグラウンドPIDを取得</span>
+<span class="w">        </span><span class="nb">wait</span><span class="w"> </span><span class="nv">$pid</span><span class="w">                  </span><span class="c1"># このジョブの終了を待つ</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[done ] p = </span><span class="si">${</span><span class="nv">p</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="k">done</span>
+
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;All jobs done.&quot;</span>
+</code></pre></div></li>
+<li>例2
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="c1">#!/usr/bin/env bash</span>
+
+<span class="w">    </span><span class="nv">params</span><span class="o">=(</span><span class="m">24</span><span class="w"> </span><span class="m">32</span><span class="w"> </span><span class="m">36</span><span class="w"> </span><span class="m">40</span><span class="w"> </span><span class="m">48</span><span class="o">)</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span>p<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">params</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[start] p = </span><span class="si">${</span><span class="nv">p</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">        </span>nohup<span class="w"> </span>julia<span class="w"> </span>LYZ.jl<span class="w"> </span><span class="nv">$p</span><span class="w"> </span>&gt;<span class="w"> </span>logs/log_<span class="si">${</span><span class="nv">p</span><span class="si">}</span>.txt<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">        </span><span class="nv">pid</span><span class="o">=</span><span class="nv">$!</span><span class="w">                     </span><span class="c1"># 直近のバックグラウンドPIDを取得</span>
+<span class="w">        </span><span class="nb">wait</span><span class="w"> </span><span class="nv">$pid</span><span class="w">                  </span><span class="c1"># このジョブの終了を待つ</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[done ] p = </span><span class="si">${</span><span class="nv">p</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="k">done</span>
+
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;All jobs launched.&quot;</span>
+</code></pre></div></li>
+</ul>
+<p>実行は<code>./run_hogehoge.sh</code></p>
+<h2 id="_1">処理状況の確認</h2>
+<p>juliaで実行しているファイルの確認中
+<div class="highlight"><pre><span></span><code>ps<span class="w"> </span>-eo<span class="w"> </span>pid,etime,args<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>julia<span class="w">        </span><span class="c1"># Linux</span>
+ps<span class="w"> </span>-ax<span class="w"> </span>-o<span class="w"> </span>pid,etime,command<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>julia<span class="w">  </span><span class="c1"># Mac</span>
+</code></pre></div></p>
+<p><code>top -H</code>でわかる情報
+<div class="highlight"><pre><span></span><code>    top - 12:19:50 up 243 days,  5:40,  0 users,  load average: 4.62, 8.36, 12.52
+    Threads: 1671 total,   4 running, 1667 sleeping,   0 stopped,   0 zombie
+    %Cpu(s):  6.9 us,  0.8 sy,  0.0 ni, 92.4 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+    MiB Mem :  63994.3 total,  55116.9 free,   5432.1 used,   3445.3 buff/cache
+    MiB Swap:   8192.0 total,   7755.3 free,    436.7 used.  57951.9 avail Mem
+</code></pre></div></p>
+<ul>
+<li><strong>コマンド実行</strong>: <code>top</code>  </li>
+<li><strong>時刻</strong>: 12:19:50  </li>
+<li><strong>稼働時間 (uptime)</strong>: 243 days, 5:40  </li>
+<li><strong>ログインユーザー数</strong>: 0  </li>
+<li><strong>ロードアベレージ</strong>:  </li>
+<li>1 分: 4.62  </li>
+<li>5 分: 8.36  </li>
+<li>15 分: 12.52  </li>
+</ul>
+<hr />
+<h3 id="_2">スレッド状況</h3>
+<ul>
+<li><strong>総スレッド数</strong>: 1671  </li>
+<li><strong>実行中</strong>: 4  </li>
+<li><strong>休止中 (sleeping)</strong>: 1667  </li>
+<li><strong>停止中</strong>: 0  </li>
+<li><strong>ゾンビ</strong>: 0  </li>
+</ul>
+<hr />
+<h3 id="cpu-cpu">CPU 使用率 (%CPU)</h3>
+<ul>
+<li><strong>ユーザー領域 (us)</strong>: 6.9%  </li>
+<li><strong>システム (sy)</strong>: 0.8%  </li>
+<li><strong>nice (ni)</strong>: 0.0%  </li>
+<li><strong>アイドル (id)</strong>: 92.4%  </li>
+<li><strong>I/O 待ち (wa)</strong>: 0.0%  </li>
+<li><strong>ハードウェア割込 (hi)</strong>: 0.0%  </li>
+<li><strong>ソフトウェア割込 (si)</strong>: 0.0%  </li>
+<li><strong>仮想化待ち (st)</strong>: 0.0%  </li>
+</ul>
+<hr />
+<h3 id="mib">メモリ (MiB)</h3>
+<ul>
+<li><strong>合計</strong>: 63 994.3  </li>
+<li><strong>使用中</strong>: 5 432.1  </li>
+<li><strong>空き</strong>: 55 116.9  </li>
+<li><strong>バッファ/キャッシュ</strong>: 3 445.3  </li>
+<li><strong>利用可能</strong>: 57 951.9  </li>
+</ul>
+<hr />
+<h3 id="mib_1">スワップ (MiB)</h3>
+<ul>
+<li><strong>合計</strong>: 8 192.0  </li>
+<li><strong>使用中</strong>: 436.7  </li>
+<li><strong>空き</strong>: 7 755.3  </li>
 </ul>
 
 
