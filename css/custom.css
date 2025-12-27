@@ -126,3 +126,36 @@ pre[class*="language-"] {
 .md-typeset .highlight {
   background-color: transparent !important;
 }
+
+.lang-button {
+  display: inline-block;
+  padding: 0.3em 1.2em;
+  background-color: #ffffff;
+  color: black;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.lang-button:hover {
+  background-color: #1158c7;
+}
+
+/* 1220px未満でも上のタブ（md-tabs）を表示する */
+@media screen and (max-width: 1219.98px) {
+  .md-tabs {
+    display: block;
+  }
+
+  /* タブが横に入りきらない場合は横スクロール */
+  .md-tabs__list {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  /* タブ項目が潰れないように */
+  .md-tabs__item {
+    flex: 0 0 auto;
+  }
+}
