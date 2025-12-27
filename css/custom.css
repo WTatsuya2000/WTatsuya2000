@@ -138,7 +138,8 @@ pre[class*="language-"] {
 }
 
 .lang-button:hover {
-  background-color: #1158c7;
+  /* background-color: #1158c7; */
+  background-color: #ffffff;
 }
 
 /* 1220px未満でも上のタブ（md-tabs）を表示する */
