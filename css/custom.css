@@ -1,5 +1,8 @@
-.md-sidebar {
-    display: none; /* サイドバーを非表示に */
+/* デスクトップのみサイドバーを非表示（モバイルのドロワーは残す） */
+@media screen and (min-width: 76.25em) {
+    .md-sidebar {
+        display: none;
+    }
 }
 .md-content {
     margin-left:0; /*コンテンツを画面全体に広げる*/
@@ -89,16 +92,7 @@
   border-left: 5px solid var(--md-accent-fg-color);
 }
 
-/* デスクトップのヘッダーにある検索アイコンを隠す */
-.md-header__button--search,
-.md-header-nav__button.md-icon--search {
-  display: none !important;
-}
-
-/* モバイルなどで開く検索パネル自体も隠す */
-.md-search {
-  display: none !important;
-}
+/* 検索機能は有効 — 非表示にしない */
 
 /* ==== インラインコードだけを狙う ==== */
 .md-typeset code:not(pre code) {
@@ -125,38 +119,4 @@ pre[class*="language-"] {
 .highlight, 
 .md-typeset .highlight {
   background-color: transparent !important;
-}
-
-.lang-button {
-  display: inline-block;
-  padding: 0.3em 1.2em;
-  background-color: #ffffff;
-  color: black;
-  text-decoration: none;
-  border-radius: 6px;
-  font-weight: 600;
-}
-
-.lang-button:hover {
-  /* background-color: #1158c7; */
-  background-color: #ffffff;
-}
-
-/* 1220px未満でも上のタブ（md-tabs）を表示する */
-@media screen and (max-width: 1219.98px) {
-  .md-tabs {
-    display: block;
-  }
-
-  /* タブが横に入りきらない場合は横スクロール */
-  .md-tabs__list {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-  }
-
-  /* タブ項目が潰れないように */
-  .md-tabs__item {
-    flex: 0 0 auto;
-  }
 }
