@@ -92,7 +92,26 @@
   border-left: 5px solid var(--md-accent-fg-color);
 }
 
-/* 検索機能は有効 — 非表示にしない */
+/* モバイルでタブを非表示にして空白を消す */
+@media screen and (max-width: 76.1875em) {
+  .md-tabs {
+    display: none;
+  }
+}
+
+/* モバイルで検索アイコンを表示する */
+@media screen and (max-width: 76.1875em) {
+  .md-header__button[for="__search"] {
+    display: flex !important;
+  }
+}
+
+/* モバイルでヘッダー下の余白を除去 */
+@media screen and (max-width: 76.1875em) {
+  .md-main__inner {
+    margin-top: 0 !important;
+  }
+}
 
 /* ==== インラインコードだけを狙う ==== */
 .md-typeset code:not(pre code) {
