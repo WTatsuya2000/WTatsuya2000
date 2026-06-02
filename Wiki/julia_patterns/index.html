@@ -1,0 +1,1088 @@
+
+<!doctype html>
+<html lang="ja" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../syaritatsu.JPG">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.31">
+    
+    
+      
+        <title>Julia よく使うパターン集 - W.Tatsuya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.3cba04c6.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/custom.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#julia" class="md-skip">
+          コンテンツにスキップ
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="ヘッダー">
+    <a href="../.." title="W.Tatsuya" class="md-header__button md-logo" aria-label="W.Tatsuya" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C9 7 4 9 4 14c0 2 2 4 4 4 1 0 2 0 3-1 0 0 .32 2-2 5h6c-2-3-2-5-2-5 1 1 2 1 3 1 2 0 4-2 4-4 0-5-5-7-8-12Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            W.Tatsuya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Julia よく使うパターン集
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="検索" placeholder="検索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="検索">
+        
+        <button type="reset" class="md-search__icon md-icon" title="クリア" aria-label="クリア" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            検索を初期化
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="タブ" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../CV/" class="md-tabs__link">
+        
+  
+    
+  
+  CV
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+    
+  
+  Wiki
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Publication/" class="md-tabs__link">
+        
+  
+    
+  
+  Publication
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Presentation/" class="md-tabs__link">
+        
+  
+    
+  
+  Presentation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Link/" class="md-tabs__link">
+        
+  
+    
+  
+  Link
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="ナビゲーション" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="W.Tatsuya" class="md-nav__button md-logo" aria-label="W.Tatsuya" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C9 7 4 9 4 14c0 2 2 4 4 4 1 0 2 0 3-1 0 0 .32 2-2 5h6c-2-3-2-5-2-5 1 1 2 1 3 1 2 0 4-2 4-4 0-5-5-7-8-12Z"/></svg>
+
+    </a>
+    W.Tatsuya
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CV/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CV
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Wiki
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Publication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Publication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Presentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Presentation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Link/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Link
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目次">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目次
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      データ読み込み
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="データ読み込み">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#readdlm" class="md-nav__link">
+    <span class="md-ellipsis">
+      readdlm（基本）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eachline" class="md-nav__link">
+    <span class="md-ellipsis">
+      eachline（大きいファイル・カスタムパース）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-readline" class="md-nav__link">
+    <span class="md-ellipsis">
+      open + readline（ヘッダー付きファイル）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jld2" class="md-nav__link">
+    <span class="md-ellipsis">
+      JLD2（バイナリ保存・読み込み）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ファイル出力
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ファイル出力">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#writedlm" class="md-nav__link">
+    <span class="md-ellipsis">
+      writedlm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-println" class="md-nav__link">
+    <span class="md-ellipsis">
+      open + println（逐次追記）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#csvjoin" class="md-nav__link">
+    <span class="md-ellipsis">
+      CSV（join で整形）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      データ処理
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="データ処理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dict でデータセットを管理
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      内包表記
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      ブロードキャスト（@. ）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      配列の初期化
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jackknife" class="md-nav__link">
+    <span class="md-ellipsis">
+      Jackknife 法
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Jackknife 法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jk" class="md-nav__link">
+    <span class="md-ellipsis">
+      典型的な JK ループ
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      最適化・方程式求解
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="最適化・方程式求解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimjl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optim.jl（非線形最小化）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nlsolvejl-fx0" class="md-nav__link">
+    <span class="md-ellipsis">
+      NLsolve.jl（非線形方程式 f(x)=0）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      誤差伝播（加重平均）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      並列処理
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="並列処理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#threads" class="md-nav__link">
+    <span class="md-ellipsis">
+      @threads で格子サイトを並列化（チェッカーボード法）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      3D 格子のスレッド並列化
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      周期境界条件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      時刻・進捗管理
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      β 範囲の生成
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      よく使うパッケージセット
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="julia">Julia よく使うパターン集</h1>
+<p>物理計算・データ解析でよく使うコードのまとめ。
+共通設定は <a href="../julia_setting/"><code>Julia_Setting.jl</code></a> を参照。</p>
+<hr />
+<h2 id="_1">データ読み込み</h2>
+<h3 id="readdlm">readdlm（基本）</h3>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="n">DelimitedFiles</span>
+
+<span class="c"># スペース区切り</span>
+<span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readdlm</span><span class="p">(</span><span class="s">&quot;path/to/file&quot;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="kt">Float64</span><span class="p">)</span>
+
+<span class="c"># コンマ区切り</span>
+<span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readdlm</span><span class="p">(</span><span class="s">&quot;input.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;,&#39;</span><span class="p">,</span><span class="w"> </span><span class="kt">Float64</span><span class="p">)</span>
+
+<span class="c"># ヘッダーをスキップ</span>
+<span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readdlm</span><span class="p">(</span><span class="s">&quot;file.dat&quot;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="kt">Float64</span><span class="p">,</span><span class="w"> </span><span class="n">skipstart</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c"># 特定列だけ取得</span>
+<span class="n">fs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readdlm</span><span class="p">(</span><span class="s">&quot;file.dat&quot;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="kt">Float64</span><span class="p">,</span><span class="w"> </span><span class="n">skipstart</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="o">:</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span>
+</code></pre></div>
+<h3 id="eachline">eachline（大きいファイル・カスタムパース）</h3>
+<div class="highlight"><pre><span></span><code><span class="c"># 1行ずつパースして行列に変換</span>
+<span class="k">function</span><span class="w"> </span><span class="n">read_files</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="w">    </span><span class="n">data_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">parse</span><span class="o">.</span><span class="p">(</span><span class="kt">Float64</span><span class="p">,</span><span class="w"> </span><span class="n">split</span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">))</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">eachline</span><span class="p">(</span><span class="n">filename</span><span class="p">)]</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">hcat</span><span class="p">(</span><span class="n">data_list</span><span class="o">...</span><span class="p">)</span><span class="o">&#39;</span>
+<span class="k">end</span>
+
+<span class="c"># コメント行を除外しながら読む</span>
+<span class="k">for</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">eachline</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="w">    </span><span class="n">startswith</span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;#&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="k">continue</span>
+<span class="w">    </span><span class="n">parts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">split</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+<span class="w">    </span><span class="n">length</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="k">continue</span>
+<span class="w">    </span><span class="c"># パース処理...</span>
+<span class="k">end</span>
+</code></pre></div>
+<h3 id="open-readline">open + readline（ヘッダー付きファイル）</h3>
+<div class="highlight"><pre><span></span><code><span class="n">dat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;file.dat&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="mi">4</span>
+<span class="w">        </span><span class="n">readline</span><span class="p">(</span><span class="n">dat</span><span class="p">)</span><span class="w">   </span><span class="c"># ヘッダー4行を読み飛ばす</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">Nsamp</span>
+<span class="w">        </span><span class="n">raw_data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="o">:</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parse</span><span class="o">.</span><span class="p">(</span><span class="kt">Float64</span><span class="p">,</span><span class="w"> </span><span class="n">split</span><span class="p">(</span><span class="n">readline</span><span class="p">(</span><span class="n">dat</span><span class="p">)))</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="n">close</span><span class="p">(</span><span class="n">dat</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="jld2">JLD2（バイナリ保存・読み込み）</h3>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="n">JLD2</span>
+
+<span class="nd">@save</span><span class="w"> </span><span class="s">&quot;./data/result_L</span><span class="si">$</span><span class="p">(</span><span class="n">Lx</span><span class="p">)</span><span class="s">.jld2&quot;</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">errors</span>
+<span class="nd">@load</span><span class="w"> </span><span class="s">&quot;./data/result_L</span><span class="si">$</span><span class="p">(</span><span class="n">Lx</span><span class="p">)</span><span class="s">.jld2&quot;</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">errors</span>
+</code></pre></div>
+<hr />
+<h2 id="_2">ファイル出力</h2>
+<h3 id="writedlm">writedlm</h3>
+<div class="highlight"><pre><span></span><code><span class="n">writedlm</span><span class="p">(</span><span class="s">&quot;output.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">)</span><span class="w">    </span><span class="c"># スペース区切り</span>
+<span class="n">writedlm</span><span class="p">(</span><span class="s">&quot;output.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;,&#39;</span><span class="p">)</span><span class="w">    </span><span class="c"># コンマ区切り</span>
+</code></pre></div>
+<h3 id="open-println">open + println（逐次追記）</h3>
+<div class="highlight"><pre><span></span><code><span class="c"># シミュレーション中の逐次書き込み</span>
+<span class="n">log_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;log.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;a&quot;</span><span class="p">)</span><span class="w">   </span><span class="c"># &quot;a&quot; = 追記モード</span>
+<span class="w">    </span><span class="n">println</span><span class="p">(</span><span class="n">log_file</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si">$</span><span class="p">(</span><span class="n">step</span><span class="p">)</span><span class="s">,</span><span class="si">$</span><span class="p">(</span><span class="n">energy</span><span class="p">)</span><span class="s">,</span><span class="si">$</span><span class="p">(</span><span class="n">magnetization</span><span class="p">)</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">close</span><span class="p">(</span><span class="n">log_file</span><span class="p">)</span>
+
+<span class="c"># do ブロック（close を自動化）</span>
+<span class="n">open</span><span class="p">(</span><span class="s">&quot;output.dat&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;a&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">io</span>
+<span class="w">    </span><span class="n">println</span><span class="p">(</span><span class="n">io</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si">$</span><span class="p">(</span><span class="n">β</span><span class="p">)</span><span class="s">,</span><span class="si">$</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="s">,</span><span class="si">$</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+<h3 id="csvjoin">CSV（join で整形）</h3>
+<div class="highlight"><pre><span></span><code><span class="n">open</span><span class="p">(</span><span class="s">&quot;result.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;w&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">file</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">eachrow</span><span class="p">(</span><span class="n">matrix_data</span><span class="p">)</span>
+<span class="w">        </span><span class="n">println</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;,&quot;</span><span class="p">))</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<hr />
+<h2 id="_3">データ処理</h2>
+<h3 id="dict">Dict でデータセットを管理</h3>
+<div class="highlight"><pre><span></span><code><span class="n">data</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="kt">Dict</span><span class="p">{</span><span class="kt">String</span><span class="p">,</span><span class="w"> </span><span class="kt">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}}()</span>
+<span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Dict</span><span class="p">{</span><span class="kt">String</span><span class="p">,</span><span class="w"> </span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}}()</span>
+<span class="n">errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Dict</span><span class="p">{</span><span class="kt">String</span><span class="p">,</span><span class="w"> </span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}}()</span>
+
+<span class="k">for</span><span class="w"> </span><span class="n">Lx</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">Lxs</span>
+<span class="w">    </span><span class="n">data</span><span class="p">[</span><span class="s">&quot;L</span><span class="si">$Lx</span><span class="s">&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readdlm</span><span class="p">(</span><span class="s">&quot;L</span><span class="si">$Lx</span><span class="s">.dat&quot;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;,&#39;</span><span class="p">,</span><span class="w"> </span><span class="kt">Float64</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="c"># アクセス</span>
+<span class="n">data</span><span class="p">[</span><span class="s">&quot;L32&quot;</span><span class="p">]</span>
+<span class="n">result</span><span class="p">[</span><span class="s">&quot;L</span><span class="si">$</span><span class="p">(</span><span class="n">Lx</span><span class="p">)</span><span class="s">_LYZ</span><span class="si">$</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="s">&quot;</span><span class="p">]</span>
+</code></pre></div>
+<h3 id="_4">内包表記</h3>
+<div class="highlight"><pre><span></span><code><span class="c"># 配列生成</span>
+<span class="n">βs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">collect</span><span class="p">(</span><span class="n">range</span><span class="p">(</span><span class="mf">5.8865</span><span class="p">,</span><span class="w"> </span><span class="n">stop</span><span class="o">=</span><span class="mf">5.8890</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="o">=</span><span class="mi">21</span><span class="p">))</span>
+<span class="n">xs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">Rmin</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="o">*</span><span class="n">dr</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span><span class="n">N</span><span class="p">]</span>
+
+<span class="c"># 条件付き抽出</span>
+<span class="p">[</span><span class="n">r</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="n">r1</span><span class="p">,</span><span class="w"> </span><span class="n">r2</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="o">!</span><span class="n">isempty</span><span class="p">(</span><span class="n">r</span><span class="p">)]</span>
+
+<span class="c"># 文字列ラベル生成</span>
+<span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="sa">L</span><span class="s">&quot;L=%</span><span class="si">$Lx</span><span class="s">&quot;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">Lx</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">Lxs</span><span class="p">]</span>
+
+<span class="c"># キーでフィルタ</span>
+<span class="n">findall</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Lx</span><span class="p">,</span><span class="w"> </span><span class="n">path_sets</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="_5">ブロードキャスト（@. ）</h3>
+<div class="highlight"><pre><span></span><code><span class="nd">@.</span><span class="w"> </span><span class="n">ΔS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">exp</span><span class="p">(</span><span class="n">ΔS</span><span class="p">)</span>
+<span class="nd">@.</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">β</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">E_new</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">E_old</span><span class="p">))</span>
+
+<span class="c"># 行列 × ベクトル</span>
+<span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ΔS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Ns</span>
+
+<span class="c"># 複数演算子の組み立て</span>
+<span class="k">const</span><span class="w"> </span><span class="n">W</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">exp</span><span class="o">.</span><span class="p">(</span><span class="n">W1</span><span class="w"> </span><span class="o">.+</span><span class="w"> </span><span class="n">W2</span><span class="w"> </span><span class="o">.+</span><span class="w"> </span><span class="n">W3</span><span class="w"> </span><span class="o">.+</span><span class="w"> </span><span class="n">W4</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="_6">配列の初期化</h3>
+<div class="highlight"><pre><span></span><code><span class="n">raw_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zeros</span><span class="p">(</span><span class="n">Nsamp</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="n">Places</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="kt">Array</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}(</span><span class="nb">undef</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="p">(</span><span class="n">βs</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">Nbin</span><span class="p">)</span>
+<span class="n">Rs</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="kt">Vector</span><span class="p">{</span><span class="kt">ComplexF64</span><span class="p">}(</span><span class="nb">undef</span><span class="p">,</span><span class="w"> </span><span class="n">l</span><span class="p">)</span>
+
+<span class="c"># ネストしたベクトル</span>
+<span class="n">S_container</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}}}(</span><span class="nb">undef</span><span class="p">,</span><span class="w"> </span><span class="n">l</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="jackknife">Jackknife 法</h2>
+<p>よく使う3関数セット（<code>JackKnife.jl</code> として別ファイルに切り出して使う）。</p>
+<div class="highlight"><pre><span></span><code><span class="c"># NJK 番目のブロックのインデックス範囲</span>
+<span class="k">function</span><span class="w"> </span><span class="n">BF</span><span class="p">(</span><span class="n">Ns</span><span class="o">::</span><span class="kt">Int</span><span class="p">,</span><span class="w"> </span><span class="n">Nbin</span><span class="o">::</span><span class="kt">Int</span><span class="p">,</span><span class="w"> </span><span class="n">NJK</span><span class="o">::</span><span class="kt">Int</span><span class="p">)</span>
+<span class="w">    </span><span class="n">L</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">div</span><span class="p">(</span><span class="n">Ns</span><span class="p">,</span><span class="w"> </span><span class="n">Nbin</span><span class="p">)</span>
+<span class="w">    </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">NJK</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">L</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="n">stop</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">NJK</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">L</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">start</span><span class="o">:</span><span class="n">stop</span>
+<span class="k">end</span>
+
+<span class="c"># NJK 番目のブロックを除いた補集合</span>
+<span class="k">function</span><span class="w"> </span><span class="n">BF_complement</span><span class="p">(</span><span class="n">Ns</span><span class="o">::</span><span class="kt">Int</span><span class="p">,</span><span class="w"> </span><span class="n">Nbin</span><span class="o">::</span><span class="kt">Int</span><span class="p">,</span><span class="w"> </span><span class="n">NJK</span><span class="o">::</span><span class="kt">Int</span><span class="p">)</span>
+<span class="w">    </span><span class="n">L</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">div</span><span class="p">(</span><span class="n">Ns</span><span class="p">,</span><span class="w"> </span><span class="n">Nbin</span><span class="p">)</span>
+<span class="w">    </span><span class="n">r1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="p">((</span><span class="n">NJK</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">L</span><span class="p">)</span>
+<span class="w">    </span><span class="n">r2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">NJK</span><span class="o">*</span><span class="n">L</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">:</span><span class="n">Ns</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">[</span><span class="n">r</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="n">r1</span><span class="p">,</span><span class="w"> </span><span class="n">r2</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="o">!</span><span class="n">isempty</span><span class="p">(</span><span class="n">r</span><span class="p">)]</span>
+<span class="k">end</span>
+
+<span class="c"># Bool マスク（そのブロックを false にする）</span>
+<span class="k">function</span><span class="w"> </span><span class="n">BF_mask</span><span class="p">(</span><span class="n">Ns</span><span class="o">::</span><span class="kt">Int</span><span class="p">,</span><span class="w"> </span><span class="n">Nbin</span><span class="o">::</span><span class="kt">Int</span><span class="p">,</span><span class="w"> </span><span class="n">NJK</span><span class="o">::</span><span class="kt">Int</span><span class="p">)</span>
+<span class="w">    </span><span class="n">mask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">trues</span><span class="p">(</span><span class="n">Ns</span><span class="p">)</span>
+<span class="w">    </span><span class="n">mask</span><span class="p">[</span><span class="n">BF</span><span class="p">(</span><span class="n">Ns</span><span class="p">,</span><span class="w"> </span><span class="n">Nbin</span><span class="p">,</span><span class="w"> </span><span class="n">NJK</span><span class="p">)]</span><span class="w"> </span><span class="o">.=</span><span class="w"> </span><span class="nb">false</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">mask</span>
+<span class="k">end</span>
+
+<span class="c"># JK 平均・誤差の計算（Nbin = 20 が典型）</span>
+<span class="k">function</span><span class="w"> </span><span class="n">JackKnife</span><span class="p">(</span><span class="n">p0</span><span class="p">)</span>
+<span class="w">    </span><span class="n">Nbin</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">length</span><span class="p">(</span><span class="n">p0</span><span class="p">)</span>
+<span class="w">    </span><span class="n">ave</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span><span class="w"> </span><span class="n">dims</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">    </span><span class="n">var</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">p0</span><span class="o">.^</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">dims</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Nbin</span><span class="w"> </span><span class="o">.-</span><span class="w"> </span><span class="n">ave</span><span class="o">.^</span><span class="mi">2</span>
+<span class="w">    </span><span class="n">err</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">sqrt</span><span class="o">.</span><span class="p">((</span><span class="n">Nbin</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">var</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ave</span><span class="p">,</span><span class="w"> </span><span class="n">err</span>
+<span class="k">end</span>
+</code></pre></div>
+<h3 id="jk">典型的な JK ループ</h3>
+<div class="highlight"><pre><span></span><code><span class="n">Nbin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span>
+<span class="k">for</span><span class="w"> </span><span class="n">NJK</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">Nbin</span>
+<span class="w">    </span><span class="c"># このブロックを除いたデータで何かを計算</span>
+<span class="w">    </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BF_complement</span><span class="p">(</span><span class="n">Nsamp</span><span class="p">,</span><span class="w"> </span><span class="n">Nbin</span><span class="p">,</span><span class="w"> </span><span class="n">NJK</span><span class="p">)</span>
+<span class="w">    </span><span class="n">masked_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vcat</span><span class="p">([</span><span class="n">data</span><span class="p">[</span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="o">:</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">idx</span><span class="p">]</span><span class="o">...</span><span class="p">)</span>
+<span class="w">    </span><span class="n">Places</span><span class="p">[</span><span class="o">:</span><span class="p">,</span><span class="w"> </span><span class="n">NJK</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fit</span><span class="p">(</span><span class="n">masked_data</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="n">ave</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JackKnife</span><span class="p">(</span><span class="n">Places</span><span class="p">)</span><span class="w">   </span><span class="c"># → (1, 2) のタプル</span>
+</code></pre></div>
+<hr />
+<h2 id="_7">最適化・方程式求解</h2>
+<h3 id="optimjl">Optim.jl（非線形最小化）</h3>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="n">Optim</span>
+
+<span class="n">opt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Optim</span><span class="o">.</span><span class="n">Options</span><span class="p">(</span>
+<span class="w">    </span><span class="n">f_abstol</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mf">1e-12</span><span class="p">,</span>
+<span class="w">    </span><span class="n">x_abstol</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mf">1e-12</span><span class="p">,</span>
+<span class="w">    </span><span class="n">g_abstol</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mf">1e-10</span><span class="p">,</span>
+<span class="w">    </span><span class="n">iterations</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">    </span><span class="n">show_trace</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c"># 対数スケールで最適化（正値パラメータ向け）</span>
+<span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">optimize</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">chi2</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="n">β</span><span class="p">,</span><span class="w"> </span><span class="n">NJK</span><span class="p">),</span><span class="w"> </span><span class="n">log</span><span class="o">.</span><span class="p">(</span><span class="n">x0</span><span class="p">),</span>
+<span class="w">    </span><span class="n">BFGS</span><span class="p">(</span><span class="n">linesearch</span><span class="o">=</span><span class="n">BackTracking</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">)),</span><span class="w"> </span><span class="n">opt</span><span class="p">;</span><span class="w"> </span><span class="n">autodiff</span><span class="o">=</span><span class="ss">:finite</span><span class="p">)</span>
+
+<span class="n">x_star</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">exp</span><span class="o">.</span><span class="p">(</span><span class="n">Optim</span><span class="o">.</span><span class="n">minimizer</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+<span class="n">chi2_min</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">Optim</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">converged</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Optim</span><span class="o">.</span><span class="n">converged</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+<span class="c"># 1次元スカラー最小化</span>
+<span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">optimize</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">F</span><span class="p">(</span><span class="n">x</span><span class="p">;</span><span class="w"> </span><span class="n">para</span><span class="p">),</span><span class="w"> </span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">)</span>
+<span class="n">x_min</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">Optim</span><span class="o">.</span><span class="n">minimizer</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="nlsolvejl-fx0">NLsolve.jl（非線形方程式 f(x)=0）</h3>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="n">NLsolve</span>
+
+<span class="c"># Julia_Setting.jl の nls ラッパー</span>
+<span class="c"># nls(func, params...; ini=0.0, verbose=false)</span>
+
+<span class="n">sol</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">converged</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nls</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">param</span><span class="p">;</span><span class="w"> </span><span class="n">ini</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="c"># 複数変数</span>
+<span class="n">sol</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">converged</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nls</span><span class="p">(</span><span class="n">F</span><span class="p">,</span><span class="w"> </span><span class="n">param</span><span class="p">;</span><span class="w"> </span><span class="n">ini</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">])</span>
+
+<span class="c"># verbose で収束確認</span>
+<span class="n">sol</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">converged</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nls</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">param</span><span class="p">;</span><span class="w"> </span><span class="n">ini</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">verbose</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="_8">誤差伝播（加重平均）</h3>
+<div class="highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span><span class="n">error_propagation</span><span class="p">(</span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="n">errors</span><span class="p">)</span>
+<span class="w">    </span><span class="n">w</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nd">@.</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">errors</span><span class="o">^</span><span class="mi">2</span>
+<span class="w">    </span><span class="n">W</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+<span class="w">    </span><span class="n">w</span><span class="w"> </span><span class="o">./=</span><span class="w"> </span><span class="n">W</span>
+<span class="w">    </span><span class="n">avg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="w"> </span><span class="o">.*</span><span class="w"> </span><span class="n">values</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">avg</span><span class="p">,</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">W</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+<hr />
+<h2 id="_9">並列処理</h2>
+<h3 id="threads"><code>@threads</code> で格子サイトを並列化（チェッカーボード法）</h3>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="n">Base</span><span class="o">.</span><span class="n">Threads</span>
+
+<span class="c"># 偶・奇サイトをあらかじめグループに分けておく</span>
+<span class="n">G1</span><span class="p">,</span><span class="w"> </span><span class="n">G2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">make_checkerboard_groups</span><span class="p">(</span><span class="n">Lx</span><span class="p">,</span><span class="w"> </span><span class="n">Ly</span><span class="p">)</span>
+
+<span class="k">function</span><span class="w"> </span><span class="n">sweep!</span><span class="p">(</span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p">)</span>
+<span class="w">    </span><span class="nd">@threads</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">eachindex</span><span class="p">(</span><span class="n">G1</span><span class="p">)</span>
+<span class="w">        </span><span class="n">config</span><span class="p">[</span><span class="n">G1</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">...</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">update_spin</span><span class="p">(</span><span class="n">G1</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="w"> </span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p">)</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="nd">@threads</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">eachindex</span><span class="p">(</span><span class="n">G2</span><span class="p">)</span>
+<span class="w">        </span><span class="n">config</span><span class="p">[</span><span class="n">G2</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">...</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">update_spin</span><span class="p">(</span><span class="n">G2</span><span class="p">[</span><span class="n">n</span><span class="p">],</span><span class="w"> </span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p">)</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<h3 id="3d">3D 格子のスレッド並列化</h3>
+<div class="highlight"><pre><span></span><code><span class="n">Threads</span><span class="o">.</span><span class="nd">@threads</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">I</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">Ly</span><span class="o">*</span><span class="n">Lz</span>
+<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">I</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">Ly</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">div</span><span class="p">(</span><span class="n">I</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">Lz</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="n">evenodd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">evenodd</span><span class="o">:</span><span class="mi">2</span><span class="o">:</span><span class="n">Lx</span>
+<span class="w">        </span><span class="n">config</span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">heatbath</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="p">,</span><span class="w"> </span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p">)</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<hr />
+<h2 id="_10">周期境界条件</h2>
+<div class="highlight"><pre><span></span><code><span class="c"># mod1（1-indexed、Julia 推奨）</span>
+<span class="n">neighbor_x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">config</span><span class="p">[</span><span class="n">mod1</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">Lx</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="p">]</span>
+<span class="n">neighbor_y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">config</span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">mod1</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">Ly</span><span class="p">)]</span>
+
+<span class="c"># % 演算子（0-indexed スタイル）</span>
+<span class="n">config</span><span class="p">[(</span><span class="n">x</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">Lx</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="p">]</span><span class="w">           </span><span class="c"># 右隣</span>
+<span class="n">config</span><span class="p">[</span><span class="n">Lx</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">((</span><span class="n">Lx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">Lx</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="p">]</span><span class="w">   </span><span class="c"># 左隣</span>
+</code></pre></div>
+<hr />
+<h2 id="_11">時刻・進捗管理</h2>
+<div class="highlight"><pre><span></span><code><span class="k">using</span><span class="w"> </span><span class="n">Dates</span>
+
+<span class="c"># 現在時刻の記録</span>
+<span class="n">t_start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Dates</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+<span class="c"># 途中経過の表示</span>
+<span class="k">function</span><span class="w"> </span><span class="n">time_diff</span><span class="p">(</span><span class="n">start_time</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Millisecond</span><span class="p">(</span><span class="n">Dates</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_time</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1000.0</span><span class="w">  </span><span class="c"># 秒</span>
+<span class="k">end</span>
+
+<span class="c"># 実行ログ</span>
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;Step </span><span class="si">$</span><span class="p">(</span><span class="n">step</span><span class="p">)</span><span class="s">: </span><span class="si">$</span><span class="p">(</span><span class="n">time_diff</span><span class="p">(</span><span class="n">t_start</span><span class="p">))</span><span class="s"> sec elapsed&quot;</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="_12">β 範囲の生成</h2>
+<div class="highlight"><pre><span></span><code><span class="n">βs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">collect</span><span class="p">(</span><span class="n">range</span><span class="p">(</span><span class="mf">5.8865</span><span class="p">,</span><span class="w"> </span><span class="n">stop</span><span class="o">=</span><span class="mf">5.8890</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="o">=</span><span class="mi">21</span><span class="p">))</span>
+<span class="n">βs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">collect</span><span class="p">(</span><span class="n">range</span><span class="p">(</span><span class="mf">0.5492</span><span class="p">,</span><span class="w"> </span><span class="n">stop</span><span class="o">=</span><span class="mf">0.5496</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="o">=</span><span class="mi">15</span><span class="p">))</span>
+
+<span class="c"># 整数インデックスに変換（ファイル名用）</span>
+<span class="n">βInt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span><span class="w"> </span><span class="n">β</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10000</span><span class="p">)</span>
+<span class="n">ΔInt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">round</span><span class="p">(</span><span class="kt">Int</span><span class="p">,</span><span class="w"> </span><span class="n">Δ</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;x</span><span class="si">$</span><span class="p">(</span><span class="n">Lx</span><span class="p">)</span><span class="s">b</span><span class="si">$</span><span class="p">(</span><span class="n">βInt</span><span class="p">)</span><span class="s">d</span><span class="si">$</span><span class="p">(</span><span class="n">ΔInt</span><span class="p">)</span><span class="s">.dat&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="_13">よく使うパッケージセット</h2>
+<div class="highlight"><pre><span></span><code><span class="c"># 解析・プロット（共通）</span>
+<span class="k">using</span><span class="w"> </span><span class="n">DelimitedFiles</span><span class="p">,</span><span class="w"> </span><span class="n">Statistics</span><span class="p">,</span><span class="w"> </span><span class="n">LaTeXStrings</span>
+<span class="n">include</span><span class="p">(</span><span class="s">&quot;/Users/wadatatsuya/Julia_Setting.jl&quot;</span><span class="p">)</span><span class="w">  </span><span class="c"># pal, default設定, nls</span>
+
+<span class="c"># 最適化</span>
+<span class="k">using</span><span class="w"> </span><span class="n">Optim</span><span class="p">,</span><span class="w"> </span><span class="n">NLsolve</span><span class="p">,</span><span class="w"> </span><span class="n">LineSearches</span>
+
+<span class="c"># データ保存</span>
+<span class="k">using</span><span class="w"> </span><span class="n">JLD2</span>
+
+<span class="c"># 並列・ベンチマーク</span>
+<span class="k">using</span><span class="w"> </span><span class="n">Base</span><span class="o">.</span><span class="n">Threads</span><span class="p">,</span><span class="w"> </span><span class="n">BenchmarkTools</span><span class="p">,</span><span class="w"> </span><span class="n">Dates</span><span class="p">,</span><span class="w"> </span><span class="n">Random</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  ページトップへ戻る
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.instant", "navigation.top", "navigation.indexes", "content.code.annotate", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../js/highlight.js"></script>
+      
+    
+  </body>
+</html>
