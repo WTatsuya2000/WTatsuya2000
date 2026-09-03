@@ -10,19 +10,24 @@
 }
 .header-container {
     position: relative;
-    width: 120%;
+    width: 100%;      /* 120% だと右へはみ出し、狭い画面で横スクロールが出る */
+    max-width: 100%;
     margin: 0 auto;
     overflow: hidden;
     text-align: center;
     color: white;
+    /* 題字の大きさをこの箱の幅（= 本文の幅）に追従させるための基準。
+       画面幅（vw）だと、右の目次が出る 1000〜1200px 付近で実際の本文幅とずれる */
+    container-type: inline-size;
     /* padding-top: 0px; ナビゲーションバーが上部にある場合の調整 */
 }
 
+/* Material の `.md-typeset img { height: auto }` の方が詳細度が高く、ここで height を
+   指定しても勝てない。素直に高さを幅任せ（＝画像本来の 4030x1053 ≒ 3.83:1）にして、
+   画面幅にそのまま追従させる */
 .header-image {
     width: 100%;
-    height: 200px;
-    object-fit: cover;
-    object-position: center;
+    height: auto;
     display: block;
     margin: 0;
 }
@@ -32,11 +37,25 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 3rem;
+    /* 3rem 固定だとスマホで文字がはみ出すため幅に追従させる。
+       vw はコンテナクエリ非対応ブラウザ（Safari 15 以前など）向けのフォールバック */
+    font-size: clamp(1.25rem, 5.5vw, 3rem);
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     width: 100%;
+    /* em にすると文字を大きくした分だけ余白も増え、広い画面で1行に収まらなくなる */
+    padding: 0 0.4rem;
+    box-sizing: border-box;
+    line-height: 1.2;
     text-align: center;
+}
+
+/* 箱の幅を基準にすると、本文が狭い（右に目次が出る）画面でも1行に収まる。
+   6.4cqi は「Tatsuya Wada's Homepage が箱幅に収まる上限」から少し余裕を取った値 */
+@supports (container-type: inline-size) {
+    .header-title {
+        font-size: clamp(1.25rem, 6.4cqi, 3rem);
+    }
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap');
