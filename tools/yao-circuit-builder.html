@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yao Circuit Builder</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f6f5fb;
+  --panel:#ffffff;
+  --panel-2:#eeecf6;
+  --ink:#1e1b2e;
+  --ink-2:#5b5776;
+  --ink-3:#8f8ba8;
+  --line:#d9d6e6;
+  --wire:#6f6b8c;
+  --accent:#9558b2;
+  --accent-ink:#ffffff;
+  --accent-soft:#efe4f6;
+  --green:#389826;
+  --green-soft:#e2f2dc;
+  --red:#cb3c33;
+  --red-soft:#f9e3e1;
+  --code-bg:#1b1926;
+  --code-ink:#e9e6f4;
+  --code-cm:#8b86a6;
+  --code-kw:#c792ea;
+  --code-num:#f7c46b;
+  --code-type:#82d3a2;
+  --code-fn:#82aaff;
+  --code-str:#f0a37b;
+  --shadow:0 1px 2px rgba(30,27,46,.06),0 8px 24px rgba(30,27,46,.06);
+  --focus:#9558b2;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#131220;
+    --panel:#1b1928;
+    --panel-2:#232134;
+    --ink:#ecEaf5;
+    --ink-2:#b3afc9;
+    --ink-3:#7b7796;
+    --line:#332f48;
+    --wire:#9a96b8;
+    --accent:#b07ccd;
+    --accent-ink:#17121d;
+    --accent-soft:#3a2b48;
+    --green:#6cc95a;
+    --green-soft:#23361f;
+    --red:#e5605a;
+    --red-soft:#3f2321;
+    --code-bg:#0f0e18;
+    --code-ink:#e9e6f4;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131220;
+  --panel:#1b1928;
+  --panel-2:#232134;
+  --ink:#eceaf5;
+  --ink-2:#b3afc9;
+  --ink-3:#7b7796;
+  --line:#332f48;
+  --wire:#9a96b8;
+  --accent:#b07ccd;
+  --accent-ink:#17121d;
+  --accent-soft:#3a2b48;
+  --green:#6cc95a;
+  --green-soft:#23361f;
+  --red:#e5605a;
+  --red-soft:#3f2321;
+  --code-bg:#0f0e18;
+  --code-ink:#e9e6f4;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html,body{margin:0}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Manrope","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+  font-size:14px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+.page{max-width:1180px;margin:0 auto;padding:28px 24px 48px;display:flex;flex-direction:column;gap:20px}
+
+header.top{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+header.top h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+header.top h1 span{color:var(--accent)}
+header.top p{margin:0;color:var(--ink-2);font-size:13px}
+
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+
+/* ---------- 上段: 設定 + パレット ---------- */
+.controls{display:flex;flex-wrap:wrap;gap:18px 28px;padding:16px 20px;border-bottom:1px solid var(--line);align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label,.group-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--panel-2)}
+.stepper button{width:32px;height:32px;border:0;background:transparent;font-size:16px;color:var(--ink-2)}
+.stepper button:hover{background:var(--line)}
+.stepper output{min-width:36px;text-align:center;font-weight:600;font-variant-numeric:tabular-nums}
+.field input[type="text"],.field input[type="number"]{
+  height:32px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);min-width:110px
+}
+.field input:focus{border-color:var(--accent)}
+.spacer{flex:1}
+.btn-ghost{height:32px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--ink-2);font-weight:500}
+.btn-ghost:hover{border-color:var(--ink-3);color:var(--ink)}
+
+.toolbar{display:flex;flex-direction:column;gap:8px;padding:12px 20px 10px}
+.tb-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px}
+.tb-lab,.opt-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+.tb-group{display:flex;flex-wrap:wrap;gap:4px}
+.tb-sep{width:1px;height:22px;background:var(--line);margin:0 2px}
+[data-kind="pkg"]:not(:empty)::before{content:"";width:1px;height:22px;background:var(--line);margin:0 2px;align-self:center}
+.gate-btn{
+  min-width:34px;height:32px;padding:0 8px;border-radius:7px;border:1.5px solid var(--line);
+  background:var(--panel-2);font-family:"JetBrains Mono",monospace;font-weight:600;font-size:13px;
+  transition:transform .08s ease,border-color .1s ease
+}
+.gate-btn:hover{transform:translateY(-1px);border-color:var(--ink-3)}
+.gate-btn.rot{border-color:var(--accent);background:transparent;color:var(--accent)}
+.gate-btn.two{background:var(--green-soft);border-color:var(--green-soft);color:var(--green)}
+.gate-btn.erase{background:var(--red-soft);border-color:var(--red-soft);color:var(--red);font-family:inherit}
+.gate-btn.active{border-color:var(--accent);background:var(--accent);color:var(--accent-ink);box-shadow:0 0 0 3px var(--accent-soft)}
+.gate-btn.two.active{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 0 0 3px var(--green-soft)}
+.gate-btn.erase.active{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 0 0 3px var(--red-soft)}
+.chips{gap:6px}
+.chip{height:28px;padding:0 12px 0 10px;border-radius:999px;border:1.5px solid var(--line);background:var(--panel-2);font-size:12px;font-weight:600;color:var(--ink-2);display:inline-flex;align-items:center;gap:6px}
+.chip::before{content:"";width:0;height:0;border-left:5px solid currentColor;border-top:4px solid transparent;border-bottom:4px solid transparent;opacity:.6;transition:transform .12s ease}
+.chip[aria-expanded="true"]::before{transform:rotate(90deg)}
+.chip b{font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--ink);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chip:hover{border-color:var(--ink-3)}
+.chip[aria-expanded="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.sec{display:flex;flex-direction:column;gap:8px;padding:8px 12px;border:1px dashed var(--line);border-radius:8px;background:var(--bg)}
+.sec-hint{font-size:11px;color:var(--ink-3)}
+.pkg-list{display:inline-flex;flex-wrap:wrap;gap:6px}
+.pkg-item{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 4px 0 10px;border:1.5px dashed var(--ink-2);border-radius:7px;font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:600}
+.pkg-item small{font-weight:500;color:var(--ink-3);font-family:"Manrope",system-ui,sans-serif}
+.opt{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+.opt input[type="text"],.opt select{height:30px;border:1.5px solid var(--line);border-radius:7px;background:var(--panel-2);padding:0 8px;font-family:"JetBrains Mono",monospace;font-size:13px}
+.opt input:focus{border-color:var(--accent)}
+#theta{width:140px}
+#theta-preset{width:40px;padding:0 4px;text-align:center}
+.segs{display:inline-flex;border:1.5px solid var(--line);border-radius:7px;overflow:hidden;background:var(--panel-2)}
+.segs .seg{height:27px;padding:0 10px;border:0;border-right:1px solid var(--line);border-radius:0;background:transparent;font-weight:600;font-size:12px;color:var(--ink-2)}
+.segs .seg:last-child{border-right:0}
+.segs .seg:hover{background:var(--line)}
+.segs .seg.active{background:var(--green);color:#fff}
+.seg.lone{height:30px;padding:0 10px;border-radius:7px;border:1.5px solid var(--line);background:var(--panel-2);font-weight:600;font-size:12px;color:var(--ink-2)}
+.seg.lone:hover{border-color:var(--ink-3);color:var(--ink)}
+.seg.lone.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.gate-btn.pkg{background:var(--panel);border-color:var(--ink-2);color:var(--ink);border-style:dashed;font-size:12px}
+.gate-btn.pkg.active{background:var(--ink);border-color:var(--ink);color:var(--bg);border-style:solid;box-shadow:0 0 0 3px var(--line)}
+.pkg-del{width:22px;height:22px;border:0;border-radius:6px;background:transparent;color:var(--ink-3);font-size:14px;padding:0}
+.pkg-del:hover{background:var(--red-soft);color:var(--red)}
+.pkg-form .opt input[type="number"]{width:56px;font-family:"JetBrains Mono",monospace}
+#pkg-name{width:110px}
+.seg.lone.primary{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.seg.lone.primary:hover{opacity:.9;color:var(--bg)}
+.g.pkgbox{position:absolute;left:5px;right:5px;top:6px;z-index:3;border-radius:7px;background:var(--panel);border:2px dashed var(--ink-2);color:var(--ink);font-family:"JetBrains Mono",monospace;font-weight:600;font-size:12px;display:flex;align-items:center;justify-content:center;padding:3px;overflow:hidden;white-space:nowrap}
+.g.pkgbox.tall{writing-mode:vertical-rl;text-orientation:mixed;letter-spacing:.04em}
+.params-rows{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.params-rows:empty{display:none}
+.prow{display:inline-flex;align-items:center;gap:3px;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;padding:2px 6px 2px 2px;border-radius:8px;border:1px solid transparent}
+.prow.dragging{opacity:.4}
+.prow.dropover{border-color:var(--accent);background:var(--accent-soft)}
+.prow .grip{cursor:grab;color:var(--ink-3);font-size:14px;letter-spacing:-3px;padding:0 6px 0 4px;user-select:none}
+.prow .grip:active{cursor:grabbing}
+.prow .mv{width:20px;height:20px;border:0;border-radius:5px;background:transparent;color:var(--ink-3);font-size:11px;padding:0;line-height:1}
+.prow .mv:hover{background:var(--line);color:var(--ink)}
+.prow .mv:disabled{opacity:.25;cursor:default;background:transparent}
+.prow .mvs{display:inline-flex;flex-direction:column;gap:0;margin-right:4px}
+.prow input{height:30px;border:1.5px solid var(--line);border-radius:7px;background:var(--panel-2);padding:0 7px;font-family:inherit;font-size:13px}
+.prow input:focus{border-color:var(--accent)}
+.prow input.bad{border-color:var(--red)}
+.prow .pname{width:72px;text-align:right}
+.prow .pval{width:150px}
+.prow .eq{color:var(--ink-3)}
+.prow .pdel{width:22px;height:22px;border:0;border-radius:6px;background:transparent;color:var(--ink-3);font-size:15px;line-height:1}
+.prow .pdel:hover{background:var(--red-soft);color:var(--red)}
+.prow .auto{font-size:10px;color:var(--ink-3);font-family:"Manrope",system-ui,sans-serif}
+.greek-bar{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;padding:6px 0 2px;border-top:1px dashed var(--line)}
+.greek{display:flex;flex-wrap:wrap;gap:3px}
+.greek button{width:26px;height:26px;border-radius:6px;border:1px solid var(--line);background:var(--panel-2);font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;color:var(--ink);padding:0}
+.greek button:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.greek button.cap{color:var(--ink-2)}
+.funcs{display:flex;flex-wrap:wrap;gap:3px}
+.funcs button{height:26px;padding:0 8px;border-radius:6px;border:1px solid var(--line);background:var(--panel-2);font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12px;color:var(--ink)}
+.funcs button:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.funcs .fsep{width:1px;height:18px;background:var(--line);margin:0 4px;align-self:center}
+.greek-hint{font-size:11px;color:var(--ink-3)}
+.greek-hint .k{font-family:"JetBrains Mono",monospace;font-size:11px;padding:0 4px;border:1px solid var(--line);border-radius:4px;background:var(--panel-2)}
+.params-note{font-size:12px;color:var(--ink-3)}
+.params-note:empty{display:none}
+.params-note.err{color:var(--red)}
+.hintbar{display:flex;align-items:center;gap:14px;padding:4px 20px 12px}
+.hint{color:var(--ink-2);font-size:13px;min-height:20px;flex:1 1 auto;min-width:0}
+.varbar{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;padding:6px 0 2px;border-top:1px dashed var(--line)}
+.varbar .funcs button{font-weight:600}
+/* これから置くゲートのプレビュー（縦1列のミニ回路） */
+.preview{flex:0 0 auto;display:flex;flex-direction:column;position:relative;width:52px;padding:2px 0;border-radius:8px;background:var(--panel-2)}
+.preview:empty{display:none}
+.pcell{position:relative;height:40px;display:flex;align-items:center;justify-content:center}
+.pcell::before{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:var(--wire);transform:translateY(-1px);opacity:.7}
+.preview .g.box{min-width:34px;height:32px;font-size:12px}
+.preview .g.box.rot small{max-width:44px;font-size:8px}
+.preview .g.plus{width:22px;height:22px}
+.preview .g.plus::before{height:12px}.preview .g.plus::after{width:12px}
+.preview .g.dot{width:11px;height:11px}
+.preview .g.cross{width:18px;height:18px}
+.preview .g.cross::before,.preview .g.cross::after{height:20px}
+.preview .vline{background:var(--green)}
+.preview .g.pkgbox{left:4px;right:4px;top:5px;font-size:11px}
+.preview .pmore{position:absolute;bottom:2px;left:0;right:0;text-align:center;font-size:10px;color:var(--ink-3)}
+.preview .erase{width:52px;height:40px;display:flex;align-items:center;justify-content:center;color:var(--red);font-weight:700;font-size:16px}
+/* 回路上のホバー表示（置いたときの見た目を半透明で） */
+.cell .ghostg{opacity:.45;pointer-events:none}
+.cell .ghostg .g{filter:grayscale(.2)}
+.hint b{color:var(--accent);font-weight:600}
+.hint .sub{color:var(--ink-3);font-size:12px}
+.hint .k{display:inline-block;padding:0 6px;border-radius:5px;background:var(--panel-2);border:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:12px}
+
+/* ---------- 回路グリッド ---------- */
+.circuit-wrap{overflow-x:auto;padding:18px 20px 22px}
+.circuit{display:flex;align-items:flex-start;width:max-content;min-width:100%}
+.labels{display:flex;flex-direction:column;flex:0 0 auto;padding-right:10px}
+.labels .hdr{height:28px}
+.labels .lab{height:56px;display:flex;align-items:center;justify-content:flex-end;gap:6px;font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink-2);white-space:nowrap}
+.labels .lab .ket{color:var(--ink)}
+.cols{display:flex}
+.col{position:relative;display:flex;flex-direction:column;width:64px}
+.col .hdr{height:28px;text-align:center;font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums;font-weight:600;letter-spacing:.04em;line-height:28px}
+.col .hdr.meas-hdr{color:var(--red)}
+.cell{position:relative;height:56px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:8px}
+.cell::before{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:var(--wire);transform:translateY(-1px)}
+.cell:hover{background:var(--accent-soft)}
+.cell.pending{background:var(--green-soft);box-shadow:inset 0 0 0 2px var(--green)}
+.g{position:relative;z-index:1;display:flex;align-items:center;justify-content:center}
+.g.box{min-width:40px;height:40px;padding:0 6px;border-radius:7px;background:var(--accent);color:var(--accent-ink);font-family:"JetBrains Mono",monospace;font-weight:600;font-size:14px;flex-direction:column;line-height:1.1}
+.g.box.rot{background:var(--panel);border:2px solid var(--accent);color:var(--accent)}
+.g.box.rot small{font-size:9px;font-weight:500;opacity:.9;max-width:52px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.g.box.z2{background:var(--green);color:#fff}
+.g.dot{width:14px;height:14px;border-radius:50%;background:var(--green)}
+.g.dot.open{background:var(--panel);border:2.5px solid var(--green)}
+.g.plus{width:28px;height:28px;border-radius:50%;border:2.5px solid var(--green);background:var(--panel)}
+.g.plus::before,.g.plus::after{content:"";position:absolute;background:var(--green)}
+.g.plus::before{width:2.5px;height:16px}
+.g.plus::after{width:16px;height:2.5px}
+.g.cross{width:22px;height:22px}
+.g.cross::before,.g.cross::after{content:"";position:absolute;width:2.5px;height:24px;background:var(--green);border-radius:2px}
+.g.cross::before{transform:rotate(45deg)}
+.g.cross::after{transform:rotate(-45deg)}
+.vline{position:absolute;left:50%;width:2.5px;margin-left:-1px;background:var(--green);z-index:0;pointer-events:none}
+.col.meas{width:72px;margin-left:8px}
+.col.meas .cell{cursor:default}
+.col.meas .cell:hover{background:transparent}
+.col.meas .cell::after{content:"";position:absolute;left:50%;right:0;top:50%;height:6px;border-top:2px solid var(--wire);border-bottom:2px solid var(--wire);transform:translateY(-3px)}
+.g.meter{width:40px;height:32px;border-radius:6px;background:var(--red-soft);border:2px solid var(--red);color:var(--red)}
+.g.meter svg{width:26px;height:18px;display:block}
+
+/* ---------- 右側: 状態ベクトル ---------- */
+.work{display:flex;align-items:stretch}
+.circuit-wrap{flex:1 1 auto;min-width:0}
+.state{flex:0 0 340px;border-left:1px solid var(--line);padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;max-height:460px}
+.state-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.state-title{font-weight:700;font-size:13px}
+.state-toggle{font-size:11px;color:var(--ink-2);display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.state-note{font-size:11px;color:var(--ink-3);min-height:15px}
+.state-note.err{color:var(--red)}
+.state-cols{display:grid;grid-template-columns:auto 1fr 52px;gap:8px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);padding-bottom:4px;border-bottom:1px solid var(--line)}
+.state-list{overflow-y:auto;display:flex;flex-direction:column;gap:2px;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12px;font-variant-numeric:tabular-nums}
+.srow{display:grid;grid-template-columns:auto 1fr 52px;gap:8px;align-items:center;padding:3px 0}
+.srow .ket{color:var(--ink);white-space:nowrap}
+.srow .ket b{color:var(--accent);font-weight:600}
+.srow .amp{display:flex;flex-direction:column;gap:2px;min-width:0}
+.srow .amp span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink-2)}
+.srow .bar{height:5px;border-radius:3px;background:var(--panel-2);overflow:hidden}
+.srow .bar i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.srow .prob{text-align:right;color:var(--ink)}
+.srow.zero .ket,.srow.zero .amp span,.srow.zero .prob{color:var(--ink-3)}
+@media (max-width:900px){
+  .work{flex-direction:column}
+  .state{flex:none;border-left:0;border-top:1px solid var(--line);max-height:320px}
+}
+
+/* ---------- 下段: コード ---------- */
+.code-panel{background:var(--code-bg);color:var(--code-ink);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}
+.code-head{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+.code-head .title{font-weight:600;font-size:13px;letter-spacing:.02em}
+.code-head .meta{color:var(--code-cm);font-size:12px;font-variant-numeric:tabular-nums}
+.copy{
+  margin-left:auto;height:32px;padding:0 14px;border-radius:8px;border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.06);color:var(--code-ink);font-weight:600;display:inline-flex;align-items:center;gap:8px
+}
+.copy:hover{background:rgba(255,255,255,.12)}
+.copy.done{background:var(--green);border-color:var(--green);color:#fff}
+.copy svg{width:15px;height:15px}
+pre{margin:0;padding:16px 18px;overflow-x:auto;font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:13px;line-height:1.6;tab-size:4}
+pre .cm{color:var(--code-cm);font-style:italic}
+pre .kw{color:var(--code-kw)}
+pre .num{color:var(--code-num)}
+pre .ty{color:var(--code-type)}
+pre .fn{color:var(--code-fn)}
+pre .str{color:var(--code-str)}
+pre .op{color:var(--code-kw)}
+
+.toast{
+  position:fixed;left:50%;bottom:28px;transform:translate(-50%,12px);opacity:0;pointer-events:none;
+  background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:999px;font-weight:600;font-size:13px;
+  transition:opacity .18s ease,transform .18s ease;box-shadow:var(--shadow)
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important}
+}
+@media (max-width:640px){
+  .page{padding:16px 12px 40px}
+  .controls,.palette{padding:12px 14px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <h1>Yao Circuit Builder <span>·</span> 回路を置くと Yao.jl コードになる</h1>
+    <p>ゲートを選んでマスをクリック。制御付きは同じ列で 制御 → 標的 の順。右クリックで消去。</p>
+  </header>
+
+  <!-- ===== 上段 ===== -->
+  <section class="panel" aria-label="回路の設計">
+    <div class="controls">
+      <div class="field">
+        <label for="nq-out">量子ビット数</label>
+        <div class="stepper">
+          <button type="button" id="nq-dec" aria-label="量子ビットを減らす">−</button>
+          <output id="nq-out">3</output>
+          <button type="button" id="nq-inc" aria-label="量子ビットを増やす">+</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="ns-out">ステップ数（ゲート列）</label>
+        <div class="stepper">
+          <button type="button" id="ns-dec" aria-label="ステップを減らす">−</button>
+          <output id="ns-out">6</output>
+          <button type="button" id="ns-inc" aria-label="ステップを増やす">+</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="nshots">測定回数 nshots</label>
+        <input type="number" id="nshots" value="10000" min="1" step="1">
+      </div>
+      <div class="spacer"></div>
+      <button type="button" class="btn-ghost" id="load-ghz">GHZ の例を読み込む</button>
+      <button type="button" class="btn-ghost" id="clear-all">全部消す</button>
+    </div>
+
+    <div class="toolbar" id="palette">
+      <div class="tb-row tb-gates">
+        <span class="tb-lab">ゲート</span>
+        <div class="tb-group" data-kind="single"></div>
+        <span class="tb-sep"></span>
+        <div class="tb-group" data-kind="rot"></div>
+        <span class="tb-sep"></span>
+        <div class="tb-group" data-kind="two"></div>
+        <span class="tb-sep"></span>
+        <div class="tb-group" data-kind="tool"></div>
+        <div class="tb-group" data-kind="pkg"></div>
+      </div>
+      <div class="tb-row chips" role="tablist" aria-label="設定">
+        <button type="button" class="chip" data-sec="theta" aria-expanded="true" title="回転ゲートの角度">θ <b id="chip-theta">π/2</b></button>
+        <button type="button" class="chip" data-sec="ctrl" aria-expanded="false" title="1量子ビットゲートに付ける制御">制御 <b id="chip-ctrl">なし</b></button>
+        <button type="button" class="chip" data-sec="params" aria-expanded="false" title="回転角で使う変数">パラメータ <b id="chip-params">0</b></button>
+        <button type="button" class="chip" data-sec="pkg" aria-expanded="false" title="複数ステップを1つのゲートにまとめる">パッケージ <b id="chip-pkg">0</b></button>
+      </div>
+      <div class="sec" id="sec-theta">
+        <span class="opt">
+          <span class="opt-label">θ =</span>
+          <input type="text" id="theta" value="π/2" placeholder="π/2, -L*t/3, θ" title="Julia の式をそのまま書けます。変数を使うとパラメータに自動追加されます" aria-label="回転角 θ（Julia 式）" spellcheck="false">
+          <select id="theta-preset" aria-label="角度のプリセット" title="よく使う角度">
+            <option value="">▾</option>
+            <option>π</option><option>π/2</option><option>π/4</option><option>π/8</option>
+            <option>-π/2</option><option>2π/3</option><option>0.1</option>
+          </select>
+          <button type="button" class="seg lone" id="greek-toggle" title="ギリシャ文字を挿入（\theta + Tab でも変換）" aria-expanded="false">αβγ</button>
+          <button type="button" class="seg lone" id="func-toggle" title="関数を挿入（三角関数など）" aria-expanded="false">f(x)</button>
+        </span>
+        <div class="greek-bar" id="func-bar" hidden>
+          <div class="funcs" id="funcs"></div>
+          <span class="greek-hint">クリックで最後に触った欄へ挿入。選択中の文字列があれば <span class="k">sin(…)</span> で包みます。<span class="k">atan(y, x)</span> は2引数も可、<span class="k">sinpi(x)</span> = sin(πx)</span>
+        </div>
+        <div class="varbar" id="varbar" hidden>
+          <span class="opt-label">変数</span>
+          <div class="funcs" id="vars"></div>
+          <span class="greek-hint">クリックで挿入。パラメータ欄で定義したもの</span>
+        </div>
+        <div class="greek-bar" id="greek-bar" hidden>
+          <div class="greek" id="greek"></div>
+          <span class="greek-hint">クリックで最後に触った欄へ挿入。Julia REPL と同じく <span class="k">\theta</span> + Tab でも変換（<span class="k">\_1</span> → ₁、<span class="k">\phi</span> → ϕ、<span class="k">\varphi</span> → φ）</span>
+        </div>
+      </div>
+      <div class="sec" id="sec-ctrl" hidden>
+        <span class="opt">
+          <span class="opt-label">制御ビット数</span>
+          <span class="segs" id="ctrl-row" role="group" aria-label="制御ビット数">
+            <button type="button" class="seg" data-nctrl="0">なし</button>
+            <button type="button" class="seg" data-nctrl="1">1</button>
+            <button type="button" class="seg" data-nctrl="2">2</button>
+          </span>
+          <span class="opt-label">条件</span>
+          <span class="segs" id="pol-row" role="group" aria-label="制御の条件">
+            <button type="button" class="seg" data-pol="1" title="制御ビットが |1⟩ のとき作用（黒丸）">|1⟩</button>
+            <button type="button" class="seg" data-pol="0" title="制御ビットが |0⟩ のとき作用（白丸・Yao では負の添字）">|0⟩</button>
+          </span>
+          <span class="sec-hint">1量子ビットゲートを選び、同じ列で 制御 → 標的 の順にクリック。条件はクリック時に適用、置いた後は Shift+クリックで反転。</span>
+        </span>
+      </div>
+      <div class="sec" id="sec-params" hidden>
+        <div class="params-rows" id="params"></div>
+        <span class="opt opt-params">
+          <button type="button" class="seg lone" id="param-add" title="パラメータを追加">＋ 追加</button>
+          <span class="sec-hint">角度に書いた変数は自動で現れます。値は Julia の式で、上の行の変数を使えます。順序は ↑↓ か ⋮⋮ のドラッグで入れ替え。</span>
+        </span>
+        <div class="params-note" id="params-note"></div>
+      </div>
+      <div class="sec" id="sec-pkg" hidden>
+        <span class="opt">
+          <span class="pkg-list" id="pkg-list"></span>
+          <button type="button" class="seg lone" id="pkg-open" title="指定したステップ範囲のゲートを1つのパッケージにまとめる">＋ まとめる</button>
+          <span class="sec-hint">まとめたものはゲート帯に現れ、上端の量子ビットをクリックで再配置。置いたものは Shift+クリックで展開。</span>
+        </span>
+        <div class="tb-row pkg-form" id="pkg-form" hidden>
+          <span class="opt">
+            <span class="opt-label">名前</span>
+            <input type="text" id="pkg-name" value="block1" spellcheck="false" aria-label="パッケージ名" placeholder="bell, oracle, …">
+            <span class="opt-label">ステップ</span>
+            <input type="number" id="pkg-from" min="1" value="1" aria-label="開始ステップ">
+            <span class="eq">〜</span>
+            <input type="number" id="pkg-to" min="1" value="1" aria-label="終了ステップ">
+            <button type="button" class="seg lone primary" id="pkg-create">作成</button>
+            <button type="button" class="seg lone" id="pkg-cancel">キャンセル</button>
+            <span class="params-note" id="pkg-note"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="hintbar">
+      <div class="preview" id="preview" title="これから置くゲート"></div>
+      <div class="hint" id="hint"></div>
+    </div>
+
+    <div class="work">
+      <div class="circuit-wrap">
+        <div class="circuit" id="circuit"></div>
+      </div>
+      <aside class="state" aria-label="生成される状態">
+        <div class="state-head">
+          <span class="state-title">生成される状態 |ψ⟩</span>
+          <label class="state-toggle"><input type="checkbox" id="show-zero"> 振幅 0 も表示</label>
+        </div>
+        <div class="state-note" id="state-note"></div>
+        <div class="state-cols"><span>基底 (q<sub>n</sub>…q<sub>1</sub>)</span><span>振幅</span><span>確率</span></div>
+        <div class="state-list" id="state-list"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===== 下段 ===== -->
+  <section class="code-panel" aria-label="生成された Yao.jl コード">
+    <div class="code-head">
+      <span class="title">Yao.jl</span>
+      <span class="meta" id="code-meta"></span>
+      <button type="button" class="copy" id="copy">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/></svg>
+        <span id="copy-label">コードをコピー</span>
+      </button>
+    </div>
+    <pre><code id="code" class="language-julia"></code></pre>
+  </section>
+</div>
+<div class="toast" id="toast" role="status">コピーしました</div>
+
+<script>
+(function(){
+  'use strict';
+
+  // ---------- ゲート定義 ----------
+  // julia: 1量子ビットは put(q => ...) の中身。多量子ビットは関数で生成。
+  const GATES = {
+    H:    {label:'H',   kind:'single', arity:1, julia:'H'},
+    X:    {label:'X',   kind:'single', arity:1, julia:'X'},
+    Y:    {label:'Y',   kind:'single', arity:1, julia:'Y'},
+    Z:    {label:'Z',   kind:'single', arity:1, julia:'Z'},
+    S:    {label:'S',   kind:'single', arity:1, julia:'S', imports:['S']},
+    Sdag: {label:'S†',  kind:'single', arity:1, julia:'Sdag', imports:['Sdag']},
+    T:    {label:'T',   kind:'single', arity:1, julia:'T'},
+    Tdag: {label:'T†',  kind:'single', arity:1, julia:'Tdag', imports:['Tdag']},
+    Rx:   {label:'Rx',  kind:'rot',    arity:1, julia:t=>`Rx(${t})`},
+    Ry:   {label:'Ry',  kind:'rot',    arity:1, julia:t=>`Ry(${t})`},
+    Rz:   {label:'Rz',  kind:'rot',    arity:1, julia:t=>`Rz(${t})`},
+    P:    {label:'P',   kind:'rot',    arity:1, julia:t=>`shift(${t})`, title:'位相シフト shift(θ) = diag(1, e^{iθ})'},
+    CNOT: {label:'CNOT',kind:'two',    arity:2, roles:['dot','plus'],  target:'X', julia:q=>`control(${q[0]}, ${q[1]} => X)`, steps:['制御','標的']},
+    CZ:   {label:'CZ',  kind:'two',    arity:2, roles:['dot','boxZ'],  target:'Z', julia:q=>`control(${q[0]}, ${q[1]} => Z)`, steps:['制御','標的']},
+    SWAP: {label:'SWAP',kind:'two',    arity:2, roles:['cross','cross'],julia:q=>`swap(${q[0]}, ${q[1]})`, steps:['1つ目','2つ目']},
+    CCX:  {label:'CCX', kind:'two',    arity:3, roles:['dot','dot','plus'], target:'X', julia:q=>`control((${q[0]}, ${q[1]}), ${q[2]} => X)`, steps:['制御1','制御2','標的'], title:'Toffoli'},
+  };
+  const ORDER = ['H','X','Y','Z','S','Sdag','T','Tdag','Rx','Ry','Rz','P','CNOT','CZ','SWAP','CCX'];
+  // パッケージ（サブ回路）の配置は {g:'pkg', pkg:id, q:[lo..hi]}。GATES.pkg は疑似エントリ
+  GATES.pkg = {label:'PKG', kind:'pkg', arity:0};
+  function toolGate(){ return state.tool.startsWith('pkg:') ? GATES.pkg : GATES[state.tool]; }
+  function pkgById(id){ return state.packages.find(k => k.id === id); }
+  function pkgOf(p){ return pkgById(p.pkg); }
+
+  // ---------- 状態 ----------
+  const state = {
+    nq: 3, ns: 6, nshots: 10000,
+    columns: [],           // columns[s] = [{g, q:[...], theta}]
+    tool: 'H',             // ゲート id または 'erase'
+    theta: 'π/2',
+    nctrl: 0,              // 1量子ビットゲートに付ける制御ビット数（0/1/2）
+    pol: 1,                // 制御の条件: 1 = |1⟩ で作用, 0 = |0⟩ で作用
+    params: [],            // [{name, value, auto}] value は Julia 式の文字列。auto は回転角から自動追加されたもの
+    packages: [],          // [{id, name, n, columns}] columns の量子ビット番号は 1..n のローカル番号
+    nextPkgId: 1,
+    pending: null,         // {g, s, q:[...]} 多量子ビットゲートの途中
+  };
+
+  const $ = id => document.getElementById(id);
+
+  function emptyColumns(n){ return Array.from({length:n}, () => []); }
+  function occupant(s, q){ return state.columns[s].find(p => p.q.includes(q)); }
+  function removeAt(s, q){ state.columns[s] = state.columns[s].filter(p => !p.q.includes(q)); }
+  function gateCount(){ return state.columns.reduce((a,c)=>a+c.length,0); }
+  // 回路本体とパッケージ定義の中のすべての配置を巡回する
+  function walk(cb){
+    state.columns.forEach(col => col.forEach(cb));
+    state.packages.forEach(k => k.columns.forEach(col => col.forEach(cb)));
+  }
+  function clonePlacement(p, off){
+    const c = {...p, q: p.q.map(x => x + off)};
+    if(p.pol) c.pol = p.pol.slice();
+    return c;
+  }
+  // 配置1件を Yao の式にする
+  // 配置が持つ制御ビットの数（先頭から nControls 個が制御、その次が標的）
+  function nControls(g, nc){ return g.arity === 1 ? (nc || 0) : (g.roles ? g.roles.filter(r => r === 'dot').length : 0); }
+  function polOf(p, i){ return p.pol && p.pol[i] === 0 ? 0 : 1; }
+  // Yao の control(): |0⟩ で作用する制御は負の添字で表す
+  function ctrlStr(p, ncs){
+    const cs = p.q.slice(0, ncs).map((c, i) => (polOf(p, i) === 0 ? '-' : '') + c);
+    return cs.length === 1 ? cs[0] : `(${cs.join(', ')})`;
+  }
+  function placementJulia(p){
+    if(p.g === 'pkg'){
+      const k = pkgOf(p);
+      const locs = p.q.length === 1 ? `${p.q[0]}` : `(${p.q.join(', ')})`;
+      return `put(${locs} => ${k ? k.name : '?'})`;
+    }
+    const g = GATES[p.g];
+    if(g.arity !== 1 && !g.target) return g.julia(p.q);        // SWAP
+    const ncs = nControls(g, p.nctrl);
+    const inner = g.target ? g.target : (typeof g.julia === 'function' ? g.julia(p.theta) : g.julia);
+    if(ncs === 0) return `put(${p.q[0]} => ${inner})`;
+    return `control(${ctrlStr(p, ncs)}, ${p.q[ncs]} => ${inner})`;
+  }
+  const CTRL_STEPS = {1: ['制御','標的'], 2: ['制御1','制御2','標的']};
+
+  function loadGHZ(){
+    state.nq = 3; state.ns = 6;
+    state.columns = emptyColumns(6);
+    state.columns[0].push({g:'H', q:[1]});
+    state.columns[1].push({g:'CNOT', q:[1,2]});
+    state.columns[2].push({g:'CNOT', q:[2,3]});
+    state.pending = null;
+    render();
+  }
+
+  // ---------- 操作 ----------
+  function setNq(n){
+    n = Math.max(1, Math.min(10, n));
+    if(n < state.nq){
+      state.columns = state.columns.map(col => col.filter(p => p.q.every(q => q <= n)));
+    }
+    state.nq = n; state.pending = null; render();
+  }
+  function setNs(n){
+    n = Math.max(1, Math.min(30, n));
+    if(n < state.ns) state.columns = state.columns.slice(0, n);
+    else while(state.columns.length < n) state.columns.push([]);
+    state.ns = n; state.pending = null; render();
+  }
+
+  // ---------- パッケージ ----------
+  function reservedName(name){
+    return JULIA_RESERVED.has(name) || ORDER.includes(name) || name in GATES ||
+           state.packages.some(k => k.name === name) || state.params.some(p => p.name === name);
+  }
+  function createPackage(name, from, to){
+    name = name.trim();
+    if(!identRe.test(name)) return `「${name || '（空）'}」は名前として使えません`;
+    if(reservedName(name)) return `${name} は既に使われている名前です`;
+    if(!(from >= 1 && to >= from && to <= state.ns)) return `ステップ範囲が不正です（1〜${state.ns}）`;
+    const cols = state.columns.slice(from - 1, to).filter(col => col.length);
+    if(!cols.length) return 'その範囲にゲートがありません';
+    const qs = cols.flatMap(col => col.flatMap(p => p.q));
+    const lo = Math.min(...qs), hi = Math.max(...qs);
+    const id = state.nextPkgId++;
+    state.packages.push({id, name, n: hi - lo + 1, columns: cols.map(col => col.map(p => clonePlacement(p, 1 - lo)))});
+    const placed = {g: 'pkg', pkg: id, q: Array.from({length: hi - lo + 1}, (_, i) => lo + i)};
+    state.columns.splice(from - 1, to - from + 1, [placed]);
+    state.ns = state.columns.length;
+    state.pending = null;
+    return '';
+  }
+  // 配置されたパッケージをその場で展開する（Shift+クリック）
+  function expandPackage(s, p){
+    const k = pkgOf(p); if(!k) return;
+    const off = p.q[0] - 1;
+    const cols = k.columns.map(col => col.map(inner => clonePlacement(inner, off)));
+    const others = state.columns[s].filter(x => x !== p);
+    if(cols.length === 0) cols.push([]);
+    cols[0] = cols[0].concat(others);
+    state.columns.splice(s, 1, ...cols);
+    state.ns = state.columns.length;
+    state.pending = null;
+  }
+  function deletePackage(id){
+    const usedIn = state.packages.find(k => k.columns.some(col => col.some(p => p.g === 'pkg' && p.pkg === id)));
+    if(usedIn) return `${usedIn.name} の中で使われているので削除できません`;
+    state.columns = state.columns.map(col => col.filter(p => !(p.g === 'pkg' && p.pkg === id)));
+    state.packages = state.packages.filter(k => k.id !== id);
+    if(state.tool === 'pkg:' + id) state.tool = 'H';
+    state.pending = null;
+    return '';
+  }
+  function placePackage(s, q, id){
+    const k = pkgById(id); if(!k) return;
+    const hi = q + k.n - 1;
+    if(hi > state.nq) return;               // 収まらない
+    for(let x = q; x <= hi; x++) removeAt(s, x);
+    state.columns[s].push({g: 'pkg', pkg: id, q: Array.from({length: k.n}, (_, i) => q + i)});
+    state.pending = null;
+  }
+
+  // 置いてある制御ビットの条件（|1⟩/|0⟩）を反転する。制御ビットでなければ false
+  function togglePolarity(s, q){
+    const p = occupant(s, q);
+    if(!p) return false;
+    const i = p.q.indexOf(q);
+    if(i >= nControls(GATES[p.g], p.nctrl)) return false;
+    if(!p.pol) p.pol = p.q.slice(0, nControls(GATES[p.g], p.nctrl)).map(() => 1);
+    p.pol[i] = p.pol[i] === 0 ? 1 : 0;
+    return true;
+  }
+  function onCell(s, q, shift){
+    if(shift){
+      const oc = occupant(s, q);
+      if(oc && oc.g === 'pkg'){ expandPackage(s, oc); render(); return; }
+      if(togglePolarity(s, q)){ state.pending = null; render(); }
+      return;
+    }
+    if(state.tool === 'erase'){ removeAt(s, q); state.pending = null; render(); return; }
+    if(state.tool.startsWith('pkg:')){ placePackage(s, q, +state.tool.slice(4)); render(); return; }
+    const g = GATES[state.tool];
+    const nc = g.arity === 1 ? state.nctrl : 0;
+    const arity = g.arity === 1 ? 1 + nc : g.arity;
+    if(arity === 1){
+      removeAt(s, q);
+      const p = {g: state.tool, q:[q]};
+      if(g.kind === 'rot') p.theta = state.theta;
+      state.columns[s].push(p);
+      state.pending = null;
+    } else {
+      let pd = state.pending;
+      if(!pd || pd.s !== s || pd.g !== state.tool || pd.nctrl !== nc) pd = state.pending = {g: state.tool, s, q: [], pol: [], nctrl: nc};
+      const i = pd.q.indexOf(q);
+      if(i >= 0){ pd.q.splice(i, 1); pd.pol.splice(i, 1); } else { pd.q.push(q); pd.pol.push(state.pol); }
+      if(pd.q.length === arity){
+        pd.q.forEach(x => removeAt(s, x));
+        const p = {g: pd.g, q: pd.q.slice()};
+        const ncs = nControls(g, nc);
+        if(ncs) p.pol = pd.pol.slice(0, ncs);
+        if(nc) p.nctrl = nc;
+        if(g.kind === 'rot') p.theta = state.theta;
+        state.columns[s].push(p);
+        state.pending = null;
+      }
+    }
+    render();
+  }
+
+  // ---------- 描画: パレット ----------
+  function renderPalette(){
+    const rows = {single: [], rot: [], two: []};
+    ORDER.forEach(id => {
+      const g = GATES[id];
+      const cls = ['gate-btn', g.kind === 'rot' ? 'rot' : g.kind === 'two' ? 'two' : '', state.tool === id ? 'active' : ''].join(' ');
+      const title = g.title || (typeof g.julia === 'string' ? `put(q => ${g.julia})` : '');
+      rows[g.kind].push(`<button type="button" class="${cls}" data-tool="${id}" title="${title}">${g.label}</button>`);
+    });
+    document.querySelector('[data-kind="single"]').innerHTML = rows.single.join('');
+    document.querySelector('[data-kind="rot"]').innerHTML = rows.rot.join('');
+    document.querySelector('[data-kind="two"]').innerHTML = rows.two.join('');
+    document.querySelector('[data-kind="pkg"]').innerHTML = state.packages.map(k =>
+      `<button type="button" class="gate-btn pkg ${state.tool === 'pkg:' + k.id ? 'active' : ''}" data-tool="pkg:${k.id}" title="パッケージ ${esc(k.name)}（${k.n} 量子ビット）。上端の量子ビットをクリックで配置。置いたものは Shift+クリックで展開">${esc(k.name)}</button>`
+    ).join('');
+    $('pkg-list').innerHTML = state.packages.map(k =>
+      `<span class="pkg-item">${esc(k.name)}<small>${k.n} qubit · ${k.columns.reduce((a, c) => a + c.length, 0)} gates</small><button type="button" class="pkg-del" data-pkgdel="${k.id}" title="定義を削除（配置も消えます）">×</button></span>`
+    ).join('') || '<span class="sec-hint">まだありません。</span>';
+  }
+  // θ 欄に挿入できる変数ボタン
+  function renderVars(){
+    const names = state.params.map(p => p.name.trim()).filter(n => identRe.test(n));
+    $('varbar').hidden = names.length === 0;
+    $('vars').innerHTML = names.map(n => `<button type="button" data-var="${esc(n)}" title="${esc(n)} を挿入">${esc(n)}</button>`).join('');
+  }
+  // チップの現在値（syncParams の後に呼ぶ）
+  function renderChips(){
+    $('chip-theta').textContent = state.theta;
+    $('chip-ctrl').textContent = state.nctrl === 0 ? 'なし' : `${state.nctrl}・|${state.pol}⟩`;
+    $('chip-params').textContent = state.params.length;
+    $('chip-pkg').textContent = state.packages.length;
+    document.querySelectorAll('#ctrl-row .seg').forEach(b => b.classList.toggle('active', +b.dataset.nctrl === state.nctrl));
+    document.querySelectorAll('#pol-row .seg').forEach(b => b.classList.toggle('active', +b.dataset.pol === state.pol));
+    document.querySelector('[data-kind="tool"]').innerHTML =
+      `<button type="button" class="gate-btn erase ${state.tool==='erase'?'active':''}" data-tool="erase" title="マスをクリックしてゲートを消す">消す</button>`;
+  }
+
+  function renderHint(){
+    const h = $('hint');
+    if(state.tool === 'erase'){ h.innerHTML = '消したいゲートのマスをクリック。'; return; }
+    if(state.tool.startsWith('pkg:')){
+      const k = pkgById(+state.tool.slice(4));
+      if(!k){ h.innerHTML = ''; return; }
+      const locs = k.n === 1 ? 'q' : Array.from({length: k.n}, (_, i) => 'q' + (i ? '+' + i : '')).join(', ');
+      h.innerHTML = `<b>${esc(k.name)}</b>（${k.n} 量子ビット）を置く: 上端の量子ビットをクリック → <span class="k">put(${k.n === 1 ? locs : '(' + locs + ')'} => ${esc(k.name)})</span>　<span class="sub">置いたものは Shift+クリックでその場に展開</span>`;
+      return;
+    }
+    const g = GATES[state.tool];
+    const nc = g.arity === 1 ? state.nctrl : 0;
+    if(g.arity === 1 && nc === 0){
+      const code = typeof g.julia === 'function' ? g.julia(state.theta) : g.julia;
+      h.innerHTML = `<b>${g.label}</b> を置く: マスをクリック → <span class="k">put(q => ${esc(code)})</span>`;
+      return;
+    }
+    const steps = g.arity === 1 ? CTRL_STEPS[nc] : g.steps;
+    const arity = g.arity === 1 ? 1 + nc : g.arity;
+    const pd = state.pending;
+    const k = pd ? pd.q.length : 0;
+    const ncs = nControls(g, nc);
+    let next = steps[k] || steps[0];
+    if(k < ncs) next += `（|${state.pol}⟩ で作用）`;
+    const done = pd && pd.q.length ? `（選択中: ${pd.q.map((x, i) => 'q' + x + (i < ncs ? (pd.pol[i] === 0 ? '=0' : '=1') : '')).join(', ')}）` : '';
+    const names = Array.from({length: arity}, (_, i) => (g.arity === 1 ? (i < nc ? 'c' + (nc === 1 ? '' : i+1) : 't') : 'q' + (i+1)));
+    const pol = Array.from({length: ncs}, (_, i) => (pd && i < pd.pol.length ? pd.pol[i] : state.pol));
+    const sample = placementJulia({g: state.tool, q: names, nctrl: nc, pol, theta: state.theta});
+    const name = g.arity === 1 ? `制御付き ${g.label}` : g.label;
+    h.innerHTML = `<b>${name}</b> を置く: 同じ列で <b>${next}</b> の量子ビットをクリック ${done} → <span class="k">${esc(sample)}</span>　<span class="sub">置いた制御ビットは Shift+クリックで |1⟩/|0⟩ を反転</span>`;
+  }
+
+  // これから置くゲートを、縦1列のミニ回路として描く
+  const PCH = 40;
+  function previewPlacement(){
+    if(state.tool === 'erase') return null;
+    if(state.tool.startsWith('pkg:')){
+      const k = pkgById(+state.tool.slice(4)); if(!k) return null;
+      return {g: 'pkg', pkg: k.id, q: Array.from({length: k.n}, (_, i) => i + 1)};
+    }
+    const g = GATES[state.tool];
+    const nc = g.arity === 1 ? state.nctrl : 0;
+    const arity = g.arity === 1 ? 1 + nc : g.arity;
+    const ncs = nControls(g, nc);
+    const pd = state.pending;
+    const pol = Array.from({length: ncs}, (_, i) => (pd && i < pd.pol.length ? pd.pol[i] : state.pol));
+    const p = {g: state.tool, q: Array.from({length: arity}, (_, i) => i + 1), pol};
+    if(nc) p.nctrl = nc;
+    if(g.kind === 'rot') p.theta = state.theta;
+    return p;
+  }
+  function renderPreview(){
+    const el = $('preview');
+    if(state.tool === 'erase'){ el.innerHTML = '<div class="erase" title="消す">×</div>'; return; }
+    const p = previewPlacement();
+    if(!p){ el.innerHTML = ''; return; }
+    const MAXROWS = 4;
+    const rows = Math.min(p.q.length, MAXROWS);
+    let h = '';
+    for(let i = 0; i < rows; i++){
+      h += '<div class="pcell">';
+      if(p.g === 'pkg'){
+        if(i === 0){
+          const k = pkgOf(p);
+          h += `<div class="g pkgbox${rows > 1 ? ' tall' : ''}" style="height:${rows * PCH - 10}px">${esc(k ? k.name : '?')}</div>`;
+        }
+      } else h += gateHTML(p, i);
+      h += '</div>';
+    }
+    if(p.q.length > 1 && p.g !== 'pkg') h += `<div class="vline" style="top:${2 + PCH/2}px;height:${(rows - 1) * PCH}px"></div>`;
+    if(p.q.length > MAXROWS) h += `<div class="pmore">+${p.q.length - MAXROWS}</div>`;
+    el.innerHTML = h;
+  }
+  // 回路上のホバー: 置いたときの見た目を半透明で示す（1マスに収まるもの＋パッケージ）
+  function ghostFor(s, q){
+    const p = previewPlacement();
+    if(!p || occupant(s, q)) return '';
+    if(p.g === 'pkg'){
+      if(q + p.q.length - 1 > state.nq) return '';
+      for(let x = q; x < q + p.q.length; x++) if(occupant(s, x)) return '';
+      return `<div class="ghostg">${gateHTML({...p, q: p.q.map(x => x + q - 1)}, 0)}</div>`;
+    }
+    if(p.q.length !== 1) return '';
+    return `<div class="ghostg">${gateHTML(p, 0)}</div>`;
+  }
+
+  // ---------- 描画: 回路 ----------
+  const CH = 56, HH = 28;
+  function gateHTML(p, idx){
+    if(p.g === 'pkg'){
+      if(idx !== 0) return '';
+      const k = pkgOf(p);
+      return `<div class="g pkgbox${p.q.length > 1 ? ' tall' : ''}" style="height:${p.q.length * CH - 12}px" title="パッケージ ${esc(k ? k.name : '?')}（${p.q.length} 量子ビット・Shift+クリックで展開）">${esc(k ? k.name : '?')}</div>`;
+    }
+    const g = GATES[p.g];
+    if(g.arity === 1 && p.nctrl && idx < p.nctrl) return `<div class="g dot${polOf(p, idx) === 0 ? ' open' : ''}" title="${polOf(p, idx) === 0 ? '|0⟩' : '|1⟩'} で作用（Shift+クリックで反転）"></div>`;
+    if(g.kind === 'single') return `<div class="g box">${g.label}</div>`;
+    if(g.kind === 'rot') return `<div class="g box rot">${g.label}<small>${esc(p.theta)}</small></div>`;
+    const role = g.roles[idx];
+    if(role === 'dot') return `<div class="g dot${polOf(p, idx) === 0 ? ' open' : ''}" title="${polOf(p, idx) === 0 ? '|0⟩' : '|1⟩'} で作用（Shift+クリックで反転）"></div>`;
+    if(role === 'plus') return '<div class="g plus"></div>';
+    if(role === 'cross') return '<div class="g cross"></div>';
+    if(role === 'boxZ') return '<div class="g box z2">Z</div>';
+    return '';
+  }
+  const METER = '<div class="g meter" title="計算基底で測定"><svg viewBox="0 0 26 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 15a10 10 0 0 1 20 0"/><path d="M13 15 19 6"/></svg></div>';
+
+  function renderCircuit(){
+    let labels = '<div class="labels"><div class="hdr"></div>';
+    for(let q=1; q<=state.nq; q++) labels += `<div class="lab">q${q} <span class="ket">|0⟩</span></div>`;
+    labels += '</div>';
+
+    let cols = '<div class="cols">';
+    for(let s=0; s<state.ns; s++){
+      cols += `<div class="col"><div class="hdr">${s+1}</div>`;
+      for(let q=1; q<=state.nq; q++){
+        const p = occupant(s, q);
+        const pend = state.pending && state.pending.s === s && state.pending.q.includes(q);
+        const cls = ['cell', pend ? 'pending' : ''].join(' ');
+        cols += `<div class="${cls}" data-s="${s}" data-q="${q}" role="button" tabindex="0" aria-label="ステップ${s+1} q${q}">`;
+        if(p) cols += gateHTML(p, p.q.indexOf(q));
+        cols += '</div>';
+      }
+      state.columns[s].forEach(p => {
+        if(p.q.length < 2 || p.g === 'pkg') return;
+        const lo = Math.min(...p.q), hi = Math.max(...p.q);
+        cols += `<div class="vline" style="top:${HH + (lo-0.5)*CH}px;height:${(hi-lo)*CH}px"></div>`;
+      });
+      cols += '</div>';
+    }
+    cols += '<div class="col meas"><div class="hdr meas-hdr">測定</div>';
+    for(let q=1; q<=state.nq; q++) cols += `<div class="cell">${METER}</div>`;
+    cols += '</div></div>';
+
+    $('circuit').innerHTML = labels + cols;
+  }
+
+  // ---------- コード生成 ----------
+  function genCode(){
+    const n = state.nq;
+    const lines = [];
+    const entries = [];
+    state.columns.forEach((col, s) => {
+      col.slice().sort((a,b)=>Math.min(...a.q)-Math.min(...b.q)).forEach(p => {
+        entries.push({expr: placementJulia(p), s: s+1});
+      });
+    });
+    const w = entries.reduce((m,e)=>Math.max(m, e.expr.length), 0);
+    const imports = [];
+    walk(p => { const g = GATES[p.g]; (g && g.imports || []).forEach(i => { if(!imports.includes(i)) imports.push(i); }); });
+
+
+    lines.push('using Yao');
+    lines.push('using StatsBase: countmap');
+    // S / Sdag / Tdag は Yao 0.9.3 (YaoBlocks 0.14.3) では未エクスポート（T だけ出ている）。
+    // Yao.jl issue #584。ConstGate から明示的に取り込む。
+    const needConst = imports;
+    if(needConst.length) lines.push(`using Yao.ConstGate: ${needConst.join(', ')}   # Yao 0.9.3 では未エクスポート`);
+    lines.push('');
+    lines.push(`nq = ${n}   # 量子ビット数`);
+    lines.push('');
+    if(state.params.length){
+      lines.push('# パラメータ');
+      const pw = state.params.reduce((m, p) => Math.max(m, `${p.name} = ${p.value}`.length), 0);
+      state.params.forEach(p => lines.push(p.auto ? `${p.name} = ${p.value}`.padEnd(pw + 3) + '# 仮の値' : `${p.name} = ${p.value}`));
+      lines.push('');
+    }
+    if(state.packages.length){
+      lines.push('# パッケージ（サブ回路）。put((locs...) => name) で回路に埋め込む');
+      state.packages.forEach(k => {
+        const es = [];
+        k.columns.forEach((col, s) => col.slice().sort((a,b)=>Math.min(...a.q)-Math.min(...b.q)).forEach(p => es.push({expr: placementJulia(p), s: s+1})));
+        const kw = es.reduce((m,e)=>Math.max(m, e.expr.length), 0);
+        lines.push(`${k.name} = chain(${k.n},`);
+        es.forEach(e => lines.push(`    ${(e.expr + ',').padEnd(kw+2)} # step ${e.s}`));
+        lines.push(')');
+      });
+      lines.push('');
+    }
+    if(entries.length === 0){
+      lines.push('circuit = chain(nq)   # ゲート未配置: 恒等回路');
+    } else {
+      lines.push('circuit = chain(nq,');
+      entries.forEach(e => {
+        lines.push(`    ${(e.expr + ',').padEnd(w+2)} # step ${e.s}`);
+      });
+      lines.push(')');
+    }
+    lines.push('');
+    lines.push('reg = zero_state(nq)   # |0…0⟩');
+    lines.push('apply!(reg, circuit)');
+    lines.push('');
+    lines.push(`# 全量子ビットを計算基底で測定（${state.nshots} ショット）`);
+    lines.push(`samples = measure(reg; nshots = ${state.nshots})`);
+    lines.push('');
+    lines.push('# ビット列ごとの出現回数。出なかったビット列は get(…, 0) で 0 になる');
+    lines.push('# キーは BitStr だが整数でも引ける（右端が q1: 例 |q3 q2 q1⟩ = |010⟩ → 2）');
+    lines.push('counts = countmap(samples)');
+    const N = 1 << n;
+    if(n <= 3){
+      const w = String(N - 1).length;
+      for(let k = 0; k < N; k++){
+        lines.push(`n${k} = get(counts, ${String(k).padEnd(w)}, 0)   # |${k.toString(2).padStart(n, '0')}⟩`);
+      }
+    } else {
+      lines.push('n = [get(counts, k, 0) for k in 0:2^nq-1]   # n[k+1] がビット列 k の回数');
+    }
+    lines.push('');
+    lines.push('for k in 0:2^nq-1');
+    lines.push("    println(lpad(string(k, base = 2), nq, '0'), \"  =>  \", get(counts, k, 0))");
+    lines.push('end');
+    lines.push('');
+    lines.push('# 回路図を描くなら: using YaoPlots; plot(circuit)');
+    return lines.join('\n');
+  }
+
+  function esc(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+  // ---------- 角度式の数値評価（Julia 風の式のサブセット） ----------
+  const FUNCS = {sin:Math.sin, cos:Math.cos, tan:Math.tan, asin:Math.asin, acos:Math.acos, atan:Math.atan,
+                 sec:x=>1/Math.cos(x), csc:x=>1/Math.sin(x), cot:x=>1/Math.tan(x),
+                 sinh:Math.sinh, cosh:Math.cosh, tanh:Math.tanh, asinh:Math.asinh, acosh:Math.acosh, atanh:Math.atanh,
+                 sinpi:x=>Math.sin(Math.PI*x), cospi:x=>Math.cos(Math.PI*x),
+                 sqrt:Math.sqrt, cbrt:Math.cbrt, exp:Math.exp, log:Math.log, log2:Math.log2, log10:Math.log10,
+                 abs:Math.abs, deg2rad:x=>x*Math.PI/180, rad2deg:x=>x*180/Math.PI};
+  const CONSTS = {pi:Math.PI, 'π':Math.PI, 'ℯ':Math.E};   // Julia の `e` は未定義（ℯ か exp(1)）
+  const JULIA_RESERVED = new Set(['nq','circuit','reg','samples','counts','countmap','n','n0','n1','n2','n3','n4','n5','n6','n7','k','bits','c','s','im','Inf','NaN','true','false','pi','π','ℯ','end','for','in','using','function','return','if','else','while','begin','let','do','try','catch','const','global','local','module','struct','macro','quote','import','export']);
+  const identRe = /^[\p{L}_][\p{L}\p{N}_]*$/u;
+
+  // ---------- パラメータ ----------
+  // 回転角の式に現れる識別子（関数呼び出し・定数を除く）
+  function thetaVars(){
+    const vars = [];
+    walk(p => {
+      if(p.theta === undefined) return;
+      const re = /([\p{L}_][\p{L}\p{N}_]*)(\s*\()?/gu;
+      let m;
+      while((m = re.exec(p.theta))){
+        if(m[2]) continue;                                   // sin(...) などの関数
+        if(m[1] in CONSTS || ['im','Inf','NaN','true','false'].includes(m[1])) continue;
+        if(!vars.includes(m[1])) vars.push(m[1]);
+      }
+    });
+    return vars;
+  }
+  // 回転角で使われた変数を自動追加し、使われなくなった自動追加分を消す。構成が変わったら true
+  function syncParams(){
+    const vars = thetaVars();
+    let changed = false;
+    vars.forEach(v => { if(!state.params.some(p => p.name === v)){ state.params.push({name: v, value: '1.0', auto: true}); changed = true; } });
+    const before = state.params.length;
+    state.params = state.params.filter(p => !p.auto || vars.includes(p.name));
+    if(state.params.length !== before) changed = true;
+    return changed;
+  }
+  // パラメータを順に数値化する。{values, errors}
+  function resolveParams(){
+    const values = {}, errors = [];
+    const seen = new Set();
+    state.params.forEach(p => {
+      const name = p.name.trim();
+      if(!identRe.test(name)){ errors.push(`「${name || '（空）'}」は変数名として使えません`); return; }
+      if(JULIA_RESERVED.has(name)){ errors.push(`${name} は生成コードで使う名前なので避けてください`); return; }
+      if(seen.has(name)){ errors.push(`${name} が重複しています`); return; }
+      seen.add(name);
+      const used = [];
+      try {
+        const v = evalExpr(p.value, values, used);
+        const unknown = used.filter(u => !(u in values));
+        if(unknown.length){ errors.push(`${name} の式に未定義の変数 ${unknown.join(', ')}（先に定義してください）`); return; }
+        values[name] = v;
+      } catch(e){ errors.push(`${name}: ${e.message}`); }
+    });
+    return {values, errors};
+  }
+  let paramsKey = '';
+  function renderParams(rebuild = true){
+    const key = state.params.map(p => p.name + (p.auto ? '*' : '')).join('|');
+    const {errors} = resolveParams();
+    if(rebuild && key !== paramsKey){
+      paramsKey = key;
+      $('params').innerHTML = state.params.map((p, i) => `
+        <span class="prow" data-i="${i}" draggable="true">
+          <span class="grip" title="ドラッグで並び替え">⋮⋮</span>
+          <span class="mvs">
+            <button type="button" class="mv" data-mv="-1" title="上へ" aria-label="上へ" ${i === 0 ? 'disabled' : ''}>▲</button>
+            <button type="button" class="mv" data-mv="1" title="下へ" aria-label="下へ" ${i === state.params.length - 1 ? 'disabled' : ''}>▼</button>
+          </span>
+          <input class="pname" value="${esc(p.name)}" aria-label="変数名" spellcheck="false">
+          <span class="eq">=</span>
+          <input class="pval" value="${esc(p.value)}" aria-label="値（Julia 式）" spellcheck="false" placeholder="1.0, π/4, 2L">
+          ${p.auto ? '<span class="auto" title="回転角の式から自動で追加。値を編集すると固定されます">自動</span>' : ''}
+          <button type="button" class="pdel" title="削除" aria-label="削除">×</button>
+        </span>`).join('');
+    }
+    // 入力欄の妥当性表示
+    const rows = $('params').querySelectorAll('.prow');
+    const seen = new Set();
+    rows.forEach((row, i) => {
+      const p = state.params[i]; if(!p) return;
+      const nm = p.name.trim();
+      const badName = !identRe.test(nm) || JULIA_RESERVED.has(nm) || seen.has(nm);
+      seen.add(nm);
+      row.querySelector('.pname').classList.toggle('bad', badName);
+      let badVal = false;
+      try { evalExpr(p.value, {}, []); } catch(_) { badVal = true; }
+      row.querySelector('.pval').classList.toggle('bad', badVal || !thetaOK(p.value));
+    });
+    const note = $('params-note');
+    note.className = 'params-note' + (errors.length ? ' err' : '');
+    note.textContent = errors.length ? errors[0] : '';
+  }
+  // 未知の識別子は params（既定 1.0）。使った変数名を used に集める
+  function evalExpr(src, params, used){
+    const toks = [];
+    const re = /\s*(?:(\d+\.?\d*(?:[eE][+-]?\d+)?|\.\d+(?:[eE][+-]?\d+)?)|([\p{L}_][\p{L}\p{N}_]*)|([-+*\/^(),]))/uy;
+    let i = 0;
+    while(i < src.length){
+      re.lastIndex = i; const m = re.exec(src);
+      if(!m){ if(/^\s*$/.test(src.slice(i))) break; throw new Error(`解釈できない文字: ${src.slice(i, i+3)}`); }
+      i = re.lastIndex;
+      if(m[1] !== undefined) toks.push({t:'num', v:parseFloat(m[1])});
+      else if(m[2] !== undefined) toks.push({t:'id', v:m[2]});
+      else toks.push({t:'op', v:m[3]});
+    }
+    let k = 0;
+    const peek = () => toks[k], next = () => toks[k++];
+    const isOp = c => peek() && peek().t === 'op' && peek().v === c;
+    function expr(){ let v = term(); while(isOp('+') || isOp('-')){ const o = next().v; const r = term(); v = o === '+' ? v + r : v - r; } return v; }
+    function term(){ let v = unary(); while(isOp('*') || isOp('/')){ const o = next().v; const r = unary(); v = o === '*' ? v * r : v / r; } return v; }
+    function unary(){ if(isOp('-')){ next(); return -unary(); } if(isOp('+')){ next(); return unary(); } return power(); }
+    function power(){
+      const tk = peek();
+      let v = atom();
+      // Julia 風の暗黙の掛け算: 2π, 2(x+1), 2x^2
+      if(tk && tk.t === 'num' && peek() && (peek().t === 'id' || isOp('('))) v *= power();
+      if(isOp('^')){ next(); v = Math.pow(v, unary()); }
+      return v;
+    }
+    function atom(){
+      const tk = next();
+      if(!tk) throw new Error('式が途中で終わっています');
+      if(tk.t === 'num') return tk.v;
+      if(tk.t === 'op' && tk.v === '('){ const v = expr(); if(!isOp(')')) throw new Error('括弧が閉じていません'); next(); return v; }
+      if(tk.t === 'id'){
+        if(isOp('(')){
+          next(); const args = [expr()];
+          while(isOp(',')){ next(); args.push(expr()); }
+          if(!isOp(')')) throw new Error('括弧が閉じていません'); next();
+          if(tk.v === 'atan' && args.length === 2) return Math.atan2(args[0], args[1]);
+          if(!FUNCS[tk.v]) throw new Error(`未対応の関数: ${tk.v}`);
+          return FUNCS[tk.v](args[0]);
+        }
+        if(tk.v in CONSTS) return CONSTS[tk.v];
+        if(used && !used.includes(tk.v)) used.push(tk.v);
+        return (params && tk.v in params) ? params[tk.v] : 1.0;
+      }
+      throw new Error(`予期しない記号: ${tk.v}`);
+    }
+    const v = expr();
+    if(k < toks.length) throw new Error(`余分な記号: ${toks[k].v}`);
+    if(!Number.isFinite(v)) throw new Error('値が有限ではありません');
+    return v;
+  }
+
+  // ---------- 状態ベクトルの計算（Yao と同じ: q1 が最下位ビット） ----------
+  // 2x2 行列は [[a,b],[c,d]] で各要素 [re, im]
+  function mat1(id, th){
+    const c = Math.cos(th/2), s = Math.sin(th/2), r2 = Math.SQRT1_2;
+    switch(id){
+      case 'H': return [[[r2,0],[r2,0]],[[r2,0],[-r2,0]]];
+      case 'X': return [[[0,0],[1,0]],[[1,0],[0,0]]];
+      case 'Y': return [[[0,0],[0,-1]],[[0,1],[0,0]]];
+      case 'Z': return [[[1,0],[0,0]],[[0,0],[-1,0]]];
+      case 'S': return [[[1,0],[0,0]],[[0,0],[0,1]]];
+      case 'Sdag': return [[[1,0],[0,0]],[[0,0],[0,-1]]];
+      case 'T': return [[[1,0],[0,0]],[[0,0],[r2,r2]]];
+      case 'Tdag': return [[[1,0],[0,0]],[[0,0],[r2,-r2]]];
+      case 'Rx': return [[[c,0],[0,-s]],[[0,-s],[c,0]]];               // exp(-iθX/2)
+      case 'Ry': return [[[c,0],[-s,0]],[[s,0],[c,0]]];                // exp(-iθY/2)
+      case 'Rz': return [[[c,-s],[0,0]],[[0,0],[c,s]]];                // exp(-iθZ/2)
+      case 'P':  return [[[1,0],[0,0]],[[0,0],[Math.cos(th),Math.sin(th)]]]; // shift(θ)
+    }
+    throw new Error('unknown gate ' + id);
+  }
+  // 制御ビットがすべて条件（pols: 1 or 0）を満たす成分だけに標的の 2x2 を作用させる
+  function applyControlled(re, im, n, ctrls, pols, tgt, M){
+    const N = 1 << n, tb = 1 << (tgt-1);
+    let cmask = 0, cval = 0;
+    ctrls.forEach((c, i) => { cmask |= 1 << (c-1); if(pols[i] !== 0) cval |= 1 << (c-1); });
+    const [[a,b],[c,d]] = M;
+    for(let i = 0; i < N; i++){
+      if((i & tb) || ((i & cmask) !== cval)) continue;
+      const j = i | tb;
+      const r0 = re[i], i0 = im[i], r1 = re[j], i1 = im[j];
+      re[i] = a[0]*r0 - a[1]*i0 + b[0]*r1 - b[1]*i1;
+      im[i] = a[0]*i0 + a[1]*r0 + b[0]*i1 + b[1]*r1;
+      re[j] = c[0]*r0 - c[1]*i0 + d[0]*r1 - d[1]*i1;
+      im[j] = c[0]*i0 + c[1]*r0 + d[0]*i1 + d[1]*r1;
+    }
+  }
+  function applySwap(re, im, n, p, q){
+    const N = 1 << n, bp = 1 << (p-1), bq = 1 << (q-1);
+    for(let i = 0; i < N; i++){
+      if((i & bp) && !(i & bq)){
+        const j = (i & ~bp) | bq;
+        let t = re[i]; re[i] = re[j]; re[j] = t;
+        t = im[i]; im[i] = im[j]; im[j] = t;
+      }
+    }
+  }
+  function simulate(){
+    const n = state.nq, N = 1 << n;
+    const re = new Float64Array(N), im = new Float64Array(N);
+    re[0] = 1;
+    const {values, errors} = resolveParams();
+    if(errors.length) throw new Error(errors[0]);
+    const used = [];
+    function applyPlacement(p, off){
+      if(p.g === 'pkg'){
+        const k = pkgOf(p); if(!k) return;
+        k.columns.forEach(col => col.forEach(inner => applyPlacement(inner, off + p.q[0] - 1)));
+        return;
+      }
+      const g = GATES[p.g];
+      const q = p.q.map(x => x + off);
+      if(p.g === 'SWAP'){ applySwap(re, im, n, q[0], q[1]); return; }
+      const ncs = nControls(g, p.nctrl);
+      const pols = Array.from({length: ncs}, (_, i) => polOf(p, i));
+      const th = p.theta !== undefined ? evalExpr(p.theta, values, used) : 0;
+      applyControlled(re, im, n, q.slice(0, ncs), pols, q[ncs], mat1(g.target || p.g, th));
+    }
+    state.columns.forEach(col => col.forEach(p => applyPlacement(p, 0)));
+    const auto = state.params.filter(p => p.auto).map(p => p.name);
+    return {re, im, auto};
+  }
+
+  const fmt = x => (Math.abs(x) < 5e-4 ? 0 : x).toFixed(3).replace(/^-0\.000$/, '0.000');
+  function fmtC(a, b){
+    const za = Math.abs(a) < 5e-4, zb = Math.abs(b) < 5e-4;
+    if(za && zb) return '0';
+    if(zb) return fmt(a);
+    if(za) return `${fmt(b)}i`;
+    return `${fmt(a)} ${b < 0 ? '−' : '+'} ${fmt(Math.abs(b))}i`;
+  }
+  const MAX_ROWS = 256;
+  function renderState(){
+    const note = $('state-note'), list = $('state-list');
+    let sim;
+    try { sim = simulate(); }
+    catch(e){
+      note.className = 'state-note err';
+      note.textContent = `状態を計算できません: ${e.message}`;
+      list.innerHTML = '';
+      return;
+    }
+    const {re, im, auto} = sim;
+    const n = state.nq, N = 1 << n, showZero = $('show-zero').checked;
+    const rows = [];
+    let shown = 0, hidden = 0;
+    for(let i = 0; i < N; i++){
+      const pr = re[i]*re[i] + im[i]*im[i];
+      const zero = pr < 1e-12;
+      if(zero && !showZero) continue;
+      if(shown >= MAX_ROWS){ hidden++; continue; }
+      shown++;
+      const bits = i.toString(2).padStart(n, '0');
+      rows.push(`<div class="srow${zero ? ' zero' : ''}">
+        <span class="ket">|${bits.replace(/1/g, '<b>1</b>')}⟩</span>
+        <span class="amp"><span>${fmtC(re[i], im[i])}</span><span class="bar"><i style="width:${(pr*100).toFixed(2)}%"></i></span></span>
+        <span class="prob">${(pr*100).toFixed(1)}%</span>
+      </div>`);
+    }
+    list.innerHTML = rows.join('') || '<div class="srow zero"><span class="ket">（成分なし）</span></div>';
+    note.className = 'state-note';
+    const parts = ['測定前の純粋状態。右端が q1（Yao の並び）'];
+    if(auto.length) parts.push(`変数 ${auto.join(', ')} は仮の値で計算（上のパラメータ欄で変更可）`);
+    if(hidden) parts.push(`${hidden} 成分を省略（先頭 ${MAX_ROWS} 件のみ）`);
+    note.textContent = parts.join('。') + '。';
+  }
+
+  function highlight(code){
+    const re = /(#[^\n]*)|("(?:[^"\\]|\\.)*")|\b(using|for|end|in|function|return)\b|(=>|\|>)|\b(\d+(?:\.\d+)?)\b|(π)|\b(Rx|Ry|Rz|H|X|Y|Z|S|T|Sdag|Tdag|ConstGate|Dict|Any|Int|Yao|YaoPlots|StatsBase)\b|\b([a-z_][A-Za-z0-9_]*!?)(?=\()/g;
+    let out = '', last = 0, m;
+    while((m = re.exec(code))){
+      out += esc(code.slice(last, m.index));
+      const t = m[0];
+      let cls = m[1] ? 'cm' : m[2] ? 'str' : m[3] ? 'kw' : m[4] ? 'op' : (m[5]||m[6]) ? 'num' : m[7] ? 'ty' : 'fn';
+      out += `<span class="${cls}">${esc(t)}</span>`;
+      last = m.index + t.length;
+    }
+    return out + esc(code.slice(last));
+  }
+
+  let currentCode = '';
+  function renderCode(){
+    currentCode = genCode();
+    $('code').innerHTML = highlight(currentCode);
+    $('code-meta').textContent = `${state.nq} qubits · ${gateCount()} gates · ${state.ns} steps`;
+  }
+
+  function render(){
+    $('nq-out').value = state.nq;
+    $('ns-out').value = state.ns;
+    renderPalette();
+    renderHint();
+    renderCircuit();
+    const before = state.params.length;
+    syncParams();
+    if(state.params.length > before) openSec('params');   // 角度に新しい変数が現れたら見せる
+    renderParams();
+    renderChips();
+    renderPreview();
+    renderVars();
+    renderCode();
+    renderState();
+  }
+
+  // ---------- イベント ----------
+  $('nq-dec').addEventListener('click', () => setNq(state.nq - 1));
+  $('nq-inc').addEventListener('click', () => setNq(state.nq + 1));
+  $('ns-dec').addEventListener('click', () => setNs(state.ns - 1));
+  $('ns-inc').addEventListener('click', () => setNs(state.ns + 1));
+  $('nshots').addEventListener('input', e => {
+    const v = parseInt(e.target.value, 10);
+    if(v > 0){ state.nshots = v; renderCode(); }
+  });
+  $('load-ghz').addEventListener('click', loadGHZ);
+  $('show-zero').addEventListener('change', renderState);
+  $('param-add').addEventListener('click', () => {
+    let k = 1; while(state.params.some(p => p.name === 'p' + k)) k++;
+    state.params.push({name: 'p' + k, value: '1.0', auto: false});
+    render();
+    const last = $('params').querySelector('.prow:last-child .pname');
+    if(last){ last.focus(); last.select(); }
+  });
+  $('params').addEventListener('input', e => {
+    const row = e.target.closest('.prow'); if(!row) return;
+    const p = state.params[+row.dataset.i]; if(!p) return;
+    if(e.target.classList.contains('pname')) p.name = e.target.value;
+    else if(e.target.classList.contains('pval')) p.value = e.target.value;
+    p.auto = false;                         // 触ったら固定（ゲートを消しても残る）
+    row.querySelector('.auto')?.remove();
+    renderParams(false); renderCode(); renderState(); renderVars();
+  });
+  function moveParam(from, to){
+    if(to < 0 || to >= state.params.length || from === to) return;
+    const [p] = state.params.splice(from, 1);
+    state.params.splice(to, 0, p);
+    paramsKey = '';          // 順序が変わったので行を作り直す
+    render();
+  }
+  $('params').addEventListener('click', e => {
+    const mv = e.target.closest('.mv');
+    if(mv){ const i = +mv.closest('.prow').dataset.i; moveParam(i, i + (+mv.dataset.mv)); return; }
+    const b = e.target.closest('.pdel'); if(!b) return;
+    const row = b.closest('.prow');
+    state.params.splice(+row.dataset.i, 1);
+    render();
+  });
+  // ドラッグ＆ドロップで並び替え（入力欄からのドラッグは無効にしてテキスト選択を邪魔しない）
+  let dragFrom = null;
+  $('params').addEventListener('dragstart', e => {
+    const row = e.target.closest('.prow');
+    if(!row || e.target.matches('input')){ e.preventDefault(); return; }
+    dragFrom = +row.dataset.i; row.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(dragFrom));
+  });
+  $('params').addEventListener('dragover', e => {
+    const row = e.target.closest('.prow'); if(!row || dragFrom === null) return;
+    e.preventDefault(); e.dataTransfer.dropEffect = 'move';
+    $('params').querySelectorAll('.prow').forEach(r => r.classList.toggle('dropover', r === row && +row.dataset.i !== dragFrom));
+  });
+  $('params').addEventListener('dragleave', e => { const row = e.target.closest('.prow'); if(row) row.classList.remove('dropover'); });
+  $('params').addEventListener('drop', e => {
+    const row = e.target.closest('.prow'); if(!row || dragFrom === null) return;
+    e.preventDefault();
+    const to = +row.dataset.i, from = dragFrom; dragFrom = null;
+    moveParam(from, to);
+  });
+  $('params').addEventListener('dragend', () => {
+    dragFrom = null;
+    $('params').querySelectorAll('.prow').forEach(r => r.classList.remove('dragging', 'dropover'));
+  });
+  $('clear-all').addEventListener('click', () => { state.columns = emptyColumns(state.ns); state.pending = null; render(); });
+
+  $('palette').addEventListener('click', e => {
+    const d = e.target.closest('[data-pkgdel]');
+    if(d){
+      const msg = deletePackage(+d.dataset.pkgdel);
+      render();
+      if(msg){ const n = $('pkg-note'); $('pkg-form').hidden = false; n.className = 'params-note err'; n.textContent = msg; }
+      return;
+    }
+    const b = e.target.closest('[data-tool]');
+    if(!b) return;
+    state.tool = b.dataset.tool; state.pending = null; render();
+  });
+  function openSec(name, open = true){
+    const chip = document.querySelector(`.chip[data-sec="${name}"]`);
+    $('sec-' + name).hidden = !open;
+    chip.setAttribute('aria-expanded', String(open));
+  }
+  document.querySelector('.chips').addEventListener('click', e => {
+    const c = e.target.closest('.chip'); if(!c) return;
+    openSec(c.dataset.sec, c.getAttribute('aria-expanded') !== 'true');
+  });
+  $('pkg-open').addEventListener('click', () => {
+    const f = $('pkg-form');
+    f.hidden = !f.hidden;
+    if(!f.hidden){
+      $('pkg-from').max = $('pkg-to').max = state.ns;
+      $('pkg-from').value = 1; $('pkg-to').value = state.ns;
+      let k = 1; while(reservedName('block' + k)) k++;
+      $('pkg-name').value = 'block' + k;
+      $('pkg-note').textContent = ''; $('pkg-note').className = 'params-note';
+      $('pkg-name').focus(); $('pkg-name').select();
+    }
+  });
+  $('pkg-cancel').addEventListener('click', () => { $('pkg-form').hidden = true; });
+  $('pkg-create').addEventListener('click', () => {
+    const msg = createPackage($('pkg-name').value, +$('pkg-from').value, +$('pkg-to').value);
+    const n = $('pkg-note');
+    if(msg){ n.className = 'params-note err'; n.textContent = msg; return; }
+    n.textContent = ''; n.className = 'params-note';
+    $('pkg-form').hidden = true;
+    state.tool = 'pkg:' + (state.nextPkgId - 1);
+    render();
+  });
+  $('pkg-name').addEventListener('keydown', e => { if(e.key === 'Enter') $('pkg-create').click(); });
+  // 任意の Julia 式を許す。禁止するのは改行・コメント・文字列・文の区切りと括弧の不整合だけ。
+  $('pol-row').addEventListener('click', e => {
+    const b = e.target.closest('[data-pol]');
+    if(!b) return;
+    state.pol = +b.dataset.pol; render();
+  });
+  $('ctrl-row').addEventListener('click', e => {
+    const b = e.target.closest('[data-nctrl]');
+    if(!b) return;
+    state.nctrl = +b.dataset.nctrl; state.pending = null; render();
+  });
+  const thetaOK = v => {
+    if(!v.trim() || /[\n\r#"';`]/.test(v)) return false;
+    let d = 0;
+    for(const c of v){ if(c === '(') d++; else if(c === ')'){ d--; if(d < 0) return false; } }
+    return d === 0;
+  };
+  $('theta').addEventListener('input', e => {
+    const v = e.target.value.trim();
+    if(thetaOK(v)){ state.theta = v; e.target.style.borderColor = ''; renderHint(); renderPreview(); $('chip-theta').textContent = v; }
+    else e.target.style.borderColor = 'var(--red)';
+  });
+  $('theta-preset').addEventListener('change', e => {
+    if(!e.target.value) return;
+    $('theta').value = e.target.value; state.theta = e.target.value;
+    e.target.value = ''; $('theta').style.borderColor = ''; renderHint(); renderPreview(); $('chip-theta').textContent = state.theta;
+  });
+
+  $('circuit').addEventListener('click', e => {
+    const c = e.target.closest('.cell[data-s]');
+    if(!c) return;
+    onCell(+c.dataset.s, +c.dataset.q, e.shiftKey);
+  });
+  $('circuit').addEventListener('keydown', e => {
+    if(e.key !== 'Enter' && e.key !== ' ') return;
+    const c = e.target.closest('.cell[data-s]');
+    if(!c) return;
+    e.preventDefault(); onCell(+c.dataset.s, +c.dataset.q);
+  });
+  $('circuit').addEventListener('contextmenu', e => {
+    const c = e.target.closest('.cell[data-s]');
+    if(!c) return;
+    e.preventDefault(); removeAt(+c.dataset.s, +c.dataset.q); state.pending = null; render();
+  });
+
+  // ---------- ギリシャ文字と \latex 変換（Julia REPL と同じ対応） ----------
+  const LATEX = {
+    alpha:'α', beta:'β', gamma:'γ', delta:'δ', epsilon:'ϵ', varepsilon:'ε', zeta:'ζ', eta:'η',
+    theta:'θ', vartheta:'ϑ', iota:'ι', kappa:'κ', lambda:'λ', mu:'μ', nu:'ν', xi:'ξ', pi:'π',
+    rho:'ρ', varrho:'ϱ', sigma:'σ', varsigma:'ς', tau:'τ', upsilon:'υ', phi:'ϕ', varphi:'φ',
+    chi:'χ', psi:'ψ', omega:'ω',
+    Gamma:'Γ', Delta:'Δ', Theta:'Θ', Lambda:'Λ', Xi:'Ξ', Pi:'Π', Sigma:'Σ', Upsilon:'Υ', Phi:'Φ', Psi:'Ψ', Omega:'Ω',
+    euler:'ℯ',
+    _0:'₀', _1:'₁', _2:'₂', _3:'₃', _4:'₄', _5:'₅', _6:'₆', _7:'₇', _8:'₈', _9:'₉',
+    '^2':'²', '^3':'³',
+  };
+  const GREEK_LOWER = 'αβγδϵεζηθϑικλμνξπρσςτυφϕχψω';
+  const GREEK_UPPER = 'ΓΔΘΛΞΠΣΥΦΨΩ';
+  const GREEK_NAME = {};
+  Object.entries(LATEX).forEach(([k, v]) => { if(!GREEK_NAME[v]) GREEK_NAME[v] = '\\' + k; });
+  const TEXT_INPUTS = '#theta, .pname, .pval';
+  let lastInput = null;
+  document.addEventListener('focusin', e => { if(e.target.matches && e.target.matches(TEXT_INPUTS)) lastInput = e.target; });
+
+  function insertAt(el, text){
+    const a = el.selectionStart ?? el.value.length, b = el.selectionEnd ?? a;
+    el.value = el.value.slice(0, a) + text + el.value.slice(b);
+    el.focus();
+    el.setSelectionRange(a + text.length, a + text.length);
+    el.dispatchEvent(new Event('input', {bubbles: true}));
+  }
+  // カーソル直前の \name を変換（Tab）。変換したら true
+  function convertBeforeCursor(el){
+    const pos = el.selectionStart ?? el.value.length;
+    const head = el.value.slice(0, pos);
+    const m = /\\([A-Za-z]+|[_^][0-9])$/.exec(head);
+    if(!m || !(m[1] in LATEX)) return false;
+    const rep = LATEX[m[1]];
+    el.value = head.slice(0, m.index) + rep + el.value.slice(pos);
+    const np = m.index + rep.length;
+    el.setSelectionRange(np, np);
+    return true;
+  }
+  // 入力中: 区切り文字が続いた \name を自動変換（\theta/2 → θ/2）
+  function convertCompleted(el){
+    const re = /\\([A-Za-z]+|[_^][0-9])(?![A-Za-z0-9])/g;
+    let v = el.value, pos = el.selectionStart ?? v.length, changed = false, m;
+    while((m = re.exec(v))){
+      if(m.index + m[0].length >= v.length) break;       // 末尾は入力途中かもしれない
+      if(!(m[1] in LATEX)) continue;
+      const rep = LATEX[m[1]];
+      v = v.slice(0, m.index) + rep + v.slice(m.index + m[0].length);
+      if(m.index < pos) pos -= m[0].length - rep.length;
+      re.lastIndex = m.index + rep.length;
+      changed = true;
+    }
+    if(changed){ el.value = v; el.setSelectionRange(pos, pos); }
+  }
+  document.addEventListener('keydown', e => {
+    if(e.key !== 'Tab' || !e.target.matches || !e.target.matches(TEXT_INPUTS)) return;
+    if(convertBeforeCursor(e.target)){ e.preventDefault(); e.target.dispatchEvent(new Event('input', {bubbles: true})); }
+  }, true);
+  document.addEventListener('input', e => {
+    if(e.target.matches && e.target.matches(TEXT_INPUTS)) convertCompleted(e.target);
+  }, true);
+
+  $('greek').innerHTML =
+    [...GREEK_LOWER].map(c => `<button type="button" title="${GREEK_NAME[c] || ''}">${c}</button>`).join('') +
+    [...GREEK_UPPER].map(c => `<button type="button" class="cap" title="${GREEK_NAME[c] || ''}">${c}</button>`).join('');
+  // 関数パレット。選択範囲があれば f(選択) で包み、なければ f() を入れて括弧の中にカーソルを置く
+  const FUNC_GROUPS = [
+    ['sin','cos','tan','asin','acos','atan'],
+    ['sinh','cosh','tanh','sec','csc','cot'],
+    ['sinpi','cospi','sqrt','exp','log','abs'],
+  ];
+  $('funcs').innerHTML = FUNC_GROUPS.map(g => g.map(f => `<button type="button" data-fn="${f}">${f}</button>`).join('')).join('<span class="fsep"></span>');
+  function insertFunc(el, fn){
+    const a = el.selectionStart ?? el.value.length, b = el.selectionEnd ?? a;
+    const sel = el.value.slice(a, b);
+    const text = `${fn}(${sel})`;
+    el.value = el.value.slice(0, a) + text + el.value.slice(b);
+    el.focus();
+    const caret = sel ? a + text.length : a + fn.length + 1;
+    el.setSelectionRange(caret, caret);
+    el.dispatchEvent(new Event('input', {bubbles: true}));
+  }
+  $('funcs').addEventListener('mousedown', e => e.preventDefault());
+  $('funcs').addEventListener('click', e => {
+    const b = e.target.closest('[data-fn]'); if(!b) return;
+    const ae = document.activeElement;
+    const el = (ae && ae.matches && ae.matches(TEXT_INPUTS)) ? ae
+             : (lastInput && document.contains(lastInput)) ? lastInput : $('theta');
+    insertFunc(el, b.dataset.fn);
+  });
+  $('vars').addEventListener('mousedown', e => e.preventDefault());
+  $('vars').addEventListener('click', e => {
+    const b = e.target.closest('[data-var]'); if(!b) return;
+    const ae = document.activeElement;
+    const el = (ae && ae.matches && ae.matches(TEXT_INPUTS)) ? ae
+             : (lastInput && document.contains(lastInput)) ? lastInput : $('theta');
+    insertAt(el, b.dataset.var);
+  });
+  $('circuit').addEventListener('mouseover', e => {
+    const c = e.target.closest('.cell[data-s]'); if(!c || c.querySelector('.ghostg')) return;
+    const html = ghostFor(+c.dataset.s, +c.dataset.q);
+    if(html) c.insertAdjacentHTML('beforeend', html);
+  });
+  $('circuit').addEventListener('mouseout', e => {
+    const c = e.target.closest('.cell[data-s]'); if(!c) return;
+    if(c.contains(e.relatedTarget)) return;
+    c.querySelectorAll('.ghostg').forEach(g => g.remove());
+  });
+  $('func-toggle').addEventListener('mousedown', e => e.preventDefault());
+  $('func-toggle').addEventListener('click', () => {
+    const bar = $('func-bar'), open = bar.hidden;
+    bar.hidden = !open;
+    $('func-toggle').classList.toggle('active', open);
+    $('func-toggle').setAttribute('aria-expanded', String(open));
+  });
+  $('greek').addEventListener('mousedown', e => e.preventDefault());   // 押してもフォーカスを奪わない
+  $('greek-toggle').addEventListener('mousedown', e => e.preventDefault());
+  $('greek-toggle').addEventListener('click', () => {
+    const bar = $('greek-bar'), open = bar.hidden;
+    bar.hidden = !open;
+    $('greek-toggle').classList.toggle('active', open);
+    $('greek-toggle').setAttribute('aria-expanded', String(open));
+  });
+  $('greek').addEventListener('click', e => {
+    const b = e.target.closest('button'); if(!b) return;
+    const ae = document.activeElement;
+    const el = (ae && ae.matches && ae.matches(TEXT_INPUTS)) ? ae
+             : (lastInput && document.contains(lastInput)) ? lastInput : $('theta');
+    insertAt(el, b.textContent);
+  });
+
+  // ---------- コピー ----------
+  let toastTimer = null;
+  function showToast(msg){
+    const t = $('toast'); t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 1600);
+  }
+  function fallbackCopy(text){
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly',''); ta.style.position='fixed'; ta.style.left='-9999px';
+    document.body.appendChild(ta); ta.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch(_) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+  $('copy').addEventListener('click', async () => {
+    let ok = false;
+    try { await navigator.clipboard.writeText(currentCode); ok = true; } catch(_) { ok = fallbackCopy(currentCode); }
+    const b = $('copy'), l = $('copy-label');
+    if(ok){
+      b.classList.add('done'); l.textContent = 'コピーしました';
+      showToast('Yao.jl コードをコピーしました');
+      setTimeout(() => { b.classList.remove('done'); l.textContent = 'コードをコピー'; }, 1500);
+    } else {
+      showToast('コピーできませんでした。コードを選択して手動でコピーしてください');
+    }
+  });
+
+  loadGHZ();
+})();
+</script>
+</body>
+</html>
