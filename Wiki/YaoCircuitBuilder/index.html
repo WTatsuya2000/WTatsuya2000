@@ -433,6 +433,23 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目次
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#yao-circuit-builder_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ▶ Yao Circuit Builder を開く
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -449,14 +466,14 @@
 <h1 id="yao-circuit-builder">Yao Circuit Builder</h1>
 <p>量子回路にゲートを置くと、<a href="https://github.com/QuantumBFS/Yao.jl">Yao.jl</a> のコードを生成するブラウザ上のツールです。
 右側には測定直前の状態ベクトルも表示します。</p>
+<h2 id="yao-circuit-builder_1"><a href="../../tools/yao-circuit-builder.html" target="_blank">▶ Yao Circuit Builder を開く</a></h2>
 <ul>
-<li><a href="../../tools/yao-circuit-builder.html" target="_blank">全画面で開く</a></li>
 <li>ゲートを選んでマスをクリック。制御付きゲートは同じ列で 制御 → 標的 の順にクリック</li>
 <li>回転角には <code>π/2</code> や <code>-L*t/3</code> のような Julia の式を書けます。変数はパラメータ欄に自動で現れます</li>
+<li>複数ステップを「パッケージ」として1つのゲートにまとめ、再利用できます</li>
 <li>生成コードは Yao 0.9.3（YaoBlocks 0.14.3）で動作確認済み。<code>S</code>・<code>Sdag</code>・<code>Tdag</code> を使うと <code>using Yao.ConstGate: …</code> の行を自動で足します</li>
 <li>測定の集計には <code>StatsBase.countmap</code> を使うので、<code>] add StatsBase</code> が必要です</li>
 </ul>
-<iframe src="../../tools/yao-circuit-builder.html" title="Yao Circuit Builder" style="width:100%;height:1500px;border:1px solid #ddd;border-radius:8px;background:#f6f5fb"></iframe>
 
 
 
