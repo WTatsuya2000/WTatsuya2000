@@ -1,0 +1,1532 @@
+
+<!doctype html>
+<html lang="ja" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../syaritatsu.JPG">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.31">
+    
+    
+      
+        <title>Lie 群・表現論 公式集（SU(N) と格子計算向け） - W.Tatsuya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.3cba04c6.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/custom.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lie-sun" class="md-skip">
+          コンテンツにスキップ
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="ヘッダー">
+    <a href="../.." title="W.Tatsuya" class="md-header__button md-logo" aria-label="W.Tatsuya" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C9 7 4 9 4 14c0 2 2 4 4 4 1 0 2 0 3-1 0 0 .32 2-2 5h6c-2-3-2-5-2-5 1 1 2 1 3 1 2 0 4-2 4-4 0-5-5-7-8-12Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            W.Tatsuya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lie 群・表現論 公式集（SU(N) と格子計算向け）
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="検索" placeholder="検索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="検索">
+        
+        <button type="reset" class="md-search__icon md-icon" title="クリア" aria-label="クリア" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            検索を初期化
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="タブ" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../CV/" class="md-tabs__link">
+        
+  
+    
+  
+  CV
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+    
+  
+  Wiki
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Publication/" class="md-tabs__link">
+        
+  
+    
+  
+  Publication
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Presentation/" class="md-tabs__link">
+        
+  
+    
+  
+  Presentation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Link/" class="md-tabs__link">
+        
+  
+    
+  
+  Link
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="ナビゲーション" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="W.Tatsuya" class="md-nav__button md-logo" aria-label="W.Tatsuya" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C9 7 4 9 4 14c0 2 2 4 4 4 1 0 2 0 3-1 0 0 .32 2-2 5h6c-2-3-2-5-2-5 1 1 2 1 3 1 2 0 4-2 4-4 0-5-5-7-8-12Z"/></svg>
+
+    </a>
+    W.Tatsuya
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CV/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CV
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Wiki
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Publication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Publication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Presentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Presentation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Link/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Link
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目次">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目次
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-sun" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. \(SU(N)\) の一般公式
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. \(SU(N)\) の一般公式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      定義と構造定数
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gell-mann" class="md-nav__link">
+    <span class="md-ellipsis">
+      一般化 Gell-Mann 基底
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fierz" class="md-nav__link">
+    <span class="md-ellipsis">
+      縮約公式（Fierz 型）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#casimir-dynkin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Casimir 演算子と Dynkin 指数
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-beta" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 ループ \(\beta\) 関数の係数（参考）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#polyakov" class="md-nav__link">
+    <span class="md-ellipsis">
+      中心と Polyakov ループ
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-su2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. \(SU(2)\)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-su3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. \(SU(3)\)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. \(SU(3)\)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gell-mann-lambdaa-2ta" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gell-Mann 行列 \(\lambda^a = 2t^a\)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#0" class="md-nav__link">
+    <span class="md-ellipsis">
+      構造定数（0 でない独立成分）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      表現
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-su5-higgs" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. \(SU(5)\) と随伴 Higgs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. \(SU(5)\) と随伴 Higgs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      表現
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#su5supset-su3_ctimes-su2_ltimes-u1_y" class="md-nav__link">
+    <span class="md-ellipsis">
+      分岐則 \(SU(5)\supset SU(3)_c\times SU(2)_L\times U(1)_Y\)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#su5supset-su4times-u1" class="md-nav__link">
+    <span class="md-ellipsis">
+      分岐則 \(SU(5)\supset SU(4)\times U(1)\)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#higgs-phi-phia-ta" class="md-nav__link">
+    <span class="md-ellipsis">
+      随伴 Higgs \(\Phi = \Phi^a t^a\)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-young" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Young 図とテンソル積
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Young 図とテンソル積">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      次元（hook 公式）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      基本的な規則
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#littlewoodrichardson-lambdaotimesmu" class="md-nav__link">
+    <span class="md-ellipsis">
+      Littlewood–Richardson 則（\(\lambda\otimes\mu\)）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schurweyl" class="md-nav__link">
+    <span class="md-ellipsis">
+      対称群との対応（Schur–Weyl）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. 随伴表現
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-haar" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Haar 測度と群積分
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Haar 測度と群積分">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      定義
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weyl-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Weyl 積分公式（class 関数）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      指標の直交性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      行列要素の積分
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      生成子の積分（随伴表現）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#su3polyakov" class="md-nav__link">
+    <span class="md-ellipsis">
+      トレースの積分（\(SU(3)\)、Polyakov ループの計算で使う）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. 強結合展開の道具
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. 強結合展開の道具">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      指標展開
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sun" class="md-nav__link">
+    <span class="md-ellipsis">
+      最低次の結果（\(SU(N)\)）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      リンク積分の基本形
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#polyakov_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      重クォークの Polyakov ループ
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="lie-sun">Lie 群・表現論 公式集（SU(N) と格子計算向け）</h1>
+<p>主な出典:</p>
+<ul>
+<li>H. Georgi, <em>Lie Algebras in Particle Physics</em>, 2nd ed. (Westview, 1999)</li>
+<li>R. Slansky, "Group theory for unified model building", Phys. Rept. 79, 1 (1981)（分岐則・次元の表）</li>
+<li>M. Creutz, <em>Quarks, Gluons and Lattices</em> (Cambridge, 1983), Chap. 8（Haar 測度と群積分）</li>
+<li>I. Montvay and G. Münster, <em>Quantum Fields on a Lattice</em> (Cambridge, 1994), Chap. 3</li>
+<li>M. E. Peskin and D. V. Schroeder, <em>An Introduction to QFT</em> (1995), §15.4, Appendix A.3</li>
+<li>L.-F. Li, "Group theory of the spontaneously broken gauge symmetries", Phys. Rev. D 9, 1723 (1974)（随伴 Higgs の対称性の破れ）</li>
+</ul>
+<p><span class="arithmatex">\(SU(N)\)</span> 全般 → <span class="arithmatex">\(SU(2)\)</span>, <span class="arithmatex">\(SU(3)\)</span>, <span class="arithmatex">\(SU(5)\)</span> の具体形 → Young 図とテンソル積 → 随伴表現と随伴 Higgs → Haar 測度と群積分 → 強結合展開、の順に並べる。
+<a href="../Peskin/">Peskin 公式集</a> の A.3（群論）と重なる部分は同じ規約で書く。</p>
+<div class="admonition warning">
+<p class="admonition-title">規約の要点</p>
+<ul>
+<li>生成子は Hermite、<span class="arithmatex">\(\mathrm{tr}(t^a t^b) = \tfrac12\delta^{ab}\)</span>（基本表現）。物理の標準で、Peskin と同じ。数学の文献は反 Hermite <span class="arithmatex">\(X^a = -it^a\)</span> を使うことが多い</li>
+<li>群元は <span class="arithmatex">\(U = \exp(i\theta^a t^a)\)</span>。<span class="arithmatex">\(U = \exp(\theta^a X^a)\)</span> と書く文献では <span class="arithmatex">\(\theta\)</span> の符号が変わる</li>
+<li>随伴表現の生成子は <span class="arithmatex">\((T^a_A)_{bc} = -if^{abc}\)</span>。<span class="arithmatex">\(\mathrm{tr}(T^a_A T^b_A) = N\delta^{ab}\)</span></li>
+<li>Haar 測度は <span class="arithmatex">\(\int dU = 1\)</span> に規格化する</li>
+<li>Young 図の行の長さを <span class="arithmatex">\(\lambda = (\lambda_1 \ge \lambda_2 \ge \cdots)\)</span>、Dynkin ラベルを <span class="arithmatex">\([a_1, \ldots, a_{N-1}]\)</span>（<span class="arithmatex">\(a_i = \lambda_i - \lambda_{i+1}\)</span>）と書く。<span class="arithmatex">\(\bar{r}\)</span> は複素共役表現</li>
+</ul>
+</div>
+<hr />
+<h2 id="1-sun">1. <span class="arithmatex">\(SU(N)\)</span> の一般公式</h2>
+<h3 id="_1">定義と構造定数</h3>
+<div class="arithmatex">\[
+U^\dagger U = \mathbf{1}, \qquad \det U = 1, \qquad U = \exp(i\theta^a t^a), \qquad a = 1, \ldots, N^2 - 1
+\]</div>
+<div class="arithmatex">\[
+(t^a)^\dagger = t^a, \qquad \mathrm{tr}\,t^a = 0, \qquad \mathrm{tr}(t^a t^b) = \tfrac12\delta^{ab}, \qquad
+[t^a, t^b] = if^{abc}t^c, \qquad \{t^a, t^b\} = \frac1N\delta^{ab}\mathbf{1} + d^{abc}t^c
+\]</div>
+<div class="arithmatex">\[
+t^a t^b = \frac{1}{2N}\delta^{ab}\mathbf{1} + \frac12\bigl(d^{abc} + if^{abc}\bigr)t^c, \qquad
+f^{abc} = -2i\,\mathrm{tr}\bigl([t^a, t^b]t^c\bigr), \qquad d^{abc} = 2\,\mathrm{tr}\bigl(\{t^a, t^b\}t^c\bigr)
+\]</div>
+<p><span class="arithmatex">\(f^{abc}\)</span> は完全反対称、<span class="arithmatex">\(d^{abc}\)</span> は完全対称。<span class="arithmatex">\(SU(2)\)</span> では <span class="arithmatex">\(d^{abc} = 0\)</span>。Jacobi 恒等式:</p>
+<div class="arithmatex">\[
+f^{abe}f^{ecd} + f^{bce}f^{ead} + f^{cae}f^{ebd} = 0
+\]</div>
+<h3 id="gell-mann">一般化 Gell-Mann 基底</h3>
+<p><span class="arithmatex">\(N^2 - 1\)</span> 個の生成子を、対称型 <span class="arithmatex">\(\tfrac12(E_{jk} + E_{kj})\)</span>、反対称型 <span class="arithmatex">\(-\tfrac{i}{2}(E_{jk} - E_{kj})\)</span>（<span class="arithmatex">\(j &lt; k\)</span>、<span class="arithmatex">\(E_{jk}\)</span> は <span class="arithmatex">\((j,k)\)</span> 成分だけ 1 の行列）と、対角型 <span class="arithmatex">\(N - 1\)</span> 個で作る:</p>
+<div class="arithmatex">\[
+t^{(k)} = \frac{1}{\sqrt{2k(k+1)}}\,\mathrm{diag}(\underbrace{1, \ldots, 1}_{k}, -k, 0, \ldots, 0), \qquad k = 1, \ldots, N - 1
+\]</div>
+<p>いずれも <span class="arithmatex">\(\mathrm{tr}(t^a t^b) = \tfrac12\delta^{ab}\)</span> を満たす。</p>
+<h3 id="fierz">縮約公式（Fierz 型）</h3>
+<div class="arithmatex">\[
+(t^a)_{ij}(t^a)_{kl} = \frac12\Bigl(\delta_{il}\delta_{kj} - \frac1N\delta_{ij}\delta_{kl}\Bigr)
+\]</div>
+<div class="arithmatex">\[
+t^a t^a = C_F\mathbf{1} = \frac{N^2 - 1}{2N}\mathbf{1}, \qquad
+t^a t^b t^a = -\frac{1}{2N}t^b, \qquad
+t^a\,M\,t^a = \frac12\mathrm{tr}(M)\mathbf{1} - \frac{1}{2N}M
+\]</div>
+<div class="arithmatex">\[
+\mathrm{tr}(t^a t^b t^c) = \frac14\bigl(d^{abc} + if^{abc}\bigr), \qquad
+\mathrm{tr}(t^a t^b t^a t^c) = -\frac{1}{4N}\delta^{bc}, \qquad
+\mathrm{tr}(t^a t^b)\,\mathrm{tr}(t^a t^c) = \frac14\delta^{bc}
+\]</div>
+<div class="arithmatex">\[
+f^{acd}f^{bcd} = N\delta^{ab}, \qquad
+d^{acd}d^{bcd} = \frac{N^2 - 4}{N}\delta^{ab}, \qquad
+f^{acd}d^{bcd} = 0
+\]</div>
+<div class="arithmatex">\[
+f^{abc}t^b t^c = \frac{i}{2}N t^a, \qquad
+d^{abc}t^b t^c = \frac{N^2 - 4}{2N}t^a
+\]</div>
+<div class="arithmatex">\[
+f^{abe}f^{cde} = \frac2N\bigl(\delta^{ac}\delta^{bd} - \delta^{ad}\delta^{bc}\bigr) + d^{ace}d^{bde} - d^{ade}d^{bce}
+\]</div>
+<h3 id="casimir-dynkin">Casimir 演算子と Dynkin 指数</h3>
+<p>表現 <span class="arithmatex">\(r\)</span>（次元 <span class="arithmatex">\(d(r)\)</span>、生成子 <span class="arithmatex">\(T^a_r\)</span>）に対して</p>
+<div class="arithmatex">\[
+T^a_r T^a_r = C_2(r)\mathbf{1}, \qquad \mathrm{tr}(T^a_r T^b_r) = T(r)\delta^{ab}, \qquad
+T(r)\,(N^2 - 1) = C_2(r)\,d(r)
+\]</div>
+<p>Peskin の記法では <span class="arithmatex">\(C(r) = T(r)\)</span>。基本表現 <span class="arithmatex">\(F\)</span> と随伴表現 <span class="arithmatex">\(A\)</span>:</p>
+<div class="arithmatex">\[
+C_2(F) = C_F = \frac{N^2 - 1}{2N}, \qquad T(F) = \frac12, \qquad
+C_2(A) = C_A = N, \qquad T(A) = N
+\]</div>
+<p>Young 図 <span class="arithmatex">\(\lambda\)</span>（箱の総数 <span class="arithmatex">\(n = \sum_i\lambda_i\)</span>、列の長さ <span class="arithmatex">\(\lambda^T_j\)</span>）で指定した既約表現の 2 次 Casimir:</p>
+<div class="arithmatex">\[
+C_2(\lambda) = \frac12\Bigl[\,nN + \sum_i\lambda_i^2 - \sum_j(\lambda^T_j)^2 - \frac{n^2}{N}\Bigr]
+\]</div>
+<p>代表的な表現:</p>
+<table>
+<thead>
+<tr>
+<th>表現</th>
+<th>Young 図</th>
+<th><span class="arithmatex">\(d(r)\)</span></th>
+<th><span class="arithmatex">\(C_2(r)\)</span></th>
+<th><span class="arithmatex">\(T(r)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基本 <span class="arithmatex">\(N\)</span></td>
+<td><span class="arithmatex">\((1)\)</span></td>
+<td><span class="arithmatex">\(N\)</span></td>
+<td><span class="arithmatex">\(\dfrac{N^2-1}{2N}\)</span></td>
+<td><span class="arithmatex">\(\dfrac12\)</span></td>
+</tr>
+<tr>
+<td>対称 2 階</td>
+<td><span class="arithmatex">\((2)\)</span></td>
+<td><span class="arithmatex">\(\dfrac{N(N+1)}{2}\)</span></td>
+<td><span class="arithmatex">\(\dfrac{(N-1)(N+2)}{N}\)</span></td>
+<td><span class="arithmatex">\(\dfrac{N+2}{2}\)</span></td>
+</tr>
+<tr>
+<td>反対称 2 階</td>
+<td><span class="arithmatex">\((1,1)\)</span></td>
+<td><span class="arithmatex">\(\dfrac{N(N-1)}{2}\)</span></td>
+<td><span class="arithmatex">\(\dfrac{(N+1)(N-2)}{N}\)</span></td>
+<td><span class="arithmatex">\(\dfrac{N-2}{2}\)</span></td>
+</tr>
+<tr>
+<td>随伴</td>
+<td><span class="arithmatex">\((2,1^{N-2})\)</span></td>
+<td><span class="arithmatex">\(N^2 - 1\)</span></td>
+<td><span class="arithmatex">\(N\)</span></td>
+<td><span class="arithmatex">\(N\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Casimir スケーリング（弦張力の比）: <span class="arithmatex">\(\sigma_r/\sigma_F \approx C_2(r)/C_2(F)\)</span>。随伴では <span class="arithmatex">\(C_2(A)/C_2(F) = 2N^2/(N^2 - 1)\)</span>（<span class="arithmatex">\(SU(2)\)</span>: <span class="arithmatex">\(8/3\)</span>、<span class="arithmatex">\(SU(3)\)</span>: <span class="arithmatex">\(9/4\)</span>、<span class="arithmatex">\(SU(5)\)</span>: <span class="arithmatex">\(25/12\)</span>）。</p>
+<h3 id="1-beta">1 ループ <span class="arithmatex">\(\beta\)</span> 関数の係数（参考）</h3>
+<div class="arithmatex">\[
+\beta(g) = -\frac{g^3}{(4\pi)^2}b_0, \qquad
+b_0 = \frac{11}{3}C_2(G) - \frac43\sum_{\text{Dirac } f}T(r_f) - \frac13\sum_{\text{complex } s}T(r_s) - \frac16\sum_{\text{real } s}T(r_s)
+\]</div>
+<p>QCD（<span class="arithmatex">\(N_f\)</span> 個の基本表現 Dirac フェルミオン）では <span class="arithmatex">\(b_0 = 11 - \tfrac23 N_f\)</span>。</p>
+<h3 id="polyakov">中心と Polyakov ループ</h3>
+<div class="arithmatex">\[
+Z_N = \{z\mathbf{1} \mid z^N = 1\}, \qquad z = e^{2\pi ik/N}
+\]</div>
+<p><span class="arithmatex">\(N\)</span> 重性（<span class="arithmatex">\(N\)</span>-ality）<span class="arithmatex">\(k\)</span> の表現は中心の元 <span class="arithmatex">\(z\)</span> で <span class="arithmatex">\(z^k\)</span> 倍になる。基本表現は <span class="arithmatex">\(k = 1\)</span>、随伴は <span class="arithmatex">\(k = 0\)</span>。
+中心変換 <span class="arithmatex">\(U_4(\mathbf{x}, t_0) \to zU_4(\mathbf{x}, t_0)\)</span> で Polyakov ループは <span class="arithmatex">\(L \to zL\)</span>、随伴ループ <span class="arithmatex">\(\lvert\mathrm{tr}\,L\rvert^2 - 1\)</span> は不変。</p>
+<hr />
+<h2 id="2-su2">2. <span class="arithmatex">\(SU(2)\)</span></h2>
+<div class="arithmatex">\[
+t^a = \frac{\sigma^a}{2}, \qquad f^{abc} = \epsilon^{abc}, \qquad d^{abc} = 0, \qquad
+U = \exp\Bigl(i\theta\,\hat{\mathbf n}\cdot\frac{\boldsymbol\sigma}{2}\Bigr) = \cos\frac\theta2 + i\,\hat{\mathbf n}\cdot\boldsymbol\sigma\,\sin\frac\theta2
+\]</div>
+<div class="arithmatex">\[
+U = a_0\mathbf{1} + i\,\mathbf{a}\cdot\boldsymbol\sigma, \qquad a_0^2 + \mathbf{a}^2 = 1, \qquad
+\mathrm{tr}\,U = 2a_0 = 2\cos\frac\theta2, \qquad U^\dagger = a_0 - i\,\mathbf{a}\cdot\boldsymbol\sigma
+\]</div>
+<p><span class="arithmatex">\(SU(2)\)</span> の基本表現は擬実: <span class="arithmatex">\(\sigma^2 U^*\sigma^2 = U\)</span>、<span class="arithmatex">\(\bar 2 \cong 2\)</span>。<span class="arithmatex">\(\epsilon_{ij}\)</span> で添字を上げ下げできる。</p>
+<p>表現はスピン <span class="arithmatex">\(j = 0, \tfrac12, 1, \ldots\)</span> で指定する:</p>
+<div class="arithmatex">\[
+d(j) = 2j + 1, \qquad C_2(j) = j(j + 1), \qquad T(j) = \frac{j(j+1)(2j+1)}{3}, \qquad
+j_1\otimes j_2 = \bigoplus_{J = \lvert j_1 - j_2\rvert}^{j_1 + j_2} J
+\]</div>
+<div class="arithmatex">\[
+2\otimes 2 = 1\oplus 3, \qquad 2\otimes 3 = 2\oplus 4, \qquad 3\otimes 3 = 1\oplus 3\oplus 5
+\]</div>
+<p>指標（固有値 <span class="arithmatex">\(e^{\pm i\theta/2}\)</span>、<span class="arithmatex">\(0 \le \theta \le 2\pi\)</span>）:</p>
+<div class="arithmatex">\[
+\chi_j(\theta) = \frac{\sin\bigl((2j+1)\theta/2\bigr)}{\sin(\theta/2)}, \qquad
+\chi_{1/2} = 2\cos\frac\theta2 = \mathrm{tr}\,U, \qquad
+\chi_1 = 4\cos^2\frac\theta2 - 1 = \lvert\mathrm{tr}\,U\rvert^2 - 1
+\]</div>
+<p>Haar 測度（class 関数に対して）:</p>
+<div class="arithmatex">\[
+\int_{SU(2)}dU\,f(U) = \frac1\pi\int_0^{2\pi}d\theta\,\sin^2\frac\theta2\,f(\theta)
+= \frac{1}{\pi^2}\int d^4a\,\delta(a^2 - 1)\,f(a)
+\]</div>
+<hr />
+<h2 id="3-su3">3. <span class="arithmatex">\(SU(3)\)</span></h2>
+<h3 id="gell-mann-lambdaa-2ta">Gell-Mann 行列 <span class="arithmatex">\(\lambda^a = 2t^a\)</span></h3>
+<div class="arithmatex">\[
+\lambda^1 = \begin{pmatrix} 0&amp;1&amp;0 \\ 1&amp;0&amp;0 \\ 0&amp;0&amp;0 \end{pmatrix}, \quad
+\lambda^2 = \begin{pmatrix} 0&amp;-i&amp;0 \\ i&amp;0&amp;0 \\ 0&amp;0&amp;0 \end{pmatrix}, \quad
+\lambda^3 = \begin{pmatrix} 1&amp;0&amp;0 \\ 0&amp;-1&amp;0 \\ 0&amp;0&amp;0 \end{pmatrix}, \quad
+\lambda^4 = \begin{pmatrix} 0&amp;0&amp;1 \\ 0&amp;0&amp;0 \\ 1&amp;0&amp;0 \end{pmatrix}
+\]</div>
+<div class="arithmatex">\[
+\lambda^5 = \begin{pmatrix} 0&amp;0&amp;-i \\ 0&amp;0&amp;0 \\ i&amp;0&amp;0 \end{pmatrix}, \quad
+\lambda^6 = \begin{pmatrix} 0&amp;0&amp;0 \\ 0&amp;0&amp;1 \\ 0&amp;1&amp;0 \end{pmatrix}, \quad
+\lambda^7 = \begin{pmatrix} 0&amp;0&amp;0 \\ 0&amp;0&amp;-i \\ 0&amp;i&amp;0 \end{pmatrix}, \quad
+\lambda^8 = \frac{1}{\sqrt3}\begin{pmatrix} 1&amp;0&amp;0 \\ 0&amp;1&amp;0 \\ 0&amp;0&amp;-2 \end{pmatrix}
+\]</div>
+<div class="arithmatex">\[
+\mathrm{tr}(\lambda^a\lambda^b) = 2\delta^{ab}, \qquad [\lambda^a, \lambda^b] = 2if^{abc}\lambda^c, \qquad
+\{\lambda^a, \lambda^b\} = \frac43\delta^{ab}\mathbf{1} + 2d^{abc}\lambda^c
+\]</div>
+<h3 id="0">構造定数（0 でない独立成分）</h3>
+<div class="arithmatex">\[
+f^{123} = 1, \qquad f^{147} = f^{246} = f^{257} = f^{345} = \frac12, \qquad f^{156} = f^{367} = -\frac12, \qquad f^{458} = f^{678} = \frac{\sqrt3}{2}
+\]</div>
+<div class="arithmatex">\[
+d^{118} = d^{228} = d^{338} = \frac{1}{\sqrt3}, \qquad d^{888} = -\frac{1}{\sqrt3}, \qquad
+d^{146} = d^{157} = d^{256} = d^{344} = d^{355} = \frac12
+\]</div>
+<div class="arithmatex">\[
+d^{247} = d^{366} = d^{377} = -\frac12, \qquad
+d^{448} = d^{558} = d^{668} = d^{778} = -\frac{1}{2\sqrt3}
+\]</div>
+<h3 id="_2">表現</h3>
+<p>Dynkin ラベル <span class="arithmatex">\((p, q)\)</span>（上付き添字 <span class="arithmatex">\(p\)</span> 個、下付き添字 <span class="arithmatex">\(q\)</span> 個の対称テンソル）で</p>
+<div class="arithmatex">\[
+d(p,q) = \frac{(p+1)(q+1)(p+q+2)}{2}, \qquad
+C_2(p,q) = \frac{p^2 + q^2 + pq + 3p + 3q}{3}, \qquad \overline{(p,q)} = (q,p)
+\]</div>
+<table>
+<thead>
+<tr>
+<th>表現</th>
+<th><span class="arithmatex">\((p,q)\)</span></th>
+<th>Young 図</th>
+<th><span class="arithmatex">\(C_2\)</span></th>
+<th><span class="arithmatex">\(T\)</span></th>
+<th><span class="arithmatex">\(N\)</span> 重性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(3\)</span></td>
+<td><span class="arithmatex">\((1,0)\)</span></td>
+<td><span class="arithmatex">\((1)\)</span></td>
+<td><span class="arithmatex">\(4/3\)</span></td>
+<td><span class="arithmatex">\(1/2\)</span></td>
+<td>1</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\bar 3\)</span></td>
+<td><span class="arithmatex">\((0,1)\)</span></td>
+<td><span class="arithmatex">\((1,1)\)</span></td>
+<td><span class="arithmatex">\(4/3\)</span></td>
+<td><span class="arithmatex">\(1/2\)</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(6\)</span></td>
+<td><span class="arithmatex">\((2,0)\)</span></td>
+<td><span class="arithmatex">\((2)\)</span></td>
+<td><span class="arithmatex">\(10/3\)</span></td>
+<td><span class="arithmatex">\(5/2\)</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(8\)</span></td>
+<td><span class="arithmatex">\((1,1)\)</span></td>
+<td><span class="arithmatex">\((2,1)\)</span></td>
+<td><span class="arithmatex">\(3\)</span></td>
+<td><span class="arithmatex">\(3\)</span></td>
+<td>0</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(10\)</span></td>
+<td><span class="arithmatex">\((3,0)\)</span></td>
+<td><span class="arithmatex">\((3)\)</span></td>
+<td><span class="arithmatex">\(6\)</span></td>
+<td><span class="arithmatex">\(15/2\)</span></td>
+<td>0</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(15\)</span></td>
+<td><span class="arithmatex">\((2,1)\)</span></td>
+<td><span class="arithmatex">\((3,1)\)</span></td>
+<td><span class="arithmatex">\(16/3\)</span></td>
+<td><span class="arithmatex">\(10\)</span></td>
+<td>1</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(27\)</span></td>
+<td><span class="arithmatex">\((2,2)\)</span></td>
+<td><span class="arithmatex">\((4,2)\)</span></td>
+<td><span class="arithmatex">\(8\)</span></td>
+<td><span class="arithmatex">\(27\)</span></td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>テンソル積:</p>
+<div class="arithmatex">\[
+3\otimes 3 = \bar 3\oplus 6, \qquad 3\otimes\bar 3 = 1\oplus 8, \qquad
+3\otimes 3\otimes 3 = 1\oplus 8\oplus 8\oplus 10
+\]</div>
+<div class="arithmatex">\[
+8\otimes 8 = 1\oplus 8\oplus 8\oplus 10\oplus\overline{10}\oplus 27, \qquad
+3\otimes 8 = 3\oplus\bar 6\oplus 15, \qquad
+6\otimes\bar 3 = 3\oplus 15
+\]</div>
+<p>指標（固有値 <span class="arithmatex">\(e^{i\theta_1}, e^{i\theta_2}, e^{-i\theta_1 - i\theta_2}\)</span>）:</p>
+<div class="arithmatex">\[
+\chi_3 = \mathrm{tr}\,U, \qquad \chi_{\bar 3} = \mathrm{tr}\,U^\dagger = (\mathrm{tr}\,U)^*, \qquad
+\chi_8 = \lvert\mathrm{tr}\,U\rvert^2 - 1
+\]</div>
+<div class="arithmatex">\[
+\chi_6 = \frac12\bigl[(\mathrm{tr}\,U)^2 + \mathrm{tr}\,U^2\bigr], \qquad
+\chi_{(1,1)} = \frac12\bigl[(\mathrm{tr}\,U)^2 - \mathrm{tr}\,U^2\bigr] = \chi_{\bar 3}
+\]</div>
+<p>一般に <span class="arithmatex">\(\chi_{(2)} = \tfrac12[(\mathrm{tr}\,U)^2 + \mathrm{tr}\,U^2]\)</span>、<span class="arithmatex">\(\chi_{(1,1)} = \tfrac12[(\mathrm{tr}\,U)^2 - \mathrm{tr}\,U^2]\)</span> は <span class="arithmatex">\(SU(N)\)</span> で成り立つ。<span class="arithmatex">\(SU(3)\)</span> では <span class="arithmatex">\((1,1) = \bar 3\)</span> なので <span class="arithmatex">\((\mathrm{tr}\,U)^* = \tfrac12[(\mathrm{tr}\,U)^2 - \mathrm{tr}\,U^2]\)</span> という恒等式になる。</p>
+<hr />
+<h2 id="4-su5-higgs">4. <span class="arithmatex">\(SU(5)\)</span> と随伴 Higgs</h2>
+<h3 id="_3">表現</h3>
+<table>
+<thead>
+<tr>
+<th>表現</th>
+<th>Dynkin</th>
+<th>Young 図</th>
+<th><span class="arithmatex">\(C_2\)</span></th>
+<th><span class="arithmatex">\(T\)</span></th>
+<th><span class="arithmatex">\(N\)</span> 重性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(5\)</span></td>
+<td><span class="arithmatex">\([1,0,0,0]\)</span></td>
+<td><span class="arithmatex">\((1)\)</span></td>
+<td><span class="arithmatex">\(12/5\)</span></td>
+<td><span class="arithmatex">\(1/2\)</span></td>
+<td>1</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(10\)</span></td>
+<td><span class="arithmatex">\([0,1,0,0]\)</span></td>
+<td><span class="arithmatex">\((1,1)\)</span></td>
+<td><span class="arithmatex">\(18/5\)</span></td>
+<td><span class="arithmatex">\(3/2\)</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(15\)</span></td>
+<td><span class="arithmatex">\([2,0,0,0]\)</span></td>
+<td><span class="arithmatex">\((2)\)</span></td>
+<td><span class="arithmatex">\(28/5\)</span></td>
+<td><span class="arithmatex">\(7/2\)</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(24\)</span></td>
+<td><span class="arithmatex">\([1,0,0,1]\)</span></td>
+<td><span class="arithmatex">\((2,1,1,1)\)</span></td>
+<td><span class="arithmatex">\(5\)</span></td>
+<td><span class="arithmatex">\(5\)</span></td>
+<td>0</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(45\)</span></td>
+<td><span class="arithmatex">\([0,1,0,1]\)</span></td>
+<td><span class="arithmatex">\((2,2,1,1)\)</span></td>
+<td><span class="arithmatex">\(32/5\)</span></td>
+<td><span class="arithmatex">\(12\)</span></td>
+<td>1</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(50\)</span></td>
+<td><span class="arithmatex">\([0,2,0,0]\)</span></td>
+<td><span class="arithmatex">\((2,2)\)</span></td>
+<td><span class="arithmatex">\(42/5\)</span></td>
+<td><span class="arithmatex">\(35/2\)</span></td>
+<td>4</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(75\)</span></td>
+<td><span class="arithmatex">\([0,1,1,0]\)</span></td>
+<td><span class="arithmatex">\((2,2,1)\)</span></td>
+<td><span class="arithmatex">\(8\)</span></td>
+<td><span class="arithmatex">\(25\)</span></td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><span class="arithmatex">\(45\)</span> と <span class="arithmatex">\(50\)</span> はどちらを <span class="arithmatex">\(\bar{\ }\)</span> 付きと呼ぶかが文献で分かれる。本ページは <span class="arithmatex">\(\bar 5\otimes 10 = 5\oplus 45\)</span>、<span class="arithmatex">\(10\otimes 10 \ni 50\)</span> が成り立つように付けた（Slansky と同じ）。<span class="arithmatex">\(24\)</span>, <span class="arithmatex">\(75\)</span> は自己共役。</p>
+<p>テンソル積:</p>
+<div class="arithmatex">\[
+5\otimes 5 = 10\oplus 15, \qquad 5\otimes\bar 5 = 1\oplus 24, \qquad
+5\otimes 10 = \overline{10}\oplus 40, \qquad \bar 5\otimes 10 = 5\oplus 45
+\]</div>
+<div class="arithmatex">\[
+10\otimes 10 = \bar 5\oplus\overline{45}\oplus 50, \qquad
+5\otimes 24 = 5\oplus 45\oplus 70, \qquad
+24\otimes 24 = 1\oplus 24\oplus 24\oplus 75\oplus 126\oplus\overline{126}\oplus 200
+\]</div>
+<h3 id="su5supset-su3_ctimes-su2_ltimes-u1_y">分岐則 <span class="arithmatex">\(SU(5)\supset SU(3)_c\times SU(2)_L\times U(1)_Y\)</span></h3>
+<p><span class="arithmatex">\(Y\)</span> の規格化は <span class="arithmatex">\(Q = T_3 + Y\)</span>。<span class="arithmatex">\(\bar 5\)</span> に <span class="arithmatex">\((d^c, L)\)</span>、<span class="arithmatex">\(10\)</span> に <span class="arithmatex">\((Q, u^c, e^c)\)</span> が入る。</p>
+<div class="arithmatex">\[
+5 = (3, 1)_{-1/3}\oplus(1, 2)_{1/2}, \qquad
+\bar 5 = (\bar 3, 1)_{1/3}\oplus(1, 2)_{-1/2}
+\]</div>
+<div class="arithmatex">\[
+10 = (3, 2)_{1/6}\oplus(\bar 3, 1)_{-2/3}\oplus(1, 1)_1, \qquad
+24 = (8, 1)_0\oplus(1, 3)_0\oplus(1, 1)_0\oplus(3, 2)_{-5/6}\oplus(\bar 3, 2)_{5/6}
+\]</div>
+<p><span class="arithmatex">\(24\)</span> の <span class="arithmatex">\((3,2)_{-5/6}\oplus(\bar 3,2)_{5/6}\)</span> が <span class="arithmatex">\(X, Y\)</span> ボソン。<span class="arithmatex">\(U(1)_Y\)</span> の生成子を <span class="arithmatex">\(SU(5)\)</span> の規格化に合わせると</p>
+<div class="arithmatex">\[
+T_Y = \sqrt{\frac35}\,Y = \frac{1}{\sqrt{60}}\,\mathrm{diag}(-2,-2,-2,3,3), \qquad
+\sin^2\theta_W\big|_{\text{GUT}} = \frac38
+\]</div>
+<h3 id="su5supset-su4times-u1">分岐則 <span class="arithmatex">\(SU(5)\supset SU(4)\times U(1)\)</span></h3>
+<div class="arithmatex">\[
+5 = 4_1\oplus 1_{-4}, \qquad 10 = 6_2\oplus 4_{-3}, \qquad
+24 = 15_0\oplus 1_0\oplus 4_5\oplus\bar 4_{-5}
+\]</div>
+<p>（<span class="arithmatex">\(U(1)\)</span> 電荷は <span class="arithmatex">\(\mathrm{diag}(1,1,1,1,-4)\)</span> で定義。）</p>
+<h3 id="higgs-phi-phia-ta">随伴 Higgs <span class="arithmatex">\(\Phi = \Phi^a t^a\)</span></h3>
+<div class="arithmatex">\[
+\Phi^\dagger = \Phi, \qquad \mathrm{tr}\,\Phi = 0, \qquad \Phi\to U\Phi U^\dagger, \qquad
+\mathrm{tr}\,\Phi^2 = \frac12\Phi^a\Phi^a, \qquad D_\mu\Phi = \partial_\mu\Phi - ig[A_\mu, \Phi]
+\]</div>
+<p>独立な不変量は <span class="arithmatex">\(\mathrm{tr}\,\Phi^2, \mathrm{tr}\,\Phi^3, \ldots, \mathrm{tr}\,\Phi^N\)</span> の <span class="arithmatex">\(N - 1\)</span> 個。4 次までのポテンシャルは</p>
+<div class="arithmatex">\[
+V(\Phi) = \frac{m^2}{2}\mathrm{tr}\,\Phi^2 + \frac{c}{3}\mathrm{tr}\,\Phi^3 + \lambda_1(\mathrm{tr}\,\Phi^2)^2 + \lambda_2\,\mathrm{tr}\,\Phi^4
+\]</div>
+<ul>
+<li><span class="arithmatex">\(SU(2)\)</span>: <span class="arithmatex">\(\mathrm{tr}\,\Phi^3 = 0\)</span>、<span class="arithmatex">\(\mathrm{tr}\,\Phi^4 = \tfrac12(\mathrm{tr}\,\Phi^2)^2\)</span></li>
+<li><span class="arithmatex">\(SU(3)\)</span>: <span class="arithmatex">\(\mathrm{tr}\,\Phi^4 = \tfrac12(\mathrm{tr}\,\Phi^2)^2\)</span>（トレースレス <span class="arithmatex">\(3\times3\)</span> の恒等式）</li>
+<li><span class="arithmatex">\(N\ge4\)</span>: <span class="arithmatex">\((\mathrm{tr}\,\Phi^2)^2\)</span> と <span class="arithmatex">\(\mathrm{tr}\,\Phi^4\)</span> が独立</li>
+</ul>
+<p><span class="arithmatex">\(SU(5)\)</span> の真空（Li 1974）。<span class="arithmatex">\(\Phi\)</span> を対角化して <span class="arithmatex">\(\Phi = v\,\mathrm{diag}(\phi_1, \ldots, \phi_5)\)</span> とすると、<span class="arithmatex">\(\lambda_2 &gt; 0\)</span> なら <span class="arithmatex">\(\mathrm{tr}\,\Phi^4/(\mathrm{tr}\,\Phi^2)^2\)</span> を最小にする配位、<span class="arithmatex">\(\lambda_2 &lt; 0\)</span> なら最大にする配位が選ばれる:</p>
+<table>
+<thead>
+<tr>
+<th>真空</th>
+<th>残る対称性</th>
+<th><span class="arithmatex">\(\mathrm{tr}\,\Phi^2\)</span></th>
+<th><span class="arithmatex">\(\mathrm{tr}\,\Phi^3\)</span></th>
+<th><span class="arithmatex">\(\mathrm{tr}\,\Phi^4\)</span></th>
+<th><span class="arithmatex">\(\mathrm{tr}\,\Phi^4/(\mathrm{tr}\,\Phi^2)^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(v\,\mathrm{diag}(2,2,2,-3,-3)\)</span></td>
+<td><span class="arithmatex">\(SU(3)\times SU(2)\times U(1)\)</span></td>
+<td><span class="arithmatex">\(30v^2\)</span></td>
+<td><span class="arithmatex">\(-30v^3\)</span></td>
+<td><span class="arithmatex">\(210v^4\)</span></td>
+<td><span class="arithmatex">\(7/30\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(v\,\mathrm{diag}(1,1,1,1,-4)\)</span></td>
+<td><span class="arithmatex">\(SU(4)\times U(1)\)</span></td>
+<td><span class="arithmatex">\(20v^2\)</span></td>
+<td><span class="arithmatex">\(-60v^3\)</span></td>
+<td><span class="arithmatex">\(260v^4\)</span></td>
+<td><span class="arithmatex">\(13/20\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><span class="arithmatex">\(c = 0\)</span> のとき <span class="arithmatex">\(\lambda_2 &gt; 0\)</span> で <span class="arithmatex">\(SU(3)\times SU(2)\times U(1)\)</span>、<span class="arithmatex">\(\lambda_2 &lt; 0\)</span> で <span class="arithmatex">\(SU(4)\times U(1)\)</span>。<span class="arithmatex">\(c \ne 0\)</span> では境界が動く（<span class="arithmatex">\(\mathrm{tr}\,\Phi^3\)</span> の符号は <span class="arithmatex">\(\Phi\to-\Phi\)</span> で反転するので <span class="arithmatex">\(c\)</span> の符号は真空の符号に吸収できる）。</p>
+<p>一般の <span class="arithmatex">\(SU(N)\)</span> 随伴 Higgs の真空は <span class="arithmatex">\(\Phi \propto \mathrm{diag}(\underbrace{N-k, \ldots}_{k}, \underbrace{-k, \ldots}_{N-k})\)</span> の形で、残る対称性は <span class="arithmatex">\(SU(k)\times SU(N-k)\times U(1)\)</span>。<span class="arithmatex">\(\lambda_2 &gt; 0\)</span> では <span class="arithmatex">\(k = \lfloor N/2\rfloor\)</span> に最も近い分割、<span class="arithmatex">\(\lambda_2 &lt; 0\)</span> では <span class="arithmatex">\(k = 1\)</span> が選ばれる。</p>
+<hr />
+<h2 id="5-young">5. Young 図とテンソル積</h2>
+<h3 id="hook">次元（hook 公式）</h3>
+<p>Young 図 <span class="arithmatex">\(\lambda\)</span> の箱 <span class="arithmatex">\((i,j)\)</span>（<span class="arithmatex">\(i\)</span> 行 <span class="arithmatex">\(j\)</span> 列）に対して</p>
+<div class="arithmatex">\[
+d_N(\lambda) = \prod_{(i,j)\in\lambda}\frac{N + j - i}{h(i,j)}, \qquad
+h(i,j) = (\lambda_i - j) + (\lambda^T_j - i) + 1
+\]</div>
+<p><span class="arithmatex">\(h(i,j)\)</span> はその箱の右と下にある箱の数に 1 を足したもの。</p>
+<h3 id="_4">基本的な規則</h3>
+<ul>
+<li>1 列 <span class="arithmatex">\(N\)</span> 箱は 1 重項。1 列 <span class="arithmatex">\(k\)</span> 箱は反対称 <span class="arithmatex">\(k\)</span> 階テンソル、次元 <span class="arithmatex">\(\binom{N}{k}\)</span></li>
+<li>複素共役表現 <span class="arithmatex">\(\bar\lambda\)</span>: 各列を <span class="arithmatex">\(N\)</span> 箱に補完した図（列の長さ <span class="arithmatex">\(N - \lambda^T_j\)</span> を逆順に並べる）。<span class="arithmatex">\(\bar N = (1^{N-1})\)</span>、随伴 <span class="arithmatex">\((2, 1^{N-2})\)</span> は自己共役</li>
+<li><span class="arithmatex">\(N\)</span> 重性 <span class="arithmatex">\(= n \bmod N\)</span>。<span class="arithmatex">\(N\)</span> 重性の異なる表現の積には 1 重項が現れない</li>
+<li><span class="arithmatex">\(\lambda\otimes\mu\)</span> に 1 重項が含まれるのは <span class="arithmatex">\(\mu = \bar\lambda\)</span> のときだけ（多重度 1）</li>
+</ul>
+<h3 id="littlewoodrichardson-lambdaotimesmu">Littlewood–Richardson 則（<span class="arithmatex">\(\lambda\otimes\mu\)</span>）</h3>
+<ol>
+<li><span class="arithmatex">\(\mu\)</span> の 1 行目の箱に <span class="arithmatex">\(a\)</span>、2 行目に <span class="arithmatex">\(b\)</span>、… とラベルを付ける</li>
+<li><span class="arithmatex">\(\lambda\)</span> に <span class="arithmatex">\(a\)</span> の箱を、同じ列に 2 個以上入らないように付け足す（各段階で Young 図であること）</li>
+<li>次に <span class="arithmatex">\(b\)</span> の箱を同様に付け足す。以降同じ</li>
+<li>できた図の右上から左下へ（各行を右から左、行は上から下に）ラベルを読み、どの途中段階でも <span class="arithmatex">\(a\)</span> の数 <span class="arithmatex">\(\ge b\)</span> の数 <span class="arithmatex">\(\ge c\)</span> の数 … となるものだけ残す</li>
+<li>長さ <span class="arithmatex">\(N\)</span> の列は消す。長さ <span class="arithmatex">\(N\)</span> を超える列を持つ図は捨てる</li>
+</ol>
+<p>例: <span class="arithmatex">\(SU(N)\)</span> で <span class="arithmatex">\(N\otimes N = (2)\oplus(1,1)\)</span>、<span class="arithmatex">\(N\otimes\bar N = 1\oplus A\)</span>、<span class="arithmatex">\(A\otimes A = 1\oplus A\oplus A\oplus\cdots\)</span>。</p>
+<h3 id="schurweyl">対称群との対応（Schur–Weyl）</h3>
+<p><span class="arithmatex">\(n\)</span> 階テンソル <span class="arithmatex">\(V^{\otimes n}\)</span> は <span class="arithmatex">\(SU(N)\)</span> の Young 図 <span class="arithmatex">\(\lambda\)</span>（<span class="arithmatex">\(n\)</span> 箱）と <span class="arithmatex">\(S_n\)</span> の既約表現 <span class="arithmatex">\(\lambda\)</span> の対で分解する:</p>
+<div class="arithmatex">\[
+V^{\otimes n} = \bigoplus_{\lambda\vdash n,\ \lambda^T_1\le N} V_\lambda\otimes S_\lambda, \qquad
+N^n = \sum_\lambda d_N(\lambda)\,\dim S_\lambda
+\]</div>
+<p><span class="arithmatex">\(\dim S_\lambda = n!/\prod h(i,j)\)</span>。例: <span class="arithmatex">\(N^3 = d(3)\cdot1 + d(2,1)\cdot2 + d(1,1,1)\cdot1\)</span>。</p>
+<hr />
+<h2 id="6">6. 随伴表現</h2>
+<div class="arithmatex">\[
+(T^a_A)_{bc} = -if^{abc}, \qquad \mathrm{tr}(T^a_A T^b_A) = f^{acd}f^{bcd} = N\delta^{ab}, \qquad
+T^a_A T^a_A = N\mathbf{1}
+\]</div>
+<p>随伴表現の群元（実直交行列）:</p>
+<div class="arithmatex">\[
+U_A^{ab} = 2\,\mathrm{tr}\bigl(t^a U t^b U^\dagger\bigr), \qquad
+U\,t^b\,U^\dagger = t^a\,U_A^{ab}, \qquad U_A\in SO(N^2 - 1), \qquad
+\mathrm{tr}\,U_A = \lvert\mathrm{tr}\,U\rvert^2 - 1
+\]</div>
+<p>随伴表現は実で、中心 <span class="arithmatex">\(Z_N\)</span> を忘れる: <span class="arithmatex">\(SU(N)/Z_N\)</span> の表現。随伴 Polyakov ループは中心対称性で不変。</p>
+<p>基本表現の生成子と随伴表現の関係:</p>
+<div class="arithmatex">\[
+[t^a, t^b] = if^{abc}t^c = t^c\,(T^a_A)_{cb}, \qquad
+U^\dagger t^a U = U_A^{ab}\,t^b
+\]</div>
+<hr />
+<h2 id="7-haar">7. Haar 測度と群積分</h2>
+<h3 id="_5">定義</h3>
+<div class="arithmatex">\[
+\int dU = 1, \qquad \int dU\,f(U) = \int dU\,f(VU) = \int dU\,f(UV) = \int dU\,f(U^\dagger) \quad (V\in SU(N))
+\]</div>
+<h3 id="weyl-class">Weyl 積分公式（class 関数）</h3>
+<p>固有値 <span class="arithmatex">\(e^{i\theta_1}, \ldots, e^{i\theta_N}\)</span>（<span class="arithmatex">\(\sum\theta_i = 0 \bmod 2\pi\)</span>）に対して</p>
+<div class="arithmatex">\[
+\int_{SU(N)}dU\,f(U) = \frac{1}{N!}\int_{-\pi}^{\pi}\prod_{i=1}^{N}\frac{d\theta_i}{2\pi}\;2\pi\,\delta\Bigl(\sum_i\theta_i\Bigr)\prod_{i&lt;j}\bigl\lvert e^{i\theta_i} - e^{i\theta_j}\bigr\rvert^2\,f(\theta)
+\]</div>
+<p><span class="arithmatex">\(SU(2)\)</span> では <span class="arithmatex">\(\theta_1 = -\theta_2 = \theta/2\)</span> で第 2 節の形になる。<span class="arithmatex">\(SU(3)\)</span> では <span class="arithmatex">\(\theta_3 = -\theta_1 - \theta_2\)</span> として</p>
+<div class="arithmatex">\[
+\int_{SU(3)}dU\,f(U) = \frac{1}{6(2\pi)^2}\int d\theta_1 d\theta_2\,\prod_{i&lt;j}\bigl\lvert e^{i\theta_i} - e^{i\theta_j}\bigr\rvert^2 f(\theta_1, \theta_2)
+\]</div>
+<h3 id="_6">指標の直交性</h3>
+<div class="arithmatex">\[
+\int dU\,\chi_r(U)\,\chi_s(U)^* = \delta_{rs}, \qquad
+\int dU\,\chi_r(UV)\,\chi_s(U^\dagger W) = \frac{\delta_{rs}}{d_r}\chi_r(VW)
+\]</div>
+<div class="arithmatex">\[
+\int dU\,\chi_r(UVU^\dagger W) = \frac{1}{d_r}\chi_r(V)\chi_r(W), \qquad
+\int dU\,D_r(U)_{ij}\,D_s(U)^*_{kl} = \frac{\delta_{rs}}{d_r}\delta_{ik}\delta_{jl}
+\]</div>
+<p><span class="arithmatex">\(\chi_r(U) = \mathrm{tr}\,D_r(U)\)</span>。<span class="arithmatex">\(\chi_r(U^\dagger) = \chi_r(U)^* = \chi_{\bar r}(U)\)</span>。</p>
+<h3 id="_7">行列要素の積分</h3>
+<div class="arithmatex">\[
+\int dU\,U_{ij} = 0, \qquad
+\int dU\,U_{ij}\,U^*_{kl} = \frac1N\delta_{ik}\delta_{jl}, \qquad
+\int dU\,U_{ij}\,U^\dagger_{kl} = \frac1N\delta_{il}\delta_{jk}
+\]</div>
+<div class="arithmatex">\[
+\int dU\,U_{ij}\,U_{kl} = 0 \quad (N\ge3), \qquad
+\int_{SU(2)}dU\,U_{ij}\,U_{kl} = \frac12\epsilon_{ik}\epsilon_{jl}
+\]</div>
+<div class="arithmatex">\[
+\int_{SU(N)}dU\,U_{i_1 j_1}U_{i_2 j_2}\cdots U_{i_N j_N} = \frac{1}{N!}\epsilon_{i_1 i_2\cdots i_N}\epsilon_{j_1 j_2\cdots j_N}, \qquad
+\int_{SU(3)}dU\,U_{ij}U_{kl}U_{mn} = \frac16\epsilon_{ikm}\epsilon_{jln}
+\]</div>
+<p>4 個の積分（<span class="arithmatex">\(N\ge2\)</span>）:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\int dU\,U_{i_1 j_1}U_{i_2 j_2}U^*_{k_1 l_1}U^*_{k_2 l_2}
+&amp;= \frac{1}{N^2 - 1}\bigl(\delta_{i_1 k_1}\delta_{j_1 l_1}\delta_{i_2 k_2}\delta_{j_2 l_2} + \delta_{i_1 k_2}\delta_{j_1 l_2}\delta_{i_2 k_1}\delta_{j_2 l_1}\bigr) \\
+&amp;\quad - \frac{1}{N(N^2 - 1)}\bigl(\delta_{i_1 k_1}\delta_{j_1 l_2}\delta_{i_2 k_2}\delta_{j_2 l_1} + \delta_{i_1 k_2}\delta_{j_1 l_1}\delta_{i_2 k_1}\delta_{j_2 l_2}\bigr)
+\end{aligned}
+\]</div>
+<p>一般の <span class="arithmatex">\(\int dU\,U_{i_1 j_1}\cdots U_{i_n j_n}U^*_{k_1 l_1}\cdots U^*_{k_n l_n}\)</span> は Weingarten 関数 <span class="arithmatex">\(\mathrm{Wg}(\sigma\tau^{-1}, N)\)</span> で書ける（<span class="arithmatex">\(U(N)\)</span> では <span class="arithmatex">\(n &lt; N\)</span> で厳密。<span class="arithmatex">\(SU(N)\)</span> では <span class="arithmatex">\(\epsilon\)</span> 項が加わる）。</p>
+<h3 id="_8">生成子の積分（随伴表現）</h3>
+<div class="arithmatex">\[
+\int dU\,U_A^{ab} = 0, \qquad
+\int dU\,U_A^{ab}U_A^{cd} = \frac{1}{N^2 - 1}\delta^{ac}\delta^{bd}, \qquad
+\int dU\,\mathrm{tr}(t^a U t^b U^\dagger) = 0
+\]</div>
+<h3 id="su3polyakov">トレースの積分（<span class="arithmatex">\(SU(3)\)</span>、Polyakov ループの計算で使う）</h3>
+<p><span class="arithmatex">\(L = \mathrm{tr}\,U\)</span> として</p>
+<table>
+<thead>
+<tr>
+<th>被積分関数</th>
+<th><span class="arithmatex">\(\int dU\)</span></th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(L\)</span></td>
+<td><span class="arithmatex">\(0\)</span></td>
+<td><span class="arithmatex">\(3\)</span> に 1 重項なし</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\lvert L\rvert^2\)</span></td>
+<td><span class="arithmatex">\(1\)</span></td>
+<td><span class="arithmatex">\(3\otimes\bar 3 \ni 1\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(L^2\)</span></td>
+<td><span class="arithmatex">\(0\)</span></td>
+<td><span class="arithmatex">\(3\otimes 3 = \bar 3\oplus 6\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(L^3\)</span></td>
+<td><span class="arithmatex">\(1\)</span></td>
+<td><span class="arithmatex">\(3\otimes3\otimes3 \ni 1\)</span>（<span class="arithmatex">\(\epsilon\)</span> 縮約）</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(L^2 L^*\)</span></td>
+<td><span class="arithmatex">\(1\)</span></td>
+<td><span class="arithmatex">\((\bar 3\oplus 6)\otimes\bar 3 \ni 1\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\lvert L\rvert^4\)</span></td>
+<td><span class="arithmatex">\(2\)</span></td>
+<td><span class="arithmatex">\(\sum_r m_r^2\)</span>、<span class="arithmatex">\(3\otimes3 = \bar3\oplus 6\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\lvert L\rvert^6\)</span></td>
+<td><span class="arithmatex">\(6\)</span></td>
+<td><span class="arithmatex">\(3^{\otimes3} = 1\oplus8\oplus8\oplus10\)</span>、<span class="arithmatex">\(1+4+1\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\mathrm{tr}\,U^2\)</span></td>
+<td><span class="arithmatex">\(0\)</span></td>
+<td><span class="arithmatex">\(\chi_6 - \chi_{\bar 3}\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\lvert L\rvert^2 - 1\)</span></td>
+<td><span class="arithmatex">\(0\)</span></td>
+<td>随伴指標</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\((\lvert L\rvert^2 - 1)^2\)</span></td>
+<td><span class="arithmatex">\(1\)</span></td>
+<td><span class="arithmatex">\(8\otimes 8\ni 1\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>一般に <span class="arithmatex">\(\int dU\,\chi_{r_1}\cdots\chi_{r_k}\)</span> は <span class="arithmatex">\(r_1\otimes\cdots\otimes r_k\)</span> に含まれる 1 重項の数。<span class="arithmatex">\(\int dU\,\lvert\chi_r\rvert^2\lvert\chi_s\rvert^2 = \sum_t m_t(r\otimes s)^2\)</span>。</p>
+<p><span class="arithmatex">\(SU(2)\)</span> では <span class="arithmatex">\(\int dU\,L^2 = 1\)</span>、<span class="arithmatex">\(\int dU\,L^4 = 2\)</span>、<span class="arithmatex">\(\int dU\,L^{2k} = C_k\)</span>（Catalan 数 <span class="arithmatex">\(C_k = \binom{2k}{k}/(k+1)\)</span>）。</p>
+<hr />
+<h2 id="8">8. 強結合展開の道具</h2>
+<h3 id="_9">指標展開</h3>
+<p>Wilson 作用 <span class="arithmatex">\(S = \beta\sum_P\bigl[1 - \tfrac1N\mathrm{Re}\,\mathrm{tr}\,U_P\bigr]\)</span>、<span class="arithmatex">\(\beta = 2N/g^2\)</span>。プラケット因子を指標で展開する:</p>
+<div class="arithmatex">\[
+\exp\Bigl[\frac\beta N\mathrm{Re}\,\mathrm{tr}\,U\Bigr] = \sum_r c_r(\beta)\,\chi_r(U), \qquad
+c_r(\beta) = \int dU\,\exp\Bigl[\frac\beta N\mathrm{Re}\,\mathrm{tr}\,U\Bigr]\chi_r(U)^*
+\]</div>
+<div class="arithmatex">\[
+c_0 = 1 + \frac{\beta^2}{4N^2} + \mathcal{O}(\beta^4), \qquad
+c_F = c_{\bar F} = \frac{\beta}{2N} + \mathcal{O}(\beta^3), \qquad
+\frac{c_F}{c_0} = \frac{\beta}{2N} + \mathcal{O}(\beta^3)
+\]</div>
+<p><span class="arithmatex">\(SU(2)\)</span> では厳密に</p>
+<div class="arithmatex">\[
+\exp\Bigl[\frac\beta2\mathrm{tr}\,U\Bigr] = \sum_{j=0,\frac12,1,\ldots}\frac{2(2j+1)}{\beta}I_{2j+1}(\beta)\,\chi_j(U), \qquad
+\frac{c_{1/2}}{c_0} = \frac{2I_2(\beta)}{I_1(\beta)} \xrightarrow{\beta\to0} \frac\beta4
+\]</div>
+<p><span class="arithmatex">\(I_n\)</span> は変形 Bessel 関数。</p>
+<h3 id="sun">最低次の結果（<span class="arithmatex">\(SU(N)\)</span>）</h3>
+<div class="arithmatex">\[
+\Bigl\langle\frac1N\mathrm{Re}\,\mathrm{tr}\,U_P\Bigr\rangle = \frac{\beta}{2N^2} + \mathcal{O}(\beta^2), \qquad
+\langle W(R,T)\rangle = \Bigl(\frac{\beta}{2N^2}\Bigr)^{RT}\bigl[1 + \mathcal{O}(\beta)\bigr], \qquad
+\sigma a^2 = -\ln\frac{\beta}{2N^2} + \mathcal{O}(\beta)
+\]</div>
+<p><span class="arithmatex">\(SU(3)\)</span> では <span class="arithmatex">\(\sigma a^2 = -\ln(\beta/18)\)</span>。<span class="arithmatex">\(SU(2)\)</span> では <span class="arithmatex">\(-\ln(\beta/8)\)</span>（正確には <span class="arithmatex">\(-\ln(I_2/I_1)\)</span> の形で厳密に書ける）。</p>
+<h3 id="_10">リンク積分の基本形</h3>
+<p>ある 1 本のリンク <span class="arithmatex">\(U\)</span> が <span class="arithmatex">\(U\)</span> と <span class="arithmatex">\(U^\dagger\)</span> を 1 個ずつ含む場合:</p>
+<div class="arithmatex">\[
+\int dU\,\mathrm{tr}(AU)\,\mathrm{tr}(BU^\dagger) = \frac1N\mathrm{tr}(AB), \qquad
+\int dU\,\mathrm{tr}(AUBU^\dagger) = \frac1N\mathrm{tr}A\,\mathrm{tr}B
+\]</div>
+<p><span class="arithmatex">\(SU(3)\)</span> で <span class="arithmatex">\(U\)</span> が 3 個並ぶ場合（バリオン型）:</p>
+<div class="arithmatex">\[
+\int dU\,\mathrm{tr}(AU)\,\mathrm{tr}(BU)\,\mathrm{tr}(CU) = \frac16\epsilon_{ikm}\epsilon_{jln}A_{ji}B_{lk}C_{nm}
+\]</div>
+<h3 id="polyakov_1">重クォークの Polyakov ループ</h3>
+<p>Polyakov ループ <span class="arithmatex">\(L(\mathbf{x}) = \mathrm{tr}\prod_{t}U_4(\mathbf{x}, t)\)</span> について、ゲージ場を積分すると</p>
+<div class="arithmatex">\[
+\int\prod dU_4\;L(\mathbf{x}) = 0, \qquad
+\int\prod dU_4\;L(\mathbf{x})L^*(\mathbf{y}) = \delta_{\mathbf{x}\mathbf{y}} + \mathcal{O}(\beta^{N_t\cdot\lvert\mathbf{x}-\mathbf{y}\rvert}), \qquad
+\int\prod dU_4\;L(\mathbf{x})^N = 1
+\]</div>
+<p>最後の式が <span class="arithmatex">\(SU(N)\)</span> の <span class="arithmatex">\(N\)</span> クォーク（バリオン）状態に対応する。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  ページトップへ戻る
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.instant", "navigation.top", "navigation.indexes", "content.code.annotate", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../js/highlight.js"></script>
+      
+    
+  </body>
+</html>
