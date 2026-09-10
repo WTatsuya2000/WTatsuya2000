@@ -1,0 +1,1757 @@
+
+<!doctype html>
+<html lang="ja" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../syaritatsu.JPG">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.31">
+    
+    
+      
+        <title>Peskin & Schroeder 公式集（Minkowski / Euclidean） - W.Tatsuya</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.3cba04c6.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/custom.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#peskin-schroeder-minkowski-euclidean" class="md-skip">
+          コンテンツにスキップ
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="ヘッダー">
+    <a href="../.." title="W.Tatsuya" class="md-header__button md-logo" aria-label="W.Tatsuya" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C9 7 4 9 4 14c0 2 2 4 4 4 1 0 2 0 3-1 0 0 .32 2-2 5h6c-2-3-2-5-2-5 1 1 2 1 3 1 2 0 4-2 4-4 0-5-5-7-8-12Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            W.Tatsuya
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Peskin &amp; Schroeder 公式集（Minkowski / Euclidean）
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="検索" placeholder="検索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="検索">
+        
+        <button type="reset" class="md-search__icon md-icon" title="クリア" aria-label="クリア" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            検索を初期化
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="タブ" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../CV/" class="md-tabs__link">
+        
+  
+    
+  
+  CV
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+    
+  
+  Wiki
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Publication/" class="md-tabs__link">
+        
+  
+    
+  
+  Publication
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Presentation/" class="md-tabs__link">
+        
+  
+    
+  
+  Presentation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Link/" class="md-tabs__link">
+        
+  
+    
+  
+  Link
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="ナビゲーション" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="W.Tatsuya" class="md-nav__button md-logo" aria-label="W.Tatsuya" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C9 7 4 9 4 14c0 2 2 4 4 4 1 0 2 0 3-1 0 0 .32 2-2 5h6c-2-3-2-5-2-5 1 1 2 1 3 1 2 0 4-2 4-4 0-5-5-7-8-12Z"/></svg>
+
+    </a>
+    W.Tatsuya
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CV/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CV
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Wiki
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Publication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Publication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Presentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Presentation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Link/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Link
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目次">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目次
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-notations-and-conventions-p-xixxxi" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 記法と規約（Notations and Conventions, p. xix–xxi）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 記法と規約（Notations and Conventions, p. xix–xxi）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      単位
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      計量とベクトル
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pauli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pauli 行列
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fourier" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fourier 変換とデルタ関数
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heavisidelorentz" class="md-nav__link">
+    <span class="md-ellipsis">
+      電磁気（Heaviside–Lorentz 単位）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-wick-minkowski-euclidean" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Wick 回転の辞書（Minkowski ↔ Euclidean）
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-kleingordon" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. スカラー場（Klein–Gordon 場）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. スカラー場（Klein–Gordon 場）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#minkowski" class="md-nav__link">
+    <span class="md-ellipsis">
+      Minkowski
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#euclidean-93" class="md-nav__link">
+    <span class="md-ellipsis">
+      Euclidean（原著 §9.3）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-dirac" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Dirac 場
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Dirac 場">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#minkowski_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Minkowski
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#euclidean" class="md-nav__link">
+    <span class="md-ellipsis">
+      Euclidean（補足）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. ゲージ場
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. ゲージ場">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#minkowski_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Minkowski
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#euclidean_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Euclidean（補足）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-feynman-appendix-a1" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Feynman 規則（Appendix A.1）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Feynman 規則（Appendix A.1）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#minkowski_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Minkowski（原著の規則）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#euclidean_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Euclidean（補足）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-appendix-a3" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. 分子代数（Appendix A.3）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 分子代数（Appendix A.3）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#minkowski_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Minkowski
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#euclidean_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Euclidean（補足）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a33a38" class="md-nav__link">
+    <span class="md-ellipsis">
+      群論（A.33）–（A.38）、両方に共通
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-appendix-a4-63" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. ループ積分と次元正則化（Appendix A.4, §6.3）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. ループ積分と次元正則化（Appendix A.4, §6.3）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#feynman-a39-a40-642" class="md-nav__link">
+    <span class="md-ellipsis">
+      Feynman パラメータ（両方に共通、(A.39), (A.40), (6.42)）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      対称積分
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wick-648-a43" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wick 回転 (6.48), (A.43)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d" class="md-nav__link">
+    <span class="md-ellipsis">
+      \(d\) 次元積分の表
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-649-650euclidean" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 次元で収束する場合（(6.49), (6.50)、Euclidean 形）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-to-4-a49a52" class="md-nav__link">
+    <span class="md-ellipsis">
+      \(d \to 4\) の展開（(A.49)–(A.52)、両方に共通）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a53" class="md-nav__link">
+    <span class="md-ellipsis">
+      解析接続 (A.53)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paulivillars-651653" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pauli–Villars 正則化 (6.51)–(6.53)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-appendix-a5minkowski" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. 断面積と崩壊率（Appendix A.5、Minkowski のみ）
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-appendix-a6" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. 物理定数と換算（Appendix A.6）
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="peskin-schroeder-minkowski-euclidean">Peskin &amp; Schroeder 公式集（Minkowski / Euclidean）</h1>
+<p>出典: M. E. Peskin and D. V. Schroeder, <em>An Introduction to Quantum Field Theory</em> (Addison-Wesley, 1995)。
+式番号 (A.1) などは原著の番号。ページ番号は原著の本文ページ。</p>
+<p>原著が Euclidean 形を明示しているのは、ループ運動量の Wick 回転 (6.48), (A.43) と
+スカラー場の汎関数積分 (9.44)–(9.48) だけである。
+Dirac 場・ゲージ場の Euclidean 形は、原著の Wick 回転の規約から導いた<strong>補足</strong>であり、
+見出しに「補足」と付けて区別する。
+Euclidean 量には添字 <span class="arithmatex">\(E\)</span> を付け、Euclidean の添字は上下を区別しない（<span class="arithmatex">\(\delta_{\mu\nu}\)</span> で縮約する）。</p>
+<div class="admonition warning">
+<p class="admonition-title">符号の要点</p>
+<ul>
+<li>計量は <span class="arithmatex">\(g_{\mu\nu} = \mathrm{diag}(+1,-1,-1,-1)\)</span>。<span class="arithmatex">\(p^2 = m^2\)</span> が質量殻</li>
+<li><span class="arithmatex">\(\epsilon^{0123} = +1\)</span>（したがって <span class="arithmatex">\(\epsilon_{0123} = -1\)</span>）。Bjorken–Drell とは逆</li>
+<li><span class="arithmatex">\(\gamma^5 = i\gamma^0\gamma^1\gamma^2\gamma^3\)</span>。カイラル基底で <span class="arithmatex">\(\gamma^5 = \mathrm{diag}(-1,+1)\)</span>、左手型は <span class="arithmatex">\(\gamma^5 = -1\)</span></li>
+<li>Wick 回転は <span class="arithmatex">\(\ell^0 = i\ell^0_E\)</span>（運動量）、<span class="arithmatex">\(x^0 = -i x^0_E\)</span>（座標）。<span class="arithmatex">\(\ell^2 = -\ell_E^2\)</span>、<span class="arithmatex">\(x^2 = -x_E^2\)</span></li>
+<li>Euclidean の <span class="arithmatex">\(\gamma_5\)</span> は定義が文献で分かれる。本ページの <span class="arithmatex">\(\gamma^E_5 \equiv \gamma^E_4\gamma^E_1\gamma^E_2\gamma^E_3\)</span> は Peskin の <span class="arithmatex">\(\gamma^5\)</span> に一致し、格子で多い <span class="arithmatex">\(\gamma_1\gamma_2\gamma_3\gamma_4\)</span> とは符号が逆</li>
+</ul>
+</div>
+<hr />
+<h2 id="1-notations-and-conventions-p-xixxxi">1. 記法と規約（Notations and Conventions, p. xix–xxi）</h2>
+<h3 id="_1">単位</h3>
+<div class="arithmatex">\[
+\hbar = c = 1, \qquad [\text{length}] = [\text{time}] = [\text{energy}]^{-1} = [\text{mass}]^{-1}
+\]</div>
+<h3 id="_2">計量とベクトル</h3>
+<div class="arithmatex">\[
+g_{\mu\nu} = g^{\mu\nu} = \begin{pmatrix} 1 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; -1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; -1 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; -1 \end{pmatrix}
+\]</div>
+<div class="arithmatex">\[
+x^\mu = (x^0, \mathbf{x}), \qquad x_\mu = g_{\mu\nu}x^\nu = (x^0, -\mathbf{x}), \qquad
+p\cdot x = p^0 x^0 - \mathbf{p}\cdot\mathbf{x}, \qquad p^2 = E^2 - \lvert\mathbf{p}\rvert^2 = m^2
+\]</div>
+<div class="arithmatex">\[
+\partial_\mu = \frac{\partial}{\partial x^\mu} = \Bigl(\frac{\partial}{\partial x^0}, \nabla\Bigr), \qquad
+p^\mu = i\partial^\mu \;\;(E = i\partial_0,\ \mathbf{p} = -i\nabla), \qquad
+i\partial^\mu e^{-ik\cdot x} = k^\mu e^{-ik\cdot x}
+\]</div>
+<p>完全反対称テンソル:</p>
+<div class="arithmatex">\[
+\epsilon^{0123} = +1, \qquad \epsilon_{0123} = -1, \qquad \epsilon^{1230} = -1
+\]</div>
+<h3 id="pauli">Pauli 行列</h3>
+<div class="arithmatex">\[
+\sigma^1 = \begin{pmatrix} 0 &amp; 1 \\ 1 &amp; 0 \end{pmatrix}, \quad
+\sigma^2 = \begin{pmatrix} 0 &amp; -i \\ i &amp; 0 \end{pmatrix}, \quad
+\sigma^3 = \begin{pmatrix} 1 &amp; 0 \\ 0 &amp; -1 \end{pmatrix}, \qquad
+\sigma^i\sigma^j = \delta^{ij} + i\epsilon^{ijk}\sigma^k
+\]</div>
+<div class="arithmatex">\[
+\sigma^\pm = \tfrac12(\sigma^1 \pm i\sigma^2), \qquad
+\sigma^+ = \begin{pmatrix} 0 &amp; 1 \\ 0 &amp; 0 \end{pmatrix}, \quad
+\sigma^- = \begin{pmatrix} 0 &amp; 0 \\ 1 &amp; 0 \end{pmatrix}
+\]</div>
+<h3 id="fourier">Fourier 変換とデルタ関数</h3>
+<p><span class="arithmatex">\(2\pi\)</span> は常に運動量積分に付ける。</p>
+<div class="arithmatex">\[
+f(x) = \int\frac{d^4k}{(2\pi)^4}\, e^{-ik\cdot x}\tilde f(k), \qquad
+\tilde f(k) = \int d^4x\, e^{ik\cdot x} f(x), \qquad
+\int d^4x\, e^{ik\cdot x} = (2\pi)^4\delta^{(4)}(k)
+\]</div>
+<p>（3 次元変換では指数の符号が逆で <span class="arithmatex">\(+\)</span>, <span class="arithmatex">\(-\)</span> になる。）</p>
+<div class="arithmatex">\[
+\theta(x) = \begin{cases} 0 &amp; x&lt;0 \\ 1 &amp; x&gt;0 \end{cases}, \qquad
+\delta(x) = \frac{d}{dx}\theta(x), \qquad
+\int d^n x\, \delta^{(n)}(\mathbf{x}) = 1
+\]</div>
+<h3 id="heavisidelorentz">電磁気（Heaviside–Lorentz 単位）</h3>
+<div class="arithmatex">\[
+\Phi = \frac{Q}{4\pi r}, \qquad
+\alpha = \frac{e^2}{4\pi} = \frac{e^2}{4\pi\hbar c} \approx \frac{1}{137}
+\]</div>
+<div class="arithmatex">\[
+A^\mu = (\Phi, \mathbf{A}), \qquad F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu, \qquad
+\epsilon^{\mu\nu\rho\sigma}\partial_\nu F_{\rho\sigma} = 0, \qquad \partial_\mu F^{\mu\nu} = e j^\nu
+\]</div>
+<p><span class="arithmatex">\(e\)</span> は電子の電荷で負の量（符号が問題になることは少ない）。</p>
+<hr />
+<h2 id="2-wick-minkowski-euclidean">2. Wick 回転の辞書（Minkowski ↔ Euclidean）</h2>
+<p>原著の定義は (6.48), (A.43), (9.44) の 3 箇所。以下は、それらを一貫した形にまとめたもの。</p>
+<table>
+<thead>
+<tr>
+<th>量</th>
+<th>Minkowski</th>
+<th>Euclidean</th>
+<th>関係</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ループ運動量</td>
+<td><span class="arithmatex">\(\ell^\mu = (\ell^0, \boldsymbol\ell)\)</span></td>
+<td><span class="arithmatex">\(\ell_E = (\ell^0_E, \boldsymbol\ell)\)</span></td>
+<td><span class="arithmatex">\(\ell^0 = i\ell^0_E\)</span> (6.48), (A.43)</td>
+</tr>
+<tr>
+<td>運動量の 2 乗</td>
+<td><span class="arithmatex">\(\ell^2 = (\ell^0)^2 - \boldsymbol\ell^2\)</span></td>
+<td><span class="arithmatex">\(\ell_E^2 = (\ell^0_E)^2 + \boldsymbol\ell^2\)</span></td>
+<td><span class="arithmatex">\(\ell^2 = -\ell_E^2\)</span></td>
+</tr>
+<tr>
+<td>運動量測度</td>
+<td><span class="arithmatex">\(d^4\ell\)</span></td>
+<td><span class="arithmatex">\(d^4\ell_E\)</span></td>
+<td><span class="arithmatex">\(d^4\ell = i\, d^4\ell_E\)</span></td>
+</tr>
+<tr>
+<td>座標</td>
+<td><span class="arithmatex">\(x^\mu = (t, \mathbf{x})\)</span></td>
+<td><span class="arithmatex">\(x_E = (x^0_E, \mathbf{x})\)</span></td>
+<td><span class="arithmatex">\(t = -i x^0_E\)</span> (9.44)</td>
+</tr>
+<tr>
+<td>座標の 2 乗</td>
+<td><span class="arithmatex">\(x^2 = t^2 - \mathbf{x}^2\)</span></td>
+<td><span class="arithmatex">\(x_E^2 = (x^0_E)^2 + \mathbf{x}^2\)</span></td>
+<td><span class="arithmatex">\(x^2 = -x_E^2\)</span> (9.44)</td>
+</tr>
+<tr>
+<td>座標測度</td>
+<td><span class="arithmatex">\(d^4x\)</span></td>
+<td><span class="arithmatex">\(d^4x_E\)</span></td>
+<td><span class="arithmatex">\(d^4x = -i\, d^4x_E\)</span></td>
+</tr>
+<tr>
+<td>時間微分</td>
+<td><span class="arithmatex">\(\partial_0\)</span></td>
+<td><span class="arithmatex">\(\partial^E_0 = \partial/\partial x^0_E\)</span></td>
+<td><span class="arithmatex">\(\partial_0 = i\partial^E_0\)</span></td>
+</tr>
+<tr>
+<td>d'Alembertian</td>
+<td><span class="arithmatex">\(\partial^2 = \partial_0^2 - \nabla^2\)</span></td>
+<td><span class="arithmatex">\(\partial_E^2 = (\partial_0^E)^2 + \nabla^2\)</span></td>
+<td><span class="arithmatex">\(\partial^2 = -\partial_E^2\)</span></td>
+</tr>
+<tr>
+<td>作用</td>
+<td><span class="arithmatex">\(e^{iS}\)</span>, <span class="arithmatex">\(S = \int d^4x\,\mathcal{L}\)</span></td>
+<td><span class="arithmatex">\(e^{-S_E}\)</span>, <span class="arithmatex">\(S_E = \int d^4x_E\,\mathcal{L}_E\)</span></td>
+<td><span class="arithmatex">\(iS = -S_E\)</span> (9.46), (9.47)</td>
+</tr>
+<tr>
+<td>スカラー伝播関数</td>
+<td><span class="arithmatex">\(\dfrac{i}{k^2 - m^2 + i\epsilon}\)</span></td>
+<td><span class="arithmatex">\(\dfrac{1}{k_E^2 + m^2}\)</span></td>
+<td><span class="arithmatex">\(\int d^4k \dfrac{i}{k^2-m^2} = \int d^4k_E \dfrac{1}{k_E^2+m^2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><span class="arithmatex">\(i\epsilon\)</span> の役割: Minkowski の Feynman 処方 <span class="arithmatex">\(k^2 - m^2 + i\epsilon\)</span> は、<span class="arithmatex">\(k^0\)</span> 積分路を反時計回りに <span class="arithmatex">\(90°\)</span> 回して虚軸に乗せる操作と同値であり、Euclidean では <span class="arithmatex">\(k_E^2 + m^2 &gt; 0\)</span> なので <span class="arithmatex">\(i\epsilon\)</span> は不要になる (Fig. 6.1, p. 193)。</p>
+<hr />
+<h2 id="3-kleingordon">3. スカラー場（Klein–Gordon 場）</h2>
+<h3 id="minkowski">Minkowski</h3>
+<p>Lagrangian と運動方程式 (2.6), (2.7):</p>
+<div class="arithmatex">\[
+\mathcal{L} = \tfrac12(\partial_\mu\phi)^2 - \tfrac12 m^2\phi^2, \qquad (\partial^2 + m^2)\phi = 0
+\]</div>
+<p>正準量子化 (2.20), (2.25), (2.29), (2.31):</p>
+<div class="arithmatex">\[
+[\phi(\mathbf{x}), \pi(\mathbf{y})] = i\delta^{(3)}(\mathbf{x}-\mathbf{y}), \qquad
+\phi(\mathbf{x}) = \int\frac{d^3p}{(2\pi)^3}\frac{1}{\sqrt{2E_{\mathbf{p}}}}\bigl(a_{\mathbf{p}} + a^\dagger_{-\mathbf{p}}\bigr)e^{i\mathbf{p}\cdot\mathbf{x}}
+\]</div>
+<div class="arithmatex">\[
+[a_{\mathbf{p}}, a^\dagger_{\mathbf{q}}] = (2\pi)^3\delta^{(3)}(\mathbf{p}-\mathbf{q}), \qquad
+H = \int\frac{d^3p}{(2\pi)^3}\, E_{\mathbf{p}}\Bigl(a^\dagger_{\mathbf{p}}a_{\mathbf{p}} + \tfrac12[a_{\mathbf{p}}, a^\dagger_{\mathbf{p}}]\Bigr), \qquad
+E_{\mathbf{p}} = \sqrt{\lvert\mathbf{p}\rvert^2 + m^2}
+\]</div>
+<p>Heisenberg 場と 1 粒子状態の規格化 (2.47), (2.35):</p>
+<div class="arithmatex">\[
+\phi(x) = \int\frac{d^3p}{(2\pi)^3}\frac{1}{\sqrt{2E_{\mathbf{p}}}}\Bigl(a_{\mathbf{p}}e^{-ip\cdot x} + a^\dagger_{\mathbf{p}}e^{ip\cdot x}\Bigr)\Big|_{p^0 = E_{\mathbf{p}}}, \qquad
+\lvert\mathbf{p}\rangle = \sqrt{2E_{\mathbf{p}}}\, a^\dagger_{\mathbf{p}}\lvert 0\rangle, \quad
+\langle\mathbf{p}\vert\mathbf{q}\rangle = 2E_{\mathbf{p}}(2\pi)^3\delta^{(3)}(\mathbf{p}-\mathbf{q})
+\]</div>
+<p>Lorentz 不変な測度 (2.40):</p>
+<div class="arithmatex">\[
+\int\frac{d^3p}{(2\pi)^3}\frac{1}{2E_{\mathbf{p}}} = \int\frac{d^4p}{(2\pi)^4}(2\pi)\delta(p^2 - m^2)\theta(p^0)
+\]</div>
+<p>Feynman 伝播関数 (2.59), (2.60):</p>
+<div class="arithmatex">\[
+D_F(x-y) = \int\frac{d^4p}{(2\pi)^4}\frac{i}{p^2 - m^2 + i\epsilon}e^{-ip\cdot(x-y)}
+= \langle 0\vert T\phi(x)\phi(y)\vert 0\rangle, \qquad
+(\partial^2 + m^2)D_F(x-y) = -i\delta^{(4)}(x-y)
+\]</div>
+<p>遅延 Green 関数 (2.55), (2.58):</p>
+<div class="arithmatex">\[
+D_R(x-y) = \theta(x^0 - y^0)\langle 0\vert[\phi(x), \phi(y)]\vert 0\rangle
+= \int\frac{d^4p}{(2\pi)^4}\frac{i}{p^2 - m^2}e^{-ip\cdot(x-y)} \quad (\text{極を両方とも上に避ける})
+\]</div>
+<p>生成汎関数（<span class="arithmatex">\(\phi^4\)</span> 理論、(9.42), (9.43), (9.45)）:</p>
+<div class="arithmatex">\[
+Z[J] = \int\mathcal{D}\phi\, \exp\Bigl[i\int d^4x\,(\mathcal{L} + J\phi)\Bigr], \qquad
+\mathcal{L} = \tfrac12(\partial_\mu\phi)^2 - \tfrac12 m^2\phi^2 - \frac{\lambda}{4!}\phi^4
+\]</div>
+<div class="arithmatex">\[
+\langle 0\vert T\phi(x_1)\phi(x_2)\vert 0\rangle = Z[J]^{-1}\Bigl(-i\frac{\delta}{\delta J(x_1)}\Bigr)\Bigl(-i\frac{\delta}{\delta J(x_2)}\Bigr)Z[J]\Big|_{J=0}
+\]</div>
+<p>時間積分は <span class="arithmatex">\(-T\)</span> から <span class="arithmatex">\(T\)</span>、<span class="arithmatex">\(T\to\infty(1 - i\epsilon)\)</span>。</p>
+<h3 id="euclidean-93">Euclidean（原著 §9.3）</h3>
+<p>Wick 回転 <span class="arithmatex">\(t \to -ix^0_E\)</span> (9.44) で、作用は (9.46), (9.47):</p>
+<div class="arithmatex">\[
+i\int d^4x\,(\mathcal{L} + J\phi) = -\int d^4x_E\,(\mathcal{L}_E - J\phi), \qquad
+\mathcal{L}_E = \tfrac12(\partial_{E\mu}\phi)^2 + \tfrac12 m^2\phi^2 + \frac{\lambda}{4!}\phi^4
+\]</div>
+<div class="arithmatex">\[
+Z[J] = \int\mathcal{D}\phi\, \exp\Bigl[-\int d^4x_E\,(\mathcal{L}_E - J\phi)\Bigr]
+\]</div>
+<p><span class="arithmatex">\(\mathcal{L}_E\)</span> は下に有界なエネルギーの形をしており、<span class="arithmatex">\(Z[J]\)</span> は統計力学の分配関数と同じ構造になる。
+自由場の 2 点関数 (9.48):</p>
+<div class="arithmatex">\[
+\langle\phi(x_{E1})\phi(x_{E2})\rangle = \int\frac{d^4k_E}{(2\pi)^4}\frac{e^{ik_E\cdot(x_{E1}-x_{E2})}}{k_E^2 + m^2}
+\;\xrightarrow{\lvert x_E\rvert\to\infty}\; e^{-m\lvert x_{E1}-x_{E2}\rvert}
+\]</div>
+<p>これは Feynman 伝播関数を空間的領域で評価したものに等しい (2.52)。
+Euclidean 相関関数は (9.47) から <span class="arithmatex">\(Z[J]^{-1}\,\delta/\delta J(x_1)\cdots\delta/\delta J(x_n)\,Z[J]\)</span> で得られ、<span class="arithmatex">\(-i\)</span> の因子は付かない。</p>
+<hr />
+<h2 id="4-dirac">4. Dirac 場</h2>
+<h3 id="minkowski_1">Minkowski</h3>
+<p>Lagrangian と Dirac 方程式 (3.34), (3.31):</p>
+<div class="arithmatex">\[
+\mathcal{L} = \bar\psi(i\not{\partial} - m)\psi, \qquad (i\not{\partial} - m)\psi = 0, \qquad \bar\psi \equiv \psi^\dagger\gamma^0, \qquad \not{p} \equiv \gamma^\mu p_\mu
+\]</div>
+<p><span class="arithmatex">\(\gamma\)</span> 行列（(A.16)–(A.18), カイラル基底）:</p>
+<div class="arithmatex">\[
+\{\gamma^\mu, \gamma^\nu\} = 2g^{\mu\nu}, \qquad
+\gamma^\mu = \begin{pmatrix} 0 &amp; \sigma^\mu \\ \bar\sigma^\mu &amp; 0 \end{pmatrix}, \qquad
+\sigma^\mu = (1, \boldsymbol\sigma), \quad \bar\sigma^\mu = (1, -\boldsymbol\sigma)
+\]</div>
+<div class="arithmatex">\[
+(\gamma^\mu)^\dagger = \gamma^0\gamma^\mu\gamma^0, \qquad
+S^{\mu\nu} = \tfrac{i}{4}[\gamma^\mu, \gamma^\nu], \qquad
+\sigma^{\mu\nu} = \tfrac{i}{2}[\gamma^\mu, \gamma^\nu]
+\]</div>
+<p><span class="arithmatex">\(\gamma^5\)</span> (3.68)–(3.72):</p>
+<div class="arithmatex">\[
+\gamma^5 \equiv i\gamma^0\gamma^1\gamma^2\gamma^3 = -\frac{i}{4!}\epsilon^{\mu\nu\rho\sigma}\gamma_\mu\gamma_\nu\gamma_\rho\gamma_\sigma
+= \begin{pmatrix} -1 &amp; 0 \\ 0 &amp; 1 \end{pmatrix}, \qquad
+(\gamma^5)^\dagger = \gamma^5, \quad (\gamma^5)^2 = 1, \quad \{\gamma^5, \gamma^\mu\} = 0
+\]</div>
+<p>射影演算子 (A.23): <span class="arithmatex">\(P_L = \tfrac12(1 - \gamma^5)\)</span>, <span class="arithmatex">\(P_R = \tfrac12(1 + \gamma^5)\)</span>（<span class="arithmatex">\(\psi_L\)</span> は <span class="arithmatex">\(\gamma^5 = -1\)</span>）。</p>
+<p>双線形形式の分解 (p. 50):</p>
+<table>
+<thead>
+<tr>
+<th>行列</th>
+<th>個数</th>
+<th>性質</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(1\)</span></td>
+<td>1</td>
+<td>スカラー</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\gamma^\mu\)</span></td>
+<td>4</td>
+<td>ベクトル</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\sigma^{\mu\nu} = \frac{i}{2}[\gamma^\mu, \gamma^\nu]\)</span></td>
+<td>6</td>
+<td>テンソル</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\gamma^\mu\gamma^5\)</span></td>
+<td>4</td>
+<td>擬ベクトル</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\gamma^5\)</span></td>
+<td>1</td>
+<td>擬スカラー</td>
+</tr>
+</tbody>
+</table>
+<p>流れ (3.73): <span class="arithmatex">\(j^\mu = \bar\psi\gamma^\mu\psi\)</span>, <span class="arithmatex">\(j^{\mu 5} = \bar\psi\gamma^\mu\gamma^5\psi\)</span>。</p>
+<p>自由粒子解と規格化 (A.15), (A.19), (3.60), (3.63), (3.64):</p>
+<div class="arithmatex">\[
+(\not{p} - m)u^s(p) = 0, \qquad (\not{p} + m)v^s(p) = 0, \qquad
+u^s(p) = \begin{pmatrix} \sqrt{p\cdot\sigma}\,\xi^s \\ \sqrt{p\cdot\bar\sigma}\,\xi^s \end{pmatrix}, \quad
+v^s(p) = \begin{pmatrix} \sqrt{p\cdot\sigma}\,\eta^s \\ -\sqrt{p\cdot\bar\sigma}\,\eta^s \end{pmatrix}
+\]</div>
+<div class="arithmatex">\[
+\bar u^r(p)u^s(p) = 2m\delta^{rs}, \quad u^{r\dagger}(p)u^s(p) = 2E_{\mathbf{p}}\delta^{rs}, \qquad
+\bar v^r(p)v^s(p) = -2m\delta^{rs}, \quad \bar u^r(p)v^s(p) = 0
+\]</div>
+<p>高エネルギー極限 (A.20):</p>
+<div class="arithmatex">\[
+u(p) \approx \sqrt{2E}\begin{pmatrix} \tfrac12(1 - \hat p\cdot\boldsymbol\sigma)\xi^s \\ \tfrac12(1 + \hat p\cdot\boldsymbol\sigma)\xi^s \end{pmatrix}, \qquad
+v(p) \approx \sqrt{2E}\begin{pmatrix} \tfrac12(1 - \hat p\cdot\boldsymbol\sigma)\eta^s \\ -\tfrac12(1 + \hat p\cdot\boldsymbol\sigma)\eta^s \end{pmatrix}
+\]</div>
+<p>スピン和 (A.22):</p>
+<div class="arithmatex">\[
+\sum_s u^s(p)\bar u^s(p) = \not{p} + m, \qquad \sum_s v^s(p)\bar v^s(p) = \not{p} - m
+\]</div>
+<p>正準量子化 (3.99)–(3.101):</p>
+<div class="arithmatex">\[
+\psi(x) = \int\frac{d^3p}{(2\pi)^3}\frac{1}{\sqrt{2E_{\mathbf{p}}}}\sum_s\Bigl(a^s_{\mathbf{p}}u^s(p)e^{-ip\cdot x} + b^{s\dagger}_{\mathbf{p}}v^s(p)e^{ip\cdot x}\Bigr), \qquad
+\{a^r_{\mathbf{p}}, a^{s\dagger}_{\mathbf{q}}\} = \{b^r_{\mathbf{p}}, b^{s\dagger}_{\mathbf{q}}\} = (2\pi)^3\delta^{(3)}(\mathbf{p}-\mathbf{q})\delta^{rs}
+\]</div>
+<div class="arithmatex">\[
+\{\psi_a(\mathbf{x}), \psi^\dagger_b(\mathbf{y})\} = \delta^{(3)}(\mathbf{x}-\mathbf{y})\delta_{ab}
+\]</div>
+<p>Feynman 伝播関数 (3.120), (3.121), (9.72):</p>
+<div class="arithmatex">\[
+S_F(x-y) = \int\frac{d^4p}{(2\pi)^4}\frac{i(\not{p} + m)}{p^2 - m^2 + i\epsilon}e^{-ip\cdot(x-y)}
+= \int\frac{d^4p}{(2\pi)^4}\frac{i}{\not{p} - m + i\epsilon}e^{-ip\cdot(x-y)}
+= \langle 0\vert T\psi(x)\bar\psi(y)\vert 0\rangle
+\]</div>
+<p>Gordon 恒等式 (6.32), Problem 3.2:</p>
+<div class="arithmatex">\[
+\bar u(p')\gamma^\mu u(p) = \bar u(p')\Bigl[\frac{p'^\mu + p^\mu}{2m} + \frac{i\sigma^{\mu\nu}q_\nu}{2m}\Bigr]u(p), \qquad q = p' - p
+\]</div>
+<p>Grassmann 変数の生成汎関数 (9.73)–(9.75):</p>
+<div class="arithmatex">\[
+Z[\bar\eta, \eta] = \int\mathcal{D}\bar\psi\mathcal{D}\psi\, \exp\Bigl[i\int d^4x\,\bigl(\bar\psi(i\not{\partial} - m)\psi + \bar\eta\psi + \bar\psi\eta\bigr)\Bigr]
+= Z_0\exp\Bigl[-\int d^4x\,d^4y\, \bar\eta(x)S_F(x-y)\eta(y)\Bigr]
+\]</div>
+<div class="arithmatex">\[
+\frac{d}{d\eta}\theta\eta = -\frac{d}{d\eta}\eta\theta = -\theta, \qquad
+\langle 0\vert T\psi(x_1)\bar\psi(x_2)\vert 0\rangle = Z_0^{-1}\Bigl(-i\frac{\delta}{\delta\bar\eta(x_1)}\Bigr)\Bigl(+i\frac{\delta}{\delta\eta(x_2)}\Bigr)Z[\bar\eta, \eta]\Big|_{\bar\eta, \eta = 0}
+\]</div>
+<h3 id="euclidean">Euclidean（補足）</h3>
+<p>原著に Euclidean の <span class="arithmatex">\(\gamma\)</span> 行列はない。以下は <span class="arithmatex">\(x^0 = -ix^0_E\)</span>（<span class="arithmatex">\(\partial_0 = i\partial^E_0\)</span>）と整合する標準的な選び方で、
+Euclidean の添字は <span class="arithmatex">\(\mu = 1,2,3,4\)</span>、<span class="arithmatex">\(x^E_4 \equiv x^0_E\)</span> とする。</p>
+<div class="arithmatex">\[
+\gamma^E_4 \equiv \gamma^0, \qquad \gamma^E_j \equiv -i\gamma^j \;(j = 1,2,3), \qquad
+\{\gamma^E_\mu, \gamma^E_\nu\} = 2\delta_{\mu\nu}, \qquad (\gamma^E_\mu)^\dagger = \gamma^E_\mu
+\]</div>
+<p>カイラル基底では</p>
+<div class="arithmatex">\[
+\gamma^E_4 = \begin{pmatrix} 0 &amp; 1 \\ 1 &amp; 0 \end{pmatrix}, \qquad
+\gamma^E_j = \begin{pmatrix} 0 &amp; -i\sigma^j \\ i\sigma^j &amp; 0 \end{pmatrix}, \qquad
+\sigma^E_{\mu\nu} = \tfrac{i}{2}[\gamma^E_\mu, \gamma^E_\nu]
+\]</div>
+<p><span class="arithmatex">\(\gamma_5\)</span> の定義と符号:</p>
+<div class="arithmatex">\[
+\gamma^E_5 \equiv \gamma^E_4\gamma^E_1\gamma^E_2\gamma^E_3 = i\gamma^0\gamma^1\gamma^2\gamma^3 = \gamma^5_{\text{Peskin}} = \begin{pmatrix} -1 &amp; 0 \\ 0 &amp; 1 \end{pmatrix}, \qquad
+\gamma^E_1\gamma^E_2\gamma^E_3\gamma^E_4 = -\gamma^E_5
+\]</div>
+<p>格子 QCD で多い定義 <span class="arithmatex">\(\gamma_5 = \gamma_1\gamma_2\gamma_3\gamma_4\)</span> は、この対応では Peskin の <span class="arithmatex">\(\gamma^5\)</span> と符号が逆になり、
+<span class="arithmatex">\(P_{L,R}\)</span> と <span class="arithmatex">\(\mathrm{tr}(\gamma_5\gamma_\mu\gamma_\nu\gamma_\rho\gamma_\sigma)\)</span> の符号がすべて反転する。
+どちらを採るかを最初に決めて固定する。</p>
+<p>作用（<span class="arithmatex">\(iS = -S_E\)</span> から導出）:</p>
+<div class="arithmatex">\[
+\mathcal{L} = \bar\psi(i\not{\partial} - m)\psi \;\longrightarrow\;
+S_E = \int d^4x_E\, \bar\psi\bigl(\gamma^E_\mu\partial^E_\mu + m\bigr)\psi, \qquad e^{iS} = e^{-S_E}
+\]</div>
+<p><span class="arithmatex">\(\bar\psi\)</span> は Euclidean では <span class="arithmatex">\(\psi\)</span> と独立な Grassmann 変数として扱う（<span class="arithmatex">\(\bar\psi = \psi^\dagger\gamma^0\)</span> の関係は課さない）。</p>
+<p>伝播関数（<span class="arithmatex">\(\psi(x) \sim e^{ip_E\cdot x_E}\)</span>、<span class="arithmatex">\(\partial^E_\mu \to ip^E_\mu\)</span> の規約）:</p>
+<div class="arithmatex">\[
+\langle\psi(x)\bar\psi(y)\rangle_E = \int\frac{d^4p_E}{(2\pi)^4}\frac{-i\not{p}_E + m}{p_E^2 + m^2}\, e^{ip_E\cdot(x-y)}
+= \int\frac{d^4p_E}{(2\pi)^4}\frac{1}{i\not{p}_E + m}\, e^{ip_E\cdot(x-y)}, \qquad
+\not{p}_E \equiv \gamma^E_\mu p^E_\mu
+\]</div>
+<p>Minkowski との対応: <span class="arithmatex">\(\dfrac{i(\not{p} + m)}{p^2 - m^2}\)</span> は <span class="arithmatex">\(d^4p = i\,d^4p_E\)</span> と <span class="arithmatex">\(p^2 = -p_E^2\)</span> により、<span class="arithmatex">\(\dfrac{1}{p_E^2 + m^2}\)</span> 型の分母に移る。
+分子の <span class="arithmatex">\(\not{p}\)</span> は空間運動量の符号規約（<span class="arithmatex">\(e^{-ik\cdot x}\)</span> と <span class="arithmatex">\(e^{ik_E\cdot x_E}\)</span> の対応）に依存するので、成分ごとの置き換えではなく上の作用から直接読むほうが安全。</p>
+<p>Euclidean のスピン和と Dirac 方程式は、質量殻 <span class="arithmatex">\(p_E^2 = -m^2\)</span> が実運動量では実現しないため、そのままの形では使わない。外線が要る計算は Minkowski に戻す。</p>
+<hr />
+<h2 id="5">5. ゲージ場</h2>
+<h3 id="minkowski_2">Minkowski</h3>
+<p>QED (4.3), (4.5), (9.58):</p>
+<div class="arithmatex">\[
+\mathcal{L}_{\text{QED}} = \bar\psi(i\not{D} - m)\psi - \tfrac14(F_{\mu\nu})^2
+= \bar\psi(i\not{\partial} - m)\psi - \tfrac14(F_{\mu\nu})^2 - e\bar\psi\gamma^\mu\psi A_\mu, \qquad
+D_\mu = \partial_\mu + ieA_\mu
+\]</div>
+<p>ゲージ固定項 <span class="arithmatex">\(-\frac{1}{2\xi}(\partial^\mu A_\mu)^2\)</span> を加えた光子伝播関数 (9.58):</p>
+<div class="arithmatex">\[
+\tilde D_F^{\mu\nu}(k) = \frac{-i}{k^2 + i\epsilon}\Bigl(g^{\mu\nu} - (1 - \xi)\frac{k^\mu k^\nu}{k^2}\Bigr), \qquad
+\xi = 0:\ \text{Landau},\quad \xi = 1:\ \text{Feynman}
+\]</div>
+<p>非可換ゲージ理論 (15.44), (15.45), (15.48), (16.1):</p>
+<div class="arithmatex">\[
+D_\mu = \partial_\mu - igA^a_\mu t^a, \qquad
+F^a_{\mu\nu} = \partial_\mu A^a_\nu - \partial_\nu A^a_\mu + gf^{abc}A^b_\mu A^c_\nu, \qquad
+[D_\mu, D_\nu] = -igF^a_{\mu\nu}t^a
+\]</div>
+<div class="arithmatex">\[
+\begin{aligned}
+\mathcal{L} &amp;= \bar\psi(i\not{D} - m)\psi - \tfrac14(F^a_{\mu\nu})^2 \\
+&amp;= \bar\psi(i\not{\partial} - m)\psi - \tfrac14(\partial_\mu A^a_\nu - \partial_\nu A^a_\mu)^2 + gA^a_\mu\bar\psi\gamma^\mu t^a\psi \\
+&amp;\quad - gf^{abc}(\partial_\kappa A^a_\lambda)A^{\kappa b}A^{\lambda c} - \tfrac14 g^2(f^{eab}A^a_\kappa A^b_\lambda)(f^{ecd}A^{\kappa c}A^{\lambda d})
+\end{aligned}
+\]</div>
+<p>Faddeev–Popov ゴースト (16.44):</p>
+<div class="arithmatex">\[
+\mathcal{L}_{\text{ghost}} = \bar c^a(-\partial^\mu D^{ac}_\mu)c^c, \qquad D^{ac}_\mu = \partial_\mu\delta^{ac} + gf^{abc}A^b_\mu
+\]</div>
+<p>Wilson 線 (15.53):</p>
+<div class="arithmatex">\[
+U_P(z, y) = P\exp\Bigl[ig\int_P dx^\mu A^a_\mu(x)t^a\Bigr], \qquad
+\mathrm{tr}\,U_P \ \text{はゲージ不変（閉路 } P\text{）}
+\]</div>
+<h3 id="euclidean_1">Euclidean（補足）</h3>
+<p><span class="arithmatex">\(A^E_4 \equiv -iA^0\)</span>、<span class="arithmatex">\(A^E_j \equiv A_j\)</span>（下付き成分）と同一視すると <span class="arithmatex">\(\partial_0 = i\partial^E_0\)</span> と同じ形で <span class="arithmatex">\(D_0 = iD^E_4\)</span> となり、</p>
+<div class="arithmatex">\[
+S_E = \int d^4x_E\Bigl[\tfrac14 F^E_{\mu\nu}F^E_{\mu\nu} + \bar\psi\bigl(\gamma^E_\mu D^E_\mu + m\bigr)\psi\Bigr]
+\]</div>
+<div class="arithmatex">\[
+D^E_\mu = \partial^E_\mu + ieA^E_\mu \ (\text{QED}), \qquad
+D^E_\mu = \partial^E_\mu - igA^{E,a}_\mu t^a \ (\text{非可換})
+\]</div>
+<div class="arithmatex">\[
+F^E_{\mu\nu} = \partial_\mu A^E_\nu - \partial_\nu A^E_\mu, \qquad
+F^{E,a}_{\mu\nu} = \partial_\mu A^{E,a}_\nu - \partial_\nu A^{E,a}_\mu + gf^{abc}A^{E,b}_\mu A^{E,c}_\nu, \qquad
+-\tfrac14 F_{\mu\nu}F^{\mu\nu} \to -\tfrac14 F^E_{\mu\nu}F^E_{\mu\nu}
+\]</div>
+<p>ゲージ固定とゴースト:</p>
+<div class="arithmatex">\[
+S_E^{\text{gf}} = \int d^4x_E\, \frac{1}{2\xi}(\partial_\mu A^E_\mu)^2, \qquad
+S_E^{\text{ghost}} = \int d^4x_E\, (\partial_\mu\bar c^a)(D^E_\mu c)^a
+\]</div>
+<p>光子伝播関数:</p>
+<div class="arithmatex">\[
+\langle A^E_\mu(k)A^E_\nu(-k)\rangle = \frac{1}{k_E^2}\Bigl(\delta_{\mu\nu} - (1 - \xi)\frac{k^E_\mu k^E_\nu}{k_E^2}\Bigr)
+\;\xrightarrow{\xi = 1}\; \frac{\delta_{\mu\nu}}{k_E^2}
+\]</div>
+<p>Minkowski の <span class="arithmatex">\(-ig_{\mu\nu}/k^2\)</span> から、<span class="arithmatex">\(d^4k = i\,d^4k_E\)</span>、<span class="arithmatex">\(k^2 = -k_E^2\)</span>、<span class="arithmatex">\(A^0 = iA^E_4\)</span> を使うと <span class="arithmatex">\(\delta_{\mu\nu}/k_E^2\)</span> になる（時間成分の <span class="arithmatex">\(-g_{00}\)</span> は <span class="arithmatex">\(A^0 = iA^E_4\)</span> の <span class="arithmatex">\(i^2\)</span> が打ち消す）。</p>
+<p>Wilson ループは <span class="arithmatex">\(U_P = P\exp\bigl[ig\oint dx^E_\mu A^{E,a}_\mu t^a\bigr]\)</span> で、形は変わらない。</p>
+<hr />
+<h2 id="6-feynman-appendix-a1">6. Feynman 規則（Appendix A.1）</h2>
+<p>共通事項: 各頂点で運動量保存、未定のループ運動量は <span class="arithmatex">\(\int d^4p/(2\pi)^4\)</span> で積分、
+フェルミオン（ゴースト含む）ループごとに <span class="arithmatex">\((-1)\)</span>、対称因子は図ごとに決める (p. 93)。</p>
+<h3 id="minkowski_3">Minkowski（原著の規則）</h3>
+<p><span class="arithmatex">\(\phi^4\)</span> 理論 <span class="arithmatex">\(\mathcal{L} = \frac12(\partial_\mu\phi)^2 - \frac12 m^2\phi^2 - \frac{\lambda}{4!}\phi^4\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th>要素</th>
+<th>因子</th>
+<th>式番号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>スカラー伝播関数</td>
+<td><span class="arithmatex">\(\dfrac{i}{p^2 - m^2 + i\epsilon}\)</span></td>
+<td>(A.1)</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\phi^4\)</span> 頂点</td>
+<td><span class="arithmatex">\(-i\lambda\)</span></td>
+<td>(A.2)</td>
+</tr>
+<tr>
+<td>外線スカラー</td>
+<td><span class="arithmatex">\(1\)</span></td>
+<td>(A.3)</td>
+</tr>
+</tbody>
+</table>
+<p>QED <span class="arithmatex">\(\mathcal{L} = \bar\psi(i\not{\partial} - m)\psi - \frac14(F_{\mu\nu})^2 - e\bar\psi\gamma^\mu\psi A_\mu\)</span>:</p>
+<table>
+<thead>
+<tr>
+<th>要素</th>
+<th>因子</th>
+<th>式番号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dirac 伝播関数</td>
+<td><span class="arithmatex">\(\dfrac{i(\not{p} + m)}{p^2 - m^2 + i\epsilon}\)</span></td>
+<td>(A.4)</td>
+</tr>
+<tr>
+<td>光子伝播関数（Feynman ゲージ）</td>
+<td><span class="arithmatex">\(\dfrac{-ig_{\mu\nu}}{p^2 + i\epsilon}\)</span></td>
+<td>(A.5)</td>
+</tr>
+<tr>
+<td>QED 頂点</td>
+<td><span class="arithmatex">\(iQe\gamma^\mu\)</span>（電子は <span class="arithmatex">\(Q = -1\)</span>。§9.5 の書き方では <span class="arithmatex">\(-ie\gamma^\mu\)</span>）</td>
+<td>(A.6)</td>
+</tr>
+<tr>
+<td>外線フェルミオン</td>
+<td>始状態 <span class="arithmatex">\(u^s(p)\)</span>、終状態 <span class="arithmatex">\(\bar u^s(p)\)</span></td>
+<td>(A.7)</td>
+</tr>
+<tr>
+<td>外線反フェルミオン</td>
+<td>始状態 <span class="arithmatex">\(\bar v^s(p)\)</span>、終状態 <span class="arithmatex">\(v^s(p)\)</span></td>
+<td>(A.8)</td>
+</tr>
+<tr>
+<td>外線光子</td>
+<td>始状態 <span class="arithmatex">\(\epsilon_\mu(p)\)</span>、終状態 <span class="arithmatex">\(\epsilon^*_\mu(p)\)</span></td>
+<td>(A.9)</td>
+</tr>
+</tbody>
+</table>
+<p>非可換ゲージ理論（フェルミオン・ゲージボソンの伝播関数は QED と同じで群空間の単位行列を掛ける）:</p>
+<table>
+<thead>
+<tr>
+<th>要素</th>
+<th>因子</th>
+<th>式番号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>フェルミオン頂点</td>
+<td><span class="arithmatex">\(ig\gamma^\mu t^a\)</span></td>
+<td>(A.10)</td>
+</tr>
+<tr>
+<td>3 点ボソン頂点（全運動量入射、<span class="arithmatex">\((a,\mu,k)\)</span>, <span class="arithmatex">\((b,\nu,p)\)</span>, <span class="arithmatex">\((c,\rho,q)\)</span>）</td>
+<td><span class="arithmatex">\(gf^{abc}\bigl[g^{\mu\nu}(k - p)^\rho + g^{\nu\rho}(p - q)^\mu + g^{\rho\mu}(q - k)^\nu\bigr]\)</span></td>
+<td>(A.11)</td>
+</tr>
+<tr>
+<td>4 点ボソン頂点</td>
+<td><span class="arithmatex">\(-ig^2\bigl[f^{abe}f^{cde}(g^{\mu\rho}g^{\nu\sigma} - g^{\mu\sigma}g^{\nu\rho}) + f^{ace}f^{bde}(g^{\mu\nu}g^{\rho\sigma} - g^{\mu\sigma}g^{\nu\rho}) + f^{ade}f^{bce}(g^{\mu\nu}g^{\rho\sigma} - g^{\mu\rho}g^{\nu\sigma})\bigr]\)</span></td>
+<td>(A.12)</td>
+</tr>
+<tr>
+<td>ゴースト頂点（<span class="arithmatex">\(p\)</span> は出ていく反ゴーストの運動量）</td>
+<td><span class="arithmatex">\(-gf^{abc}p^\mu\)</span></td>
+<td>(A.13)</td>
+</tr>
+<tr>
+<td>ゴースト伝播関数</td>
+<td><span class="arithmatex">\(\dfrac{i\delta^{ab}}{p^2 + i\epsilon}\)</span></td>
+<td>(A.14)</td>
+</tr>
+</tbody>
+</table>
+<p>他の理論の規則: Yukawa 理論 p. 118、スカラー QED p. 312、線形シグマ模型 p. 353、電弱理論 pp. 716, 743, 753。
+counterterm 頂点は pp. 325, 332, 528, 532。</p>
+<h3 id="euclidean_2">Euclidean（補足）</h3>
+<p><span class="arithmatex">\(e^{-S_E}\)</span> を展開して得る規則。頂点因子は <span class="arithmatex">\(-S_E\)</span> の相互作用項の係数、伝播関数は 2 次形式の逆行列。
+ループ運動量は <span class="arithmatex">\(\int d^4p_E/(2\pi)^4\)</span>、フェルミオンループの <span class="arithmatex">\((-1)\)</span> と対称因子は Minkowski と同じ。</p>
+<table>
+<thead>
+<tr>
+<th>要素</th>
+<th>Euclidean</th>
+<th>対応する Minkowski</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>スカラー伝播関数</td>
+<td><span class="arithmatex">\(\dfrac{1}{p_E^2 + m^2}\)</span></td>
+<td><span class="arithmatex">\(\dfrac{i}{p^2 - m^2 + i\epsilon}\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\phi^4\)</span> 頂点</td>
+<td><span class="arithmatex">\(-\lambda\)</span></td>
+<td><span class="arithmatex">\(-i\lambda\)</span></td>
+</tr>
+<tr>
+<td>Dirac 伝播関数</td>
+<td><span class="arithmatex">\(\dfrac{-i\not{p}_E + m}{p_E^2 + m^2}\)</span></td>
+<td><span class="arithmatex">\(\dfrac{i(\not{p} + m)}{p^2 - m^2 + i\epsilon}\)</span></td>
+</tr>
+<tr>
+<td>光子伝播関数（Feynman ゲージ）</td>
+<td><span class="arithmatex">\(\dfrac{\delta_{\mu\nu}}{p_E^2}\)</span></td>
+<td><span class="arithmatex">\(\dfrac{-ig_{\mu\nu}}{p^2 + i\epsilon}\)</span></td>
+</tr>
+<tr>
+<td>QED 頂点</td>
+<td><span class="arithmatex">\(-ie\gamma^E_\mu\)</span></td>
+<td><span class="arithmatex">\(-ie\gamma^\mu\)</span></td>
+</tr>
+<tr>
+<td>非可換フェルミオン頂点</td>
+<td><span class="arithmatex">\(ig\gamma^E_\mu t^a\)</span></td>
+<td><span class="arithmatex">\(ig\gamma^\mu t^a\)</span></td>
+</tr>
+<tr>
+<td>3 点ボソン頂点（全運動量入射、<span class="arithmatex">\(\partial_\mu \to ip_\mu\)</span>）</td>
+<td><span class="arithmatex">\(-igf^{abc}\bigl[\delta_{\mu\nu}(k - p)_\rho + \delta_{\nu\rho}(p - q)_\mu + \delta_{\rho\mu}(q - k)_\nu\bigr]\)</span></td>
+<td><span class="arithmatex">\(gf^{abc}[\cdots]\)</span></td>
+</tr>
+<tr>
+<td>4 点ボソン頂点</td>
+<td><span class="arithmatex">\(-g^2\bigl[f^{abe}f^{cde}(\delta_{\mu\rho}\delta_{\nu\sigma} - \delta_{\mu\sigma}\delta_{\nu\rho}) + \cdots\bigr]\)</span>（(A.12) の <span class="arithmatex">\(g\to\delta\)</span>、<span class="arithmatex">\(-ig^2 \to -g^2\)</span>）</td>
+<td>(A.12)</td>
+</tr>
+<tr>
+<td>ゴースト伝播関数</td>
+<td><span class="arithmatex">\(\dfrac{\delta^{ab}}{p_E^2}\)</span></td>
+<td><span class="arithmatex">\(\dfrac{i\delta^{ab}}{p^2 + i\epsilon}\)</span></td>
+</tr>
+<tr>
+<td>ゴースト頂点（<span class="arithmatex">\(p\)</span> は出ていく反ゴーストの運動量）</td>
+<td><span class="arithmatex">\(-igf^{abc}p^E_\mu\)</span></td>
+<td><span class="arithmatex">\(-gf^{abc}p^\mu\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>導出の目安: Minkowski の頂点は <span class="arithmatex">\(i\mathcal{L}_{\text{int}}\)</span>、Euclidean の頂点は <span class="arithmatex">\(-\mathcal{L}_{E,\text{int}}\)</span> から読む。
+微分を含まない頂点（<span class="arithmatex">\(\phi^4\)</span>、4 点ボソン）は Minkowski の因子を <span class="arithmatex">\(i\)</span> で割ったものになる。
+微分を含む頂点は <span class="arithmatex">\(\partial_\mu \to ip_\mu\)</span> の <span class="arithmatex">\(i\)</span> と、時間成分の <span class="arithmatex">\(i\)</span>（<span class="arithmatex">\(\gamma^0 = \gamma^E_4\)</span>, <span class="arithmatex">\(A^0 = iA^E_4\)</span>）が加わるので、個別に導く。</p>
+<hr />
+<h2 id="7-appendix-a3">7. 分子代数（Appendix A.3）</h2>
+<h3 id="minkowski_4">Minkowski</h3>
+<p>トレース (A.27), (A.28):</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\mathrm{tr}(\mathbf{1}) &amp;= 4 \\
+\mathrm{tr}(\text{奇数個の }\gamma) &amp;= 0 \\
+\mathrm{tr}(\gamma^\mu\gamma^\nu) &amp;= 4g^{\mu\nu} \\
+\mathrm{tr}(\gamma^\mu\gamma^\nu\gamma^\rho\gamma^\sigma) &amp;= 4\bigl(g^{\mu\nu}g^{\rho\sigma} - g^{\mu\rho}g^{\nu\sigma} + g^{\mu\sigma}g^{\nu\rho}\bigr) \\
+\mathrm{tr}(\gamma^5) &amp;= 0 \\
+\mathrm{tr}(\gamma^\mu\gamma^\nu\gamma^5) &amp;= 0 \\
+\mathrm{tr}(\gamma^\mu\gamma^\nu\gamma^\rho\gamma^\sigma\gamma^5) &amp;= -4i\epsilon^{\mu\nu\rho\sigma} \\
+\mathrm{tr}(\gamma^\mu\gamma^\nu\gamma^\rho\gamma^\sigma\cdots) &amp;= \mathrm{tr}(\cdots\gamma^\sigma\gamma^\rho\gamma^\nu\gamma^\mu)
+\end{aligned}
+\]</div>
+<p>縮約（4 次元、(A.29)）:</p>
+<div class="arithmatex">\[
+\gamma^\mu\gamma_\mu = 4, \qquad
+\gamma^\mu\gamma^\nu\gamma_\mu = -2\gamma^\nu, \qquad
+\gamma^\mu\gamma^\nu\gamma^\rho\gamma_\mu = 4g^{\nu\rho}, \qquad
+\gamma^\mu\gamma^\nu\gamma^\rho\gamma^\sigma\gamma_\mu = -2\gamma^\sigma\gamma^\rho\gamma^\nu
+\]</div>
+<p>縮約（<span class="arithmatex">\(d\)</span> 次元、(A.54), (A.55)）:</p>
+<div class="arithmatex">\[
+g^{\mu\nu}g_{\mu\nu} = d, \qquad
+\gamma^\mu\gamma_\mu = d, \qquad
+\gamma^\mu\gamma^\nu\gamma_\mu = -(d - 2)\gamma^\nu, \qquad
+\gamma^\mu\gamma^\nu\gamma^\rho\gamma_\mu = 4g^{\nu\rho} - (4 - d)\gamma^\nu\gamma^\rho
+\]</div>
+<div class="arithmatex">\[
+\gamma^\mu\gamma^\nu\gamma^\rho\gamma^\sigma\gamma_\mu = -2\gamma^\sigma\gamma^\rho\gamma^\nu + (4 - d)\gamma^\nu\gamma^\rho\gamma^\sigma
+\]</div>
+<p><span class="arithmatex">\(\epsilon\)</span> の縮約 (A.30):</p>
+<div class="arithmatex">\[
+\epsilon^{\alpha\beta\gamma\delta}\epsilon_{\alpha\beta\gamma\delta} = -24, \qquad
+\epsilon^{\alpha\beta\gamma\mu}\epsilon_{\alpha\beta\gamma\nu} = -6\delta^\mu_\nu, \qquad
+\epsilon^{\alpha\beta\mu\nu}\epsilon_{\alpha\beta\rho\sigma} = -2\bigl(\delta^\mu_\rho\delta^\nu_\sigma - \delta^\mu_\sigma\delta^\nu_\rho\bigr)
+\]</div>
+<p>Fierz 恒等式 (A.31), (A.32)（<span class="arithmatex">\(u_{iL} = \frac12(1 - \gamma^5)u_i\)</span>）:</p>
+<div class="arithmatex">\[
+(\bar u_{1L}\gamma^\mu u_{2L})(\bar u_{3L}\gamma_\mu u_{4L}) = -(\bar u_{1L}\gamma^\mu u_{4L})(\bar u_{3L}\gamma_\mu u_{2L}), \qquad
+(\sigma^\mu)_{\alpha\beta}(\sigma_\mu)_{\gamma\delta} = 2\epsilon_{\alpha\gamma}\epsilon_{\beta\delta}, \quad
+(\bar\sigma^\mu)_{\alpha\beta}(\bar\sigma_\mu)_{\gamma\delta} = 2\epsilon_{\alpha\gamma}\epsilon_{\beta\delta}
+\]</div>
+<h3 id="euclidean_3">Euclidean（補足）</h3>
+<p>Clifford 代数 <span class="arithmatex">\(\{\gamma^E_\mu, \gamma^E_\nu\} = 2\delta_{\mu\nu}\)</span> だけで決まる式は、<span class="arithmatex">\(g^{\mu\nu} \to \delta_{\mu\nu}\)</span> とすればそのまま成り立つ:</p>
+<div class="arithmatex">\[
+\mathrm{tr}(\gamma^E_\mu\gamma^E_\nu) = 4\delta_{\mu\nu}, \qquad
+\mathrm{tr}(\gamma^E_\mu\gamma^E_\nu\gamma^E_\rho\gamma^E_\sigma) = 4\bigl(\delta_{\mu\nu}\delta_{\rho\sigma} - \delta_{\mu\rho}\delta_{\nu\sigma} + \delta_{\mu\sigma}\delta_{\nu\rho}\bigr)
+\]</div>
+<div class="arithmatex">\[
+\gamma^E_\mu\gamma^E_\mu = d, \qquad
+\gamma^E_\mu\gamma^E_\nu\gamma^E_\mu = -(d - 2)\gamma^E_\nu, \qquad
+\gamma^E_\mu\gamma^E_\nu\gamma^E_\rho\gamma^E_\mu = 4\delta_{\nu\rho} - (4 - d)\gamma^E_\nu\gamma^E_\rho
+\]</div>
+<p><span class="arithmatex">\(\gamma_5\)</span> を含むトレースは定義に依存する。<span class="arithmatex">\(\epsilon_{1234} = +1\)</span> として</p>
+<div class="arithmatex">\[
+\mathrm{tr}(\gamma^E_5\gamma^E_\mu\gamma^E_\nu\gamma^E_\rho\gamma^E_\sigma) = -4\epsilon_{\mu\nu\rho\sigma} \quad (\gamma^E_5 = \gamma^E_4\gamma^E_1\gamma^E_2\gamma^E_3,\ \text{本ページ}), \qquad
+= +4\epsilon_{\mu\nu\rho\sigma} \quad (\gamma_5 = \gamma_1\gamma_2\gamma_3\gamma_4)
+\]</div>
+<p>Euclidean の <span class="arithmatex">\(\epsilon\)</span> 縮約は符号が正: <span class="arithmatex">\(\epsilon_{\alpha\beta\gamma\delta}\epsilon_{\alpha\beta\gamma\delta} = +24\)</span>, <span class="arithmatex">\(\epsilon_{\alpha\beta\gamma\mu}\epsilon_{\alpha\beta\gamma\nu} = 6\delta_{\mu\nu}\)</span>, <span class="arithmatex">\(\epsilon_{\alpha\beta\mu\nu}\epsilon_{\alpha\beta\rho\sigma} = 2(\delta_{\mu\rho}\delta_{\nu\sigma} - \delta_{\mu\sigma}\delta_{\nu\rho})\)</span>。</p>
+<h3 id="a33a38">群論（A.33）–（A.38）、両方に共通</h3>
+<div class="arithmatex">\[
+[t^a, t^b] = if^{abc}t^c, \qquad
+\mathrm{tr}[t^a t^b] = C(r)\delta^{ab}, \qquad t^a t^a = C_2(r)\cdot\mathbf{1}, \qquad
+C(r) = \frac{d(r)}{d(G)}C_2(r)
+\]</div>
+<div class="arithmatex">\[
+t^a t^b t^a = \bigl[C_2(r) - \tfrac12 C_2(G)\bigr]t^b, \qquad
+f^{acd}f^{bcd} = C_2(G)\delta^{ab}, \qquad
+f^{abc}t^b t^c = \tfrac{i}{2}C_2(G)t^a
+\]</div>
+<p><span class="arithmatex">\(SU(N)\)</span> の基本表現 <span class="arithmatex">\(N\)</span>:</p>
+<div class="arithmatex">\[
+C(N) = \frac12, \qquad C_2(N) = \frac{N^2 - 1}{2N}, \qquad C(G) = C_2(G) = N, \qquad
+(t^a)_{ij}(t^a)_{k\ell} = \frac12\Bigl(\delta_{i\ell}\delta_{kj} - \frac1N\delta_{ij}\delta_{k\ell}\Bigr)
+\]</div>
+<hr />
+<h2 id="8-appendix-a4-63">8. ループ積分と次元正則化（Appendix A.4, §6.3）</h2>
+<h3 id="feynman-a39-a40-642">Feynman パラメータ（両方に共通、(A.39), (A.40), (6.42)）</h3>
+<div class="arithmatex">\[
+\frac{1}{A_1 A_2\cdots A_n} = \int_0^1 dx_1\cdots dx_n\, \delta\Bigl(\sum x_i - 1\Bigr)\frac{(n - 1)!}{[x_1 A_1 + x_2 A_2 + \cdots + x_n A_n]^n}
+\]</div>
+<div class="arithmatex">\[
+\frac{1}{AB} = \int_0^1 dx\, \frac{1}{[xA + (1 - x)B]^2}
+\]</div>
+<div class="arithmatex">\[
+\frac{1}{A_1^{m_1}\cdots A_n^{m_n}} = \int_0^1 dx_1\cdots dx_n\, \delta\Bigl(\sum x_i - 1\Bigr)
+\frac{\prod x_i^{m_i - 1}}{[\sum x_i A_i]^{\sum m_i}}\frac{\Gamma(m_1 + \cdots + m_n)}{\Gamma(m_1)\cdots\Gamma(m_n)}
+\]</div>
+<p>平方完成後、分母は <span class="arithmatex">\((\ell^2 - \Delta)^n\)</span>（Minkowski）または <span class="arithmatex">\((\ell_E^2 + \Delta)^n\)</span>（Euclidean）になる。
+<span class="arithmatex">\(\Delta\)</span> は質量と空間的運動量不変量の組合せなら正。</p>
+<h3 id="_3">対称積分</h3>
+<p>Minkowski (A.41), (A.42):</p>
+<div class="arithmatex">\[
+\ell^\mu\ell^\nu \to \frac1d\ell^2 g^{\mu\nu}, \qquad
+\ell^\mu\ell^\nu\ell^\rho\ell^\sigma \to \frac{1}{d(d + 2)}(\ell^2)^2\bigl(g^{\mu\nu}g^{\rho\sigma} + g^{\mu\rho}g^{\nu\sigma} + g^{\mu\sigma}g^{\nu\rho}\bigr)
+\]</div>
+<p>Euclidean:</p>
+<div class="arithmatex">\[
+\ell^E_\mu\ell^E_\nu \to \frac1d\ell_E^2\delta_{\mu\nu}, \qquad
+\ell^E_\mu\ell^E_\nu\ell^E_\rho\ell^E_\sigma \to \frac{1}{d(d + 2)}(\ell_E^2)^2\bigl(\delta_{\mu\nu}\delta_{\rho\sigma} + \delta_{\mu\rho}\delta_{\nu\sigma} + \delta_{\mu\sigma}\delta_{\nu\rho}\bigr)
+\]</div>
+<p>奇数個の <span class="arithmatex">\(\ell\)</span> は消える。</p>
+<h3 id="wick-648-a43">Wick 回転 (6.48), (A.43)</h3>
+<div class="arithmatex">\[
+\ell^0 = i\ell^0_E, \qquad \boldsymbol\ell = \boldsymbol\ell_E, \qquad \ell^2 = -\ell_E^2, \qquad d^d\ell = i\,d^d\ell_E
+\]</div>
+<div class="arithmatex">\[
+\int\frac{d^4\ell}{(2\pi)^4}\frac{1}{[\ell^2 - \Delta]^m}
+= \frac{i}{(-1)^m}\frac{1}{(2\pi)^4}\int d^4\ell_E\frac{1}{[\ell_E^2 + \Delta]^m}
+= \frac{i(-1)^m}{(2\pi)^4}\int d\Omega_4\int_0^\infty d\ell_E\frac{\ell_E^3}{[\ell_E^2 + \Delta]^m}
+\]</div>
+<div class="arithmatex">\[
+\int d\Omega_4 = 2\pi^2, \qquad \int d\Omega_d = \frac{2\pi^{d/2}}{\Gamma(d/2)}
+\]</div>
+<h3 id="d"><span class="arithmatex">\(d\)</span> 次元積分の表</h3>
+<p>Minkowski (A.44)–(A.48):</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\int\frac{d^d\ell}{(2\pi)^d}\frac{1}{(\ell^2 - \Delta)^n}
+&amp;= \frac{(-1)^n i}{(4\pi)^{d/2}}\frac{\Gamma(n - \frac d2)}{\Gamma(n)}\Bigl(\frac1\Delta\Bigr)^{n - \frac d2} \\
+\int\frac{d^d\ell}{(2\pi)^d}\frac{\ell^2}{(\ell^2 - \Delta)^n}
+&amp;= \frac{(-1)^{n-1} i}{(4\pi)^{d/2}}\frac d2\frac{\Gamma(n - \frac d2 - 1)}{\Gamma(n)}\Bigl(\frac1\Delta\Bigr)^{n - \frac d2 - 1} \\
+\int\frac{d^d\ell}{(2\pi)^d}\frac{\ell^\mu\ell^\nu}{(\ell^2 - \Delta)^n}
+&amp;= \frac{(-1)^{n-1} i}{(4\pi)^{d/2}}\frac{g^{\mu\nu}}{2}\frac{\Gamma(n - \frac d2 - 1)}{\Gamma(n)}\Bigl(\frac1\Delta\Bigr)^{n - \frac d2 - 1} \\
+\int\frac{d^d\ell}{(2\pi)^d}\frac{(\ell^2)^2}{(\ell^2 - \Delta)^n}
+&amp;= \frac{(-1)^n i}{(4\pi)^{d/2}}\frac{d(d + 2)}{4}\frac{\Gamma(n - \frac d2 - 2)}{\Gamma(n)}\Bigl(\frac1\Delta\Bigr)^{n - \frac d2 - 2} \\
+\int\frac{d^d\ell}{(2\pi)^d}\frac{\ell^\mu\ell^\nu\ell^\rho\ell^\sigma}{(\ell^2 - \Delta)^n}
+&amp;= \frac{(-1)^n i}{(4\pi)^{d/2}}\frac{\Gamma(n - \frac d2 - 2)}{\Gamma(n)}\Bigl(\frac1\Delta\Bigr)^{n - \frac d2 - 2}
+\times\frac14\bigl(g^{\mu\nu}g^{\rho\sigma} + g^{\mu\rho}g^{\nu\sigma} + g^{\mu\sigma}g^{\nu\rho}\bigr)
+\end{aligned}
+\]</div>
+<p>Euclidean（上の表から <span class="arithmatex">\(d^d\ell = i\,d^d\ell_E\)</span>, <span class="arithmatex">\(\ell^2 = -\ell_E^2\)</span> で移したもの。<span class="arithmatex">\(i\)</span> と <span class="arithmatex">\((-1)^n\)</span> が消える）:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\int\frac{d^d\ell_E}{(2\pi)^d}\frac{1}{(\ell_E^2 + \Delta)^n}
+&amp;= \frac{1}{(4\pi)^{d/2}}\frac{\Gamma(n - \frac d2)}{\Gamma(n)}\Bigl(\frac1\Delta\Bigr)^{n - \frac d2} \\
+\int\frac{d^d\ell_E}{(2\pi)^d}\frac{\ell_E^2}{(\ell_E^2 + \Delta)^n}
+&amp;= \frac{1}{(4\pi)^{d/2}}\frac d2\frac{\Gamma(n - \frac d2 - 1)}{\Gamma(n)}\Bigl(\frac1\Delta\Bigr)^{n - \frac d2 - 1} \\
+\int\frac{d^d\ell_E}{(2\pi)^d}\frac{\ell^E_\mu\ell^E_\nu}{(\ell_E^2 + \Delta)^n}
+&amp;= \frac{1}{(4\pi)^{d/2}}\frac{\delta_{\mu\nu}}{2}\frac{\Gamma(n - \frac d2 - 1)}{\Gamma(n)}\Bigl(\frac1\Delta\Bigr)^{n - \frac d2 - 1} \\
+\int\frac{d^d\ell_E}{(2\pi)^d}\frac{(\ell_E^2)^2}{(\ell_E^2 + \Delta)^n}
+&amp;= \frac{1}{(4\pi)^{d/2}}\frac{d(d + 2)}{4}\frac{\Gamma(n - \frac d2 - 2)}{\Gamma(n)}\Bigl(\frac1\Delta\Bigr)^{n - \frac d2 - 2} \\
+\int\frac{d^d\ell_E}{(2\pi)^d}\frac{\ell^E_\mu\ell^E_\nu\ell^E_\rho\ell^E_\sigma}{(\ell_E^2 + \Delta)^n}
+&amp;= \frac{1}{(4\pi)^{d/2}}\frac{\Gamma(n - \frac d2 - 2)}{\Gamma(n)}\Bigl(\frac1\Delta\Bigr)^{n - \frac d2 - 2}
+\times\frac14\bigl(\delta_{\mu\nu}\delta_{\rho\sigma} + \delta_{\mu\rho}\delta_{\nu\sigma} + \delta_{\mu\sigma}\delta_{\nu\rho}\bigr)
+\end{aligned}
+\]</div>
+<p>対応関係: <span class="arithmatex">\(\displaystyle\int\frac{d^d\ell}{(2\pi)^d}\frac{1}{(\ell^2 - \Delta)^n} = i(-1)^n\int\frac{d^d\ell_E}{(2\pi)^d}\frac{1}{(\ell_E^2 + \Delta)^n}\)</span>、
+<span class="arithmatex">\(\ell^2\)</span> が分子に 1 つ増えるごとに <span class="arithmatex">\((-1)\)</span> が 1 つ増える。</p>
+<h3 id="4-649-650euclidean">4 次元で収束する場合（(6.49), (6.50)、Euclidean 形）</h3>
+<div class="arithmatex">\[
+\begin{aligned}
+\int\frac{d^4\ell_E}{(2\pi)^4}\frac{1}{[\ell_E^2 + \Delta]^m} &amp;= \frac{1}{(4\pi)^2}\frac{1}{(m - 1)(m - 2)}\frac{1}{\Delta^{m-2}} \\
+\int\frac{d^4\ell_E}{(2\pi)^4}\frac{\ell_E^2}{[\ell_E^2 + \Delta]^m} &amp;= \frac{1}{(4\pi)^2}\frac{2}{(m - 1)(m - 2)(m - 3)}\frac{1}{\Delta^{m-3}} \quad (m &gt; 3)
+\end{aligned}
+\]</div>
+<p>Minkowski 形はそれぞれ <span class="arithmatex">\(i(-1)^m\)</span>、<span class="arithmatex">\(i(-1)^{m-1}\)</span> を掛ける。</p>
+<h3 id="d-to-4-a49a52"><span class="arithmatex">\(d \to 4\)</span> の展開（(A.49)–(A.52)、両方に共通）</h3>
+<div class="arithmatex">\[
+\Bigl(\frac1\Delta\Bigr)^{2 - \frac d2} = 1 - \bigl(2 - \tfrac d2\bigr)\log\Delta + \cdots, \qquad
+\Gamma(x) = \frac1x - \gamma + \mathcal{O}(x) \quad (x \to 0)
+\]</div>
+<div class="arithmatex">\[
+\Gamma(x) = \frac{(-1)^n}{n!}\Bigl(\frac{1}{x + n} - \gamma + 1 + \cdots + \frac1n + \mathcal{O}(x + n)\Bigr) \quad (x \to -n), \qquad \gamma \approx 0.5772
+\]</div>
+<div class="arithmatex">\[
+\frac{\Gamma(2 - \frac d2)}{(4\pi)^{d/2}}\Bigl(\frac1\Delta\Bigr)^{2 - \frac d2}
+= \frac{1}{(4\pi)^2}\Bigl(\frac2\epsilon - \log\Delta - \gamma + \log(4\pi) + \mathcal{O}(\epsilon)\Bigr), \qquad \epsilon = 4 - d
+\]</div>
+<h3 id="a53">解析接続 (A.53)</h3>
+<p><span class="arithmatex">\(\Delta\)</span> が時間的運動量を含んで負になるとき（Minkowski の物理領域）は</p>
+<div class="arithmatex">\[
+\Bigl(\frac1\Delta\Bigr)^{n - \frac d2} \to \Bigl(\frac{1}{\Delta - i\epsilon}\Bigr)^{n - \frac d2}
+\]</div>
+<p>で分枝を選ぶ。Euclidean では <span class="arithmatex">\(\Delta &gt; 0\)</span> が前提なのでこの処方は現れない。</p>
+<h3 id="paulivillars-651653">Pauli–Villars 正則化 (6.51)–(6.53)</h3>
+<div class="arithmatex">\[
+\frac{1}{(k - p)^2 + i\epsilon} \to \frac{1}{(k - p)^2 + i\epsilon} - \frac{1}{(k - p)^2 - \Lambda^2 + i\epsilon}
+\]</div>
+<div class="arithmatex">\[
+\int\frac{d^4\ell}{(2\pi)^4}\Bigl(\frac{\ell^2}{[\ell^2 - \Delta]^3} - \frac{\ell^2}{[\ell^2 - \Delta_\Lambda]^3}\Bigr) = \frac{i}{(4\pi)^2}\log\frac{\Delta_\Lambda}{\Delta}
+\]</div>
+<hr />
+<h2 id="9-appendix-a5minkowski">9. 断面積と崩壊率（Appendix A.5、Minkowski のみ）</h2>
+<div class="arithmatex">\[
+d\sigma = \frac{1}{2E_A 2E_B\lvert v_A - v_B\rvert}\Bigl(\prod_f\frac{d^3p_f}{(2\pi)^3}\frac{1}{2E_f}\Bigr)
+\bigl\lvert\mathcal{M}(p_A, p_B \to \{p_f\})\bigr\rvert^2(2\pi)^4\delta^{(4)}\Bigl(p_A + p_B - \sum p_f\Bigr)
+\]</div>
+<div class="arithmatex">\[
+d\Gamma = \frac{1}{2m_A}\Bigl(\prod_f\frac{d^3p_f}{(2\pi)^3}\frac{1}{2E_f}\Bigr)
+\bigl\lvert\mathcal{M}(m_A \to \{p_f\})\bigr\rvert^2(2\pi)^4\delta^{(4)}\Bigl(p_A - \sum p_f\Bigr)
+\]</div>
+<p>2 体終状態の位相空間 (A.58):</p>
+<div class="arithmatex">\[
+\Bigl(\prod_f\int\frac{d^3p_f}{(2\pi)^3}\frac{1}{2E_f}\Bigr)(2\pi)^4\delta^{(4)}\Bigl(\sum p_i - \sum p_f\Bigr)
+= \int\frac{d\Omega_{\text{cm}}}{4\pi}\frac{1}{8\pi}\Bigl(\frac{2\lvert\mathbf{p}\rvert}{E_{\text{cm}}}\Bigr)
+\]</div>
+<p><span class="arithmatex">\(S\)</span> 行列と不変振幅 (4.73):</p>
+<div class="arithmatex">\[
+\langle p_1 p_2\cdots\vert iT\vert p_A p_B\rangle = (2\pi)^4\delta^{(4)}\Bigl(p_A + p_B - \sum p_f\Bigr)\cdot i\mathcal{M}(p_A, p_B \to p_f)
+\]</div>
+<p>Mandelstam 変数 (5.69):</p>
+<div class="arithmatex">\[
+\begin{aligned}
+s &amp;= (p + p')^2 = (k + k')^2 \\
+t &amp;= (k - p)^2 = (k' - p')^2 \\
+u &amp;= (k' - p)^2 = (k - p')^2
+\end{aligned}
+\qquad s + t + u = \sum m_i^2
+\]</div>
+<hr />
+<h2 id="10-appendix-a6">10. 物理定数と換算（Appendix A.6）</h2>
+<div class="arithmatex">\[
+c = 2.998\times10^{10}\ \text{cm/s}, \qquad
+\hbar = 6.582\times10^{-22}\ \text{MeV s}, \qquad
+e = -1.602\times10^{-19}\ \text{C}
+\]</div>
+<div class="arithmatex">\[
+\alpha = \frac{e^2}{4\pi\hbar c} = \frac{1}{137.04} = 0.00730, \qquad
+\frac{G_F}{(\hbar c)^3} = 1.166\times10^{-5}\ \text{GeV}^{-2}, \qquad
+\alpha_s(m_Z) = 0.12, \qquad \sin^2\theta_w = 0.23
+\]</div>
+<table>
+<thead>
+<tr>
+<th>粒子</th>
+<th>質量</th>
+<th>粒子</th>
+<th>質量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(e\)</span></td>
+<td>0.5110 MeV</td>
+<td><span class="arithmatex">\(p\)</span></td>
+<td>938.3 MeV</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\mu\)</span></td>
+<td>105.6 MeV</td>
+<td><span class="arithmatex">\(n\)</span></td>
+<td>939.6 MeV</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\tau\)</span></td>
+<td>1777 MeV</td>
+<td><span class="arithmatex">\(\pi^\pm\)</span></td>
+<td>139.6 MeV</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(W^\pm\)</span></td>
+<td>80.2 GeV</td>
+<td><span class="arithmatex">\(\pi^0\)</span></td>
+<td>135.0 MeV</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(Z^0\)</span></td>
+<td>91.19 GeV</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>（1995 年当時の値。最新値は PDG を参照。）</p>
+<div class="arithmatex">\[
+a_0 = \frac{\hbar}{\alpha m_e c} = 5.292\times10^{-9}\ \text{cm}, \qquad
+\lambda_e = \frac{\hbar}{m_e c} = 3.862\times10^{-11}\ \text{cm}, \qquad
+r_e = \frac{\alpha\hbar}{m_e c} = 2.818\times10^{-13}\ \text{cm}
+\]</div>
+<div class="arithmatex">\[
+\sigma_T = \frac{8\pi r_e^2}{3} = 0.6652\ \text{barn}, \qquad
+1\ \text{R} = \frac{4\pi\alpha^2}{3E_{\text{cm}}^2} = \frac{86.8\ \text{nbarn}}{(E_{\text{cm}}\ \text{in GeV})^2}
+\]</div>
+<div class="arithmatex">\[
+(1\ \text{GeV})/c^2 = 1.783\times10^{-24}\ \text{g}, \qquad
+(1\ \text{GeV})^{-1}(\hbar c) = 0.1973\times10^{-13}\ \text{cm} = 0.1973\ \text{fm}
+\]</div>
+<div class="arithmatex">\[
+(1\ \text{GeV})^{-2}(\hbar c)^2 = 0.3894\times10^{-27}\ \text{cm}^2 = 0.3894\ \text{mbarn}, \qquad
+1\ \text{barn} = 10^{-24}\ \text{cm}^2
+\]</div>
+<div class="arithmatex">\[
+(1\ \text{volt/meter})(e\hbar c) = 1.973\times10^{-25}\ \text{GeV}^2, \qquad
+(1\ \text{tesla})(e\hbar c^2) = 5.916\times10^{-17}\ \text{GeV}^2
+\]</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  ページトップへ戻る
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.instant", "navigation.top", "navigation.indexes", "content.code.annotate", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../js/highlight.js"></script>
+      
+    
+  </body>
+</html>
