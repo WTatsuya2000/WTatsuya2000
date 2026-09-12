@@ -437,7 +437,7 @@ pre .op{color:var(--code-kw)}
         <span class="opt">
           <span class="pkg-list" id="pkg-list"></span>
           <button type="button" class="seg lone" id="pkg-open" title="指定したステップ範囲のゲートを1つのパッケージにまとめる">＋ まとめる</button>
-          <span class="sec-hint">まとめたものはゲート帯に現れ、上端の量子ビットをクリックで再配置。置いたものは Shift+クリックで展開。</span>
+          <span class="sec-hint">まとめたものはゲート帯に現れ、上端の量子ビットをクリックで再配置。置いたものは Shift+クリックで展開。ブラウザに保存され、次回開いたときも使えます。</span>
         </span>
         <div class="tb-row pkg-form" id="pkg-form" hidden>
           <span class="opt">
@@ -600,7 +600,23 @@ pre .op{color:var(--code-kw)}
     state.ns = n; state.pending = null; render();
   }
 
-  // ---------- パッケージ ----------
+  // ---------- パッケージ（ブラウザに保存して次回も使えるようにする） ----------
+  const PKG_STORE_KEY = 'yaoCircuitBuilder.packages.v1';
+  function savePackages(){
+    try {
+      localStorage.setItem(PKG_STORE_KEY, JSON.stringify({nextPkgId: state.nextPkgId, packages: state.packages}));
+    } catch(_){ /* 保存できない環境（プライベートモード等）では無視 */ }
+  }
+  function loadPackages(){
+    try {
+      const raw = localStorage.getItem(PKG_STORE_KEY);
+      if(!raw) return;
+      const data = JSON.parse(raw);
+      if(!data || !Array.isArray(data.packages)) return;
+      state.packages = data.packages;
+      state.nextPkgId = data.nextPkgId || (data.packages.reduce((m, k) => Math.max(m, k.id), 0) + 1);
+    } catch(_){ /* 壊れたデータは無視して空のまま */ }
+  }
   function reservedName(name){
     return JULIA_RESERVED.has(name) || ORDER.includes(name) || name in GATES ||
            state.packages.some(k => k.name === name) || state.params.some(p => p.name === name);
@@ -620,6 +636,7 @@ pre .op{color:var(--code-kw)}
     state.columns.splice(from - 1, to - from + 1, [placed]);
     state.ns = state.columns.length;
     state.pending = null;
+    savePackages();
     return '';
   }
   // 配置されたパッケージをその場で展開する（Shift+クリック）
@@ -641,6 +658,7 @@ pre .op{color:var(--code-kw)}
     state.packages = state.packages.filter(k => k.id !== id);
     if(state.tool === 'pkg:' + id) state.tool = 'H';
     state.pending = null;
+    savePackages();
     return '';
   }
   function placePackage(s, q, id){
@@ -1569,6 +1587,7 @@ pre .op{color:var(--code-kw)}
     }
   });
 
+  loadPackages();
   loadGHZ();
 })();
 </script>
