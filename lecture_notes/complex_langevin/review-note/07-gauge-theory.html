@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="複素ランジュバン法 講義ノート 第7章 — SL(N,C)・ユニタリティ・ノルム・ゲージ冷却・動的安定化">
+  <title>ゲージ理論への拡張 — 複素ランジュバン法 講義ノート</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="07-gauge-theory.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">複素ランジュバン法</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">Seiler ほか 2013 / Nagata ほか 2016a / Attanasio と Jäger 2019 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">ゲージ理論への拡張</span>
+      </h1>
+
+      <p class="lead">
+        リンク変数のランジュバン方程式を書き、作用が複素数のときリンクが SU(N) から SL(N,C) へ出ていくことを見る。複素化したゲージ軌道が非コンパクトであることが不安定性の原因であり、それを抑えるゲージ冷却と動的安定化をまとめる。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>主要文献</dt>
+          <dd>Seiler, Sexty, Stamatescu, Gauge cooling in complex Langevin for QCD with heavy quarks, <a href="https://arxiv.org/abs/1211.3709" target="_blank" rel="noreferrer">arXiv:1211.3709</a></dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>\(\tr\lambda_a\lambda_b=2\delta_{ab}\)、左微分 \(D_a\)</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd><span class="tag">gauge theory</span> <span class="tag">gauge cooling</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>リンク変数のランジュバン方程式</h2>
+        <div class="def-box numbered-box" data-kind="definition" data-label="定義" id="def-link">
+          <div class="callout-head">
+            <span class="box-title" data-title="リンク変数の更新"></span>
+            <span class="box-kicker">Definition</span>
+          </div>
+          生成子 \(\lambda_a\) と左微分 \(D_a f(U) = \partial_\alpha f\bigl(e^{i\alpha\lambda_a}U\bigr)\big|_{\alpha=0}\) を用いて、離散化されたランジュバン更新を
+          <div class="equation" id="eq-linkupdate">
+            \[
+              U_{x,\nu}(\theta+\epsilon) = \exp\Bigl[i\lambda_a\bigl(\epsilon K_{a,x\nu} + \sqrt{\epsilon}\,\eta_{a,x\nu}\bigr)\Bigr]\,U_{x,\nu}(\theta)
+            \]
+          </div>
+          で定める。ドリフトは \(K_{a,x\nu} = -D_{a,x\nu}S\)、ノイズは \(\langle\eta\eta\rangle=2\delta\) とする。\(S\) が実なら \(K_a\) も実で、\(U\) は SU(\(N\)) に留まる。
+        </div>
+      </section>
+
+      <section>
+        <h2>複素化：SU(N) から SL(N,C) へ</h2>
+        <p>
+          \(S\) が複素数（有限 \(\mu\) の \(-\ln\det M\) を含む）だと \(K_a\in\mathbb C\) となり、更新行列 \(e^{i\lambda_aK_a}\) はユニタリでなくなる。
+          生成子がトレースレスなので \(\det U=1\) は保たれ、リンクは複素化された群 \(\SLNC\) を動く（演習 7.4）。これは 1 変数の \(x\to x+iy\) の自然な一般化である。
+        </p>
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">\(U^\dagger\) ではなく \(U^{-1}\) を使う</span>
+            <span class="box-kicker">Caution</span>
+          </div>
+          作用と観測量は複素化したリンクの正則関数でなければならない。\(U^\dagger\) の成分は反正則なので、SU(\(N\)) 上で \(U^\dagger=U^{-1}\) であることを使い、
+          プラケット作用や Dirac 演算子の後ろ向きホッピング項は \(U^{-1}\) で書いてから解析接続する（演習 7.3）。
+        </div>
+
+        <div class="def-box numbered-box" data-kind="definition" data-label="定義" id="def-unorm">
+          <div class="callout-head">
+            <span class="box-title" data-title="ユニタリティ・ノルム"></span>
+            <span class="box-kicker">Definition</span>
+          </div>
+          <div class="equation" id="eq-unorm">
+            \[
+              d = \frac{1}{4\Omega}\sum_{x,\nu}\frac{1}{N}\tr\bigl(U_{x\nu}U_{x\nu}^\dagger - \mathbb 1\bigr)\ \ge 0
+            \]
+          </div>
+          （\(\Omega\) は格子点数）。\(d=0\) ⇔ 全リンクがユニタリ（演習 7.1）。\(\tr[(UU^\dagger-1)^2]\) 型の定義も使われる。
+        </div>
+        <p>\(d\) が大きく育つと、第 5 章の意味で \(P\) の裾が重くなり、結果が信頼できなくなる。</p>
+      </section>
+
+      <section>
+        <h2>なぜゲージ理論で特に難しいか</h2>
+        <p>
+          ゲージ変換 \(U_{x\nu}\to \Omega_x U_{x\nu}\Omega_{x+\hat\nu}^{-1}\) も複素化され、\(\Omega_x\in\SLNC\) となる。
+          SU(\(N\)) のゲージ軌道はコンパクトだが、\(\SLNC\) のゲージ軌道は非コンパクトで、ゲージ不変な作用はその方向にドリフトを与えない。
+          数値誤差や非可換性の効果でこの平坦な方向に配位が拡散すると、ユニタリティ・ノルムが際限なく増大する。
+        </p>
+      </section>
+
+      <section>
+        <h2>ゲージ冷却</h2>
+        <p>
+          各ランジュバンステップの後に、物理量（ゲージ不変量）を変えずにユニタリティ・ノルムを下げる \(\SLNC\) ゲージ変換を施す <a class="cite" href="#ref-sss2013"></a>。
+          その方向を、点 \(x\) だけでの変換に対する \(\sum\tr UU^\dagger\) の勾配から決める。
+        </p>
+
+        <div class="derivation-head">
+          <span class="box-kicker">Derivation — 冷却の勾配</span>
+          <button class="steps-toggle" type="button" data-controls="der-cool">理由をすべて開く</button>
+        </div>
+        <dl class="derivation-goal">
+          <div><dt>出発</dt><dd>ユニタリティ・ノルム <a class="eq-ref" href="#eq-unorm"></a> のうち点 \(x\) に接するリンクの寄与</dd></div>
+          <div><dt>目標</dt><dd>冷却の勾配 \(G_{a,x}\) <a class="eq-ref" href="#eq-gc-grad"></a></dd></div>
+          <div><dt>方針</dt><dd>点 \(x\) で非ユニタリなゲージ変換 \(\Omega=e^{\alpha\lambda_a}\) を施し、\(\alpha=0\) で微分する</dd></div>
+        </dl>
+        <ol class="derivation" id="der-cool">
+          <li>
+            <div class="step-body">
+              <p class="step-action">点 \(x\) から出るリンクと入るリンクを変換する</p>
+              <div class="equation" data-unnumbered>
+                \[ U_{x\nu}\to\Omega U_{x\nu},\qquad U_{x-\hat\nu,\nu}\to U_{x-\hat\nu,\nu}\Omega^{-1},\qquad \Omega=e^{\alpha\lambda_a},\ \alpha\in\mathbb R \]
+              </div>
+              <details class="step-why"><summary>なぜ</summary><div>\(\lambda_a\) はエルミートなので \(\Omega^\dagger=\Omega\neq\Omega^{-1}\)（非ユニタリ）だが、\(\det\Omega=e^{\alpha\tr\lambda_a}=1\) で \(\SLNC\) に属する。SU(\(N\)) の変換ではノルムが変わらない（演習 7.2）。</div></details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">出るリンクの寄与を \(\alpha\) で微分する</p>
+              <div class="equation" data-unnumbered>
+                \[ \tr(\Omega UU^\dagger\Omega^\dagger)=\tr(\Omega^2UU^\dagger)\ \Rightarrow\ \frac{d}{d\alpha}\Big|_0=2\tr(\lambda_aUU^\dagger) \]
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">入るリンクの寄与を \(\alpha\) で微分する</p>
+              <div class="equation" data-unnumbered>
+                \[ \tr(U\Omega^{-1}\Omega^{-1\dagger}U^\dagger)=\tr(\Omega^{-2}U^\dagger U)\ \Rightarrow\ \frac{d}{d\alpha}\Big|_0=-2\tr(\lambda_aU^\dagger U) \]
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">全ての方向 \(\nu\) について足し合わせる</p>
+              <div class="equation" id="eq-gc-grad">
+                \[ G_{a,x} = 2\,\tr\Bigl[\lambda_a\sum_\nu\bigl(U_{x\nu}U_{x\nu}^\dagger - U_{x-\hat\nu,\nu}^\dagger U_{x-\hat\nu,\nu}\bigr)\Bigr] \]
+              </div>
+            </div>
+          </li>
+        </ol>
+
+        <div class="thm-box numbered-box" data-kind="result" data-label="手続き" id="proc-gc">
+          <div class="callout-head">
+            <span class="box-title" data-title="ゲージ冷却"></span>
+            <span class="box-kicker">Procedure</span>
+          </div>
+          各ランジュバンステップの後に、最急降下の変換 \(\Omega_x = \exp(-\epsilon\,\alpha_{gc}\, G_{a,x}\lambda_a)\) を全格子点で何回か繰り返す。
+          ゲージ不変な観測量は変わらず、ユニタリティ・ノルムだけが下がる。
+        </div>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">原論文に書かれていること</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          <a class="cite cite-bare" href="#ref-sss2013"></a> はゲージ冷却を導入して重いクォークの QCD の CL シミュレーションを安定化し、
+          再重み付けの結果と推定誤差の範囲で一致すること、以前は到達できなかった高いバリオン密度まで計算できることを報告している（arXiv の abstract による）。
+          ゲージ冷却を入れても正当化の議論が保たれることは <a class="cite" href="#ref-nns2016a"></a> で示されている。
+        </div>
+
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">注意・限界</span>
+            <span class="box-kicker">Caution</span>
+          </div>
+          冷却が有効なのは格子間隔が十分細かい（\(\beta\) が大きい）場合で、粗い格子では冷却しても配位を SU(\(N\)) 近傍に保てないことが報告されている。
+          具体的な閾値は作用やフェルミオンの種類によるので、原論文の図で確認すること。
+        </div>
+      </section>
+
+      <section>
+        <h2>動的安定化</h2>
+        <p>
+          ゲージ冷却を補うものとして、ランジュバンのドリフトに SU(\(N\)) 上では消える小さな非正則の項を加え、配位を SU(\(N\)) 方向に引き戻す方法が提案されている
+          <a class="cite" href="#ref-aajs2016b"></a><a class="cite" href="#ref-aj2019"></a>。
+        </p>
+        <div class="equation" id="eq-ds">
+          \[
+            K_{a,x\nu}\;\to\;K_{a,x\nu} + i\,\alpha_{DS}\,M_{a,x}
+          \]
+        </div>
+        <p>
+          \(M_{a,x}\) は \(b_{a,x} = \tr[\lambda_a\sum_\nu U_{x\nu}U_{x\nu}^\dagger]\) の高次のべきで構成され、SU(\(N\)) から離れると急速に大きくなる。
+        </p>
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">確認していない点</span>
+            <span class="box-kicker">Caution</span>
+          </div>
+          \(M_{a,x}\) の具体的な形と \(\alpha_{DS}\) の推奨値は、本ノートでは原論文の本文と照合していない。実装する場合は <a class="cite cite-bare" href="#ref-aj2019"></a> の定義を参照すること。
+        </div>
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">自分の解釈</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          正則性を破るので第 5 章の形式的正当化の外にある。それでも \(\alpha_{DS}\) 依存性が小さい領域で結果が安定することが数値的に示されており、
+          「正当化された手続き」というより「よく較正された経験則」として扱うのが妥当だと考える。
+        </div>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-sss2013" data-cite="Seiler ほか 2013">
+            Seiler, Erhard, Dénes Sexty, と Ion-Olimpiu Stamatescu. 2013.「Gauge cooling in complex Langevin for QCD with heavy quarks」. <em>Phys. Lett. B</em> 723: 213. <a href="https://arxiv.org/abs/1211.3709" target="_blank" rel="noreferrer">arXiv:1211.3709</a>.
+          </li>
+          <li id="ref-nns2016a" data-cite="Nagata ほか 2016a">
+            Nagata, Keitaro, Jun Nishimura, と Shinji Shimasaki. 2016.「Justification of the complex Langevin method with the gauge cooling procedure」. <em>PTEP</em> 2016: 013B01. <a href="https://arxiv.org/abs/1508.02377" target="_blank" rel="noreferrer">arXiv:1508.02377</a>.
+          </li>
+          <li id="ref-aajs2016b" data-cite="Aarts ほか 2016b">
+            Aarts, Gert, Felipe Attanasio, Benjamin Jäger, と Dénes Sexty. 2016.「Complex Langevin in lattice QCD: dynamic stabilisation and the phase diagram」. <em>Acta Phys. Pol. B Proc. Suppl.</em> <a href="https://arxiv.org/abs/1607.05642" target="_blank" rel="noreferrer">arXiv:1607.05642</a>.
+          </li>
+          <li id="ref-aj2019" data-cite="Attanasio と Jäger 2019">
+            Attanasio, Felipe, と Benjamin Jäger. 2019.「Dynamical stabilisation of complex Langevin simulations of QCD」. <em>Eur. Phys. J. C</em> 79: 16. <a href="https://arxiv.org/abs/1808.04400" target="_blank" rel="noreferrer">arXiv:1808.04400</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

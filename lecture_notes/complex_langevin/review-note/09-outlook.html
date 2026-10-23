@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="複素ランジュバン法 講義ノート 第9章 — 正しさの理論・カーネル・他手法との組み合わせ">
+  <title>現状と未解決問題 — 複素ランジュバン法 講義ノート</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="09-outlook.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">複素ランジュバン法</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">Seiler ほか 2024 / Boguslavski ほか 2022 / Berger ほか 2021 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">現状と未解決問題</span>
+      </h1>
+
+      <p class="lead">
+        正しさの理論、カーネル付き CL、他手法との組み合わせ、非相対論的多体系への応用という 4 つの方向から、複素ランジュバン法の現在の研究状況を概観する。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>主要文献</dt>
+          <dd>Attanasio, Jäger, Ziegler, Complex Langevin simulations and the QCD phase diagram: Recent developments, <a href="https://arxiv.org/abs/2006.00476" target="_blank" rel="noreferrer">arXiv:2006.00476</a></dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd><span class="tag">outlook</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>正しさの理論</h2>
+        <p>
+          境界項・複素 Fokker–Planck 演算子のスペクトル・ドリフト分布の関係が整理されつつある
+          <a class="cite" href="#ref-ssss2019"></a><a class="cite" href="#ref-sss2024"></a>。境界項の大きさから系統誤差を見積もり、補正する試みもある
+          <a class="cite" href="#ref-ssss2020"></a>。
+        </p>
+      </section>
+
+      <section>
+        <h2>カーネル付き複素ランジュバン法</h2>
+        <p>正則なカーネル \(H(z)\) を入れた</p>
+        <div class="equation" id="eq-kernel">
+          \[
+            \frac{dz}{d\theta} = -H(z)\,S'(z) + \sqrt{H(z)}\,\eta
+          \]
+        </div>
+        <p>
+          でも正当化の議論は保たれ、うまく選べば安定性が大幅に向上する。実時間（ミンコフスキー）ゲージ理論では、異方的なカーネルによる安定化が提案されている
+          <a class="cite" href="#ref-bhm2022"></a>。
+        </p>
+      </section>
+
+      <section>
+        <h2>他手法との組み合わせと応用</h2>
+        <ul>
+          <li>レフシェッツ・シンブル、変形（deformation）法、機械学習で最適化したカーネルなど、積分路の変形に基づく方法との組み合わせ。</li>
+          <li>非相対論的多体系（冷却原子のフェルミ気体、質量不均衡系など）への応用 <a class="cite" href="#ref-berger2021"></a>。</li>
+          <li>相対論的ボーズ気体など、符号問題をもつ他の場の理論 <a class="cite" href="#ref-aarts2009"></a>。</li>
+        </ul>
+
+        <div class="summary-box">
+          <div class="callout-head">
+            <span class="box-title">ノート全体のまとめ</span>
+            <span class="box-kicker">Summary</span>
+          </div>
+          <ul>
+            <li>CL はコストが \(\mu\) によらない一方、収束先の正しさを別途確かめる必要がある（第 2・5 章）。</li>
+            <li>失敗は無限遠への逸脱とドリフトの極への接近の 2 種類で、ドリフト分布の裾で検出できる（第 6 章）。</li>
+            <li>ゲージ理論では \(\SLNC\) の非コンパクトな方向への逸脱をゲージ冷却と動的安定化で抑える（第 7 章）。</li>
+            <li>有限密度 QCD では高温・高密度で成果があるが、低温・中間密度は未解決（第 8 章）。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-aarts2009" data-cite="Aarts 2009">
+            Aarts, Gert. 2009.「Can stochastic quantization evade the sign problem? The relativistic Bose gas at finite chemical potential」. <em>Phys. Rev. Lett.</em> 102: 131601. <a href="https://arxiv.org/abs/0810.2089" target="_blank" rel="noreferrer">arXiv:0810.2089</a>.
+          </li>
+          <li id="ref-ssss2019" data-cite="Scherzer ほか 2019">
+            Scherzer, Manuel, Erhard Seiler, Dénes Sexty, と Ion-Olimpiu Stamatescu. 2019.「Complex Langevin and boundary terms」. <em>Phys. Rev. D</em> 99: 014512. <a href="https://arxiv.org/abs/1808.05187" target="_blank" rel="noreferrer">arXiv:1808.05187</a>.
+          </li>
+          <li id="ref-ssss2020" data-cite="Scherzer ほか 2020">
+            Scherzer, Manuel, Erhard Seiler, Dénes Sexty, と Ion-Olimpiu Stamatescu. 2020.「Controlling complex Langevin simulations of lattice models by boundary term analysis」. <em>Phys. Rev. D</em> 101: 014501. <a href="https://arxiv.org/abs/1910.09427" target="_blank" rel="noreferrer">arXiv:1910.09427</a>.
+          </li>
+          <li id="ref-berger2021" data-cite="Berger ほか 2021">
+            Berger, Casey E., Lukas Rammelmüller, Andrew C. Loheac, Florian Ehmann, Jens Braun, と Joaquín E. Drut. 2021.「Complex Langevin and other approaches to the sign problem in quantum many-body physics」. <em>Phys. Rept.</em> 892: 1. <a href="https://arxiv.org/abs/1907.10183" target="_blank" rel="noreferrer">arXiv:1907.10183</a>.
+          </li>
+          <li id="ref-bhm2022" data-cite="Boguslavski ほか 2022">
+            Boguslavski, Kirill, Paul Hotzy, と David I. Müller. 2022.「Stabilizing complex Langevin for real-time gauge theories with an anisotropic kernel」. <a href="https://arxiv.org/abs/2212.08602" target="_blank" rel="noreferrer">arXiv:2212.08602</a>（短い版: <a href="https://arxiv.org/abs/2210.08020" target="_blank" rel="noreferrer">arXiv:2210.08020</a>）.
+          </li>
+          <li id="ref-sss2024" data-cite="Seiler ほか 2024">
+            Seiler, Erhard, Dénes Sexty, と Ion-Olimpiu Stamatescu. 2024.「Complex Langevin: Correctness criteria, boundary terms and spectrum」. <em>Phys. Rev. D</em> 109: 014509. <a href="https://arxiv.org/abs/2304.00563" target="_blank" rel="noreferrer">arXiv:2304.00563</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="複素ランジュバン法の講義ノート — 目的・全体の構成・読み方">
+  <title>はじめに — 複素ランジュバン法 講義ノート</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="index.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">複素ランジュバン法</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">講義ノート（全8章＋付録）/ arXiv の原論文に基づく</span>
+        <span class="chapter-number"></span><span class="chapter-title">はじめに</span>
+      </h1>
+
+      <p class="lead">
+        符号問題を回避する数値手法である複素ランジュバン法（Complex Langevin, CL）について、確率量子化から出発し、正当化と判定条件、ゲージ理論への拡張（SL(N,C)・ゲージ冷却・動的安定化）、有限密度 QCD への応用までを再構成する。原論文の翻訳ではなく、どの主張が何から導かれるかを追える形にすることを目的とする。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>主要文献</dt>
+          <dd>Aarts, Seiler, Stamatescu, <a href="https://arxiv.org/abs/0912.3360" target="_blank" rel="noreferrer">arXiv:0912.3360</a>; Seiler, Sexty, Stamatescu, <a href="https://arxiv.org/abs/1211.3709" target="_blank" rel="noreferrer">arXiv:1211.3709</a>; Nagata, Nishimura, Shimasaki, <a href="https://arxiv.org/abs/1606.07627" target="_blank" rel="noreferrer">arXiv:1606.07627</a> ほか</dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>自然単位系、ノイズ規格化 \(\langle\eta(\theta)\eta(\theta')\rangle = 2\delta(\theta-\theta')\)</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>状態</dt>
+          <dd>全章・演習・解答あり</dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>このノートの目的</h2>
+        <p>
+          有限密度 QCD のように作用が複素数になる理論では、重み \(e^{-S}\) を確率とみなせず、通常のモンテカルロ法が使えない。
+          複素ランジュバン法は、変数を複素化した空間で実の確率過程を走らせることで、この問題を回避しようとする方法である
+          <a class="cite" href="#ref-parisi1983"></a><a class="cite" href="#ref-klauder1983"></a>。
+          本ノートでは、(i) なぜうまくいくのか、(ii) いつ失敗するのか、(iii) ゲージ理論と QCD でどう使われているのか、の 3 点を順に追う。
+        </p>
+
+        <div class="remark-box">
+          <div class="callout-head">
+            <span class="box-title">読み方</span>
+            <span class="box-kicker">How to read</span>
+          </div>
+          主線だけ追うなら本文と枠付きの式だけを読めばよい。折りたたまれた「なぜ」「細部」は再現したいときにだけ開く。
+          「原論文に書かれていること」の枠は論文の主張、「自分の解釈」の枠はノート作成者の読み方で、両者を混ぜないようにしている。
+          論文の書誌情報は arXiv の abstract ページで確認したもので、本文の詳細まで照合していない箇所は「注意」の枠で明示する。
+        </div>
+      </section>
+
+      <section>
+        <h2>全体の構成</h2>
+        <p>第 2〜6 章が一般論とトイモデル、第 7〜9 章がゲージ理論と QCD である。各章末に参考文献を置き、演習は付録 A、解答は付録 B にまとめた。</p>
+
+        <p class="toc-part">基礎</p>
+        <ul class="toc-list">
+          <li><span class="toc-num">2</span><a href="02-sign-problem.html">符号問題</a><span class="toc-note">再重み付けの指数関数的困難</span></li>
+          <li><span class="toc-num">3</span><a href="03-stochastic-quantization.html">実ランジュバン方程式と確率量子化</a><span class="toc-note">Fokker–Planck・平衡分布</span></li>
+          <li><span class="toc-num">4</span><a href="04-complex-langevin.html">複素ランジュバン方程式</a><span class="toc-note">複素化・複素ガウス模型</span></li>
+          <li><span class="toc-num">5</span><a href="05-justification.html">正当化と収束の判定条件</a><span class="toc-note">境界項・ドリフト判定条件</span></li>
+          <li><span class="toc-num">6</span><a href="06-toy-models.html">トイモデルで見る成功と失敗</a><span class="toc-note">図 6.1–6.2・数値実験</span></li>
+        </ul>
+
+        <p class="toc-part">ゲージ理論と QCD</p>
+        <ul class="toc-list">
+          <li><span class="toc-num">7</span><a href="07-gauge-theory.html">ゲージ理論への拡張</a><span class="toc-note">SL(N,C)・ゲージ冷却・動的安定化</span></li>
+          <li><span class="toc-num">8</span><a href="08-finite-density-qcd.html">有限密度 QCD への応用</a><span class="toc-note">HDQCD・full QCD</span></li>
+          <li><span class="toc-num">9</span><a href="09-outlook.html">現状と未解決問題</a><span class="toc-note">カーネル・他手法</span></li>
+        </ul>
+
+        <p class="toc-part">付録</p>
+        <ul class="toc-list">
+          <li><span class="toc-num">A</span><a href="A-exercises.html">演習問題</a><span class="toc-note">解析・数値・論文講読</span></li>
+          <li><span class="toc-num">B</span><a href="B-solutions.html">解答</a><span class="toc-note">全問</span></li>
+          <li><span class="toc-num">C</span><a href="C-code.html">数値デモのコード</a><span class="toc-note">numpy のみ</span></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>読解メモ</h2>
+
+        <div class="thm-box">
+          <div class="callout-head">
+            <span class="box-title">このノートの主張（一文）</span>
+            <span class="box-kicker">Claim</span>
+          </div>
+          複素ランジュバン法は、複素化した配位の分布が無限遠とドリフトの極の近くで十分速く減衰しているときに限り正しい期待値を与え、
+          その減衰はドリフトの大きさの分布の裾で実用的に判定できる <a class="cite" href="#ref-nns2016b"></a>。
+        </div>
+
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">未解決の疑問</span>
+            <span class="box-kicker">Open questions</span>
+          </div>
+          <ul>
+            <li>低温・中間密度（核物質の液相転移付近）の QCD で正しい収束が得られるか。</li>
+            <li>粗い格子でゲージ冷却が効かなくなる問題をどう回避するか。</li>
+            <li>連続極限・カイラル極限への外挿はどこまで信頼できるか。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>前提知識と表記法</h2>
+        <p>
+          経路積分、格子ゲージ理論の初歩（リンク変数・プラケット作用）、確率過程の初歩を前提とする。
+          ランジュバン時間を \(\theta\)、刻み幅を \(\epsilon\)、ドリフトを \(K = -S'\) と書く。
+          複素化した変数は \(z = x + iy\)、SU(\(N\)) の生成子は \(\tr\lambda_a\lambda_b = 2\delta_{ab}\) と規格化する。
+        </p>
+
+        <h3>読む順番</h3>
+        <p>
+          最初の 1 本としては講義形式の <a class="cite" href="#ref-aarts2016lect"></a> を勧める。
+          続いて正当化の議論 <a class="cite" href="#ref-ass2010"></a> と <a class="cite" href="#ref-ajss2011"></a>、
+          ゲージ冷却 <a class="cite" href="#ref-sss2013"></a> と full QCD <a class="cite" href="#ref-sexty2014"></a>、
+          判定条件 <a class="cite" href="#ref-nns2016b"></a>、最近の状況 <a class="cite" href="#ref-ajz2020"></a> の順に読むとよい。
+          多体系への応用は <a class="cite" href="#ref-berger2021"></a> が網羅的である。
+        </p>
+
+        <div class="example-box">
+          <div class="callout-head">
+            <span class="box-title">学習の進め方</span>
+            <span class="box-kicker">Checklist</span>
+          </div>
+          <ul>
+            <li>第 2〜4 章 → 演習 2〜4（解析計算）</li>
+            <li>第 5〜6 章 → 付録 C のコードを走らせて演習 5〜6（数値実験）</li>
+            <li>第 7〜8 章 → 演習 7〜8（ゲージ理論の計算）、原論文を通読</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-parisi1983" data-cite="Parisi 1983">
+            Parisi, Giorgio. 1983.「On complex probabilities」. <em>Phys. Lett. B</em> 131: 393.
+          </li>
+          <li id="ref-klauder1983" data-cite="Klauder 1983">
+            Klauder, John R. 1983.「Stochastic quantization」. <em>Acta Phys. Austriaca Suppl.</em> 25: 251.
+          </li>
+          <li id="ref-ass2010" data-cite="Aarts ほか 2010b">
+            Aarts, Gert, Erhard Seiler, と Ion-Olimpiu Stamatescu. 2010.「The complex Langevin method: When can it be trusted?」. <em>Phys. Rev. D</em> 81: 054508. <a href="https://arxiv.org/abs/0912.3360" target="_blank" rel="noreferrer">arXiv:0912.3360</a>.
+          </li>
+          <li id="ref-ajss2011" data-cite="Aarts ほか 2011">
+            Aarts, Gert, Frank A. James, Erhard Seiler, と Ion-Olimpiu Stamatescu. 2011.「Complex Langevin: Etiology and diagnostics of its main problem」. <em>Eur. Phys. J. C</em> 71: 1756. <a href="https://arxiv.org/abs/1101.3270" target="_blank" rel="noreferrer">arXiv:1101.3270</a>.
+          </li>
+          <li id="ref-sss2013" data-cite="Seiler ほか 2013">
+            Seiler, Erhard, Dénes Sexty, と Ion-Olimpiu Stamatescu. 2013.「Gauge cooling in complex Langevin for QCD with heavy quarks」. <em>Phys. Lett. B</em> 723: 213. <a href="https://arxiv.org/abs/1211.3709" target="_blank" rel="noreferrer">arXiv:1211.3709</a>.
+          </li>
+          <li id="ref-sexty2014" data-cite="Sexty 2014">
+            Sexty, Dénes. 2014.「Simulating full QCD at nonzero density using the complex Langevin equation」. <em>Phys. Lett. B</em> 729: 108. <a href="https://arxiv.org/abs/1307.7748" target="_blank" rel="noreferrer">arXiv:1307.7748</a>.
+          </li>
+          <li id="ref-aarts2016lect" data-cite="Aarts 2016">
+            Aarts, Gert. 2016.「Introductory lectures on lattice QCD at nonzero baryon number」. <em>J. Phys. Conf. Ser.</em> 706: 022004. <a href="https://arxiv.org/abs/1512.05145" target="_blank" rel="noreferrer">arXiv:1512.05145</a>.
+          </li>
+          <li id="ref-nns2016b" data-cite="Nagata ほか 2016b">
+            Nagata, Keitaro, Jun Nishimura, と Shinji Shimasaki. 2016.「Argument for justification of the complex Langevin method and the condition for correct convergence」. <em>Phys. Rev. D</em> 94: 114515. <a href="https://arxiv.org/abs/1606.07627" target="_blank" rel="noreferrer">arXiv:1606.07627</a>.
+          </li>
+          <li id="ref-ajz2020" data-cite="Attanasio ほか 2020">
+            Attanasio, Felipe, Benjamin Jäger, と Felix P. G. Ziegler. 2020.「Complex Langevin simulations and the QCD phase diagram: Recent developments」. <em>Eur. Phys. J. A</em> 56: 251. <a href="https://arxiv.org/abs/2006.00476" target="_blank" rel="noreferrer">arXiv:2006.00476</a>.
+          </li>
+          <li id="ref-berger2021" data-cite="Berger ほか 2021">
+            Berger, Casey E., Lukas Rammelmüller, Andrew C. Loheac, Florian Ehmann, Jens Braun, と Joaquín E. Drut. 2021.「Complex Langevin and other approaches to the sign problem in quantum many-body physics」. <em>Phys. Rept.</em> 892: 1. <a href="https://arxiv.org/abs/1907.10183" target="_blank" rel="noreferrer">arXiv:1907.10183</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

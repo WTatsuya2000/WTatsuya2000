@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="複素ランジュバン法 講義ノート 第8章 — フェルミオンのドリフト・HDQCD・full QCD">
+  <title>有限密度 QCD への応用 — 複素ランジュバン法 講義ノート</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="08-finite-density-qcd.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">複素ランジュバン法</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">Seiler ほか 2013 / Sexty 2014, 2019 / Ito ほか 2020 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">有限密度 QCD への応用</span>
+      </h1>
+
+      <p class="lead">
+        フェルミオン行列式をドリフトに取り込む方法を述べ、重いクォーク極限（HDQCD）、full QCD の代表的な計算結果をまとめる。最後に、どの領域がまだ信頼できないかを整理する。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>主要文献</dt>
+          <dd>D. Sexty, Simulating full QCD at nonzero density using the complex Langevin equation, <a href="https://arxiv.org/abs/1307.7748" target="_blank" rel="noreferrer">arXiv:1307.7748</a></dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>\(S_{\rm eff}=S_g-N_f\ln\det M\)、\(h=(2\kappa)^{N_\tau}\)</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd><span class="tag">QCD</span> <span class="tag">finite density</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>フェルミオンのドリフト</h2>
+        <p>\(S_{\rm eff} = S_g - N_f\ln\det M\) とすると（staggered フェルミオンでは \(N_f/4\) 乗の扱いに注意）、ドリフトは</p>
+        <div class="equation" id="eq-fdrift">
+          \[
+            K_a = -D_a S_g + N_f\,\tr\bigl[M^{-1}D_a M\bigr]
+          \]
+        </div>
+        <p>
+          となる。トレースはランダムノイズ \(\chi\)（\(\langle\chi\chi^\dagger\rangle=1\)）を使った不偏推定
+          \(\tr[M^{-1}D_aM]\approx \chi^\dagger M^{-1}(D_aM)\chi\) で評価し、1 ステップあたり 1 回の共役勾配法で済む（演習 8.1）。
+        </p>
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">自分の解釈</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          \(\mu\) は時間方向リンクに \(e^{\pm\mu}\) をかけて導入されるだけなので、\(\mu=0\) のコードをほぼそのまま使え、コストは \(\mu\) にほとんど依存しない。
+          ここが再重み付け法との決定的な違いである。一方、\(S_{\rm eff}\) が \(\ln\det M\) を含むため、\(\det M=0\) の点でドリフトが特異になる。
+          これは第 6 章の U(1) one-link 模型と同じ構造である <a class="cite" href="#ref-asss2017"></a>。
+        </div>
+      </section>
+
+      <section>
+        <h2>重いクォーク極限（HDQCD）</h2>
+        <p>ホッピング・パラメータ展開で空間方向のホッピングを落とすと、Wilson フェルミオンの行列式は Polyakov ループ \(\mathcal P_{\vec x}\) だけで書ける。</p>
+        <div class="equation" id="eq-hdqcd">
+          \[
+            \det M = \prod_{\vec x}\det\bigl(1+h\,e^{\mu/T}\mathcal P_{\vec x}\bigr)^{2}\,\det\bigl(1+h\,e^{-\mu/T}\mathcal P_{\vec x}^{-1}\bigr)^{2},\qquad h=(2\kappa)^{N_\tau}
+          \]
+        </div>
+        <p>SU(3) では次の恒等式が成り立つ（演習 8.2）。</p>
+        <div class="equation" id="eq-det3">
+          \[
+            \det(1+c\,\mathcal P) = 1 + c\,\tr\mathcal P + c^2\,\tr\mathcal P^{-1} + c^3
+          \]
+        </div>
+        <p>
+          \(e^{\mu/T}\) と \(e^{-\mu/T}\) の非対称性が複素性の起源であることがよくわかる。\(\mu=0\) では <a class="eq-ref" href="#eq-hdqcd"></a> は非負実数になる。
+          \(he^{\mu/T}\to\infty\) で密度は 1 格子点あたり \(2N_c=6\) に飽和するが、これは格子の人工物である（演習 8.3）。
+        </p>
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">原論文に書かれていること</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          <a class="cite cite-bare" href="#ref-sss2013"></a> はゲージ冷却でこの模型の CL を安定化し、再重み付けとの一致と、飽和までの高密度での計算を報告した。
+          その後 <a class="cite cite-bare" href="#ref-aajs2016a"></a> は広い温度・化学ポテンシャル領域で重いクォーク QCD を調べ、
+          ユニタリティ・ノルムの大きな逸脱が自発的に現れて既知の結果とのずれを生む場合があること、逸脱の小さい結果から閉じ込め相と非閉じ込め相の境界を描いたことを報告している（いずれも arXiv の abstract による）。
+        </div>
+      </section>
+
+      <section>
+        <h2>Full QCD</h2>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>文献</th><th>設定</th><th>主な結果（arXiv の abstract による）</th></tr></thead>
+            <tbody>
+              <tr><td><a class="cite cite-bare" href="#ref-sexty2014"></a></td><td>staggered、\(N_f=4\)</td><td>full QCD の初の CL 計算。ゲージ冷却により十分細かい格子で安定。重いクォーク質量で HDQCD と一致。飽和までの高密度を計算。</td></tr>
+              <tr><td><a class="cite cite-bare" href="#ref-aj2019"></a></td><td>動的安定化</td><td>動的安定化を用いた full QCD の CL シミュレーション。</td></tr>
+              <tr><td><a class="cite cite-bare" href="#ref-sexty2019"></a></td><td>\(16^3\times8\)、Symanzik 改良ゲージ作用、\(N_f=4\) staggered、\(m_\pi\) 500–700 MeV</td><td>スタウト・スメアリングを SL(3,C) に拡張し、有限 \(\mu\) の QGP の圧力・エネルギー密度を計算。小さな \(\mu\) でテイラー展開と一致。</td></tr>
+              <tr><td><a class="cite cite-bare" href="#ref-ito2020"></a></td><td>\(\beta=5.7\)、\(N_f=4\) staggered、\(ma=0.01\)、\(8^3\times16\) と \(16^3\times32\)</td><td>ドリフト分布の判定条件が \(\mu/T\) 最大 9.6 の低温・高密度で満たされることを確認。クォーク数が \(\mu\) について高さ 24 のプラトーを示す。密度状態法やテイラー展開が破綻する領域。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>何がまだ難しいか</h2>
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">注意・限界</span>
+            <span class="box-kicker">Caution</span>
+          </div>
+          <ul>
+            <li><strong>低温・中間密度</strong>（核物質の液相転移付近、\(\mu\approx m_N/3\)）：Dirac 演算子の小さな固有値が密集し、特異ドリフト問題が深刻になる。ここでの正しい収束は保証されていない。</li>
+            <li><strong>粗い格子</strong>：ゲージ冷却が効かず、ユニタリティ・ノルムが成長する。</li>
+            <li><strong>連続極限・カイラル極限</strong>への外挿はまだ限定的。</li>
+          </ul>
+        </div>
+        <div class="example-box">
+          <div class="callout-head">
+            <span class="box-title">結果を信頼する前に確認すること</span>
+            <span class="box-kicker">Checklist</span>
+          </div>
+          <ul>
+            <li>ユニタリティ・ノルムのランジュバン時間変化が有界か。</li>
+            <li>ドリフト分布の裾が指数関数的以上に速く減衰しているか。</li>
+            <li>境界項が \(Y\to\infty\) で 0 に向かうか。</li>
+            <li>\(\mu=0\) や虚数 \(\mu\) での既知の結果と一致するか。</li>
+          </ul>
+          これらを併用して確認するのが現在の標準的な作法である <a class="cite" href="#ref-ajz2020"></a>。
+        </div>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-sss2013" data-cite="Seiler ほか 2013">
+            Seiler, Erhard, Dénes Sexty, と Ion-Olimpiu Stamatescu. 2013.「Gauge cooling in complex Langevin for QCD with heavy quarks」. <em>Phys. Lett. B</em> 723: 213. <a href="https://arxiv.org/abs/1211.3709" target="_blank" rel="noreferrer">arXiv:1211.3709</a>.
+          </li>
+          <li id="ref-sexty2014" data-cite="Sexty 2014">
+            Sexty, Dénes. 2014.「Simulating full QCD at nonzero density using the complex Langevin equation」. <em>Phys. Lett. B</em> 729: 108. <a href="https://arxiv.org/abs/1307.7748" target="_blank" rel="noreferrer">arXiv:1307.7748</a>.
+          </li>
+          <li id="ref-aajs2016a" data-cite="Aarts ほか 2016a">
+            Aarts, Gert, Felipe Attanasio, Benjamin Jäger, と Dénes Sexty. 2016.「The QCD phase diagram in the limit of heavy quarks using complex Langevin dynamics」. <em>JHEP</em> 09: 087. <a href="https://arxiv.org/abs/1606.05561" target="_blank" rel="noreferrer">arXiv:1606.05561</a>.
+          </li>
+          <li id="ref-asss2017" data-cite="Aarts ほか 2017">
+            Aarts, Gert, Erhard Seiler, Dénes Sexty, と Ion-Olimpiu Stamatescu. 2017.「Complex Langevin dynamics and zeroes of the fermion determinant」. <em>JHEP</em> 05: 044. <a href="https://arxiv.org/abs/1701.02322" target="_blank" rel="noreferrer">arXiv:1701.02322</a>.
+          </li>
+          <li id="ref-aj2019" data-cite="Attanasio と Jäger 2019">
+            Attanasio, Felipe, と Benjamin Jäger. 2019.「Dynamical stabilisation of complex Langevin simulations of QCD」. <em>Eur. Phys. J. C</em> 79: 16. <a href="https://arxiv.org/abs/1808.04400" target="_blank" rel="noreferrer">arXiv:1808.04400</a>.
+          </li>
+          <li id="ref-sexty2019" data-cite="Sexty 2019">
+            Sexty, Dénes. 2019.「Calculating the EoS of the dense quark-gluon plasma using the complex Langevin equation」. <em>Phys. Rev. D</em> 100: 074503. <a href="https://arxiv.org/abs/1907.08712" target="_blank" rel="noreferrer">arXiv:1907.08712</a>.
+          </li>
+          <li id="ref-ajz2020" data-cite="Attanasio ほか 2020">
+            Attanasio, Felipe, Benjamin Jäger, と Felix P. G. Ziegler. 2020.「Complex Langevin simulations and the QCD phase diagram: Recent developments」. <em>Eur. Phys. J. A</em> 56: 251. <a href="https://arxiv.org/abs/2006.00476" target="_blank" rel="noreferrer">arXiv:2006.00476</a>.
+          </li>
+          <li id="ref-ito2020" data-cite="Ito ほか 2020">
+            Ito, Yuta, Hideo Matsufuru, Yusuke Namekawa, Jun Nishimura, Shinji Shimasaki, Asato Tsuchiya, と Shoichiro Tsutsui. 2020.「Complex Langevin calculations in QCD at finite density」. <em>JHEP</em> 10: 144. <a href="https://arxiv.org/abs/2007.08778" target="_blank" rel="noreferrer">arXiv:2007.08778</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

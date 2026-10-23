@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="複素ランジュバン法 講義ノート 第4章 — 複素化と複素ガウス模型">
+  <title>複素ランジュバン方程式 — 複素ランジュバン法 講義ノート</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="04-complex-langevin.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">複素ランジュバン法</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">Parisi 1983 / Klauder 1983 / Aarts ほか 2010b §2 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">複素ランジュバン方程式</span>
+      </h1>
+
+      <p class="lead">
+        作用が複素数のとき、変数を複素化して実の確率過程を定義する。実際に生成される実の分布 \(P(x,y)\) と、望ましい複素重み \(\rho(x)\) の 2 つを区別し、解析的に解ける複素ガウス模型で正しい期待値が得られることを確かめる。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>主要文献</dt>
+          <dd>G. Aarts, E. Seiler, I.-O. Stamatescu, The complex Langevin method: When can it be trusted?, <a href="https://arxiv.org/abs/0912.3360" target="_blank" rel="noreferrer">arXiv:0912.3360</a></dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>\(z=x+iy\)、実ノイズのみ（\(N_I=0\)）が既定</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd><span class="tag">complex Langevin</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>定義</h2>
+        <p>
+          作用が複素数なら \(S'(x)\) も複素数で、ランジュバン方程式の右辺は実にならない。そこで変数を複素化 \(x\to z=x+iy\) し、
+          \(S(z)\) を正則関数として解析接続する <a class="cite" href="#ref-parisi1983"></a><a class="cite" href="#ref-klauder1983"></a>。
+        </p>
+        <div class="def-box numbered-box" data-kind="definition" data-label="定義" id="def-cl">
+          <div class="callout-head">
+            <span class="box-title" data-title="複素ランジュバン方程式"></span>
+            <span class="box-kicker">Definition</span>
+          </div>
+          <div class="equation" id="eq-cl">
+            \[
+              \frac{dx}{d\theta} = K_x + \eta,\qquad \frac{dy}{d\theta} = K_y,\qquad
+              K_x + iK_y \equiv -S'(z)
+            \]
+          </div>
+          より一般に虚部にもノイズを入れて \(\langle\eta_R\eta_R\rangle = 2N_R\delta\)、\(\langle\eta_I\eta_I\rangle=2N_I\delta\)、
+          \(N_R-N_I=1\) としてよい。
+        </div>
+        <p>
+          実用上は \(N_I=0\) が最も安定であることが知られている <a class="cite" href="#ref-ass2010"></a>。虚方向のノイズは期待値を変えないが、
+          分布を虚方向に広げて裾を重くする（演習 4.2）。
+        </p>
+      </section>
+
+      <section>
+        <h2>2 種類の分布</h2>
+        <div class="def-box numbered-box" data-kind="definition" data-label="定義" id="def-two">
+          <div class="callout-head">
+            <span class="box-title" data-title="実の分布と複素の分布"></span>
+            <span class="box-kicker">Definition</span>
+          </div>
+          <ul>
+            <li>
+              <strong>実の分布</strong> \(P(x,y;\theta)\)：上の確率過程が実際に生成する非負の確率密度。Fokker–Planck 方程式
+              \[ \partial_\theta P = L^T P,\qquad L^T = \partial_x\bigl(N_R\partial_x - K_x\bigr) + \partial_y\bigl(N_I\partial_y - K_y\bigr) \]
+              に従う。
+            </li>
+            <li>
+              <strong>複素の分布</strong> \(\rho(x;\theta)\)：複素 Fokker–Planck 方程式 \(\partial_\theta\rho = \partial_x(\partial_x+S'(x))\rho\)
+              に従う実軸上の複素関数。定常解は \(\rho\propto e^{-S}\)。
+            </li>
+          </ul>
+        </div>
+        <p>CL が「正しい」とは、正則な観測量 \(O\) について</p>
+        <div class="equation" id="eq-correct">
+          \[
+            \langle O\rangle_{P(\theta)} \equiv \int dx\,dy\, P(x,y;\theta)\, O(x+iy)
+            \;\overset{?}{=}\;
+            \langle O\rangle_{\rho(\theta)} \equiv \int dx\, \rho(x;\theta)\, O(x)
+          \]
+        </div>
+        <p>が成り立ち、\(\theta\to\infty\) で後者が目的の期待値 \(\int O e^{-S}/Z\) に収束することである。この等式がいつ成り立つかが第 5 章の主題になる。</p>
+      </section>
+
+      <section>
+        <h2>例：複素ガウス模型</h2>
+        <p>\(S=\frac{\sigma}{2}z^2\)、\(\sigma=a+ib\)（\(a>0\)）では、CL は線形の確率微分方程式になり、定常分布を厳密に求められる。</p>
+
+        <div class="derivation-head">
+          <span class="box-kicker">Derivation — Lyapunov 方程式</span>
+          <button class="steps-toggle" type="button" data-controls="der-gauss">理由をすべて開く</button>
+        </div>
+        <dl class="derivation-goal">
+          <div><dt>出発</dt><dd>複素ランジュバン方程式 <a class="eq-ref" href="#eq-cl"></a> に \(S'(z)=\sigma z\) を入れたもの</dd></div>
+          <div><dt>目標</dt><dd>\(\langle z^2\rangle = 1/\sigma\) <a class="eq-ref" href="#eq-gauss-result"></a></dd></div>
+          <div><dt>方針</dt><dd>\((x,y)\) の線形方程式の定常共分散を Lyapunov 方程式で求め、\(\langle z^2\rangle\) を組み立てる</dd></div>
+        </dl>
+        <ol class="derivation" id="der-gauss">
+          <li>
+            <div class="step-body">
+              <p class="step-action">ドリフトを実部と虚部に分け、ドリフト行列 \(A\) を読み取る</p>
+              <div class="equation" data-unnumbered>
+                \[ \dot x = -(ax - by) + \eta,\quad \dot y = -(bx + ay),\quad A=\begin{pmatrix}a&-b\\ b&a\end{pmatrix} \]
+              </div>
+              <details class="step-why"><summary>なぜ</summary><div>\(-\sigma z=-(a+ib)(x+iy)=-(ax-by)-i(bx+ay)\)。</div></details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">定常共分散 \(C\) が満たす Lyapunov 方程式 \(AC+CA^T=\diag(2,0)\) を成分ごとに書く</p>
+              <div class="equation" data-unnumbered>
+                \[ aC_{xx}-bC_{xy}=1,\quad bC_{xy}+aC_{yy}=0,\quad 2aC_{xy}+b(C_{xx}-C_{yy})=0 \]
+              </div>
+              <details class="step-why"><summary>なぜ</summary><div>線形 SDE \(\dot v=-Av+\xi\)（\(\langle\xi\xi^T\rangle=B\delta\)）の定常共分散は \(AC+CA^T=B\) を満たす。\(a>0\) なら \(-A\) の固有値 \(-a\pm ib\) の実部が負で、定常状態が存在する。</div></details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">3 本の線形方程式を解く</p>
+              <div class="equation" id="eq-gauss-cov">
+                \[ \langle x^2\rangle = \frac{2a^2+b^2}{2a|\sigma|^2},\quad
+                   \langle y^2\rangle = \frac{b^2}{2a|\sigma|^2},\quad
+                   \langle xy\rangle = -\frac{b}{2|\sigma|^2} \]
+              </div>
+              <details class="step-why"><summary>なぜ</summary><div>第 2 式から \(C_{yy}=-bC_{xy}/a\)、第 1 式から \(C_{xx}=(1+bC_{xy})/a\)。第 3 式に入れて \(C_{xy}\cdot2|\sigma|^2/a=-b/a\)。</div></details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">\(\langle z^2\rangle=\langle x^2\rangle-\langle y^2\rangle+2i\langle xy\rangle\) に代入する</p>
+              <div class="equation boxed" id="eq-gauss-result">
+                \[ \langle z^2\rangle = \frac{a-ib}{|\sigma|^2} = \frac{1}{\sigma} \]
+                <span class="eq-tag">厳密値と一致</span>
+              </div>
+            </div>
+          </li>
+        </ol>
+
+        <p>
+          厳密値 \(\int x^2 e^{-\sigma x^2/2}dx/\int e^{-\sigma x^2/2}dx=1/\sigma\) を再現する。数値でも \(\sigma=1+i\) で
+          \(\langle y^2\rangle_{\rm CL}=0.251\)（解析値 0.25）が得られる（付録 C）。
+        </p>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">自分の解釈</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          \(P(x,y)\) は虚方向にも広がるが、ガウス的に速く減衰している。<a class="eq-ref" href="#eq-gauss-cov"></a> の
+          \(\langle y^2\rangle\) は \(a\to0\) で発散し、もとの積分が収束しなくなる境目と一致する。
+          「虚方向の分布が速く減衰していること」が成功の鍵であることが、次章で一般的な形で現れる。
+        </div>
+      </section>
+
+      <section>
+        <h2>複素化の幾何学的な意味</h2>
+        <p>
+          ドリフトとして \(-\overline{S'(z)}\) ではなく \(-S'(z)\) を使うことに注意する。CL は \(\Re S\) を下げる勾配流ではなく、
+          正則性（Cauchy–Riemann 方程式）を通じて積分路の変形と結びついている。
+        </p>
+        <div class="remark-box">
+          <div class="callout-head">
+            <span class="box-title">補足</span>
+            <span class="box-kicker">Remark</span>
+          </div>
+          CL の定常分布とレフシェッツ・シンブル（\(\Im S\) 一定の最急降下多様体）はどちらも「積分路を複素領域に変形する」発想に立つが、
+          両者は一般に一致せず、その関係は現在も研究対象である。
+        </div>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-parisi1983" data-cite="Parisi 1983">
+            Parisi, Giorgio. 1983.「On complex probabilities」. <em>Phys. Lett. B</em> 131: 393.
+          </li>
+          <li id="ref-klauder1983" data-cite="Klauder 1983">
+            Klauder, John R. 1983.「Stochastic quantization」. <em>Acta Phys. Austriaca Suppl.</em> 25: 251.
+          </li>
+          <li id="ref-ass2010" data-cite="Aarts ほか 2010b">
+            Aarts, Gert, Erhard Seiler, と Ion-Olimpiu Stamatescu. 2010.「The complex Langevin method: When can it be trusted?」. <em>Phys. Rev. D</em> 81: 054508. <a href="https://arxiv.org/abs/0912.3360" target="_blank" rel="noreferrer">arXiv:0912.3360</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

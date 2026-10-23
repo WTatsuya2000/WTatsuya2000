@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="複素ランジュバン法 講義ノート 第3章 — 確率量子化と Fokker–Planck 方程式">
+  <title>実ランジュバン方程式と確率量子化 — 複素ランジュバン法 講義ノート</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="03-stochastic-quantization.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">複素ランジュバン法</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">Parisi–Wu 1981 / Damgaard–Hüffel 1987 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">実ランジュバン方程式と確率量子化</span>
+      </h1>
+
+      <p class="lead">
+        実作用に対するランジュバン方程式が、長時間極限で \(e^{-S}\) に従う配位を生成することを Fokker–Planck 方程式から示す。この証明が作用の実数性にどこで依存しているかを押さえておくことが、次章以降の準備になる。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>主要文献</dt>
+          <dd>G. Parisi, Y.-S. Wu, Sci. Sin. 24 (1981) 483; P. H. Damgaard, H. Hüffel, Phys. Rept. 152 (1987) 227</dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>\(\langle\eta(\theta)\eta(\theta')\rangle = 2\delta(\theta-\theta')\)</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd><span class="tag">stochastic quantization</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>Parisi–Wu の確率量子化</h2>
+        <p>
+          実作用 \(S(x)\)（自由度 1 つで考える）に対し、仮想時間（ランジュバン時間）\(\theta\) に沿った確率微分方程式を考える
+          <a class="cite" href="#ref-parisi1981"></a><a class="cite" href="#ref-damgaard1987"></a>。
+        </p>
+        <div class="def-box numbered-box" data-kind="definition" data-label="定義" id="def-langevin">
+          <div class="callout-head">
+            <span class="box-title" data-title="ランジュバン方程式"></span>
+            <span class="box-kicker">Definition</span>
+          </div>
+          <div class="equation" id="eq-langevin">
+            \[
+              \frac{dx}{d\theta} = K(x) + \eta(\theta),\qquad K(x) \equiv -S'(x)
+            \]
+          </div>
+          ノイズは \(\langle \eta(\theta)\rangle = 0\)、\(\langle \eta(\theta)\eta(\theta')\rangle = 2\delta(\theta-\theta')\) を満たすガウス白色雑音とする。ドリフト \(K\) は作用を下げる方向に、ノイズ \(\eta\) は揺らぎを与える。
+        </div>
+      </section>
+
+      <section>
+        <h2>Fokker–Planck 方程式と平衡分布</h2>
+        <p>\(x(\theta)\) の分布 \(P(x;\theta)\) は Fokker–Planck 方程式</p>
+        <div class="equation" id="eq-fp">
+          \[
+            \partial_\theta P = \partial_x\bigl(\partial_x + S'(x)\bigr)P \equiv L^{T} P
+          \]
+        </div>
+        <p>に従う。右辺は \(P\propto e^{-S}\) で 0 になるので、これが定常解である。残る問題は、任意の初期分布がそこへ緩和するかどうかである。</p>
+
+        <div class="derivation-head">
+          <span class="box-kicker">Derivation — 相似変換</span>
+          <button class="steps-toggle" type="button" data-controls="der-fp">理由をすべて開く</button>
+        </div>
+        <dl class="derivation-goal">
+          <div><dt>出発</dt><dd>Fokker–Planck 方程式 <a class="eq-ref" href="#eq-fp"></a></dd></div>
+          <div><dt>目標</dt><dd>非負エルミートな「ハミルトニアン」による虚時間発展 <a class="eq-ref" href="#eq-hfp"></a></dd></div>
+          <div><dt>方針</dt><dd>\(P = \psi\, e^{-S/2}\) と置いて \(\psi\) の方程式に書き直し、生成子を \(Q^\dagger Q\) の形に因数分解する</dd></div>
+        </dl>
+        <ol class="derivation" id="der-fp">
+          <li>
+            <div class="step-body">
+              <p class="step-action">\(P=\psi e^{-S/2}\) を代入し、内側の微分 \((\partial_x+S')P\) を計算する</p>
+              <div class="equation" data-unnumbered>
+                \[ (\partial_x+S')P=\bigl(\psi'+\tfrac12S'\psi\bigr)e^{-S/2}\equiv(Q\psi)\,e^{-S/2},\qquad Q=\partial_x+\tfrac12S' \]
+              </div>
+              <details class="step-why"><summary>なぜ</summary><div>\(\partial_x(\psi e^{-S/2}) = (\psi' - \tfrac12 S'\psi)e^{-S/2}\) に \(S'\psi e^{-S/2}\) を足すと係数が \(+\tfrac12\) になる。</div></details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">外側の \(\partial_x\) を作用させ、\(e^{-S/2}\) をくくり出して \(Q^\dagger=-\partial_x+\tfrac12S'\) の形にする</p>
+              <div class="equation" data-unnumbered>
+                \[ \partial_x\bigl[(Q\psi)e^{-S/2}\bigr]=\bigl[(Q\psi)'-\tfrac12S'(Q\psi)\bigr]e^{-S/2}=-(Q^\dagger Q\psi)\,e^{-S/2} \]
+              </div>
+              <details class="step-why"><summary>なぜ</summary><div>\(S\) が実なので \(\tfrac12S'\) は実の掛け算演算子で、\(\partial_x\) の随伴は \(-\partial_x\)。ここで作用の実数性を使っている。</div></details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">両辺の \(e^{-S/2}\) を落とし、\(Q^\dagger Q\) を展開する</p>
+              <div class="equation" id="eq-hfp">
+                \[ \partial_\theta\psi = -H_{FP}\psi,\qquad H_{FP}= Q^\dagger Q = -\partial_x^2+\tfrac14S'^2-\tfrac12S'' \]
+              </div>
+              <details class="step-why"><summary>なぜ</summary><div>\(\langle\psi,H_{FP}\psi\rangle=\norm{Q\psi}^2\ge0\) なので固有値は非負。固有値 0 は \(Q\psi=0\)、すなわち \(\psi_0\propto e^{-S/2}\) に限る。</div></details>
+            </div>
+          </li>
+        </ol>
+
+        <div class="thm-box numbered-box" data-kind="result" data-label="結果" id="res-eq">
+          <div class="callout-head">
+            <span class="box-title" data-title="平衡分布への収束"></span>
+            <span class="box-kicker">Result</span>
+          </div>
+          \(S\) が実で \(e^{-S}\) が規格化可能なら、\(H_{FP}\) の基底状態以外のモードは指数関数的に減衰し、
+          \[ \lim_{\theta\to\infty}\langle O(x(\theta))\rangle_\eta = \frac{\int dx\, O(x)e^{-S(x)}}{\int dx\, e^{-S(x)}} . \]
+        </div>
+
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">注意・限界</span>
+            <span class="box-kicker">Caution</span>
+          </div>
+          この証明は \(S\) が実であることに本質的に依存している。\(S\) が複素数だと \(Q^\dagger\) が上の形にならず、
+          \(H_{FP}\) はエルミートでなくなり、スペクトルの議論が成り立たない。これが複素ランジュバン法の正当化が難しい根本的な理由である。
+        </div>
+      </section>
+
+      <section>
+        <h2>離散化</h2>
+        <p>刻み \(\epsilon\) の Euler–Maruyama 離散化は</p>
+        <div class="equation" id="eq-euler">
+          \[
+            x_{n+1} = x_n + \epsilon K(x_n) + \sqrt{2\epsilon}\,\xi_n,\qquad \xi_n\sim\mathcal N(0,1)
+          \]
+        </div>
+        <p>
+          で、\(\Order{\epsilon}\) の系統誤差をもつ（演習 3.3）。\(\epsilon\to0\) に外挿するか、高次のスキームを使う。
+          \(|S''|\) が大きい領域では \(\epsilon|S''|>2\) で反復が不安定になるため、複素ランジュバン法ではドリフトの大きさに応じて刻みを縮める
+          適応ステップ幅 <a class="cite" href="#ref-ajss2010a"></a> が標準的に使われる。
+        </p>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-parisi1981" data-cite="Parisi と Wu 1981">
+            Parisi, Giorgio, と Yong-Shi Wu. 1981.「Perturbation theory without gauge fixing」. <em>Sci. Sin.</em> 24: 483.
+          </li>
+          <li id="ref-damgaard1987" data-cite="Damgaard と Hüffel 1987">
+            Damgaard, Poul H., と Helmuth Hüffel. 1987.「Stochastic quantization」. <em>Phys. Rept.</em> 152: 227.
+          </li>
+          <li id="ref-ajss2010a" data-cite="Aarts ほか 2010a">
+            Aarts, Gert, Frank A. James, Erhard Seiler, と Ion-Olimpiu Stamatescu. 2010.「Adaptive stepsize and instabilities in complex Langevin dynamics」. <em>Phys. Lett. B</em> 687: 154. <a href="https://arxiv.org/abs/0912.0617" target="_blank" rel="noreferrer">arXiv:0912.0617</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

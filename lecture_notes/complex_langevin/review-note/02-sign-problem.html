@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="複素ランジュバン法 講義ノート 第2章 — 符号問題と再重み付けの困難">
+  <title>符号問題 — 複素ランジュバン法 講義ノート</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="02-sign-problem.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">複素ランジュバン法</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">動機 / Aarts 2016 §2–3 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">符号問題</span>
+      </h1>
+
+      <p class="lead">
+        モンテカルロ法が使える条件を確認し、有限密度 QCD で重みが複素数になる理由と、再重み付け法のコストが体積について指数関数的に増える理由をまとめる。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>主要文献</dt>
+          <dd>G. Aarts, Introductory lectures on lattice QCD at nonzero baryon number, <a href="https://arxiv.org/abs/1512.05145" target="_blank" rel="noreferrer">arXiv:1512.05145</a></dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>Euclid 格子、クォーク化学ポテンシャル \(\mu\)</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd><span class="tag">sign problem</span> <span class="tag">lattice QCD</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>モンテカルロ法が使える条件</h2>
+        <p>格子場の理論の期待値は</p>
+        <div class="equation" id="eq-expval">
+          \[
+            \langle O\rangle = \frac{1}{Z}\int D\phi\; O(\phi)\, e^{-S(\phi)},\qquad Z=\int D\phi\, e^{-S(\phi)}
+          \]
+        </div>
+        <p>
+          で与えられる。マルコフ連鎖モンテカルロ（HMC など）で <a class="eq-ref" href="#eq-expval"></a> を評価できるのは、
+          \(e^{-S}\) が非負で確率密度とみなせるからである。
+        </p>
+        <div class="def-box numbered-box" data-kind="definition" data-label="定義" id="def-sign">
+          <div class="callout-head">
+            <span class="box-title" data-title="符号問題"></span>
+            <span class="box-kicker">Definition</span>
+          </div>
+          作用 \(S\) が複素数になり、重み \(e^{-S}\) が振動する複素数となるため重点サンプリングがそのままでは使えないことを、
+          符号問題（sign problem / complex action problem）と呼ぶ。
+        </div>
+      </section>
+
+      <section>
+        <h2>有限密度 QCD</h2>
+        <p>クォーク化学ポテンシャル \(\mu\) をもつ QCD の分配関数は、フェルミオンを積分して</p>
+        <div class="equation" id="eq-zqcd">
+          \[
+            Z(\mu)=\int DU\; e^{-S_g[U]}\,\bigl[\det M(U;\mu)\bigr]^{N_f}
+          \]
+        </div>
+        <p>と書ける。Dirac 演算子の \(\gamma_5\) エルミート性</p>
+        <div class="equation" id="eq-g5">
+          \[
+            \gamma_5 M(\mu)\gamma_5 = M(-\mu^*)^\dagger
+          \]
+        </div>
+        <p>から次が従う（演習 2.1）。</p>
+        <div class="equation boxed" id="eq-detconj">
+          \[
+            \bigl[\det M(\mu)\bigr]^* = \det M(-\mu^*)
+          \]
+          <span class="eq-tag">複素性の起源</span>
+        </div>
+        <p>
+          したがって \(\mu = 0\) や純虚数の \(\mu\) では \(\det M\) は実だが、実の \(\mu\neq 0\) では一般に複素数になる。
+          \(\mu\to-\mu\) は粒子と反粒子の入れ替えであり、有限密度では両者の対称性が破れていることが複素性として現れる。
+        </p>
+      </section>
+
+      <section>
+        <h2>再重み付け法の指数関数的困難</h2>
+        <p>
+          \(\det M = |\det M|e^{i\varphi}\) と書き、位相を落とした位相クエンチ理論
+          \(Z_{pq}=\int DU\,e^{-S_g}|\det M|^{N_f}\) で配位を生成して位相を観測量に繰り込む。
+        </p>
+        <div class="equation" id="eq-reweight">
+          \[
+            \langle O\rangle = \frac{\langle O e^{iN_f\varphi}\rangle_{pq}}{\langle e^{iN_f\varphi}\rangle_{pq}},\qquad
+            \langle e^{iN_f\varphi}\rangle_{pq}=\frac{Z}{Z_{pq}} = e^{-V(f-f_{pq})/T}
+          \]
+        </div>
+        <p>
+          平均位相因子は体積 \(V\) について指数関数的に小さくなり、統計誤差を一定に保つのに必要なサンプル数は
+          \(e^{2V\Delta f/T}\) に比例して増える（演習 2.2）。
+        </p>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">原論文に書かれていること</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          <a class="cite cite-bare" href="#ref-aarts2016lect"></a> は大学院生向けの講義ノートで、符号問題・overlap 問題・Silver Blaze 問題、
+          小さな \(\mu\) での相境界、虚数化学ポテンシャル、複素ランジュバン法を扱い、末尾に演習を含む（arXiv の abstract による）。
+        </div>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">自分の解釈</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          複素ランジュバン法は、重み \(e^{-S}\) を確率として解釈すること自体を諦める。打ち消し合う符号を平均しないので、
+          1 ステップのコストは \(\mu\) をパラメータとして含む同じドリフト計算で済み、\(\mu = 0\) とほぼ同程度になる。
+          代わりに「正しい答えに収束するか」という別の問題を抱える（第 5 章）。
+        </div>
+
+        <div class="summary-box">
+          <div class="callout-head">
+            <span class="box-title">この章のまとめ</span>
+            <span class="box-kicker">Summary</span>
+          </div>
+          <ul>
+            <li>実の \(\mu\neq0\) では \(\det M\) が複素数になる（<a class="eq-ref" href="#eq-detconj"></a>）。</li>
+            <li>再重み付けのコストは \(e^{2V\Delta f/T}\) で増える。</li>
+            <li>CL はコストが \(\mu\) によらない代わりに、収束先の正しさを別途確かめる必要がある。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-aarts2016lect" data-cite="Aarts 2016">
+            Aarts, Gert. 2016.「Introductory lectures on lattice QCD at nonzero baryon number」. <em>J. Phys. Conf. Ser.</em> 706: 022004. <a href="https://arxiv.org/abs/1512.05145" target="_blank" rel="noreferrer">arXiv:1512.05145</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

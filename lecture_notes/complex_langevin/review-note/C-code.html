@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="複素ランジュバン法 講義ノート 付録C — トイモデルの数値実験コード">
+  <title>数値デモのコード — 複素ランジュバン法 講義ノート</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="C-code.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">複素ランジュバン法</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">cl_toy_models.py（numpy のみ）/ 第 6 章・演習 4.3, 5.3, 6.4 で使用</span>
+        <span class="chapter-number"></span><span class="chapter-title">数値デモのコード</span>
+      </h1>
+
+      <p class="lead">
+        厳密値が分かる 3 つのトイモデルについて、複素ランジュバン方程式を Euler–Maruyama 法で解き、厳密値・CL の結果・ドリフトの大きさの分布の裾を表示する。多数の独立なウォーカーをベクトル化して同時に走らせる。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>ファイル</dt>
+          <dd><code>lecture_notes/complex_langevin/code/cl_toy_models.py</code>（<a href="https://github.com/WTatsuya2000/WTatsuya2000/blob/claude/stoic-faraday-evlycg/lecture_notes/complex_langevin/code/cl_toy_models.py" target="_blank" rel="noreferrer">GitHub</a>）</dd>
+        </div>
+        <div>
+          <dt>依存</dt>
+          <dd>Python 3、numpy</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>実行方法</h2>
+<pre><code>python3 cl_toy_models.py            # 3 つのモデルをすべて実行
+python3 cl_toy_models.py gauss      # 複素ガウス模型（約 10 秒）
+python3 cl_toy_models.py quartic    # 0 次元 φ^4 模型：成功例と失敗例（約 2 分）
+python3 cl_toy_models.py u1         # U(1) one-link 模型：行列式の零点による誤った収束（約 2 分）</code></pre>
+        <div class="remark-box">
+          <div class="callout-head">
+            <span class="box-title">設定</span>
+            <span class="box-kicker">Setup</span>
+          </div>
+          ノイズは実数のみ（\(N_I=0\)）。<code>k_max</code> を与えると、ドリフトの大きさに応じて刻みを \(\epsilon\min(1,K_{\max}/|K|)\) に縮める適応ステップ幅
+          <a class="cite" href="#ref-ajss2010a"></a> を使う。誤差は 20 個のブロックに分けたブロック平均から見積もる。
+        </div>
+      </section>
+
+      <section>
+        <h2>ソースコード</h2>
+<pre><code>&quot;&quot;&quot;複素ランジュバン法のトイモデル数値実験 (numpy のみで動作).
+
+  python3 cl_toy_models.py            # 3つのモデルをすべて実行
+  python3 cl_toy_models.py gauss      # 複素ガウス模型のみ
+  python3 cl_toy_models.py quartic    # 複素質量をもつ φ^4 ゼロ次元模型
+  python3 cl_toy_models.py u1         # 有限密度 U(1) one-link 模型 (行列式の零点)
+
+離散化は Euler-Maruyama, ノイズは実数のみ (N_I = 0).
+多数の独立なウォーカーをベクトル化して同時に走らせる.
+&quot;&quot;&quot;
+import sys
+
+import numpy as np
+
+RNG = np.random.default_rng(12345)
+
+
+def run_cl(drift, z0, eps, n_therm, n_meas, observables, k_max=None, sample_every=10):
+    &quot;&quot;&quot;複素ランジュバン方程式 dz = K(z) dt + sqrt(2) dW を解く.
+
+    k_max が与えられた場合はドリフトの大きさに応じて刻みを縮める適応ステップを使う
+    (Aarts, James, Seiler, Stamatescu, arXiv:0912.0617 の処方).
+    戻り値: (観測量の平均, 標準誤差) の辞書, および |K| と Im z の標本.
+    &quot;&quot;&quot;
+    z = np.array(z0, dtype=complex)
+    sums = {k: [] for k in observables}
+    kabs, ys = [], []
+    for step in range(n_therm + n_meas):
+        K = drift(z)
+        if k_max is None:
+            e = eps
+        else:
+            e = eps * np.minimum(1.0, k_max / np.maximum(np.abs(K), 1e-300))
+        z = z + e * K + np.sqrt(2.0 * e) * RNG.standard_normal(z.shape)
+        if step &gt;= n_therm and step % sample_every == 0:
+            for name, f in observables.items():
+                sums[name].append(f(z).mean())
+            kabs.append(np.abs(drift(z)))
+            ys.append(z.imag.copy())
+    out = {}
+    for name, vals in sums.items():
+        v = np.array(vals)
+        # 粗いビニングで自己相関の影響を抑えた誤差
+        nb = 20
+        blocks = v[: len(v) // nb * nb].reshape(nb, -1).mean(axis=1)
+        out[name] = (v.mean(), blocks.std(ddof=1) / np.sqrt(nb))
+    return out, np.concatenate(kabs), np.concatenate(ys)
+
+
+def exact_average(weight, obs, a, b, n=200001):
+    &quot;&quot;&quot;実軸上の (複素) 重み rho(x) による &lt;O&gt; を台形則で計算.&quot;&quot;&quot;
+    x = np.linspace(a, b, n)
+    w = weight(x)
+    return np.trapezoid(w * obs(x), x) / np.trapezoid(w, x)
+
+
+def tail_report(kabs, label=&quot;|K|&quot;):
+    &quot;&quot;&quot;ドリフトの大きさの分布の裾を表示 (Nagata-Nishimura-Shimasaki の判定条件の確認用).&quot;&quot;&quot;
+    qs = [0.5, 0.9, 0.99, 0.999, 0.9999]
+    vals = np.quantile(kabs, qs)
+    print(f&quot;    {label} の分位点: &quot; + &quot;, &quot;.join(f&quot;{q:g}:{v:.3g}&quot; for q, v in zip(qs, vals)))
+    edges = np.logspace(-1, 4, 11)
+    hist, _ = np.histogram(kabs, bins=edges)
+    p = hist / len(kabs)
+    print(&quot;    P(|K| in bin):&quot;)
+    for lo, hi, pv in zip(edges[:-1], edges[1:], p):
+        print(f&quot;      [{lo:9.3g},{hi:9.3g})  {pv:.3e}&quot;)
+
+
+def model_gauss():
+    print(&quot;=== 複素ガウス模型 S = sigma z^2 / 2 ===&quot;)
+    for sigma in [1.0 + 1.0j, 1.0 + 3.0j]:
+        res, kabs, ys = run_cl(
+            drift=lambda z: -sigma * z,
+            z0=np.zeros(2000),
+            eps=1e-3, n_therm=5000, n_meas=50000,
+            observables={&quot;z^2&quot;: lambda z: z**2, &quot;z^4&quot;: lambda z: z**4},
+        )
+        print(f&quot;  sigma = {sigma}&quot;)
+        print(f&quot;    CL   &lt;z^2&gt; = {res[&#x27;z^2&#x27;][0]:.4f} +- {res[&#x27;z^2&#x27;][1]:.4f}   exact 1/sigma     = {1/sigma:.4f}&quot;)
+        print(f&quot;    CL   &lt;z^4&gt; = {res[&#x27;z^4&#x27;][0]:.4f} +- {res[&#x27;z^4&#x27;][1]:.4f}   exact 3/sigma^2   = {3/sigma**2:.4f}&quot;)
+        a, b = sigma.real, sigma.imag
+        print(f&quot;    &lt;y^2&gt;_CL = {np.mean(ys**2):.4f}   解析値 b^2/(2a|sigma|^2) = {b*b/(2*a*abs(sigma)**2):.4f}&quot;)
+
+
+def model_quartic():
+    print(&quot;=== ゼロ次元 phi^4 模型 S = sigma z^2/2 + lam z^4/4 ===&quot;)
+    lam = 1.0
+    for sigma in [1.0 + 1.0j, -1.0 + 4.0j]:
+        res, kabs, ys = run_cl(
+            drift=lambda z: -(sigma * z + lam * z**3),
+            z0=np.zeros(2000),
+            eps=1e-4, n_therm=20000, n_meas=200000, k_max=50.0, sample_every=50,
+            observables={&quot;z^2&quot;: lambda z: z**2, &quot;z^4&quot;: lambda z: z**4},
+        )
+        w = lambda x: np.exp(-(sigma * x**2 / 2 + lam * x**4 / 4))
+        ex2 = exact_average(w, lambda x: x**2, -8, 8)
+        ex4 = exact_average(w, lambda x: x**4, -8, 8)
+        print(f&quot;  sigma = {sigma}, lambda = {lam}&quot;)
+        print(f&quot;    CL &lt;z^2&gt; = {res[&#x27;z^2&#x27;][0]:.4f} +- {res[&#x27;z^2&#x27;][1]:.4f}   exact = {ex2:.4f}&quot;)
+        print(f&quot;    CL &lt;z^4&gt; = {res[&#x27;z^4&#x27;][0]:.4f} +- {res[&#x27;z^4&#x27;][1]:.4f}   exact = {ex4:.4f}&quot;)
+        print(f&quot;    max|Im z| = {np.max(np.abs(ys)):.3f}&quot;)
+        tail_report(kabs)
+
+
+def model_u1():
+    print(&quot;=== U(1) one-link 模型 rho(x) = e^{beta cos x} [1 + kappa cos(x - i mu)] ===&quot;)
+    print(&quot;    (Aarts-Stamatescu arXiv:0807.1597 / Aarts-Seiler-Sexty-Stamatescu arXiv:1701.02322 型の模型)&quot;)
+    mu = 1.0
+    for beta, kappa in [(1.0, 0.25), (0.3, 2.0)]:
+        def drift(z, beta=beta, kappa=kappa):
+            d = 1.0 + kappa * np.cos(z - 1j * mu)
+            return -beta * np.sin(z) - kappa * np.sin(z - 1j * mu) / d
+        res, kabs, ys = run_cl(
+            drift=drift,
+            z0=np.zeros(2000),
+            eps=1e-4, n_therm=20000, n_meas=200000, k_max=50.0, sample_every=50,
+            observables={&quot;e^{iz}&quot;: lambda z: np.exp(1j * z), &quot;e^{-iz}&quot;: lambda z: np.exp(-1j * z)},
+        )
+        w = lambda x: np.exp(beta * np.cos(x)) * (1 + kappa * np.cos(x - 1j * mu))
+        ep = exact_average(w, lambda x: np.exp(1j * x), -np.pi, np.pi)
+        em = exact_average(w, lambda x: np.exp(-1j * x), -np.pi, np.pi)
+        # 行列式 1 + kappa cos(z - i mu) の零点: cos(z - i mu) = -1/kappa
+        w0 = np.arccos(complex(-1.0 / kappa))
+        print(f&quot;  beta = {beta}, kappa = {kappa}, mu = {mu}&quot;)
+        print(f&quot;    行列式の零点: z = ±w + i mu (mod 2pi), w = arccos(-1/kappa) = {w0.real:.3f}{w0.imag:+.3f}i&quot;)
+        print(f&quot;    CL &lt;e^{{ix}}&gt;  = {res[&#x27;e^{iz}&#x27;][0]:.4f} +- {res[&#x27;e^{iz}&#x27;][1]:.4f}   exact = {ep:.4f}&quot;)
+        print(f&quot;    CL &lt;e^{{-ix}}&gt; = {res[&#x27;e^{-iz}&#x27;][0]:.4f} +- {res[&#x27;e^{-iz}&#x27;][1]:.4f}   exact = {em:.4f}&quot;)
+        tail_report(kabs)
+
+
+if __name__ == &quot;__main__&quot;:
+    which = sys.argv[1:] or [&quot;gauss&quot;, &quot;quartic&quot;, &quot;u1&quot;]
+    table = {&quot;gauss&quot;: model_gauss, &quot;quartic&quot;: model_quartic, &quot;u1&quot;: model_u1}
+    for name in which:
+        table[name]()
+        print()
+</code></pre>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-ajss2010a" data-cite="Aarts ほか 2010a">
+            Aarts, Gert, Frank A. James, Erhard Seiler, と Ion-Olimpiu Stamatescu. 2010.「Adaptive stepsize and instabilities in complex Langevin dynamics」. <em>Phys. Lett. B</em> 687: 154. <a href="https://arxiv.org/abs/0912.0617" target="_blank" rel="noreferrer">arXiv:0912.0617</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

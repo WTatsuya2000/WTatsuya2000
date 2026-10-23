@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="複素ランジュバン法 講義ノート 第6章 — 複素ガウス・φ^4・U(1) one-link 模型の数値実験">
+  <title>トイモデルで見る成功と失敗 — 複素ランジュバン法 講義ノート</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="06-toy-models.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">複素ランジュバン法</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">付録 C の cl_toy_models.py による数値実験 / Aarts と Stamatescu 2008, Aarts ほか 2017 の模型</span>
+        <span class="chapter-number"></span><span class="chapter-title">トイモデルで見る成功と失敗</span>
+      </h1>
+
+      <p class="lead">
+        厳密値が分かる 3 つのトイモデルで CL を走らせ、正しく収束する例と誤った値に収束する例を並べる。誤った例ではドリフト分布が冪的な裾をもち、第 5 章の判定条件がそれを検出できることを確かめる。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>主要文献</dt>
+          <dd>Aarts, Stamatescu, <a href="https://arxiv.org/abs/0807.1597" target="_blank" rel="noreferrer">arXiv:0807.1597</a>; Aarts, Seiler, Sexty, Stamatescu, <a href="https://arxiv.org/abs/1701.02322" target="_blank" rel="noreferrer">arXiv:1701.02322</a></dd>
+        </div>
+        <div>
+          <dt>数値</dt>
+          <dd>Euler–Maruyama、\(\epsilon\approx10^{-4}\)、適応ステップ、2000 ウォーカー、乱数種 12345</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd><span class="tag">numerics</span> <span class="tag">toy model</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>複素ガウス模型</h2>
+        <p>第 4 章で解析的に解いた \(S=\frac{\sigma}{2}z^2\) を数値で確かめる。数値は乱数種に依存するので、統計誤差の範囲で再現されればよい。</p>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>\(\sigma\)</th><th>CL \(\langle z^2\rangle\)</th><th>厳密値 \(1/\sigma\)</th><th>CL \(\langle z^4\rangle\)</th><th>厳密値 \(3/\sigma^2\)</th></tr></thead>
+            <tbody>
+              <tr><td>\(1+i\)</td><td>\(0.4997-0.5018i\ (\pm0.004)\)</td><td>\(0.5-0.5i\)</td><td>\(-0.002-1.514i\ (\pm0.02)\)</td><td>\(-1.5i\)</td></tr>
+              <tr><td>\(1+3i\)</td><td>\(0.1004-0.3022i\ (\pm0.002)\)</td><td>\(0.1-0.3i\)</td><td>\(-0.246-0.182i\ (\pm0.005)\)</td><td>\(-0.24-0.18i\)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>ゼロ次元 φ⁴ 模型</h2>
+        <p>\(S = \frac{\sigma}{2}z^2 + \frac{\lambda}{4}z^4\)（\(\lambda=1\)）で、\(\sigma\) の実部の符号を変えた 2 例を比べる。厳密値は実軸上の数値積分による。</p>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>\(\sigma\)</th><th>CL \(\langle z^2\rangle\)</th><th>厳密値</th><th>\(\max\lvert y\rvert\)</th><th>\(\lvert K\rvert\) の 99.9% 分位点</th></tr></thead>
+            <tbody>
+              <tr><td>\(1+i\)</td><td>\(0.4298-0.1486i\ (\pm0.002)\)</td><td>\(0.4281-0.1480i\)</td><td>0.28</td><td>8.2</td></tr>
+              <tr><td>\(-1+4i\)</td><td>発散的に揺らぐ（誤差 \(\gtrsim3\)）</td><td>\(-0.1261-0.3765i\)</td><td>222</td><td>\(8\times10^5\)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <figure class="figure" id="fig-drift">
+          <img src="figs/drift-tail.svg" alt="ドリフトの大きさ |K| の分布。σ=1+i では |K| が 10 を超えると急に途切れるが、σ=−1+4i では 10^4 まで冪的な裾が続く。">
+          <figcaption>φ⁴ 模型でのドリフトの大きさ \(|K|\) の分布（両対数）。\(\sigma=1+i\)（実線）は裾が急に切れ、\(\sigma=-1+4i\)（破線）は \(10^4\) まで冪的な裾が続く。</figcaption>
+        </figure>
+
+        <p>
+          \(\sigma=1+i\) では分布が細い帯 \(|y|\lt0.3\) に閉じ込められ、ドリフト分布は速く減衰し（<a class="fig-ref" href="#fig-drift"></a>）、正しい答えを得る。
+          \(\sigma=-1+4i\) では虚方向への大きな逸脱が起き、\(|K|\) の分布が冪的な長い裾をもち、結果は正しくない。ステップ幅を 1/10 にしても改善しないので、
+          離散化誤差ではない。
+        </p>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">自分の解釈</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          \(\Re\sigma>0\) では原点が引き込む固定点、\(z^2=-\sigma/\lambda\) の 2 点が反発する固定点になる（演習 6.1）。分布が反発固定点まで届かない帯に閉じ込められていることが、
+          成功と結びついている。整合性条件 \(\sigma\langle z^2\rangle+\lambda\langle z^4\rangle=1\)（演習 5.2）も \(\sigma=1+i\) では満たされ、\(\sigma=-1+4i\) では全く満たされない。
+        </div>
+      </section>
+
+      <section>
+        <h2>有限密度 U(1) one-link 模型</h2>
+        <p>\(\det M\) の役割をする因子をもつ模型 <a class="cite" href="#ref-aarts2008"></a><a class="cite" href="#ref-asss2017"></a></p>
+        <div class="equation" id="eq-u1">
+          \[
+            \rho(x) = e^{\beta\cos x}\,\bigl[1+\kappa\cos(x-i\mu)\bigr],\qquad x\in[-\pi,\pi]
+          \]
+        </div>
+        <p>の厳密解は修正ベッセル関数で書ける（演習 6.2）。</p>
+        <div class="equation" id="eq-u1-exact">
+          \[
+            \langle e^{ix}\rangle = \frac{I_1(\beta) + \frac{\kappa}{2}\bigl[e^{-\mu}I_0(\beta) + e^{\mu}I_2(\beta)\bigr]}{I_0(\beta)+\kappa\cosh\mu\, I_1(\beta)}
+          \]
+        </div>
+        <p>
+          ドリフト \(K=-\beta\sin z - \kappa\sin(z-i\mu)/[1+\kappa\cos(z-i\mu)]\) は、「行列式」\(1+\kappa\cos(z-i\mu)\) の零点
+          \(z=\pm\arccos(-1/\kappa)+i\mu\) で極をもつ。
+        </p>
+
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>\((\beta,\kappa,\mu)\)</th><th>CL \(\langle e^{ix}\rangle\)</th><th>厳密値</th><th>CL \(\langle e^{-ix}\rangle\)</th><th>厳密値</th></tr></thead>
+            <tbody>
+              <tr><td>\((1,\,0.25,\,1)\)</td><td>\(0.456\ (\pm0.003)\)</td><td>\(0.4511\)</td><td>\(0.678\ (\pm0.005)\)</td><td>\(0.6749\)</td></tr>
+              <tr><td>\((0.3,\,2,\,1)\)</td><td>\(0.255\ (\pm0.001)\)</td><td>\(0.3748\)</td><td>\(1.154\ (\pm0.010)\)</td><td>\(1.9692\)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <figure class="figure" id="fig-u1">
+          <img src="figs/u1-zeros.svg" alt="複素平面上の CL 分布。κ=0.25 では分布が実軸付近にあり零点は遠い。κ=2 では零点 z=±2.09+i が分布の中に入っている。">
+          <figcaption>U(1) one-link 模型の CL 分布 \(P(x,y)\)（色の濃さは対数スケールの密度）と行列式の零点（×）。左 \(\kappa=0.25\) では零点が分布から離れ、右 \(\kappa=2\) では零点が分布の内部にある。</figcaption>
+        </figure>
+
+        <p>
+          \(\kappa=0.25\) では零点が \(\Re z=\pi\)、\(\Im z\approx3.06,\,-1.06\) にあり、下側の零点も分布の薄い裾に接する程度である。結果は \(\Order{\epsilon}\) の離散化誤差の範囲で正しい。
+          \(\kappa=2\) では零点 \(z=\pm2.094+i\) が分布の中に入り込み（<a class="fig-ref" href="#fig-u1"></a>）、
+          統計的には非常に精度が良いのに間違った値に収束する。
+        </p>
+
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">最も厄介な失敗パターン</span>
+            <span class="box-kicker">Caution</span>
+          </div>
+          誤差 0.001 で 0.255 という「精密に間違った」値が出る。誤差棒だけを見ても失敗に気づけない。
+          この例ではドリフト分布が \(|K|\sim10^3\) にまで達する冪的な裾をもち、判定条件が警告を発している。
+          極 \(1/(z-z_0)\) の近くで \(|K|\sim1/r\)、極近傍の分布が \(P\sim r^\gamma\) なら \(p(|K|)\sim|K|^{-(3+\gamma)}\) と冪になるのが理由である。
+          有限密度 QCD でも、Dirac 演算子の固有値が原点付近に来ると同じ問題が起こり得る <a class="cite" href="#ref-asss2017"></a>。
+        </div>
+
+        <div class="summary-box">
+          <div class="callout-head">
+            <span class="box-title">この章のまとめ</span>
+            <span class="box-kicker">Summary</span>
+          </div>
+          <ul>
+            <li>分布が虚方向に速く減衰し、ドリフト分布の裾が切れているときは厳密値を再現する。</li>
+            <li>無限遠への逸脱（φ⁴, \(\Re\sigma\lt0\)）と極への接近（U(1), \(\kappa>1\)）が 2 種類の失敗パターン。</li>
+            <li>どちらもドリフト分布の冪的な裾として検出できる（<a class="fig-ref" href="#fig-drift"></a>）。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-aarts2008" data-cite="Aarts と Stamatescu 2008">
+            Aarts, Gert, と Ion-Olimpiu Stamatescu. 2008.「Stochastic quantization at finite chemical potential」. <em>JHEP</em> 09: 018. <a href="https://arxiv.org/abs/0807.1597" target="_blank" rel="noreferrer">arXiv:0807.1597</a>.
+          </li>
+          <li id="ref-asss2017" data-cite="Aarts ほか 2017">
+            Aarts, Gert, Erhard Seiler, Dénes Sexty, と Ion-Olimpiu Stamatescu. 2017.「Complex Langevin dynamics and zeroes of the fermion determinant」. <em>JHEP</em> 05: 044. <a href="https://arxiv.org/abs/1701.02322" target="_blank" rel="noreferrer">arXiv:1701.02322</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

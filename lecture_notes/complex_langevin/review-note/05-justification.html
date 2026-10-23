@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="複素ランジュバン法 講義ノート 第5章 — 形式的証明・境界項・ドリフト判定条件">
+  <title>正当化と収束の判定条件 — 複素ランジュバン法 講義ノート</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="05-justification.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">複素ランジュバン法</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">Aarts ほか 2010b, 2011 / Nagata ほか 2016b / Scherzer ほか 2019 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">正当化と収束の判定条件</span>
+      </h1>
+
+      <p class="lead">
+        CL が正しい期待値を与えることの形式的証明を補間関数で組み立て、それが部分積分の境界項でどう破れるかを見る。そのうえで、実際のシミュレーションで正しさを確かめる 3 つの判定法（整合性条件・境界項・ドリフト分布）をまとめる。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>主要文献</dt>
+          <dd>Aarts ほか <a href="https://arxiv.org/abs/0912.3360" target="_blank" rel="noreferrer">arXiv:0912.3360</a>, <a href="https://arxiv.org/abs/1101.3270" target="_blank" rel="noreferrer">arXiv:1101.3270</a>; Nagata ほか <a href="https://arxiv.org/abs/1606.07627" target="_blank" rel="noreferrer">arXiv:1606.07627</a>; Scherzer ほか <a href="https://arxiv.org/abs/1808.05187" target="_blank" rel="noreferrer">arXiv:1808.05187</a></dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>\(\tilde L=(\partial_z-S'(z))\partial_z\)</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd><span class="tag">correctness</span> <span class="tag">boundary terms</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>形式的な証明</h2>
+        <p>正則な観測量 \(O(z)\) の時間発展を、ランジュバン演算子</p>
+        <div class="equation" id="eq-ltil">
+          \[
+            \tilde L = \bigl(\partial_z - S'(z)\bigr)\partial_z,\qquad \partial_\tau O(z;\tau) = \tilde L\,O(z;\tau)
+          \]
+        </div>
+        <p>
+          で定める。正則関数に作用するときは \(\partial_x=\partial_z\)、\(\partial_y=i\partial_z\) なので
+          \(N_R\partial_x^2+N_I\partial_y^2=(N_R-N_I)\partial_z^2=\partial_z^2\) となり、実 Fokker–Planck 演算子の随伴 \(L\) と \(\tilde L\) が一致する（演習 5.1）。
+        </p>
+
+        <div class="derivation-head">
+          <span class="box-kicker">Derivation — 補間関数</span>
+          <button class="steps-toggle" type="button" data-controls="der-interp">理由をすべて開く</button>
+        </div>
+        <dl class="derivation-goal">
+          <div><dt>出発</dt><dd>実の分布 \(P\) と複素の分布 \(\rho\) による 2 つの期待値 <a class="eq-ref" href="#eq-F"></a></dd></div>
+          <div><dt>目標</dt><dd>両者の差が境界項だけで書けること <a class="eq-ref" href="#eq-boundary"></a></dd></div>
+          <div><dt>方針</dt><dd>\(P\) の時間発展と \(O\) の時間発展を時刻 \(\tau\) で受け渡す関数を作り、\(\tau\) で微分して部分積分する</dd></div>
+        </dl>
+        <ol class="derivation" id="der-interp">
+          <li>
+            <div class="step-body">
+              <p class="step-action">補間関数 \(F(\theta,\tau)\) を定義する</p>
+              <div class="equation" id="eq-F">
+                \[ F(\theta,\tau) = \int dx\,dy\; P(x,y;\theta-\tau)\, O(x+iy;\tau),\qquad 0\le\tau\le\theta \]
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">両端の値を読み取る</p>
+              <div class="equation" data-unnumbered>
+                \[ F(\theta,0)=\langle O\rangle_{P(\theta)},\qquad F(\theta,\theta)=O(x_0;\theta)=\langle O\rangle_{\rho(\theta)} \]
+              </div>
+              <details class="step-why"><summary>なぜ</summary><div>初期条件を \(P(x,y;0)=\delta(x-x_0)\delta(y)\)、\(\rho(x;0)=\delta(x-x_0)\) にそろえる。\(O(z;\theta)=e^{\theta\tilde L}O\) は複素 Fokker–Planck 方程式の随伴発展なので、\(O(x_0;\theta)=\int\rho(x;\theta)O(x)dx\)。</div></details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">\(F\) を \(\tau\) で微分し、\(L^T P\) の項を部分積分で \(P\) の外へ移す</p>
+              <div class="equation" data-unnumbered>
+                \[ \partial_\tau F = -\int (L^T P)\, O + \int P\, (\tilde L O) = (\text{部分積分の表面項}) \]
+              </div>
+              <details class="step-why"><summary>なぜ</summary><div>表面項がなければ \(\int(L^TP)O=\int P(LO)\)、正則な \(O\) に対し \(LO=\tilde LO\) なので 2 項は打ち消す。</div></details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">\(N_I=0\) のとき、\(y=\pm Y\) での表面項を具体的に書く</p>
+              <div class="equation" id="eq-boundary">
+                \[ \partial_\tau F = \lim_{Y\to\infty}\int dx\,\Bigl[K_y\,P(x,y;\theta-\tau)\,O(x+iy;\tau)\Bigr]_{y=-Y}^{y=Y} \]
+              </div>
+              <details class="step-why"><summary>なぜ</summary><div>\(x\) が周期的（コンパクト）なら \(x\) 方向の表面項は消える。導出の詳細は演習 5.4。ドリフトに極がある場合は、極を囲む小円上にも同様の表面項が現れる。</div></details>
+            </div>
+          </li>
+        </ol>
+
+        <div class="thm-box numbered-box" data-kind="result" data-label="結果" id="res-formal">
+          <div class="callout-head">
+            <span class="box-title" data-title="形式的正当化"></span>
+            <span class="box-kicker">Result</span>
+          </div>
+          境界項 <a class="eq-ref" href="#eq-boundary"></a> が全ての \(0\le\tau\le\theta\) で消え、かつ \(\rho(x;\theta)\) が \(e^{-S}/Z\) に収束するなら、
+          正則な観測量に対して \(\langle O\rangle_{P(\theta\to\infty)} = \int O\,e^{-S}/Z\) が成り立つ。
+        </div>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">原論文に書かれていること</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          <a class="cite cite-bare" href="#ref-ass2010"></a> は正しさの形式的な導出を与えたうえで、そのいくつかの数学的な抜け穴を指摘し、
+          簡単な例の研究から実用上の提案を行っている（arXiv の abstract による）。
+        </div>
+      </section>
+
+      <section>
+        <h2>抜け穴</h2>
+        <p>形式的証明が破れる典型的な状況は次の 2 つである。</p>
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">証明が破れる状況</span>
+            <span class="box-kicker">Caution</span>
+          </div>
+          <ul>
+            <li><strong>無限遠での裾</strong>：\(P(x,y)\) が \(|y|\to\infty\) で十分速く減衰しないと、\(O(z;\tau)\)（多くの場合 \(|y|\) について指数関数的に増える）との積の表面項が残る <a class="cite" href="#ref-ajss2011"></a>。</li>
+            <li><strong>ドリフトの極（特異ドリフト）</strong>：\(S=-\ln\det M+\cdots\) のように対数を含むと、\(\det M\) の零点で \(S'\) が極をもつ。極のまわりで \(P\) が十分速く 0 にならないと境界項が生じる <a class="cite" href="#ref-asss2017"></a><a class="cite" href="#ref-nns2016b"></a>。</li>
+          </ul>
+        </div>
+        <p>
+          このほか、複素 Fokker–Planck 演算子のスペクトルが（\(e^{-S}\) 以外で）正の実部をもつ固有値をもたないこと、エルゴード性なども暗に仮定されている。
+          境界項・スペクトルとの関係の整理は <a class="cite" href="#ref-sss2024"></a> を参照。
+        </p>
+      </section>
+
+      <section>
+        <h2>実用的な判定条件</h2>
+
+        <h3>整合性条件</h3>
+        <p>定常状態で、任意の正則 \(O\) について</p>
+        <div class="equation" id="eq-consistency">
+          \[ \bigl\langle \tilde L O\bigr\rangle_P = \bigl\langle O''-S'O'\bigr\rangle_P = 0 \]
+        </div>
+        <p>
+          が成り立つことを確かめる <a class="cite" href="#ref-ajss2011"></a>。これは厳密な期待値が満たす Schwinger–Dyson 方程式と同じものである（演習 5.2）。
+          全ての \(O\) を調べるのは不可能なので、いくつかの \(O\) での確認は必要条件にとどまる。
+        </p>
+
+        <h3>境界項の直接計算</h3>
+        <p>カットオフ \(Y\) を入れて</p>
+        <div class="equation" id="eq-BY">
+          \[ B_O(Y) = \bigl\langle \Theta(Y-|y|)\,\tilde L O\bigr\rangle_P \]
+        </div>
+        <p>
+          を測り、\(Y\to\infty\) で 0 に向かうかを見る <a class="cite" href="#ref-ssss2019"></a>。格子模型への適用と、境界項から系統誤差を見積もる方法は
+          <a class="cite" href="#ref-ssss2020"></a> にある。
+        </p>
+
+        <h3>ドリフトの分布</h3>
+        <div class="thm-box numbered-box" data-kind="result" data-label="判定条件" id="crit-drift">
+          <div class="callout-head">
+            <span class="box-title" data-title="ドリフト分布の減衰"></span>
+            <span class="box-kicker">Criterion</span>
+          </div>
+          ドリフトの大きさ \(u=|K|\) の確率分布 \(p(u)\) が、大きな \(u\) で指数関数的（またはそれ以上に速く）減衰していれば正しい結果が得られる。
+          冪的な裾 \(p(u)\sim u^{-\alpha}\) は危険信号である <a class="cite" href="#ref-nns2016b"></a>。
+        </div>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">原論文に書かれていること</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          <a class="cite cite-bare" href="#ref-nns2016b"></a> は、従来の正当化の議論で使われていた時間発展した観測量の扱いに微妙な点があることを指摘し、
+          その結果としてドリフトの大きさの分布が指数関数的以上に速く減衰することを条件として導いている（arXiv の abstract による）。
+          格子模型での検証は <a class="cite" href="#ref-nns2018"></a>。
+        </div>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">自分の解釈</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          3 つの判定法は同じ境界項を別の角度から見ている。ドリフト分布は 1 本のヒストグラムで済むので最も手軽で、格子 QCD でも標準的に使われる。
+          第 6 章のトイモデルで、この判定が「正しい／誤り」をきちんと区別することを数値で確かめる。
+        </div>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-ass2010" data-cite="Aarts ほか 2010b">
+            Aarts, Gert, Erhard Seiler, と Ion-Olimpiu Stamatescu. 2010.「The complex Langevin method: When can it be trusted?」. <em>Phys. Rev. D</em> 81: 054508. <a href="https://arxiv.org/abs/0912.3360" target="_blank" rel="noreferrer">arXiv:0912.3360</a>.
+          </li>
+          <li id="ref-ajss2011" data-cite="Aarts ほか 2011">
+            Aarts, Gert, Frank A. James, Erhard Seiler, と Ion-Olimpiu Stamatescu. 2011.「Complex Langevin: Etiology and diagnostics of its main problem」. <em>Eur. Phys. J. C</em> 71: 1756. <a href="https://arxiv.org/abs/1101.3270" target="_blank" rel="noreferrer">arXiv:1101.3270</a>.
+          </li>
+          <li id="ref-nns2016b" data-cite="Nagata ほか 2016b">
+            Nagata, Keitaro, Jun Nishimura, と Shinji Shimasaki. 2016.「Argument for justification of the complex Langevin method and the condition for correct convergence」. <em>Phys. Rev. D</em> 94: 114515. <a href="https://arxiv.org/abs/1606.07627" target="_blank" rel="noreferrer">arXiv:1606.07627</a>.
+          </li>
+          <li id="ref-asss2017" data-cite="Aarts ほか 2017">
+            Aarts, Gert, Erhard Seiler, Dénes Sexty, と Ion-Olimpiu Stamatescu. 2017.「Complex Langevin dynamics and zeroes of the fermion determinant」. <em>JHEP</em> 05: 044. <a href="https://arxiv.org/abs/1701.02322" target="_blank" rel="noreferrer">arXiv:1701.02322</a>.
+          </li>
+          <li id="ref-nns2018" data-cite="Nagata ほか 2018">
+            Nagata, Keitaro, Jun Nishimura, と Shinji Shimasaki. 2018.「Testing the criterion for correct convergence in the complex Langevin method」. <em>JHEP</em> 05: 004. <a href="https://arxiv.org/abs/1802.01876" target="_blank" rel="noreferrer">arXiv:1802.01876</a>.
+          </li>
+          <li id="ref-ssss2019" data-cite="Scherzer ほか 2019">
+            Scherzer, Manuel, Erhard Seiler, Dénes Sexty, と Ion-Olimpiu Stamatescu. 2019.「Complex Langevin and boundary terms」. <em>Phys. Rev. D</em> 99: 014512. <a href="https://arxiv.org/abs/1808.05187" target="_blank" rel="noreferrer">arXiv:1808.05187</a>.
+          </li>
+          <li id="ref-ssss2020" data-cite="Scherzer ほか 2020">
+            Scherzer, Manuel, Erhard Seiler, Dénes Sexty, と Ion-Olimpiu Stamatescu. 2020.「Controlling complex Langevin simulations of lattice models by boundary term analysis」. <em>Phys. Rev. D</em> 101: 014501. <a href="https://arxiv.org/abs/1910.09427" target="_blank" rel="noreferrer">arXiv:1910.09427</a>.
+          </li>
+          <li id="ref-sss2024" data-cite="Seiler ほか 2024">
+            Seiler, Erhard, Dénes Sexty, と Ion-Olimpiu Stamatescu. 2024.「Complex Langevin: Correctness criteria, boundary terms and spectrum」. <em>Phys. Rev. D</em> 109: 014509. <a href="https://arxiv.org/abs/2304.00563" target="_blank" rel="noreferrer">arXiv:2304.00563</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

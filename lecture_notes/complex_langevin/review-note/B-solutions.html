@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="複素ランジュバン法 講義ノート 付録B — 演習問題の解答">
+  <title>解答 — 複素ランジュバン法 講義ノート</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="B-solutions.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">複素ランジュバン法</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">付録 A の全問に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">解答</span>
+      </h1>
+
+      <p class="lead">
+        数値は付録 C のコードを乱数種 12345 で実行したもの。どのモデルを続けて走らせるかで乱数列が変わるため、値は統計誤差の範囲で異なり得る。各解答の「← 問題」から問題文へ戻れる。
+      </p>
+
+      <dl class="paper-meta">
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>注意</dt>
+          <dd>論文講読（演習 8.4）は abstract に基づく要点のみ</dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>符号問題（第 2 章）</h2>
+        <div class="remark-box" id="sol-2-1">
+          <div class="callout-head">
+            <span class="box-title">演習 2.1 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>行列式は相似変換で不変なので \(\det M(\mu)=\det(\gamma_5M(\mu)\gamma_5)=\det M(-\mu^*)^\dagger=[\det M(-\mu^*)]^*\)。両辺の複素共役をとれば与式。</p>
+          <ul>
+            <li>\(\mu=i\nu\)（\(\nu\) 実）なら \(-\mu^*=i\nu=\mu\) なので \([\det M]^*=\det M\)、すなわち実数。</li>
+            <li>実の \(\mu\ne0\) では \(-\mu^*=-\mu\ne\mu\) なので一般に複素数（\(\mu\to-\mu\) は粒子と反粒子の入れ替え）。</li>
+          </ul>
+          <p class="box-link"><a href="A-exercises.html#ex-2-1">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-2-2">
+          <div class="callout-head">
+            <span class="box-title">演習 2.2 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <ol>
+            <li>\(e^{i\varphi}\) の各成分の分散は \(\Order{1}\) なので推定誤差は \(\sim1/\sqrt N\)、相対誤差は \(e^{V\Delta f/T}/\sqrt N\)。</li>
+            <li>\(N=100\,e^{2V\Delta f/T}\)。\(V\Delta f/T=5,10,20\) でそれぞれ \(\approx2\times10^6\)、\(5\times10^{10}\)、\(2\times10^{19}\)。体積を 2 倍にすると指数が 2 倍になる。</li>
+            <li>CL は複素重みを確率として使わない（打ち消し合う符号を平均しない）ため。1 ステップのコストは \(\mu\) を含む同じドリフト計算で、\(\mu=0\) とほぼ同じ。</li>
+          </ol>
+          <p class="box-link"><a href="A-exercises.html#ex-2-2">← 問題</a></p>
+        </div>
+      </section>
+      <section>
+        <h2>実ランジュバン方程式（第 3 章）</h2>
+        <div class="remark-box" id="sol-3-1">
+          <div class="callout-head">
+            <span class="box-title">演習 3.1 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>第 3 章の導出（相似変換）のとおり。要点は \((\partial_x+S')P=(Q\psi)e^{-S/2}\) と \(\partial_x[(Q\psi)e^{-S/2}]=-(Q^\dagger Q\psi)e^{-S/2}\)。展開すると</p>
+          \[ Q^\dagger Q\psi=-\psi''-\tfrac12S''\psi-\tfrac12S'\psi'+\tfrac12S'\psi'+\tfrac14S'^2\psi=\Bigl(-\partial_x^2+\tfrac14S'^2-\tfrac12S''\Bigr)\psi . \]
+          <p>\(\langle\psi,Q^\dagger Q\psi\rangle=\norm{Q\psi}^2\ge0\)。固有値 0 ⇔ \(Q\psi=0\) ⇔ \(\psi\propto e^{-S/2}\)。\(S\) が複素だと \(H_{FP}\) はエルミートでなく、この議論は成り立たない。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-3-1">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-3-2">
+          <div class="callout-head">
+            <span class="box-title">演習 3.2 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>\(x(\theta)=x_0e^{-m\theta}+\int_0^\theta e^{-m(\theta-s)}\eta(s)\,ds\)。よって \(\langle x(\theta)\rangle=x_0e^{-m\theta}\)、分散 \(=2\int_0^\theta e^{-2m(\theta-s)}ds=(1-e^{-2m\theta})/m\to1/m\)。平均の緩和時間は \(1/m\)（分散は \(1/2m\)）。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-3-2">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-3-3">
+          <div class="callout-head">
+            <span class="box-title">演習 3.3 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>\(v_{n+1}=(1-\epsilon m)^2v_n+2\epsilon\) の固定点は</p>
+          \[ v_\infty=\frac{2\epsilon}{1-(1-\epsilon m)^2}=\frac{1}{m\,(1-\epsilon m/2)}=\frac1m\Bigl(1+\frac{\epsilon m}{2}+\Order{\epsilon^2}\Bigr). \]
+          <p>\(\epsilon m>2\) では \(|1-\epsilon m|>1\) となり反復が発散する。CL では \(|S''|\) が大きい領域で同じことが起き、適応ステップ幅の動機になる。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-3-3">← 問題</a></p>
+        </div>
+      </section>
+      <section>
+        <h2>複素ランジュバン方程式（第 4 章）</h2>
+        <div class="remark-box" id="sol-4-1">
+          <div class="callout-head">
+            <span class="box-title">演習 4.1 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>(1)–(3) は第 4 章の導出（Lyapunov 方程式）のとおりで、</p>
+          \[ \langle xy\rangle=-\frac{b}{2|\sigma|^2},\quad \langle y^2\rangle=\frac{b^2}{2a|\sigma|^2},\quad \langle x^2\rangle=\frac{2a^2+b^2}{2a|\sigma|^2},\quad \langle z^2\rangle=\frac{\bar\sigma}{|\sigma|^2}=\frac1\sigma . \]
+          <p>(4) \(-A\) の固有値は \(-a\pm ib\)。\(a\lt0\) では実部が正で軌道が指数関数的に発散し、定常分布が存在しない。このときもとの積分も発散しているので整合的である。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-4-1">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-4-2">
+          <div class="callout-head">
+            <span class="box-title">演習 4.2 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>\(B=\diag(2N_R,2N_I)\) として同様に解くと \(C_{xx}=(N_R+bC_{xy})/a\)、\(C_{yy}=(N_I-bC_{xy})/a\)、\(C_{xy}=-b(N_R-N_I)/(2|\sigma|^2)=-b/(2|\sigma|^2)\)。よって</p>
+          \[ C_{xx}-C_{yy}=\frac{a}{|\sigma|^2},\qquad \langle z^2\rangle=\frac1\sigma,\qquad \langle y^2\rangle=\frac1a\Bigl(N_I+\frac{b^2}{2|\sigma|^2}\Bigr). \]
+          <p>虚方向に広がるほど \(P\) の裾が重くなり、境界項や観測量（\(|e^{iz}|=e^{-y}\) など）の分散が悪化するので \(N_I=0\) が好まれる。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-4-2">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-4-3">
+          <div class="callout-head">
+            <span class="box-title">演習 4.3 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>\(\sigma=1+i\)：\(\langle z^4\rangle=-0.0017-1.5138i\ (\pm0.020)\)、厳密値 \(-1.5i\)。\(\sigma=1+3i\)：\(-0.2460-0.1823i\ (\pm0.0045)\)、厳密値 \(-0.24-0.18i\)。
+          小さなずれ（1σ 強）は Euler 離散化の \(\Order{\epsilon}\) 誤差（演習 3.3 と同種）と誤差評価の粗さが考えられる。\(\epsilon\to0\) 外挿で確認できる。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-4-3">← 問題</a></p>
+        </div>
+      </section>
+      <section>
+        <h2>正当化と判定条件（第 5 章）</h2>
+        <div class="remark-box" id="sol-5-1">
+          <div class="callout-head">
+            <span class="box-title">演習 5.1 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>\(f\) が正則なら \(\partial_x^2f=f''\)、\(\partial_y^2f=-f''\) なので \(N_R\partial_x^2f+N_I\partial_y^2f=(N_R-N_I)f''=f''\)。ドリフト項も \(K_x\partial_xf+K_y\partial_yf=(K_x+iK_y)f'=-S'f'\)。したがって \(Lf=f''-S'f'=\tilde Lf\)。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-5-1">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-5-2">
+          <div class="callout-head">
+            <span class="box-title">演習 5.2 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>\(\int dx\,\partial_x(O'e^{-S})=\int(O''-S'O')e^{-S}=0\)（境界で \(O'e^{-S}\to0\)）。これは \(\langle\tilde LO\rangle_{\rm exact}=0\) に他ならない。</p>
+          <ol>
+            <li>\(O=z^n\)：\(n(n-1)\langle z^{n-2}\rangle=\sigma\langle z^n\rangle\)。\(\langle z^2\rangle=1/\sigma\)、\(\langle z^4\rangle=3/\sigma^2\)。</li>
+            <li>\(O=z^2\)：\(2-2\langle z(\sigma z+\lambda z^3)\rangle=0\)、すなわち \(\sigma\langle z^2\rangle+\lambda\langle z^4\rangle=1\)。</li>
+          </ol>
+          <p class="box-link"><a href="A-exercises.html#ex-5-2">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-5-3">
+          <div class="callout-head">
+            <span class="box-title">演習 5.3 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <ol>
+            <li>\(\sigma=1+i\)：\((1+i)(0.4298-0.1486i)+(0.4264-0.2825i)=1.005-0.001i\approx1\)。\(\sigma=-1+4i\)：\(\langle z^4\rangle_{\rm CL}\) が \(10^5\) 程度となり全く満たされない。</li>
+            <li>\(|K|\) の 99%／99.9%／99.99% 分位点は、\(\sigma=1+i\) で 5.4／8.2／10.8、\(\sigma=-1+4i\) で \(1.2\times10^4\)／\(7.9\times10^5\)／\(7.6\times10^6\)。前者は裾が急に切れ、後者は冪的な裾で判定条件を満たさない（第 6 章の図）。</li>
+          </ol>
+          <p class="box-link"><a href="A-exercises.html#ex-5-3">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-5-4">
+          <div class="callout-head">
+            <span class="box-title">演習 5.4 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>\(L^TP=\partial_xJ_x+\partial_yJ_y\)、\(J_y=N_I\partial_yP-K_yP\) と書き、\(y\in[-Y,Y]\) で部分積分すると</p>
+          \[ \partial_\tau F=-\int dx\Bigl[\bigl(N_I\partial_yP-K_yP\bigr)O-N_IP\,\partial_yO\Bigr]_{-Y}^{Y} \]
+          <p>で、\(N_I=0\) では \(\partial_\tau F=\int dx\,\bigl[K_y\,P\,O\bigr]_{y=-Y}^{y=Y}\) となる。</p>
+          <p>\(O\sim e^{c|y|}\) で \(K_y\) が多項式的に増えるなら、\(P\) は \(e^{-c|y|}\times(\text{多項式})^{-1}\) より速く減衰しなければならない。\(\tau\) とともに \(O(z;\tau)\) の増大度も変わるので全ての \(\tau\) で一様に必要で、冪的減衰では不十分である。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-5-4">← 問題</a></p>
+        </div>
+      </section>
+      <section>
+        <h2>トイモデル（第 6 章）</h2>
+        <div class="remark-box" id="sol-6-1">
+          <div class="callout-head">
+            <span class="box-title">演習 6.1 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>\(S'(z)=\sigma z+\lambda z^3=0\) より \(z=0\) と \(z=\pm\sqrt{-\sigma/\lambda}\)。固定点の近傍で \(\delta\dot z=-S''(z^*)\delta z\)、\(S''=\sigma+3\lambda z^2\)。</p>
+          <ul>
+            <li>\(z^*=0\)：\(S''=\sigma\)、\(\Re\sigma>0\) なので安定（引き込む）。</li>
+            <li>\(z^{*2}=-\sigma/\lambda\)：\(S''=-2\sigma\) で不安定（反発）。</li>
+          </ul>
+          <p>\(\sigma=1+i\)、\(\lambda=1\)：\(z^*=\pm2^{1/4}e^{-3\pi i/8}=\pm(0.455-1.099i)\)。数値では分布は \(|y|\lt0.3\) に収まり、反発固定点まで届かない。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-6-1">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-6-2">
+          <div class="callout-head">
+            <span class="box-title">演習 6.2 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>\(\cos(x-i\mu)=\cos x\cosh\mu+i\sin x\sinh\mu\)。\(\frac1{2\pi}\int e^{\beta\cos x}\cos^2x=\frac{I_0+I_2}{2}\)、\(\frac1{2\pi}\int e^{\beta\cos x}\sin^2x=\frac{I_0-I_2}{2}\) を使うと、分子は
+          \(I_1+\kappa\bigl[\cosh\mu\frac{I_0+I_2}{2}-\sinh\mu\frac{I_0-I_2}{2}\bigr]=I_1+\frac\kappa2(e^{-\mu}I_0+e^{\mu}I_2)\)。</p>
+          <p>\(x\to-x\) で \(\mu\to-\mu\) となるので \(\langle e^{-ix}\rangle\) は分子の \(e^{\pm\mu}\) を入れ替えたもの。\(\beta=0\)：\(\langle e^{ix}\rangle=\frac\kappa2e^{-\mu}\)、\(\langle e^{-ix}\rangle=\frac\kappa2e^{\mu}\)。
+          \(\langle e^{ix}\rangle\ne\langle e^{-ix}\rangle^*\) という、確率分布では不可能な関係が現れる。数値確認：\((1,0.25,1)\) で 0.4511、0.6749。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-6-2">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-6-3">
+          <div class="callout-head">
+            <span class="box-title">演習 6.3 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <ol>
+            <li>\(z=\pm w+i\mu+2\pi n\)、\(w=\arccos(-1/\kappa)\)。\(\kappa>1\) では \(w\) が実で零点は \(\Im z=\mu\) 上（\(\kappa=2\) なら \(z=\pm2.094+i\)）。\(\kappa\lt1\) では \(w=\pi\mp i\,\mathrm{arccosh}(1/\kappa)\) で、零点は \(\Re z=\pi\)、\(\Im z=\mu\pm\mathrm{arccosh}(1/\kappa)\)（\(\kappa=0.25\) なら 3.06 と −1.06）。</li>
+            <li>\(1+\kappa\cos x\ge1-\kappa>0\)、\(e^{\beta\cos x}>0\) なので重みは正。</li>
+            <li>\(\kappa\lt1\) では零点が実軸から離れ、\(\kappa>1\) では \(\Im z=\mu\) 上に乗って分布に入り込みやすい。\(\kappa>1\) で失敗しやすいと予想される（\(\kappa>1\) では \(\mu=0\) でも重みが負になる領域がある）。</li>
+          </ol>
+          <p class="box-link"><a href="A-exercises.html#ex-6-3">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-6-4">
+          <div class="callout-head">
+            <span class="box-title">演習 6.4 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>\(\kappa=0.25\)：\(\langle e^{ix}\rangle=0.4556\pm0.0031\)（厳密 0.4511）。\(\kappa=2\)：\(0.2551\pm0.0013\)（厳密 0.3748）で、精密に間違った値になる。
+          \(|K|\) の分布は \(\kappa=0.25\) では \(|K|>100\) がなく、\(\kappa=2\) では \([10^3,10^4)\) にも \(10^{-6}\) 程度の確率が残る冪的な裾をもつ。極 \(1/(z-z_0)\) の近くで \(|K|\sim1/r\)、\(P\sim r^\gamma\) なら \(p(|K|)\sim|K|^{-(3+\gamma)}\)。
+          \(\kappa\) を変える課題は各自で。零点が分布の主要部分に近づく \(\kappa\approx1\) 付近から異常が現れ始めるのが目安。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-6-4">← 問題</a></p>
+        </div>
+      </section>
+      <section>
+        <h2>ゲージ理論（第 7 章）</h2>
+        <div class="remark-box" id="sol-7-1">
+          <div class="callout-head">
+            <span class="box-title">演習 7.1 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>\(H=UU^\dagger\) は正定値エルミートで、固有値 \(h_i>0\)、\(\prod h_i=|\det U|^2=1\)。相加相乗平均より \(\frac1N\sum h_i\ge1\)。等号は全ての \(h_i=1\)、すなわち \(H=\mathbb 1\) ⇔ \(U\) がユニタリ。\(\det U=1\) と合わせて \(U\in\SUN\)。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-7-1">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-7-2">
+          <div class="callout-head">
+            <span class="box-title">演習 7.2 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <ol>
+            <li>\(\Omega^\dagger=\Omega\ne\Omega^{-1}\)（\(\alpha\ne0\)）、\(\det\Omega=e^{\alpha\tr\lambda_a}=1\)。</li>
+            <li>第 7 章の導出（冷却の勾配）のとおり。出るリンクで \(+2\tr(\lambda_aUU^\dagger)\)、入るリンクで \(-2\tr(\lambda_aU^\dagger U)\)。</li>
+            <li>\(\Omega\in\SUN\) なら \(\tr(\Omega UU^\dagger\Omega^\dagger)=\tr(UU^\dagger)\) で不変。ノルムを変えるには、複素化したゲージ群の非コンパクト方向（エルミート生成子の方向）の変換が必要。それでも作用やゲージ不変な観測量（\(U^{-1}\) で書いた Wilson ループのトレースなど）は不変なので物理は変わらない。</li>
+          </ol>
+          <p class="box-link"><a href="A-exercises.html#ex-7-2">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-7-3">
+          <div class="callout-head">
+            <span class="box-title">演習 7.3 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>CL の正当化は作用と観測量が複素化変数の正則関数であることに依存する。\(U^\dagger\) の成分は複素共役で反正則、\(U^{-1}\) の成分は余因子（\(\det U=1\)）で \(U\) の成分の多項式なので正則。SU(\(N\)) 上で両者は一致するので、もとの理論を変えずに正則な延長を作るには \(S_g=\beta\sum_P[1-\frac1{2N}\tr(U_P+U_P^{-1})]\) とする。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-7-3">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-7-4">
+          <div class="callout-head">
+            <span class="box-title">演習 7.4 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>\(\det e^X=e^{\tr X}\)、\(\tr(i\lambda_aK_a)=0\) より \(\det=1\)。\(\det(VU)=\det V\det U=1\)。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-7-4">← 問題</a></p>
+        </div>
+      </section>
+      <section>
+        <h2>有限密度 QCD（第 8 章）</h2>
+        <div class="remark-box" id="sol-8-1">
+          <div class="callout-head">
+            <span class="box-title">演習 8.1 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>\(\langle\chi^\dagger A\chi\rangle=\sum_{ij}A_{ij}\langle\chi_i^*\chi_j\rangle=\tr A\)。\(M^\dagger\xi=\chi\) を解けば \(\chi^\dagger M^{-1}=\xi^\dagger\) なので \(K^{(f)}_{a,x\nu}\approx N_f\,\xi^\dagger(D_{a,x\nu}M)\chi\)。
+          \(D_{a,x\nu}M\) はリンク \((x,\nu)\) を含むホッピング項だけに非零成分をもつ局所的な行列なので、全リンク・全 \(a\) を \(\Order{\text{体積}}\) で計算できる。線形方程式の求解は 1 回。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-8-1">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-8-2">
+          <div class="callout-head">
+            <span class="box-title">演習 8.2 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>固有値 \(p_i\)（\(p_1p_2p_3=1\)）で \(\prod_i(1+cp_i)=1+c\sum p_i+c^2\sum_{i\lt j}p_ip_j+c^3\)、\(\sum_{i\lt j}p_ip_j=\sum_kp_k^{-1}=\tr\mathcal P^{-1}\)。</p>
+          <p>\(\mathcal P\in\mathrm{SU}(3)\) なら \(\tr\mathcal P^{-1}=(\tr\mathcal P)^*\)。\(D(c)=1+ct+c^2t^*+c^3\)（\(t=\tr\mathcal P\)）とおくと、実数 \(c'\) で \(\det(1+c'\mathcal P^{-1})=D(c')^*\)。
+          \(\mu=0\) では積は \(|D(h)|^2\ge0\)。\(\mu\ne0\) では \(D(he^{\mu/T})D(he^{-\mu/T})^*\) で、\(h\) の 1 次の虚部は \(2h\sinh(\mu/T)\Im t\ne0\)。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-8-2">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-8-3">
+          <div class="callout-head">
+            <span class="box-title">演習 8.3 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>\(c=he^{\mu/T}\to\infty\) で \(D(c)\simeq c^3\)、\(c'=he^{-\mu/T}\to0\) で \(D(c')\to1\)。よって \(\det M\simeq h^{6N_s^3}e^{6N_s^3\mu/T}\)、\(n\to6=2N_c\)（2 はスピン、3 はカラー）。
+          格子上の各点にフェルミオンを 2×3 個しか置けないこと（パウリ原理）による格子の人工物で、物理的な高密度の情報を得るには飽和より十分手前で考える必要がある。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-8-3">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-8-4">
+          <div class="callout-head">
+            <span class="box-title">演習 8.4 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>講読課題のため要点のみ（arXiv の abstract に基づく。詳細は本文で確認すること）。</p>
+          <ol>
+            <li>ゲージ冷却なしでは配位が SU(3) から離れてユニタリティ・ノルムが増大し、観測量が正しい値から外れる／不安定になる。</li>
+            <li>冷却は格子が十分細かい（\(\beta\) が大きい）ときに有効と報告されている。閾値は原論文の図で確認すること。</li>
+            <li>arXiv:1211.3709 は小さな \(\mu\) での再重み付け、arXiv:1307.7748 は重いクォーク質量での HDQCD と比較。既知の結果が得られる領域で一致を確かめてから未知の領域に進む戦略をとっている。</li>
+          </ol>
+          <p class="box-link"><a href="A-exercises.html#ex-8-4">← 問題</a></p>
+        </div>
+      </section>
+      <section>
+        <h2>発展課題</h2>
+        <div class="remark-box" id="sol-P-1">
+          <div class="callout-head">
+            <span class="box-title">演習 P.1 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>ヒント：\(D_a\tr U=i\tr(\lambda_aU)\)、\(D_a\tr U^{-1}=-i\tr(U^{-1}\lambda_a)\)、\(D_a\ln\det(1+cU)=i\tr[(1+cU)^{-1}c\lambda_aU]\)。
+          厳密値は Weyl の積分公式（Haar 測度 \(\propto\prod_{i\lt j}|e^{i\theta_i}-e^{i\theta_j}|^2\)、\(\theta_3=-\theta_1-\theta_2\)）による 2 重積分で求まる。原論文の図と比較せよ。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-P-1">← 問題</a></p>
+        </div>
+        <div class="remark-box" id="sol-P-2">
+          <div class="callout-head">
+            <span class="box-title">演習 P.2 の解答</span>
+            <span class="box-kicker">Solution</span>
+          </div>
+          <p>ヒント：作用が \(\mathcal P=U_1\cdots U_{N_\tau}\) だけに依存する模型では、ゲージ変換 \(U_k\to\Omega_kU_k\Omega_{k+1}^{-1}\) は \(\mathcal P\) を共役変換するだけ。冷却は各 \(k\) で演習 7.2 の勾配を使えばよい。
+          冷却なしではノルムがランジュバン時間とともに増大し、冷却ありでは \(\mathcal P\) 自体の非ユニタリ性（ゲージ不変量で除去できない部分）程度に抑えられるはずである。</p>
+          <p class="box-link"><a href="A-exercises.html#ex-P-2">← 問題</a></p>
+        </div>
+      </section>
+
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>
