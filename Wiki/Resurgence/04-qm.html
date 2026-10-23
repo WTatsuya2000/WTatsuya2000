@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="リサージェンス講義ノート 第4章 — 二重井戸、BZJ 機構、Lefschetz シンブル、複素鞍点">
+  <title>量子力学：インスタントンとシンブル — リサージェンスとQCD</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="04-qm.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">リサージェンスとQCD</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">Zinn-Justin と Jentschura 2004 / Behtash ほか 2015 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">量子力学：インスタントンとシンブル</span>
+      </h1>
+
+      <p class="lead">
+        本章では、リサージェンスが最もきれいに働く量子力学の例を扱う。二重井戸での曖昧さの相殺と、その幾何学的な背景である Lefschetz シンブル・複素鞍点を述べる。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>主な文献</dt>
+          <dd><a class="cite cite-bare" href="#ref-zjj2004"></a>、<a class="cite cite-bare" href="#ref-bdssu2015"></a></dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>非摂動効果を \(\ee^{-A/g}\) と書く（\(g\) は展開パラメータ）</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd class="tags"><span class="tag">QM</span><span class="tag">instanton</span><span class="tag">thimble</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>二重井戸ポテンシャル</h2>
+        <p>
+          \(\Ham=\tfrac12p^2+\tfrac12x^2(1-\sqrt g\,x)^2\) の基底エネルギー \(E_0(g)=\sum_nE_ng^n\) は、Bender–Wu <a class="cite" href="#ref-bw1969"></a> 以来の大次数解析により
+        </p>
+
+        <div class="equation" id="eq-dw-large">
+          \[ E_n\sim-\frac{3^{n+1}}{\pi}\,n!\Bigl(1-\frac{53}{18n}+\cdots\Bigr) \]
+        </div>
+        <p>
+          となる <a class="cite" href="#ref-zjj2004"></a>。非交代級数なので Borel 総和不可能で、第 2 章の曖昧さの公式から \(\Im\,\mathcal S_\pm E_0=\mp g^{-1}\ee^{-1/(3g)}\)。\(1/3=2S_I\)（\(S_I=1/(6g)\) はインスタントン作用）なので、これはインスタントン–反インスタントン対 \([I\bar I]\) の作用である。
+        </p>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">原論文に書かれていること</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          \([I\bar I]\) の準ゼロモード（分離 \(\tau\)）積分は引力のためそのままでは定義できない。\(g\to-g\) で計算して解析接続すると
+        <div class="equation" id="eq-iibar">
+          \[ E_{[I\bar I]}=\frac{1}{\pi g}\ee^{-1/(3g)}\Bigl[\ln\Bigl(-\frac2g\Bigr)+\gamma_E+\Order{g}\Bigr] \]
+        </div>
+を得る（Zinn-Justin と Jentschura の規約 <a class="cite" href="#ref-zjj2004"></a>）。
+        </div>
+
+        <div class="derivation-head">
+          <span class="box-kicker">Derivation — BZJ 相殺</span>
+          <button class="steps-toggle" type="button" data-controls="der-bzj">理由をすべて開く</button>
+        </div>
+        <dl class="derivation-goal">
+          <div><dt>出発</dt><dd>大次数 <a class=\"eq-ref\" href=\"#eq-dw-large\"></a> と \([I\bar I]\) 振幅 <a class=\"eq-ref\" href=\"#eq-iibar\"></a></dd></div>
+          <div><dt>目標</dt><dd>先頭次数で \(\Im[\mathcal S_\pm E_0+E_{[I\bar I],\pm}]=0\)</dd></div>
+          <div><dt>方針</dt><dd>第 2 章の公式で摂動側の虚部を出し、\([I\bar I]\) 側は対数の分岐から虚部を読む</dd></div>
+        </dl>
+
+        <ol class="derivation" id="der-bzj">
+          <li>
+            <div class="step-body">
+              <p class="step-action">\(E_0=g^{-1}\sum E_ng^{n+1}\) と見て \(K=-3/\pi\)、\(A=1/3\) を読み取る</p>
+              <div class="equation" data-unnumbered>
+                \[ \pi KA=\pi\cdot\Bigl(-\frac3\pi\Bigr)\cdot\frac13=-1 \]
+              </div>
+              <details class="step-why">
+                <summary>なぜ</summary>
+                <div>大次数の形 \(KA^{-n}n!\) に合わせると \(3^{n+1}/\pi=(3/\pi)\cdot3^n\)。</div>
+              </details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">摂動側の虚部を書く</p>
+              <div class="equation" data-unnumbered>
+                \[ \Im\,\mathcal S_\pm E_0=\mp\frac1g\,\ee^{-1/(3g)} \]
+              </div>
+              <details class="step-why">
+                <summary>なぜ</summary>
+                <div>曖昧さの公式に \(g^{-1}\) を掛ける。</div>
+              </details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">\([I\bar I]\) 側の対数を \(\ln(-2/g)=\ln(2/g)\pm\ii\pi\) と分岐させる</p>
+              <div class="equation" data-unnumbered>
+                \[ \Im\,E_{[I\bar I],\pm}=\frac{1}{\pi g}\ee^{-1/(3g)}\cdot(\pm\pi)=\pm\frac1g\,\ee^{-1/(3g)} \]
+              </div>
+              <details class="step-why">
+                <summary>なぜ</summary>
+                <div>\(g\to-g\) から戻るときに上下どちらを回るかが \(\mathcal S_\pm\) の選択と対応する。</div>
+              </details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">両者を足す</p>
+              <div class="equation" data-unnumbered>
+                \[ \Im\bigl[\mathcal S_\pm E_0+E_{[I\bar I],\pm}\bigr]=0 \]
+              </div>
+              <details class="step-why">
+                <summary>なぜ</summary>
+                <div>大次数の定数 \(3/\pi\) と 1 インスタントン振幅の 2 乗の規格化が一致していることが本質。</div>
+              </details>
+            </div>
+          </li>
+        </ol>
+
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">注意・限界</span>
+            <span class="box-kicker">Caution</span>
+          </div>
+          <a class=\"eq-ref\" href=\"#eq-iibar\"></a> の全体の符号と \(\pm\) の対応は文献の規約に依存する。このノートの式は記憶から書いた部分があるので、数値まで使う場合は <a class="cite" href="#ref-zjj2004"></a> で確認すること。
+        </div>
+
+        <div class="remark-box">
+          <div class="callout-head">
+            <span class="box-title">P/NP 関係</span>
+            <span class="box-kicker">Remark</span>
+          </div>
+          Dunne と Ünsal <a class="cite" href="#ref-du2014"></a> は一様 WKB を使い、多くの 1 次元系で非摂動的なゆらぎ因子が摂動的エネルギー \(E(B,g)\)（\(B\) は準位）だけから決まることを示した。摂動論が非摂動効果を「すべて知っている」ことの最も具体的な実例である。
+        </div>
+
+      </section>
+
+      <section>
+        <h2>Lefschetz シンブル</h2>
+
+        <div class="def-box numbered-box" data-kind="definition" data-label="定義" id="def-thimble">
+          <div class="callout-head">
+            <span class="box-title" data-title="Lefschetz シンブル"></span>
+            <span class="box-kicker">Definition</span>
+          </div>
+          有限次元積分 \(\Zpart=\int_{\mathbb R}\dd x\,\ee^{-S(x)/g}\) の各鞍点 \(z_\sigma\) から、勾配流
+        <div class="equation" data-unnumbered>
+          \[ \dv{z}{s}=\overline{\pd{(S/g)}{z}} \]
+        </div>
+で \(\Re(S/g)\) が増加する方向に伸びる曲線を Lefschetz シンブル \(\mathcal J_\sigma\) という。シンブル上では \(\Im(S/g)\) が一定で、積分は振動しない。
+        </div>
+        <p>
+          元の積分路は交差数 \(n_\sigma\) を使って分解される。
+        </p>
+
+        <div class="equation" id="eq-thimble">
+          \[ \mathbb R=\sum_\sigma n_\sigma\,\mathcal J_\sigma,\qquad \Zpart=\sum_\sigma n_\sigma\,\ee^{-S(z_\sigma)/g}\,\Phi_\sigma(g) \]
+        </div>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">自分の解釈</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          交差数 \(n_\sigma\) は \(\arg g\) を動かすと Stokes 線で不連続に変わる。これが Stokes 現象の幾何学的な実体で、\(n_\sigma\) がトランスシリーズ・パラメータ \(\sigma\) の役割を果たす <a class="cite" href="#ref-cdu2014"></a>, <a class="cite" href="#ref-witten2010"></a>。演習 7.6 で 0 次元二重井戸を例に確かめる。
+        </div>
+
+      </section>
+
+      <section>
+        <h2>複素鞍点と隠れた位相角</h2>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">原論文に書かれていること</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          Behtash ほか <a class="cite" href="#ref-bdssu2015"></a> は超対称量子力学で、実パラメータでも複素鞍点が不可欠なこと、複素鞍点の多価性が「隠れた位相角（hidden topological angle）」として位相 \(\ee^{\pm\ii\pi\zeta}\) を与えることを示した。超対称性のある場合に基底エネルギーがゼロになるのは、実バイオンと複素バイオンの寄与が打ち消すためである。
+        </div>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">原論文に書かれていること</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          Fujimori ほか <a class="cite" href="#ref-fkmns2016"></a> は \(\mathbb{CP}^{N-1}\) 量子力学（フェルミオンつき）で、実・複素バイオンの寄与を Lefschetz シンブルで評価し、超対称な場合には打ち消し、非超対称な場合にはトランスシリーズに必要な曖昧さを与えることを示した。
+        </div>
+
+        <div class="summary-box">
+          <div class="callout-head">
+            <span class="box-title">この章のまとめ</span>
+            <span class="box-kicker">Summary</span>
+          </div>
+                  <ul>
+          <li>二重井戸の摂動級数の曖昧さは \([I\bar I]\) の曖昧さと打ち消す（BZJ 機構）。</li>
+          <li>Stokes 現象は Lefschetz シンブルの交差数のジャンプとして幾何学的に理解できる。</li>
+          <li>実パラメータでも複素鞍点が必要で、その位相が隠れた位相角として物理に効く。</li>
+        </ul>
+
+        </div>
+
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-bw1969" data-cite="Bender と Wu 1969">
+            Bender, Carl M., と Tai Tsun Wu. 1969.「Anharmonic Oscillator」. <em>Phys. Rev.</em> 184: 1231–60.
+          </li>
+          <li id="ref-zjj2004" data-cite="Zinn-Justin と Jentschura 2004">
+            Zinn-Justin, Jean, と Ulrich D. Jentschura. 2004.「Multi-Instantons and Exact Results I: Conjectures, WKB Expansions, and Instanton Interactions」. <em>Annals Phys.</em> 313: 197–267. <a href="https://arxiv.org/abs/quant-ph/0501136" target="_blank" rel="noreferrer">arXiv:quant-ph/0501136</a>.
+          </li>
+          <li id="ref-du2014" data-cite="Dunne と Ünsal 2014">
+            Dunne, Gerald V., と Mithat Ünsal. 2014.「Uniform WKB, Multi-Instantons, and Resurgent Trans-Series」. <em>Phys. Rev. D</em> 89: 105009. <a href="https://arxiv.org/abs/1401.5202" target="_blank" rel="noreferrer">arXiv:1401.5202</a>.
+          </li>
+          <li id="ref-cdu2014" data-cite="Cherman ほか 2014">
+            Cherman, Aleksey, Daniele Dorigoni, と Mithat Ünsal. 2014.「Decoding Perturbation Theory Using Resurgence: Stokes Phenomena, New Saddle Points and Lefschetz Thimbles」. <a href="https://arxiv.org/abs/1403.1277" target="_blank" rel="noreferrer">arXiv:1403.1277</a>.
+          </li>
+          <li id="ref-witten2010" data-cite="Witten 2010">
+            Witten, Edward. 2010.「Analytic Continuation of Chern–Simons Theory」. <a href="https://arxiv.org/abs/1001.2933" target="_blank" rel="noreferrer">arXiv:1001.2933</a>.
+          </li>
+          <li id="ref-bdssu2015" data-cite="Behtash ほか 2015">
+            Behtash, Alireza, Gerald V. Dunne, Thomas Schäfer, Tin Sulejmanpasic, と Mithat Ünsal. 2015.「Complexified Path Integrals, Exact Saddles and Supersymmetry」. <em>Phys. Rev. Lett.</em> 116 (2016): 011601. <a href="https://arxiv.org/abs/1510.00978" target="_blank" rel="noreferrer">arXiv:1510.00978</a>. 詳細版 <a href="https://arxiv.org/abs/1510.03435" target="_blank" rel="noreferrer">arXiv:1510.03435</a>.
+          </li>
+          <li id="ref-fkmns2016" data-cite="Fujimori ほか 2016">
+            Fujimori, Toshiaki, Syo Kamata, Tatsuhiro Misumi, Muneto Nitta, と Norisuke Sakai. 2016.「Non-Perturbative Contributions from Complexified Solutions in CP<sup>N−1</sup> Models」. <em>Phys. Rev. D</em> 94: 105002. <a href="https://arxiv.org/abs/1607.04205" target="_blank" rel="noreferrer">arXiv:1607.04205</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

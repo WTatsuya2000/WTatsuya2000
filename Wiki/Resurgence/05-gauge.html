@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="リサージェンス講義ノート 第5章 — ゲージ理論の Borel 平面、リノーマロン、't Hooft の問題">
+  <title>インスタントンとリノーマロン — リサージェンスとQCD</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="05-gauge.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">リサージェンスとQCD</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">Beneke 1999 §2–3 / 't Hooft 1979 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">インスタントンとリノーマロン</span>
+      </h1>
+
+      <p class="lead">
+        本章では、4 次元ゲージ理論の摂動級数の発散の二つの源（インスタントンとリノーマロン）を Borel 平面上に並べ、リノーマロンが半古典的配位をもたないという問題を述べる。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>主な文献</dt>
+          <dd><a class="cite cite-bare" href="#ref-beneke1999"></a>、<a class="cite cite-bare" href="#ref-thooft1979"></a></dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>展開パラメータ \(g^2\)、Borel 変数 \(t\) は \(\ee^{-t/g^2}\) と対。\(u\equiv\beta_0 t/16\pi^2\)</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd class="tags"><span class="tag">gauge theory</span><span class="tag">renormalon</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>二種類の発散の源</h2>
+        <p>
+          4 次元ゲージ理論では、摂動級数の階乗的発散に二つの源がある。
+        </p>
+        <ol>
+          <li><strong>配位数の増大</strong>：ファインマン図の数が \(n!\) で増えることによるもの。\([I\bar I]\) のような有限作用の鞍点に対応し、BPST インスタントンの作用 \(S_I=8\pi^2/g^2\) から Borel 平面の \(t=16\pi^2\) に特異点が現れる。</li>
+          <li><strong>リノーマロン</strong>：特定の図（グルーオン伝播関数にループを挿入したバブル鎖）の運動量積分が、低運動量（IR）または高運動量（UV）領域から \(n!\) を生むもの。半古典的な鞍点に対応しない。</li>
+        </ol>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">原論文に書かれていること</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          リノーマロンの標準的なレビューは Beneke <a class="cite" href="#ref-beneke1999"></a>。問題の起源は 't Hooft <a class="cite" href="#ref-thooft1979"></a>。
+        </div>
+
+      </section>
+
+      <section>
+        <h2>リノーマロンの位置</h2>
+        <p>
+          次元 \(d\) の演算子の凝縮は \(\langle\mathcal O_d\rangle\propto\Lambda^d\) で、1 ループでは
+        </p>
+
+        <div class="equation" id="eq-lambda-d">
+          \[ \Lambda^d=\mu^d\exp\Bigl(-\frac{8\pi^2d}{\beta_0g^2}\Bigr) \]
+        </div>
+        <p>
+          である（演習 7.7）。\(\ee^{-t/g^2}\) と比べて \(t=8\pi^2d/\beta_0\)、すなわち次の対応を得る。
+        </p>
+
+        <div class="thm-box numbered-box" data-kind="result" data-label="主結果" id="thm-u-d">
+          <div class="callout-head">
+            <span class="box-title" data-title="凝縮とリノーマロンの対応"></span>
+            <span class="box-kicker">Main result</span>
+          </div>
+          
+        <div class="equation boxed" id="eq-u-d">
+          \[ \langle\mathcal O_d\rangle\propto\Lambda^d\quad\Longleftrightarrow\quad u=\frac d2 \]
+        </div>
+Adler 関数では IR リノーマロンが \(u=2,3,\dots\)（正の実軸、Borel 総和を妨げる）、UV リノーマロンが \(u=-1,-2,\dots\)（負の実軸）に現れる。\([I\bar I]\) は \(u=\beta_0\) にある。
+        </div>
+
+        <figure class="figure" id="fig-borel">
+          <svg viewBox="0 0 640 230" role="img" aria-labelledby="borel-title" style="display:block;width:100%;height:auto;border:1px solid var(--rule);background:var(--color-bg, transparent)">
+            <title id="borel-title">QCD の Borel 平面（u 平面）の模式図</title>
+            <g fill="none" stroke="var(--ink)" stroke-width="1.2">
+              <line x1="20" y1="120" x2="620" y2="120"/>
+              <line x1="120" y1="30" x2="120" y2="210"/>
+            </g>
+            <g stroke="var(--ink-muted)" stroke-width="1">
+              <line x1="436" y1="112" x2="444" y2="128"/>
+              <line x1="448" y1="112" x2="456" y2="128"/>
+              <line x1="250" y1="186" x2="241" y2="128"/>
+              <line x1="548" y1="186" x2="558" y2="130"/>
+            </g>
+            <g fill="var(--ink-muted)" font-family="IBM Plex Mono, monospace" font-size="12">
+              <text x="126" y="42">Im u</text>
+              <text x="590" y="140">Re u</text>
+              <text x="116" y="140">0</text>
+              <text x="52" y="140">−1</text>
+              <text x="176" y="140">1</text>
+              <text x="236" y="140">2</text>
+              <text x="296" y="140">3</text>
+              <text x="356" y="140">4</text>
+              <text x="400" y="125">…</text>
+              <text x="548" y="140">β₀</text>
+              <text x="472" y="84">S₊</text>
+              <text x="472" y="168">S₋</text>
+            </g>
+            <circle cx="60" cy="120" r="5" fill="none" stroke="var(--c-caution)" stroke-width="1.8"/>
+            <g fill="var(--c-caution)">
+              <circle cx="240" cy="120" r="5.5"/>
+              <circle cx="300" cy="120" r="5.5"/>
+              <circle cx="360" cy="120" r="5.5"/>
+            </g>
+            <rect x="553" y="114" width="12" height="12" transform="rotate(45 559 120)" fill="var(--c-reading)"/>
+            <g fill="none" stroke="var(--c-reading)" stroke-width="1.6" stroke-dasharray="5 4">
+              <path d="M120 120 Q 180 88 260 92 L 610 92"/>
+              <path d="M120 120 Q 180 152 260 148 L 610 148"/>
+            </g>
+            <g fill="var(--ink)" font-family="Noto Sans JP, sans-serif" font-size="13">
+              <text x="20" y="100">UV リノーマロン</text>
+              <text x="190" y="202">IR リノーマロン u = 2, 3, …</text>
+              <text x="500" y="202">[I Ī]  u = β₀</text>
+            </g>
+          </svg>
+          <figcaption>QCD の Adler 関数の Borel 平面（模式図、\(u&gt;4\) は省略）。正の実軸上の特異点が上下の横 Borel 和 \(\mathcal S_\pm\) の差を生む。純 SU(3) ゲージ理論では \(\beta_0=11\) なので、\([I\bar I]\) は IR リノーマロン \(u=2\) よりはるかに遠い。</figcaption>
+        </figure>
+
+      </section>
+
+      <section>
+        <h2>バブル鎖からの導出</h2>
+        <p>
+          <a class=\"fig-ref\" href=\"#fig-borel\"></a> の \(u=2\) の特異点が、具体的にどの運動量領域から来るかを確かめる。
+        </p>
+
+        <div class="derivation-head">
+          <span class="box-kicker">Derivation — バブル鎖</span>
+          <button class="steps-toggle" type="button" data-controls="der-bubble">理由をすべて開く</button>
+        </div>
+        <dl class="derivation-goal">
+          <div><dt>出発</dt><dd>\(n\) 次の寄与 \(I_n=\int_0^{\mu^2}\frac{\dd k^2}{\mu^2}\frac{k^2}{\mu^2}\bigl[a\ln\frac{\mu^2}{k^2}\bigr]^n\)、\(a=\beta_0g^2/16\pi^2\)</dd></div>
+          <div><dt>目標</dt><dd>\(u=2\) の Borel 特異点 <a class=\"eq-ref\" href=\"#eq-u-d\"></a></dd></div>
+          <div><dt>方針</dt><dd>対数を新しい変数にとって Γ 関数に直し、得られた係数を Borel 変換する</dd></div>
+        </dl>
+
+        <ol class="derivation" id="der-bubble">
+          <li>
+            <div class="step-body">
+              <p class="step-action">\(k^2=\mu^2\ee^{-s}\) と変数変換する</p>
+              <div class="equation" data-unnumbered>
+                \[ I_n=\int_0^\infty \dd s\,\ee^{-2s}(as)^n \]
+              </div>
+              <details class="step-why">
+                <summary>なぜ</summary>
+                <div>\(\dd k^2/\mu^2=\ee^{-s}\dd s\)、重み \(k^2/\mu^2=\ee^{-s}\)。低運動量で \(k^2\) に比例する重みは Adler 関数型。</div>
+              </details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">Γ 関数の積分を実行する</p>
+              <div class="equation" data-unnumbered>
+                \[ I_n=\frac{a^n\,n!}{2^{n+1}} \]
+              </div>
+              <details class="step-why">
+                <summary>なぜ</summary>
+                <div>\(\int_0^\infty \dd s\,\ee^{-2s}s^n=n!/2^{n+1}\)。被積分関数は \(s\approx n/2\)、つまり \(k\sim\mu\ee^{-n/4}\) の低運動量で最大。</div>
+              </details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">係数を \(g^2\) の冪で読み直し、Borel 変換する</p>
+              <div class="equation" data-unnumbered>
+                \[ \sum_n\frac12\Bigl(\frac{\beta_0}{32\pi^2}\Bigr)^n n!\,g^{2n}\;\longrightarrow\;\mathcal B(t)\propto\frac{1}{1-\beta_0t/(32\pi^2)} \]
+              </div>
+              <details class="step-why">
+                <summary>なぜ</summary>
+                <div>特異点は \(t=32\pi^2/\beta_0\)、\(u=\beta_0t/16\pi^2=2\)。係数はすべて正（非交代）なので Borel 総和不可能。</div>
+              </details>
+            </div>
+          </li>
+        </ol>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">自分の解釈</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          高次の項ほど低い運動量 \(k\sim\mu\ee^{-n/4}\) が効いている。摂動論が自分の適用範囲外の強結合領域を「覗いて」いることが、IR リノーマロンの正体である。高運動量側からは \(u=-1\) の交代的な特異点（UV リノーマロン）が出る（演習 7.8）。
+        </div>
+
+      </section>
+
+      <section>
+        <h2>'t Hooft のリノーマロン問題</h2>
+
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">未解決の問題</span>
+            <span class="box-kicker">Open problem</span>
+          </div>
+          量子力学では Borel 平面の特異点はすべて半古典的な鞍点に対応し、BZJ 機構で曖昧さが相殺した。ところが 4 次元 QCD では、原点に最も近い特異点（\(u=2\) の IR リノーマロン）に対応する有限作用の古典解が知られていない。リノーマロンの曖昧さを打ち消す非摂動セクターは何か、というのが 't Hooft <a class="cite" href="#ref-thooft1979"></a> 以来の問題である。
+        </div>
+
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>配位</th><th>Borel 位置 \(t\)</th><th>\(u\)</th><th>\(N\to\infty\)（\(\lambda=g^2N\) 固定）</th></tr></thead>
+            <tbody>
+            <tr><td>BPST \([I\bar I]\)</td><td>\(16\pi^2\)</td><td>\(\beta_0\)</td><td>\(\ee^{-16\pi^2N/\lambda}\to0\)</td></tr>
+            <tr><td>IR リノーマロン（\(d=4\)）</td><td>\(32\pi^2/\beta_0\)</td><td>\(2\)</td><td>\(\ee^{-96\pi^2/(11\lambda)}\)（\(N\) によらない）</td></tr>
+            <tr><td>UV リノーマロン</td><td>\(-16\pi^2/\beta_0\)</td><td>\(-1\)</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="summary-box">
+          <div class="callout-head">
+            <span class="box-title">この章のまとめ</span>
+            <span class="box-kicker">Summary</span>
+          </div>
+                  <ul>
+          <li>次元 \(d\) の凝縮は \(u=d/2\) のリノーマロンに対応する（<a class=\"box-ref\" href=\"#thm-u-d\"></a>）。</li>
+          <li>バブル鎖の \(n\) 次は運動量 \(k\sim\mu\ee^{-n/4}\) から来る。</li>
+          <li>ラージ \(N\) ではインスタントンは消えるがリノーマロンは残り、対応する半古典的配位がない。</li>
+        </ul>
+
+        </div>
+
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-beneke1999" data-cite="Beneke 1999">
+            Beneke, Martin. 1999.「Renormalons」. <em>Phys. Rept.</em> 317: 1–142. <a href="https://arxiv.org/abs/hep-ph/9807443" target="_blank" rel="noreferrer">arXiv:hep-ph/9807443</a>.
+          </li>
+          <li id="ref-thooft1979" data-cite="'t Hooft 1979">
+            't Hooft, Gerard. 1979.「Can We Make Sense out of Quantum Chromodynamics?」. In <em>The Whys of Subnuclear Physics</em> (Erice 1977), 943–82. Plenum.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

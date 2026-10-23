@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="リサージェンス講義ノート 第7章 — 演習問題 12 問と解答">
+  <title>演習問題 — リサージェンスとQCD</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="07-exercises.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">リサージェンスとQCD</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">難易度 基礎 / 標準 / 発展 · 解答は折りたたみ</span>
+        <span class="chapter-number"></span><span class="chapter-title">演習問題</span>
+      </h1>
+
+      <p class="lead">
+        各章の内容を手を動かして確かめる 12 問。見出し右のラベルが難易度（基礎・標準・発展）。解答は「解答」を開くと読める。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>主な文献</dt>
+          <dd>本文第 2–6 章</dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>非摂動効果を \(\ee^{-A/g}\) と書く（\(g\) は展開パラメータ）（第 5–6 章分は \(g^2\) 展開）</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd class="tags"><span class="tag">exercises</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>基礎：Borel 和とトランスシリーズ</h2>
+        <p>
+          第 2–3 章に対応する。
+        </p>
+
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習">
+          <div class="callout-head">
+            <span class="box-title" data-title="Euler 級数"></span>
+            <span class="box-kicker">基礎</span>
+          </div>
+          \(f(g)=\sum_{n\ge0}(-1)^nn!\,g^{n+1}\) について、(a) 形式的に \(g^2f'+f=g\) を満たすことを示せ。(b) Borel 和が \(\mathcal Sf=\int_0^\infty \dd t\,\ee^{-t/g}/(1+t)\) であることを示し、(a) の解であることを確かめよ。(c) \(g=0.1\) で何項で打ち切ると誤差が最小になるか。その大きさを \(\ee^{-1/g}\) と比べよ。
+          <details class="derivation-box">
+            <summary>解答: 微分方程式・Borel 和・最適打ち切り</summary>
+            <p>(a) \(g^2f'=\sum(-1)^nn!(n+1)g^{n+2}=\sum_{m\ge1}(-1)^{m-1}m!\,g^{m+1}=-(f-g)\)。</p><p>(b) \(\mathcal B(t)=\sum(-1)^nt^n=1/(1+t)\)。\(\mathcal Sf\) を \(g\) で微分して部分積分すると \(g^2\partial_g\mathcal Sf=\int \dd t\,t\,\ee^{-t/g}/(1+t)=g-\mathcal Sf\)。</p><p>(c) 項の大きさ \(n!\,g^{n+1}\) は \(n\approx1/g=10\) で最小。Stirling の公式から最小項は \(\sim\sqrt{2\pi g}\,\ee^{-1/g}\) で、漸近級数の精度の限界は非摂動効果の大きさそのもの。</p>
+          </details>
+        </div>
+
+        
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習">
+          <div class="callout-head">
+            <span class="box-title" data-title="横 Borel 和と Stokes ジャンプ"></span>
+            <span class="box-kicker">基礎</span>
+          </div>
+          \(f(g)=\sum_{n\ge0}n!\,g^{n+1}\) とする。(a) \(\mathcal S_+f-\mathcal S_-f=2\pi\ii\,\ee^{-1/g}\) を示せ。(b) \(f\) は形式的に \(g^2f'-f=-g\) を満たす。\(\ee^{-1/g}\) が同次方程式の解であることを示し、一般解を \(F=\mathcal S_\pm f+\sigma\ee^{-1/g}\) と書け。\(\mathcal S_\pm\) で同じ関数を表すには \(\sigma\) をどう変えればよいか。(c) 一般の \(a_n=KA^{-n}n!\) について第 2 章の曖昧さの公式を導け。
+          <details class="derivation-box">
+            <summary>解答: 留数と σ のジャンプ</summary>
+            <p>(a) \(\mathcal B(t)=1/(1-t)\)。上の積分路から下を引くと \(t=1\) を時計回りに一周するので、差は \(-2\pi\ii\cdot(-\ee^{-1/g})=2\pi\ii\,\ee^{-1/g}\)。\(g=0.2\) で数値的に \(0.04234\,\ii\) と一致する。</p><p>(b) \(g^2\partial_g\ee^{-1/g}=\ee^{-1/g}\)。\(F_+=F_-\) の条件は \(\sigma_-=\sigma_++2\pi\ii\)。Stokes 線を横切ると \(\sigma\) が Stokes 定数 \(S_1=2\pi\ii\) だけジャンプする。</p><p>(c) \(\mathcal B(t)=KA/(A-t)\)、留数 \(-KA\,\ee^{-A/g}\) に (a) と同じ議論を適用する（第 2 章の導出）。</p>
+          </details>
+        </div>
+
+        
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習">
+          <div class="callout-head">
+            <span class="box-title" data-title="0 次元の φ⁴ 理論"></span>
+            <span class="box-kicker">標準</span>
+          </div>
+          第 2 章の \(\Zpart(g)\) について、(a) \(c_n=(-1/4)^n(4n-1)!!/n!\) と \(c_{n+1}/c_n\to-4n\) を示せ。(b) Borel 変換の特異点の位置を求め、\(g&lt;0\) のときの鞍点 \(x^2=1/|g|\) の作用と比べよ。(c) \(\Im\,\Zpart(-|g|\pm\ii0)\approx\mp\frac1{\sqrt2}\ee^{-1/(4|g|)}\) を使い、分散関係から \(c_n\simeq(-4)^n\Gamma(n)/(\pi\sqrt2)\) を導け。
+          <details class="derivation-box">
+            <summary>解答: 鞍点の作用と大次数</summary>
+            <p>(a) \(\int \dd x\,x^{4n}\ee^{-x^2/2}/\sqrt{2\pi}=(4n-1)!!\)。比は \(-\frac14\frac{(4n+3)(4n+1)}{n+1}\to-4n\)。</p><p>(b) 収束半径 \(1/4\)、特異点は \(t=-1/4\)。\(S=x^2/2+gx^4/4\) は \(x^2=-1/g\) で \(S=1/(4|g|)\)。\(g&gt;0\) では負の実軸上なので Borel 総和可能。</p><p>(c) \(\Zpart\) は負の実軸に切断をもつ。Cauchy 積分の路を切断に巻き付けると \(c_n=\frac1\pi\int_{-\infty}^0\Im\,\Zpart(g+\ii0)\,g^{-n-1}\dd g\)。\(g=-s\)、\(\int_0^\infty \dd s\,s^{-n-1}\ee^{-1/(4s)}=4^n\Gamma(n)\) を使う。各鞍点 \(x=\pm1/\sqrt{|g|}\) の 2 階微分は \(-2\) で、半シンブルが \(\frac\ii2\cdot\frac1{\sqrt2}\ee^{-1/(4|g|)}\) ずつ与える。</p>
+          </details>
+        </div>
+
+        
+      </section>
+
+      <section>
+        <h2>量子力学</h2>
+        <p>
+          第 4 章に対応する。
+        </p>
+
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習">
+          <div class="callout-head">
+            <span class="box-title" data-title="準ゼロモード積分と隠れた位相角"></span>
+            <span class="box-kicker">標準</span>
+          </div>
+          \(J(\lambda)=\int_0^\infty \dd\tau\,\ee^{-\epsilon\tau}\exp(\lambda\ee^{-\tau})\)（\(\epsilon&gt;0\)）を考える（\(\lambda&gt;0\) が引力、\(\lambda&lt;0\) が斥力）。(a) \(\lambda=-\mu&lt;0\)、\(\mu\to\infty\) で \(J\simeq\mu^{-\epsilon}\Gamma(\epsilon)\) を示せ。(b) \(\mu\to\lambda\ee^{\pm\ii\pi}\) と解析接続し、引力の場合の実部・虚部を求めよ。(c) \(\epsilon\to0\) で虚部が \(\mp\pi\) に近づくことを示し、第 4 章の \(\ln(-2/g)\) との関係を説明せよ。\(\epsilon\) をフェルミオンの寄与 \(\zeta\) に置き換えたときの位相 \(\ee^{\mp\ii\pi\zeta}\) の意味を論ぜよ。
+          <details class="derivation-box">
+            <summary>解答: 解析接続と ln(−1) = ±iπ</summary>
+            <p>(a) \(x=\ee^{-\tau}\) で \(J=\int_0^1\dd x\,x^{\epsilon-1}\ee^{-\mu x}=\mu^{-\epsilon}\gamma(\epsilon,\mu)=\mu^{-\epsilon}\Gamma(\epsilon)+\Order{\ee^{-\mu}}\)。</p><p>(b) \((-\lambda)^{-\epsilon}\to\lambda^{-\epsilon}\ee^{\mp\ii\pi\epsilon}\)。\(\Re=\lambda^{-\epsilon}\Gamma(\epsilon)\cos\pi\epsilon\)、\(\Im=\mp\lambda^{-\epsilon}\Gamma(\epsilon)\sin\pi\epsilon\)。</p><p>(c) \(\Gamma(\epsilon)\sin\pi\epsilon\to\pi\)。\(\mu^{-\epsilon}\Gamma(\epsilon)=1/\epsilon-\ln\mu-\gamma_E+\cdots\) で、\(1/\epsilon\) を除くと \(-\ln(-\lambda)-\gamma_E\) が残る。これが \(\ln(-2/g)+\gamma_E\) の構造の起源で、虚部 \(\pm\ii\pi\) が BZJ の曖昧さ。\(\epsilon\to\zeta\) では位相 \(\ee^{\mp\ii\pi\zeta}\) が隠れた位相角で、\(\zeta=1\)（超対称）では \(\cos\pi\zeta=-1\) となり真空エネルギーへの寄与の相殺を説明する <a class="cite" href="#ref-bdssu2015"></a>。</p>
+          </details>
+        </div>
+
+        
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習">
+          <div class="callout-head">
+            <span class="box-title" data-title="二重井戸での曖昧さの相殺"></span>
+            <span class="box-kicker">標準</span>
+          </div>
+          第 4 章の大次数公式と \([I\bar I]\) の式を使い、先頭次数で \(\Im[\mathcal S_\pm E_0+E_{[I\bar I],\pm}]=0\) を確かめよ。\(E_0=g^{-1}\sum E_ng^{n+1}\) に注意し、\(\ln(-2/g)=\ln(2/g)\pm\ii\pi\) とせよ。
+          <details class="derivation-box">
+            <summary>解答: K = −3/π, A = 1/3 を読む</summary>
+            <p>\(K=-3/\pi\)、\(A=1/3\) で \(\pi KA=-1\)。\(\Im\,\mathcal S_\pm E_0=\mp g^{-1}\ee^{-1/(3g)}\)。一方 \(\Im\,E_{[I\bar I],\pm}=\frac1{\pi g}\ee^{-1/(3g)}\cdot(\pm\pi)=\pm g^{-1}\ee^{-1/(3g)}\)。和はゼロ。大次数の定数 \(3/\pi\) と 1 インスタントン振幅の 2 乗の規格化が一致していることが本質で、リサージェンス関係の最も簡単な実例（第 4 章の導出も参照）。</p>
+          </details>
+        </div>
+
+        
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習">
+          <div class="callout-head">
+            <span class="box-title" data-title="0 次元二重井戸のシンブル"></span>
+            <span class="box-kicker">標準</span>
+          </div>
+          \(\Zpart(g)=\int_{\mathbb R}\dd x\,\ee^{-V(x)/g}\)、\(V=\frac12x^2(1-x)^2\) とする。(a) 鞍点、作用、2 階微分を求めよ。(b) \(x=0\) まわりの摂動級数の Borel 特異点が \(t=1/32\) にあると予想される理由を述べよ。Borel 総和可能か。(c) \(\arg g=0^\pm\) で積分路 \(\mathbb R\) のシンブル分解がどう変わるか、図を描いて説明せよ。
+          <details class="derivation-box">
+            <summary>解答: 鞍点 x = 1/2 が Stokes 線上にある</summary>
+            <p>(a) \(V'=x(1-x)(1-2x)\) より鞍点は \(0,1/2,1\)。\(V(0)=V(1)=0\)、\(V(1/2)=1/32\)。\(V''(0)=V''(1)=1\)、\(V''(1/2)=-1/2\)。</p><p>(b) 摂動論の特異点は他の鞍点との作用差に現れる。\(x=1/2\) との差 \(1/32\) は正なので正の実軸上に特異点があり、Borel 総和不可能。\(x=1\) は作用差 0 で特異点を与えない。</p><p>(c) \(g\) が実数のとき \(\mathcal J_0\) は実軸に沿って \(x=1/2\) に到達する（Stokes 線）。\(\arg g\) を少しずらすと \(\mathcal J_0\) は \(x=1/2\) を上または下に避け、虚軸方向のシンブル \(\mathcal J_{1/2}\) の寄与が符号を変えて現れる。\(\mathcal J_{1/2}\) 上の積分は \(\propto\ii\sqrt{4\pi g}\,\ee^{-1/(32g)}\) の純虚数で、\(\mathcal S_\pm\) の虚部を打ち消す <a class="cite" href="#ref-cdu2014"></a>。</p>
+          </details>
+        </div>
+
+        
+      </section>
+
+      <section>
+        <h2>ゲージ理論と QCD</h2>
+        <p>
+          第 5–6 章に対応する。
+        </p>
+
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習">
+          <div class="callout-head">
+            <span class="box-title" data-title="凝縮とリノーマロンの位置"></span>
+            <span class="box-kicker">基礎</span>
+          </div>
+          (a) 1 ループ β 関数から \(\Lambda=\mu\,\ee^{-8\pi^2/(\beta_0g^2)}\) を導け。(b) 次元 \(d\) の凝縮が \(u=d/2\) に対応することを示せ。(c) グルーオン凝縮、重クォーク極質量（\(\delta m\propto\Lambda\)）はそれぞれ \(u\) のいくつか。
+          <details class="derivation-box">
+            <summary>解答: u = d/2</summary>
+            <p>(a) \(\dd(1/g^2)/\dd\ln\mu=\beta_0/(8\pi^2)\) を積分し、\(1/g^2(\Lambda)=0\) となる点を \(\Lambda\) とする。</p><p>(b) \(\Lambda^d=\mu^d\ee^{-8\pi^2d/(\beta_0g^2)}\) は \(t=8\pi^2d/\beta_0\)、\(u=\beta_0t/16\pi^2=d/2\)。</p><p>(c) グルーオン凝縮は \(u=2\)、極質量は \(u=1/2\)。</p>
+          </details>
+        </div>
+
+        
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習">
+          <div class="callout-head">
+            <span class="box-title" data-title="バブル鎖とリノーマロン"></span>
+            <span class="box-kicker">標準</span>
+          </div>
+          (a) \(I^{\rm IR}_n=\int_0^{\mu^2}\frac{\dd k^2}{\mu^2}\frac{k^2}{\mu^2}\bigl[a\ln\frac{\mu^2}{k^2}\bigr]^n=a^nn!/2^{n+1}\)（\(a=\beta_0g^2/16\pi^2\)）を示せ。(b) この級数の Borel 特異点が \(u=2\) にあり、符号が交代しないことを示せ。(c) \(I^{\rm UV}_n=\int_{\mu^2}^\infty\frac{\dd k^2\,\mu^2}{k^4}\bigl[-a\ln\frac{k^2}{\mu^2}\bigr]^n\) から \(u=-1\) の交代的な特異点を得よ。
+          <details class="derivation-box">
+            <summary>解答: IR は u = 2、UV は u = −1</summary>
+            <p>(a)(b) 第 5 章の導出のとおり。\(k\sim\mu\ee^{-n/4}\) の低運動量が \(n\) 次を支配する。</p><p>(c) \(k^2=\mu^2\ee^{s}\) で \(I^{\rm UV}_n=\int_0^\infty \dd s\,\ee^{-s}(-as)^n=(-a)^nn!\)。\(t=-16\pi^2/\beta_0\)、\(u=-1\)。</p>
+          </details>
+        </div>
+
+        
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習">
+          <div class="callout-head">
+            <span class="box-title" data-title="'t Hooft の問題を数で見る"></span>
+            <span class="box-kicker">基礎</span>
+          </div>
+          (a) 純 \(SU(N)\) ゲージ理論で \([I\bar I]\) と \(u=2\) の IR リノーマロンの Borel 位置 \(t\) を比べよ。\(N=3\) ではどちらが原点に近いか。(b) \(N\to\infty\)（\(\lambda=g^2N\) 固定）で、それぞれの非摂動効果の大きさ \(\ee^{-t/g^2}\) はどう振る舞うか。
+          <details class="derivation-box">
+            <summary>解答: リノーマロンが 5 倍以上近い</summary>
+            <p>(a) \([I\bar I]\)：\(t=16\pi^2\approx158\)。リノーマロン：\(t=96\pi^2/(11N)\)、\(N=3\) で \(\approx28.7\)。\(u\) では \([I\bar I]\) は \(u=\beta_0=11\)。</p><p>(b) \(\ee^{-16\pi^2N/\lambda}\to0\) だが、リノーマロンの \(\ee^{-96\pi^2/(11\lambda)}\) は \(N\) によらない。ラージ \(N\) ではインスタントンは主要な非摂動効果になり得ないのに、リノーマロンは残る。</p>
+          </details>
+        </div>
+
+        
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習">
+          <div class="callout-head">
+            <span class="box-title" data-title="コンパクト化とバイオン"></span>
+            <span class="box-kicker">発展</span>
+          </div>
+          \(SU(N)\) に \(n_f\) 個の随伴 Weyl フェルミオンを加えた QCD(adj) を \(\mathbb R^3\times S^1\) 上で考える。4 次元の 1 ループ係数は \(\beta_0=\frac N3(11-2n_f)\)。(a) 中性バイオンの Borel 位置 \(t=16\pi^2/N\) を \(u\) で表せ。\(N\) に依存するか。(b) \(n_f=1,2,3,4\) について \(u\) を計算し、4 次元の \(u=2\) と比べよ。(c) Ashie ほか <a class="cite" href="#ref-amstt2019"></a> の結果を踏まえ、「中性バイオン＝IR リノーマロン」という同定について論ぜよ。
+          <details class="derivation-box">
+            <summary>解答: u = (11 − 2n_f)/3</summary>
+            <p>(a) \(u=\beta_0/N=(11-2n_f)/3\)。\(N\) によらない点はリノーマロンと同じ。</p><p>(b) \(n_f=1,2,3,4\) で \(u=3,\ 7/3,\ 5/3,\ 1\)。いずれも \(u=2\) と一致しない。小さい \(L\) では有効理論の β 関数が 4 次元と異なることも考慮が必要で、単純な比較では決まらない。</p><p>(c) 論点：(i) 大 \(\beta_0\) 近似ではコンパクト化後も \(u=2\) のリノーマロンが W ボソン（ツイストされた KK 運動量）から残る。(ii) するとコンパクト化した理論の Borel 平面にはバイオン由来の特異点と摂動的リノーマロンの両方がありうる。(iii) 超対称な場合は Dunne ほか <a class="cite" href="#ref-dsu2015"></a> との整合性も問題になる。結論は開いた問題。</p>
+          </details>
+        </div>
+
+        
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習">
+          <div class="callout-head">
+            <span class="box-title" data-title="重クォーク極質量の曖昧さ"></span>
+            <span class="box-kicker">基礎</span>
+          </div>
+          \(m_{\rm pole}=\bar m(1+\sum r_n\alpha_s^{n+1})\) に \(u=1/2\) のリノーマロンがあるとき、\(\delta m_{\rm pole}\) が \(\bar m\) によらず \(\Lambda_{\rm QCD}\) の程度であることを示せ。トップクォーク質量の精密決定にとって何を意味するか。
+          <details class="derivation-box">
+            <summary>解答: δm ∼ Λ</summary>
+            <p>\(u=1/2\) の曖昧さは \(\bar m\,\ee^{-8\pi^2/(\beta_0g^2(\bar m))}=\bar m\cdot\Lambda/\bar m=\Lambda\) に比例する。質量がどれほど大きくても極質量は \(\Order{\Lambda_{\rm QCD}}\) より精密には定義できず、精密計算では \(\overline{\rm MS}\) 質量や短距離質量を使う <a class="cite" href="#ref-beneke1999"></a>。</p>
+          </details>
+        </div>
+
+        
+      </section>
+
+      <section>
+        <h2>数値実験</h2>
+        <p>
+          第 2 章の 0 次元模型を数値的に再構成する。リポジトリの <code>borel_pade.py</code> と同じコード。
+        </p>
+
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習">
+          <div class="callout-head">
+            <span class="box-title" data-title="Borel–Padé 和の数値実験"></span>
+            <span class="box-kicker">発展</span>
+          </div>
+          第 2 章の \(\Zpart(g)\) について、30 次までの係数から Borel 変換の Padé 近似を作り、Laplace 積分で \(\Zpart(g)\) を再構成せよ。\(g=0.1,\,1,\,5\) で厳密解・単純な打ち切りと比較せよ。
+          <details class="derivation-box">
+            <summary>解答: Python（mpmath）のコードと結果</summary>
+            <pre><code>import mpmath as mp
+mp.mp.dps = 40
+N = 30
+# Z(g) = sum c_n g^n,  c_n = (-1/4)^n (4n-1)!!/n!
+c = [(mp.mpf(-1)/4)**n * mp.fac2(4*n-1) / mp.factorial(n) for n in range(N)]
+# Borel transform B(t) = sum c_n t^n / n!  ->  Z = int_0^inf dt e^{-t} B(g t)
+b = [c[n] / mp.factorial(n) for n in range(N)]
+p, q = mp.pade(b, N//2, N//2 - 1)
+B = lambda t: mp.polyval(p[::-1], t) / mp.polyval(q[::-1], t)
+def exact(g):
+    z = 1/(8*g)
+    return mp.e**z * mp.besselk(mp.mpf(1)/4, z) / mp.sqrt(4*mp.pi*g)
+for g in [mp.mpf('0.1'), mp.mpf(1), mp.mpf(5)]:
+    bp = mp.quad(lambda t: mp.e**(-t) * B(g*t), [0, mp.inf])
+    trunc = sum(c[n]*g**n for n in range(6))
+    print(f"g={float(g):4}: Borel-Pade={mp.nstr(bp,12)}  exact={mp.nstr(exact(g),12)}  6-term={mp.nstr(trunc,6)}")
+</code></pre>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>\(g\)</th><th>Borel–Padé</th><th>厳密解</th><th>6 項打ち切り</th></tr></thead>
+            <tbody>
+            <tr><td>0.1</td><td>0.944501801674</td><td>0.944501801674</td><td>0.910452</td></tr>
+            <tr><td>1</td><td>0.772052124751</td><td>0.772052177853</td><td>−5021.82</td></tr>
+            <tr><td>5</td><td>0.595339193864</td><td>0.595411432969</td><td>−1.64×10⁷</td></tr>
+            </tbody>
+          </table>
+        </div>
+<p>打ち切った級数は \(g\gtrsim1\) で意味をなさないが、Borel–Padé は \(g=5\) でも 4 桁の精度を保つ。発展：\(g&lt;0\) で Padé 近似の極が正の実軸上に並ぶ様子を観察し、横 Borel 和の虚部が \(\mp\frac1{\sqrt2}\ee^{-1/(4|g|)}\) に近づくことを確かめよ。</p>
+          </details>
+        </div>
+
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-bdssu2015" data-cite="Behtash ほか 2015">
+            Behtash, Alireza, Gerald V. Dunne, Thomas Schäfer, Tin Sulejmanpasic, と Mithat Ünsal. 2015.「Complexified Path Integrals, Exact Saddles and Supersymmetry」. <em>Phys. Rev. Lett.</em> 116 (2016): 011601. <a href="https://arxiv.org/abs/1510.00978" target="_blank" rel="noreferrer">arXiv:1510.00978</a>. 詳細版 <a href="https://arxiv.org/abs/1510.03435" target="_blank" rel="noreferrer">arXiv:1510.03435</a>.
+          </li>
+          <li id="ref-cdu2014" data-cite="Cherman ほか 2014">
+            Cherman, Aleksey, Daniele Dorigoni, と Mithat Ünsal. 2014.「Decoding Perturbation Theory Using Resurgence: Stokes Phenomena, New Saddle Points and Lefschetz Thimbles」. <a href="https://arxiv.org/abs/1403.1277" target="_blank" rel="noreferrer">arXiv:1403.1277</a>.
+          </li>
+          <li id="ref-amstt2019" data-cite="Ashie ほか 2019">
+            Ashie, Masahiro, Okuto Morikawa, Hiroshi Suzuki, Hiromasa Takaura, と Kengo Takeuchi. 2019.「Infrared Renormalon in SU(N) QCD(adj.) on ℝ³×S¹」. <em>PTEP</em> 2020: 023B01. <a href="https://arxiv.org/abs/1909.05489" target="_blank" rel="noreferrer">arXiv:1909.05489</a>.
+          </li>
+          <li id="ref-dsu2015" data-cite="Dunne ほか 2015">
+            Dunne, Gerald V., Mikhail Shifman, と Mithat Ünsal. 2015.「Infrared Renormalons versus Operator Product Expansion in Supersymmetric and Related Gauge Theories」. <em>Phys. Rev. Lett.</em> 114: 191601. <a href="https://arxiv.org/abs/1502.06680" target="_blank" rel="noreferrer">arXiv:1502.06680</a>.
+          </li>
+          <li id="ref-beneke1999" data-cite="Beneke 1999">
+            Beneke, Martin. 1999.「Renormalons」. <em>Phys. Rept.</em> 317: 1–142. <a href="https://arxiv.org/abs/hep-ph/9807443" target="_blank" rel="noreferrer">arXiv:hep-ph/9807443</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

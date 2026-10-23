@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="リサージェンス講義ノート 第6章 — OPE、ℝ³×S¹ のバイオン、2 次元模型">
+  <title>QCD への応用 — リサージェンスとQCD</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="06-qcd.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">リサージェンスとQCD</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">Argyres と Ünsal 2012 / Ashie ほか 2019 / Mariño と Reis 2019 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">QCD への応用</span>
+      </h1>
+
+      <p class="lead">
+        本章では、リサージェンスの考え方が QCD で具体的に何をもたらすかを、(i) OPE と凝縮、(ii) 円コンパクト化とバイオン、(iii) 2 次元模型での検証、の 3 点にまとめる。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>主な文献</dt>
+          <dd><a class="cite cite-bare" href="#ref-au2012"></a>、<a class="cite cite-bare" href="#ref-du2016"></a></dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>展開パラメータ \(g^2\)、Borel 変数 \(t\) は \(\ee^{-t/g^2}\) と対。\(u\equiv\beta_0 t/16\pi^2\)</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd class="tags"><span class="tag">QCD</span><span class="tag">OPE</span><span class="tag">bion</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>OPE と凝縮による曖昧さの相殺</h2>
+        <p>
+          Euclid 運動量 \(Q\) での相関関数を演算子積展開（OPE）で書くと
+        </p>
+
+        <div class="equation" id="eq-ope">
+          \[ D(Q^2)=\sum_nr_n\,\alpha_s^{n+1}(Q)+C_G\,\frac{\langle\tfrac{\alpha_s}{\pi}G^2\rangle}{Q^4}+\cdots \]
+        </div>
+        <p>
+          となる。\(u=2\) のリノーマロンによる摂動部分の曖昧さは \(\propto\Lambda^4/Q^4\) で、グルーオン凝縮の項とまったく同じ \(Q\) 依存性をもつ。
+        </p>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">自分の解釈</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          凝縮そのものが曖昧さをもつ（摂動部分の定義に依存する）と考えれば、和は曖昧さなく定義できる。OPE は QCD のトランスシリーズと見なせ、凝縮が第 3 章のトランスシリーズ・パラメータ \(\sigma\) の役割を果たしている <a class="cite" href="#ref-beneke1999"></a>。
+        </div>
+        <ul>
+          <li><strong>重クォークの極質量</strong>には \(u=1/2\) のリノーマロンがあり、\(\delta m_{\rm pole}\sim\Lambda_{\rm QCD}\) の不定性をもつ（演習 7.11）。精密計算で \(\overline{\rm MS}\) 質量や短距離質量が使われる理由である <a class="cite" href="#ref-beneke1999"></a>。</li>
+          <li>リノーマロンを差し引いて OPE を改善する実践的な手法も研究されている（例：<a class="cite" href="#ref-dual2023"></a>）。</li>
+        </ul>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">原論文に書かれていること</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          Dunne ほか <a class="cite" href="#ref-dsu2015"></a> は「リノーマロンと凝縮の共謀」を逆に使い、超対称性の程度が異なる理論で Borel 特異点の構造を予言した。凝縮が消える理論では対応するリノーマロンも消えるはずであり、従来のバブル鎖の方法だけではリノーマロンの判定に不十分だと論じている。
+        </div>
+
+      </section>
+
+      <section>
+        <h2>コンパクト化とバイオン</h2>
+        <p>
+          強結合の QCD を直接扱う代わりに、一方向を半径 \(L\) の円にコンパクト化し、中心対称性を保ったまま（随伴フェルミオンの周期境界条件、または二重トレース変形）\(L\Lambda\ll1\) の弱結合領域に持っていく。中心対称性が保たれていれば、小さい \(L\) の物理が大きい \(L\) の物理と相転移なしにつながる（断熱連続性）と期待される <a class="cite" href="#ref-unsal2007"></a>, <a class="cite" href="#ref-uy2008"></a>。
+        </p>
+        <p>
+          この領域では Polyakov ループの期待値がゲージ群を \(U(1)^{N-1}\) に破り、BPST インスタントンは \(N\) 個のモノポール・インスタントン（作用 \(S_I/N\)）に分解する。
+        </p>
+
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>配位</th><th>作用</th><th>Borel 位置 \(t\)</th><th>役割</th></tr></thead>
+            <tbody>
+            <tr><td>モノポール・インスタントン \(\mathcal M_i\)</td><td>\(S_I/N\)</td><td>—</td><td>フェルミオン・ゼロモードを伴う</td></tr>
+            <tr><td>磁気バイオン \([\mathcal M_i\bar{\mathcal M}_{i+1}]\)</td><td>\(2S_I/N\)</td><td>—（磁荷をもつ）</td><td>質量ギャップと閉じ込め <a class="cite" href="#ref-unsal2007"></a></td></tr>
+            <tr><td>中性バイオン \([\mathcal M_i\bar{\mathcal M}_i]\)</td><td>\(2S_I/N\)</td><td>\(16\pi^2/N\)</td><td>虚部の曖昧さ、真空エネルギー</td></tr>
+            <tr><td>BPST \([I\bar I]\)</td><td>\(2S_I\)</td><td>\(16\pi^2\)</td><td>4 次元の通常の寄与</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">原論文に書かれていること</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          Argyres と Ünsal <a class="cite" href="#ref-au2012"></a>, <a class="cite" href="#ref-au2012prl"></a> は、中性バイオンに伴う Borel 特異点が BPST の \([I\bar I]\) より因子 \(N\) だけ原点に近いこと、そして 4 次元の IR リノーマロンと同じく \(1/N\) でスケールすることを指摘し、両者が \(L\) を変えるとつながるという描像を提案した。
+        </div>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">自分の解釈</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          これは 't Hooft の問題に対する半古典的な解答の候補である。ただし数値の比較（演習 7.10）では、中性バイオンの位置は 4 次元の \(u=2\) と一致しない。
+        </div>
+
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">現状の注意</span>
+            <span class="box-kicker">Caution</span>
+          </div>
+          この同定は確立していない。Ashie ほか <a class="cite" href="#ref-amstt2019"></a>, <a class="cite" href="#ref-amst2020"></a> は、\(\mathbb Z_N\) ツイスト境界条件の \(SU(N)\) QCD(adj.) を大 \(\beta_0\) 近似で調べ、コンパクト化しても \(u=2\) のリノーマロンが残り、それがツイストされた KK 運動量をもつ W ボソンから来ることを示した。\(\mathbb{CP}^{N-1}\) 模型でのバイオンと IR リノーマロンの関係は Fujimori ほか <a class="cite" href="#ref-fkmns2018"></a> で検討されている。
+        </div>
+
+      </section>
+
+      <section>
+        <h2>2 次元模型という実験室</h2>
+        <p>
+          2 次元の \(\mathbb{CP}^{N-1}\) 模型は、漸近的自由性、動的質量生成、インスタントン、θ 真空、リノーマロンを QCD と共有し、はるかに扱いやすい。
+        </p>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">原論文に書かれていること</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          Dunne と Ünsal <a class="cite" href="#ref-du2012"></a> は \(\mathbb R\times S^1\) 上で twisted 境界条件を課し、作用 \(S_I/N\) のキンク・インスタントン、\(2S_I/N\) のバイオンを分類して、リノーマロンの曖昧さと中性バイオンの曖昧さを結びつけた。O(N) と Grassmann 模型への拡張は <a class="cite" href="#ref-du2015on"></a>。
+        </div>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">原論文に書かれていること</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          Mariño と Reis <a class="cite" href="#ref-mr2019"></a> は可積分性（Bethe 仮説）を使い、O(N) 非線形シグマ模型、Gross–Neveu 模型、主カイラル場などで基底エネルギーの摂動級数を高次まで厳密に計算した。大次数の振る舞いはリノーマロンの予言と一致し、次の補正が β 関数の最初の二係数で決まることも確認された。講義は <a class="cite" href="#ref-lectint2024"></a>。
+        </div>
+
+      </section>
+
+      <section>
+        <h2>未解決の問題</h2>
+
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">未解決の疑問</span>
+            <span class="box-kicker">Open questions</span>
+          </div>
+                  <ul>
+          <li>4 次元 QCD で IR リノーマロンに対応する非摂動セクターの正体。半古典的な配位なのか、OPE の凝縮として以上の意味をもたないのか。</li>
+          <li>経路積分のシンブル分解を場の理論で厳密に定義すること（無限次元の Picard–Lefschetz 理論）。</li>
+          <li>格子 QCD の高次摂動係数とリノーマロン予言の定量的な比較。</li>
+        </ul>
+
+        </div>
+
+        <div class="summary-box">
+          <div class="callout-head">
+            <span class="box-title">この章のまとめ</span>
+            <span class="box-kicker">Summary</span>
+          </div>
+                  <ul>
+          <li>OPE では摂動部分のリノーマロンの曖昧さが凝縮の曖昧さと打ち消し、OPE 全体が QCD のトランスシリーズになる。</li>
+          <li>\(\mathbb R^3\times S^1\) の中性バイオンは \(1/N\) でスケールする曖昧さを与え、リノーマロンの半古典的な候補とされたが、同定は未確立。</li>
+          <li>2 次元の可積分模型では摂動級数を高次まで厳密に求められ、リノーマロンの予言が検証されている。</li>
+        </ul>
+
+        </div>
+
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-beneke1999" data-cite="Beneke 1999">
+            Beneke, Martin. 1999.「Renormalons」. <em>Phys. Rept.</em> 317: 1–142. <a href="https://arxiv.org/abs/hep-ph/9807443" target="_blank" rel="noreferrer">arXiv:hep-ph/9807443</a>.
+          </li>
+          <li id="ref-dual2023" data-cite="arXiv:2303.16392">
+            「Renormalon Subtraction in OPE by Dual Space Approach: Nonlinear Sigma Model and QCD」. 2023. <a href="https://arxiv.org/abs/2303.16392" target="_blank" rel="noreferrer">arXiv:2303.16392</a>.
+          </li>
+          <li id="ref-dsu2015" data-cite="Dunne ほか 2015">
+            Dunne, Gerald V., Mikhail Shifman, と Mithat Ünsal. 2015.「Infrared Renormalons versus Operator Product Expansion in Supersymmetric and Related Gauge Theories」. <em>Phys. Rev. Lett.</em> 114: 191601. <a href="https://arxiv.org/abs/1502.06680" target="_blank" rel="noreferrer">arXiv:1502.06680</a>.
+          </li>
+          <li id="ref-unsal2007" data-cite="Ünsal 2007">
+            Ünsal, Mithat. 2007.「Abelian Duality, Confinement, and Chiral Symmetry Breaking in QCD(adj)」. <em>Phys. Rev. Lett.</em> 100 (2008): 032005. <a href="https://arxiv.org/abs/0708.1772" target="_blank" rel="noreferrer">arXiv:0708.1772</a>.
+          </li>
+          <li id="ref-uy2008" data-cite="Ünsal と Yaffe 2008">
+            Ünsal, Mithat, と Laurence G. Yaffe. 2008.「Center-Stabilized Yang–Mills Theory: Confinement and Large N Volume Independence」. <em>Phys. Rev. D</em> 78: 065035. <a href="https://arxiv.org/abs/0803.0344" target="_blank" rel="noreferrer">arXiv:0803.0344</a>.
+          </li>
+          <li id="ref-au2012" data-cite="Argyres と Ünsal 2012a">
+            Argyres, Philip C., と Mithat Ünsal. 2012.「The Semi-Classical Expansion and Resurgence in Gauge Theories: New Perturbative, Instanton, Bion, and Renormalon Effects」. <em>JHEP</em> 08: 063. <a href="https://arxiv.org/abs/1206.1890" target="_blank" rel="noreferrer">arXiv:1206.1890</a>.
+          </li>
+          <li id="ref-au2012prl" data-cite="Argyres と Ünsal 2012b">
+            Argyres, Philip C., と Mithat Ünsal. 2012.「A Semiclassical Realization of Infrared Renormalons」. <em>Phys. Rev. Lett.</em> 109: 121601. <a href="https://arxiv.org/abs/1204.1661" target="_blank" rel="noreferrer">arXiv:1204.1661</a>.
+          </li>
+          <li id="ref-amstt2019" data-cite="Ashie ほか 2019">
+            Ashie, Masahiro, Okuto Morikawa, Hiroshi Suzuki, Hiromasa Takaura, と Kengo Takeuchi. 2019.「Infrared Renormalon in SU(N) QCD(adj.) on ℝ³×S¹」. <em>PTEP</em> 2020: 023B01. <a href="https://arxiv.org/abs/1909.05489" target="_blank" rel="noreferrer">arXiv:1909.05489</a>.
+          </li>
+          <li id="ref-amst2020" data-cite="Ashie ほか 2020">
+            Ashie, Masahiro, Okuto Morikawa, Hiroshi Suzuki, と Hiromasa Takaura. 2020.「More on the Infrared Renormalon in SU(N) QCD(adj.) on ℝ³×S¹」. <em>PTEP</em> 2020. <a href="https://arxiv.org/abs/2005.07407" target="_blank" rel="noreferrer">arXiv:2005.07407</a>.
+          </li>
+          <li id="ref-fkmns2018" data-cite="Fujimori ほか 2018">
+            Fujimori, Toshiaki, Syo Kamata, Tatsuhiro Misumi, Muneto Nitta, と Norisuke Sakai. 2018. 2 次元 CP<sup>N−1</sup> 模型におけるバイオンの寄与と IR リノーマロンの比較. <a href="https://arxiv.org/abs/1810.03768" target="_blank" rel="noreferrer">arXiv:1810.03768</a>.
+          </li>
+          <li id="ref-du2012" data-cite="Dunne と Ünsal 2012">
+            Dunne, Gerald V., と Mithat Ünsal. 2012.「Resurgence and Trans-Series in Quantum Field Theory: The CP(N−1) Model」. <em>JHEP</em> 11: 170. <a href="https://arxiv.org/abs/1210.2423" target="_blank" rel="noreferrer">arXiv:1210.2423</a>. 続編 <a href="https://arxiv.org/abs/1210.3646" target="_blank" rel="noreferrer">arXiv:1210.3646</a>.
+          </li>
+          <li id="ref-du2015on" data-cite="Dunne と Ünsal 2015">
+            Dunne, Gerald V., と Mithat Ünsal. 2015.「Resurgence and Dynamics of O(N) and Grassmannian Sigma Models」. <a href="https://arxiv.org/abs/1505.07803" target="_blank" rel="noreferrer">arXiv:1505.07803</a>.
+          </li>
+          <li id="ref-mr2019" data-cite="Mariño と Reis 2019">
+            Mariño, Marcos, と Tomás Reis. 2019.「Renormalons in Integrable Field Theories」. <em>JHEP</em> 04 (2020): 160. <a href="https://arxiv.org/abs/1909.12134" target="_blank" rel="noreferrer">arXiv:1909.12134</a>.
+          </li>
+          <li id="ref-lectint2024" data-cite="arXiv:2405.02224">
+            「Lectures on Resurgence in Integrable Field Theories」. 2024. <a href="https://arxiv.org/abs/2405.02224" target="_blank" rel="noreferrer">arXiv:2405.02224</a>.
+          </li>
+          <li id="ref-du2016" data-cite="Dunne と Ünsal 2016">
+            Dunne, Gerald V., と Mithat Ünsal. 2016.「New Nonperturbative Methods in Quantum Field Theory: From Large-N Orbifold Equivalence to Bions and Resurgence」. <em>Ann. Rev. Nucl. Part. Sci.</em> 66: 245–272. <a href="https://arxiv.org/abs/1601.03414" target="_blank" rel="noreferrer">arXiv:1601.03414</a>. 関連 <a href="https://arxiv.org/abs/1511.05977" target="_blank" rel="noreferrer">arXiv:1511.05977</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

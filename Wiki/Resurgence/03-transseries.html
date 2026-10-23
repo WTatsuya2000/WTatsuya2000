@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="リサージェンス講義ノート 第3章 — トランスシリーズ・Stokes 現象・大次数関係">
+  <title>トランスシリーズとリサージェンス — リサージェンスとQCD</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="03-transseries.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">リサージェンスとQCD</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">Aniceto ほか 2018 §2–4 / Écalle 1981 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">トランスシリーズとリサージェンス</span>
+      </h1>
+
+      <p class="lead">
+        本章では、摂動級数と非摂動セクターを一つにまとめるトランスシリーズを導入し、Stokes 現象と大次数関係（リサージェンス関係）を述べる。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>主な文献</dt>
+          <dd><a class="cite cite-bare" href="#ref-abs2018"></a>、<a class="cite cite-bare" href="#ref-dorigoni2014"></a></dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>非摂動効果を \(\ee^{-A/g}\) と書く（\(g\) は展開パラメータ）</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd class="tags"><span class="tag">transseries</span><span class="tag">Stokes</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>トランスシリーズ</h2>
+        <p>
+          曖昧さを解消するには、摂動級数だけでなく非摂動セクターも含めた形式和を考える。
+        </p>
+
+        <div class="def-box numbered-box" data-kind="definition" data-label="定義" id="def-transseries">
+          <div class="callout-head">
+            <span class="box-title" data-title="トランスシリーズ"></span>
+            <span class="box-kicker">Definition</span>
+          </div>
+          
+        <div class="equation" id="eq-transseries">
+          \[ F(g,\sigma)=\sum_{k\ge0}\sigma^k\,\ee^{-kA/g}\,g^{-k\beta}\,\Phi_k(g),\qquad \Phi_k(g)=\sum_{n\ge0}a^{(k)}_ng^n \]
+        </div>
+一般には \(\log g\) の冪も入る。各 \(\Phi_k\) もまた発散級数で、\(\sigma\) はトランスシリーズ・パラメータ。境界条件や物理的要請（実数性など）で決まる。
+        </div>
+
+      </section>
+
+      <section>
+        <h2>Stokes 現象</h2>
+        <p>
+          Écalle のリサージェンス理論 <a class="cite" href="#ref-ecalle1981"></a> によれば、横 Borel 和の違いは Stokes 自己同型 \(\mathfrak S\) で表される。
+        </p>
+
+        <div class="equation" id="eq-stokes">
+          \[ \mathcal S_+=\mathcal S_-\circ\mathfrak S,\qquad \mathfrak S=\exp\Bigl(\sum_{\ell\ge1}\dot\Delta_{\ell A}\Bigr),\qquad \dot\Delta_\omega=\ee^{-\omega/g}\Delta_\omega \]
+        </div>
+        <p>
+          \(\Delta_\omega\) はエイリアン微分で、Borel 平面の \(t=\omega\) の特異点の情報を取り出す微分演算子である。最も簡単な場合、\(\mathfrak S\) の作用はトランスシリーズ・パラメータのジャンプになる。
+        </p>
+
+        <div class="equation" id="eq-sigma-jump">
+          \[ \sigma\;\longrightarrow\;\sigma+S_1 \]
+        </div>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">自分の解釈</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          \(g\) の偏角が Stokes 線を横切るとき、\(\sigma\) が不連続に変わっても、トランスシリーズ全体の和は連続である。「どの非摂動セクターがどれだけ含まれるか」は \(\arg g\) に依存し、その切り替わりが Stokes 現象。演習 7.2 で最小の例を計算する。
+        </div>
+
+      </section>
+
+      <section>
+        <h2>大次数関係</h2>
+        <p>
+          \(\Phi_0\) の Borel 変換の \(t=A\) での特異性は \(\Phi_1\) そのもので決まる。Cauchy の定理と分散関係から次が得られる。
+        </p>
+
+        <div class="thm-box numbered-box" data-kind="result" data-label="主結果" id="thm-resurgence">
+          <div class="callout-head">
+            <span class="box-title" data-title="リサージェンス関係"></span>
+            <span class="box-kicker">Main result</span>
+          </div>
+          
+        <div class="equation" id="eq-resurgence">
+          \[ a^{(0)}_n\simeq\frac{S_1}{2\pi\ii}\sum_{h\ge0}\frac{\Gamma(n+\beta-h)}{A^{\,n+\beta-h}}\,a^{(1)}_h+\cdots \]
+        </div>
+摂動級数の大次数の係数が、1 インスタントン・セクターの摂動係数をすべて含んでいる。
+        </div>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">原論文に書かれていること</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          導出と多数の例（非線形 ODE、Painlevé I など）は Aniceto ほか <a class="cite" href="#ref-abs2018"></a> §2–§4 にある。エイリアン微分と bridge equation の物理向けの導入は Dorigoni <a class="cite" href="#ref-dorigoni2014"></a>、ODE と行列模型の例は Mariño <a class="cite" href="#ref-marino2012"></a>。
+        </div>
+
+      </section>
+
+      <section>
+        <h2>中央値和と曖昧さの相殺</h2>
+        <p>
+          物理量を実数にするために \(\sigma_\pm=\sigma_R\mp S_1/2\) と選ぶと、先頭次数で
+        </p>
+
+        <div class="equation boxed" id="eq-cancel">
+          \[ \Im\bigl[\mathcal S_\pm\Phi_0\bigr]+\Im\bigl[\sigma_\pm\,\ee^{-A/g}\,\mathcal S_\pm\Phi_1\bigr]=0 \]
+          <span class="eq-tag">相殺</span>
+        </div>
+        <p>
+          となり、虚部が打ち消す。これが Bogomolny–Zinn-Justin（BZJ）機構 <a class="cite" href="#ref-bzj1980"></a> の一般形である。
+        </p>
+
+        <div class="summary-box">
+          <div class="callout-head">
+            <span class="box-title">この章のまとめ</span>
+            <span class="box-kicker">Summary</span>
+          </div>
+                  <ul>
+          <li>トランスシリーズ <a class=\"eq-ref\" href=\"#eq-transseries\"></a> は摂動・非摂動セクターをまとめた形式和。</li>
+          <li>横 Borel 和の違いは \(\sigma\) のジャンプとして吸収される（Stokes 現象）。</li>
+          <li><a class=\"box-ref\" href=\"#thm-resurgence\"></a> により、摂動係数の大次数から非摂動セクターを読み出せる。</li>
+        </ul>
+
+        </div>
+
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-ecalle1981" data-cite="Écalle 1981">
+            Écalle, Jean. 1981. <em>Les Fonctions Résurgentes</em>. Vols. 1–3. Publ. Math. Orsay.
+          </li>
+          <li id="ref-abs2018" data-cite="Aniceto ほか 2018">
+            Aniceto, Inês, Gökçe Başar, と Ricardo Schiappa. 2018.「A Primer on Resurgent Transseries and Their Asymptotics」. <em>Phys. Rept.</em> 809 (2019): 1–135. <a href="https://arxiv.org/abs/1802.10441" target="_blank" rel="noreferrer">arXiv:1802.10441</a>.
+          </li>
+          <li id="ref-dorigoni2014" data-cite="Dorigoni 2014">
+            Dorigoni, Daniele. 2014.「An Introduction to Resurgence, Trans-Series and Alien Calculus」. <em>Annals Phys.</em> 409 (2019): 167914. <a href="https://arxiv.org/abs/1411.3585" target="_blank" rel="noreferrer">arXiv:1411.3585</a>.
+          </li>
+          <li id="ref-marino2012" data-cite="Mariño 2012">
+            Mariño, Marcos. 2012.「Lectures on Non-Perturbative Effects in Large N Gauge Theories, Matrix Models and Strings」. <em>Fortsch. Phys.</em> 62 (2014): 455–540. <a href="https://arxiv.org/abs/1206.6272" target="_blank" rel="noreferrer">arXiv:1206.6272</a>.
+          </li>
+          <li id="ref-bzj1980" data-cite="Bogomolny 1980">
+            Bogomolny, E. B. 1980.「Calculation of Instanton–Anti-Instanton Contributions in Quantum Mechanics」. <em>Phys. Lett. B</em> 91: 431–35. あわせて Zinn-Justin, J. 1981. <em>Nucl. Phys. B</em> 192: 125–40.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

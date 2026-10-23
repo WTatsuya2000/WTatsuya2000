@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="リサージェンス講義ノート 第2章 — 発散する摂動級数と Borel 和">
+  <title>発散する摂動級数と Borel 和 — リサージェンスとQCD</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="02-borel.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">リサージェンスとQCD</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">Dorigoni 2014 §2 / Aniceto ほか 2018 §2 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">発散する摂動級数と Borel 和</span>
+      </h1>
+
+      <p class="lead">
+        本章では、(i) 摂動級数がなぜ発散するか、(ii) 発散の仕方が何を知っているか、(iii) Borel 和で値を与えるときに何が曖昧になるか、の 3 点をまとめる。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>主な文献</dt>
+          <dd><a class="cite cite-bare" href="#ref-dorigoni2014"></a>、<a class="cite cite-bare" href="#ref-abs2018"></a></dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>非摂動効果を \(\ee^{-A/g}\) と書く（\(g\) は展開パラメータ）</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd class="tags"><span class="tag">Borel</span><span class="tag">asymptotics</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>Dyson の議論</h2>
+        <p>
+          QED の物理量を \(e^2\) で展開した級数が有限の収束半径をもつなら、\(e^2&lt;0\)（同符号電荷が引き合う世界）でも解析的なはずである。しかしその世界では真空が電子・陽電子の塊を作って崩壊し、不安定になる。したがって \(e^2=0\) は特異点で、収束半径はゼロ <a class="cite" href="#ref-dyson1952"></a>。
+        </p>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">自分の解釈</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          発散は計算技術の失敗ではなく、結合定数の符号を反転させたときの不安定性という物理を反映している。どの方向に解析接続すると何が起きるかを見ることが、以下すべての出発点になる。
+        </div>
+
+      </section>
+
+      <section>
+        <h2>0 次元の玩具模型</h2>
+        <p>
+          最も簡単な例として 0 次元の \(\phi^4\)「分配関数」を考える。
+        </p>
+
+        <div class="equation" id="eq-z0d">
+          \[ \Zpart(g)=\int_{-\infty}^{\infty}\frac{\dd x}{\sqrt{2\pi}}\,\ee^{-x^2/2-gx^4/4}=\sum_{n\ge0}c_ng^n,\qquad c_n=\Bigl(-\frac14\Bigr)^n\frac{(4n-1)!!}{n!} \]
+        </div>
+        <p>
+          厳密には \(\Zpart(g)=\ee^{1/(8g)}K_{1/4}\bigl(1/(8g)\bigr)/\sqrt{4\pi g}\)。係数は階乗的に増大する。
+        </p>
+
+        <div class="equation boxed" id="eq-z0d-large">
+          \[ c_n\xrightarrow{n\to\infty}\frac{(-4)^n\,\Gamma(n)}{\pi\sqrt2}\Bigl(1+\Order{1/n}\Bigr) \]
+          <span class="eq-tag">大次数</span>
+        </div>
+        <p>
+          \(n=160\) で比が \(0.9988\) になることを数値で確認した。ここで \(4=1/A\) の \(A=1/4\) は偶然ではない。\(g&lt;0\) にすると \(x^2=1/|g|\) に鞍点が現れ、その作用は \(S=1/(4|g|)\) である（演習 7.3）。
+        </p>
+
+        <div class="thm-box">
+          <div class="callout-head">
+            <span class="box-title">大次数と鞍点</span>
+            <span class="box-kicker">Key fact</span>
+          </div>
+          一般に摂動係数は \(a_n\sim K A^{-n}\Gamma(n+b)\bigl(1+c_1/n+\cdots\bigr)\) の形をとる。\(A\) は別の鞍点の作用、\(b\) はゆらぎの 1 ループ因子、\(K\) は Stokes 定数、\(c_k\) はそのセクターの摂動補正で、すべて「別のセクター」の情報を担っている。
+        </div>
+
+      </section>
+
+      <section>
+        <h2>Borel 変換と横 Borel 和</h2>
+
+        <div class="def-box numbered-box" data-kind="definition" data-label="定義" id="def-borel">
+          <div class="callout-head">
+            <span class="box-title" data-title="Borel 変換と Laplace 積分"></span>
+            <span class="box-kicker">Definition</span>
+          </div>
+          形式級数 \(f(g)=\sum_{n\ge0}a_ng^{n+1}\) に対し
+        <div class="equation" id="eq-borel">
+          \[ \mathcal B[f](t)=\sum_{n\ge0}\frac{a_n}{n!}t^n,\qquad \mathcal S_\theta f(g)=\int_0^{\ee^{\ii\theta}\infty}\dd t\,\ee^{-t/g}\,\mathcal B[f](t) \]
+        </div>
+と定める。\(\theta=0^\pm\) の二つを横 Borel 和 \(\mathcal S_\pm\) と呼ぶ。
+        </div>
+        <p>
+          \(\int_0^\infty \dd t\,\ee^{-t/g}t^n=n!\,g^{n+1}\) なので、項ごとには元の級数に戻る。\(a_n\sim n!\) でも \(\mathcal B\) は有限の収束半径をもつ。
+        </p>
+        <ul>
+          <li><strong>交代級数</strong>（\(a_n\sim(-A)^{-n}n!\)）：特異点は負の実軸上。正の実軸に沿う積分は問題なく定義される（Borel 総和可能）。<a class=\"eq-ref\" href=\"#eq-z0d\"></a> は \(g&gt;0\) でこの場合。</li>
+          <li><strong>非交代級数</strong>（\(a_n\sim A^{-n}n!\)、\(A&gt;0\)）：特異点が正の実軸上 \(t=A\) にあり、積分路がぶつかる。上下から避ける \(\mathcal S_\pm\) が異なる値を与える。</li>
+        </ul>
+
+        <div class="derivation-head">
+          <span class="box-kicker">Derivation — 横 Borel 和の差</span>
+          <button class="steps-toggle" type="button" data-controls="der-lateral">理由をすべて開く</button>
+        </div>
+        <dl class="derivation-goal">
+          <div><dt>出発</dt><dd><a class=\"box-ref\" href=\"#def-borel\"></a> と \(a_n=KA^{-n}n!\)</dd></div>
+          <div><dt>目標</dt><dd>曖昧さの公式 <a class=\"eq-ref\" href=\"#eq-ambiguity\"></a></dd></div>
+          <div><dt>方針</dt><dd>Borel 変換を閉じた形で求め、上下の積分路の差を極のまわりの閉路積分に書き換える</dd></div>
+        </dl>
+
+        <ol class="derivation" id="der-lateral">
+          <li>
+            <div class="step-body">
+              <p class="step-action">Borel 変換を等比級数として足し上げる</p>
+              <div class="equation" data-unnumbered>
+                \[ \mathcal B[f](t)=K\sum_{n}\Bigl(\frac tA\Bigr)^n=\frac{KA}{A-t} \]
+              </div>
+              <details class="step-why">
+                <summary>なぜ</summary>
+                <div>\(|t|&lt;A\) で収束し、外へは有理関数として解析接続する。</div>
+              </details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">上の積分路から下の積分路を引き、時計回りの閉路にまとめる</p>
+              <div class="equation" data-unnumbered>
+                \[ \mathcal S_+f-\mathcal S_-f=-\oint_{t=A}\dd t\,\ee^{-t/g}\frac{KA}{A-t} \]
+              </div>
+              <details class="step-why">
+                <summary>なぜ</summary>
+                <div>上を右向き・下を左向きにたどると極 \(t=A\) を時計回りに一周する。無限遠の寄与は \(\ee^{-t/g}\) で消える（\(g&gt;0\)）。</div>
+              </details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">留数定理で閉路積分を評価する</p>
+              <div class="equation" data-unnumbered>
+                \[ \mathcal S_+f-\mathcal S_-f=-2\pi\ii\cdot\bigl(-KA\,\ee^{-A/g}\bigr)=2\pi\ii\,KA\,\ee^{-A/g} \]
+              </div>
+              <details class="step-why">
+                <summary>なぜ</summary>
+                <div>被積分関数の \(t=A\) での留数は \(-KA\,\ee^{-A/g}\)。係数が実数なら \(\mathcal S_-f=\overline{\mathcal S_+f}\) なので、虚部は差の半分になる。</div>
+              </details>
+            </div>
+          </li>
+        </ol>
+
+        <div class="equation boxed" id="eq-ambiguity">
+          \[ \mathcal S_+f-\mathcal S_-f=2\pi\ii\,KA\,\ee^{-A/g},\qquad \Im\,\mathcal S_\pm f=\pm\pi KA\,\ee^{-A/g} \]
+          <span class="eq-tag">主結果</span>
+        </div>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">自分の解釈</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          物理量は実数なのに、摂動論だけからは \(\ee^{-A/g}\) の大きさの虚部が<strong>曖昧さ</strong>として残る。その大きさはちょうど作用 \(A\) の非摂動効果と同じオーダーで、正の実軸は Stokes 線と呼ばれる。打ち切り誤差の下限も同じく \(\ee^{-A/g}\) 程度になる（演習 7.1）。
+        </div>
+
+      </section>
+
+      <section>
+        <h2>まとめ</h2>
+
+        <div class="summary-box">
+          <div class="callout-head">
+            <span class="box-title">この章のまとめ</span>
+            <span class="box-kicker">Summary</span>
+          </div>
+                  <ul>
+          <li>摂動級数の発散は、結合定数を解析接続したときの不安定性・別の鞍点の存在を反映する。</li>
+          <li>大次数 \(a_n\sim KA^{-n}n!\) の \(A\) は別の鞍点の作用。</li>
+          <li>非交代級数では横 Borel 和に \(\pm\pi KA\,\ee^{-A/g}\) の曖昧さが残る（<a class=\"eq-ref\" href=\"#eq-ambiguity\"></a>）。</li>
+        </ul>
+
+        </div>
+
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-dyson1952" data-cite="Dyson 1952">
+            Dyson, Freeman J. 1952.「Divergence of Perturbation Theory in Quantum Electrodynamics」. <em>Phys. Rev.</em> 85: 631–32.
+          </li>
+          <li id="ref-dorigoni2014" data-cite="Dorigoni 2014">
+            Dorigoni, Daniele. 2014.「An Introduction to Resurgence, Trans-Series and Alien Calculus」. <em>Annals Phys.</em> 409 (2019): 167914. <a href="https://arxiv.org/abs/1411.3585" target="_blank" rel="noreferrer">arXiv:1411.3585</a>.
+          </li>
+          <li id="ref-abs2018" data-cite="Aniceto ほか 2018">
+            Aniceto, Inês, Gökçe Başar, と Ricardo Schiappa. 2018.「A Primer on Resurgent Transseries and Their Asymptotics」. <em>Phys. Rept.</em> 809 (2019): 1–135. <a href="https://arxiv.org/abs/1802.10441" target="_blank" rel="noreferrer">arXiv:1802.10441</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

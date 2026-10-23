@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="リサージェンス講義ノート 付録A — arXiv 文献の一覧と読む順番">
+  <title>文献ガイド — リサージェンスとQCD</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="A-references.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">リサージェンスとQCD</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">arXiv 番号は Web 検索で照合済み（2026-10-23）</span>
+        <span class="chapter-number"></span><span class="chapter-title">文献ガイド</span>
+      </h1>
+
+      <p class="lead">
+        本ノートで引用した文献の一覧と、目的別の読む順番。arXiv 番号は検索で照合したが、一部（arXiv:1810.03768, 2303.16392, 2405.02224）は題名・著者を原典で確認していない。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>主な文献</dt>
+          <dd>本ノートで引用したすべての文献</dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>著者年形式</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd class="tags"><span class="tag">references</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>読む順番</h2>
+
+
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>段階</th><th>文献</th><th>内容</th></tr></thead>
+            <tbody>
+            <tr><td>入門</td><td><a class="cite" href="#ref-dorigoni2014"></a></td><td>Borel 和、Stokes 自己同型、エイリアン微分、トイモデルの Morse 理論</td></tr>
+            <tr><td>入門</td><td><a class="cite" href="#ref-abs2018"></a></td><td>大次数の漸近解析とトランスシリーズを 2 つの例で徹底的に</td></tr>
+            <tr><td>量子力学</td><td><a class="cite" href="#ref-zjj2004"></a>, <a class="cite" href="#ref-du2014"></a></td><td>多重インスタントン、BZJ、一様 WKB と P/NP 関係</td></tr>
+            <tr><td>シンブル</td><td><a class="cite" href="#ref-cdu2014"></a>, <a class="cite" href="#ref-bdssu2015"></a></td><td>Stokes 現象と Lefschetz シンブル、複素鞍点</td></tr>
+            <tr><td>リノーマロン</td><td><a class="cite" href="#ref-beneke1999"></a></td><td>リノーマロンの標準的レビュー、OPE、極質量</td></tr>
+            <tr><td>ゲージ理論</td><td><a class="cite" href="#ref-au2012"></a>, <a class="cite" href="#ref-du2012"></a></td><td>R³×S¹ のバイオンとリノーマロン、CP<sup>N−1</sup></td></tr>
+            <tr><td>全体像</td><td><a class="cite" href="#ref-du2016"></a>, <a class="cite" href="#ref-marino2012"></a></td><td>場の理論への応用のレビュー、ラージ N と行列模型</td></tr>
+            <tr><td>現状</td><td><a class="cite" href="#ref-amstt2019"></a>, <a class="cite" href="#ref-mr2019"></a></td><td>コンパクト化でも残るリノーマロン、可積分模型での検証</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-au2012" data-cite="Argyres と Ünsal 2012a">
+            Argyres, Philip C., と Mithat Ünsal. 2012.「The Semi-Classical Expansion and Resurgence in Gauge Theories: New Perturbative, Instanton, Bion, and Renormalon Effects」. <em>JHEP</em> 08: 063. <a href="https://arxiv.org/abs/1206.1890" target="_blank" rel="noreferrer">arXiv:1206.1890</a>.
+          </li>
+          <li id="ref-au2012prl" data-cite="Argyres と Ünsal 2012b">
+            Argyres, Philip C., と Mithat Ünsal. 2012.「A Semiclassical Realization of Infrared Renormalons」. <em>Phys. Rev. Lett.</em> 109: 121601. <a href="https://arxiv.org/abs/1204.1661" target="_blank" rel="noreferrer">arXiv:1204.1661</a>.
+          </li>
+          <li id="ref-dorigoni2014" data-cite="Dorigoni 2014">
+            Dorigoni, Daniele. 2014.「An Introduction to Resurgence, Trans-Series and Alien Calculus」. <em>Annals Phys.</em> 409 (2019): 167914. <a href="https://arxiv.org/abs/1411.3585" target="_blank" rel="noreferrer">arXiv:1411.3585</a>.
+          </li>
+          <li id="ref-abs2018" data-cite="Aniceto ほか 2018">
+            Aniceto, Inês, Gökçe Başar, と Ricardo Schiappa. 2018.「A Primer on Resurgent Transseries and Their Asymptotics」. <em>Phys. Rept.</em> 809 (2019): 1–135. <a href="https://arxiv.org/abs/1802.10441" target="_blank" rel="noreferrer">arXiv:1802.10441</a>.
+          </li>
+          <li id="ref-marino2012" data-cite="Mariño 2012">
+            Mariño, Marcos. 2012.「Lectures on Non-Perturbative Effects in Large N Gauge Theories, Matrix Models and Strings」. <em>Fortsch. Phys.</em> 62 (2014): 455–540. <a href="https://arxiv.org/abs/1206.6272" target="_blank" rel="noreferrer">arXiv:1206.6272</a>.
+          </li>
+          <li id="ref-zjj2004" data-cite="Zinn-Justin と Jentschura 2004">
+            Zinn-Justin, Jean, と Ulrich D. Jentschura. 2004.「Multi-Instantons and Exact Results I: Conjectures, WKB Expansions, and Instanton Interactions」. <em>Annals Phys.</em> 313: 197–267. <a href="https://arxiv.org/abs/quant-ph/0501136" target="_blank" rel="noreferrer">arXiv:quant-ph/0501136</a>.
+          </li>
+          <li id="ref-beneke1999" data-cite="Beneke 1999">
+            Beneke, Martin. 1999.「Renormalons」. <em>Phys. Rept.</em> 317: 1–142. <a href="https://arxiv.org/abs/hep-ph/9807443" target="_blank" rel="noreferrer">arXiv:hep-ph/9807443</a>.
+          </li>
+          <li id="ref-du2012" data-cite="Dunne と Ünsal 2012">
+            Dunne, Gerald V., と Mithat Ünsal. 2012.「Resurgence and Trans-Series in Quantum Field Theory: The CP(N−1) Model」. <em>JHEP</em> 11: 170. <a href="https://arxiv.org/abs/1210.2423" target="_blank" rel="noreferrer">arXiv:1210.2423</a>. 続編 <a href="https://arxiv.org/abs/1210.3646" target="_blank" rel="noreferrer">arXiv:1210.3646</a>.
+          </li>
+          <li id="ref-witten2010" data-cite="Witten 2010">
+            Witten, Edward. 2010.「Analytic Continuation of Chern–Simons Theory」. <a href="https://arxiv.org/abs/1001.2933" target="_blank" rel="noreferrer">arXiv:1001.2933</a>.
+          </li>
+          <li id="ref-cdu2014" data-cite="Cherman ほか 2014">
+            Cherman, Aleksey, Daniele Dorigoni, と Mithat Ünsal. 2014.「Decoding Perturbation Theory Using Resurgence: Stokes Phenomena, New Saddle Points and Lefschetz Thimbles」. <a href="https://arxiv.org/abs/1403.1277" target="_blank" rel="noreferrer">arXiv:1403.1277</a>.
+          </li>
+          <li id="ref-du2014" data-cite="Dunne と Ünsal 2014">
+            Dunne, Gerald V., と Mithat Ünsal. 2014.「Uniform WKB, Multi-Instantons, and Resurgent Trans-Series」. <em>Phys. Rev. D</em> 89: 105009. <a href="https://arxiv.org/abs/1401.5202" target="_blank" rel="noreferrer">arXiv:1401.5202</a>.
+          </li>
+          <li id="ref-du2016" data-cite="Dunne と Ünsal 2016">
+            Dunne, Gerald V., と Mithat Ünsal. 2016.「New Nonperturbative Methods in Quantum Field Theory: From Large-N Orbifold Equivalence to Bions and Resurgence」. <em>Ann. Rev. Nucl. Part. Sci.</em> 66: 245–272. <a href="https://arxiv.org/abs/1601.03414" target="_blank" rel="noreferrer">arXiv:1601.03414</a>. 関連 <a href="https://arxiv.org/abs/1511.05977" target="_blank" rel="noreferrer">arXiv:1511.05977</a>.
+          </li>
+          <li id="ref-mr2019" data-cite="Mariño と Reis 2019">
+            Mariño, Marcos, と Tomás Reis. 2019.「Renormalons in Integrable Field Theories」. <em>JHEP</em> 04 (2020): 160. <a href="https://arxiv.org/abs/1909.12134" target="_blank" rel="noreferrer">arXiv:1909.12134</a>.
+          </li>
+          <li id="ref-bdssu2015" data-cite="Behtash ほか 2015">
+            Behtash, Alireza, Gerald V. Dunne, Thomas Schäfer, Tin Sulejmanpasic, と Mithat Ünsal. 2015.「Complexified Path Integrals, Exact Saddles and Supersymmetry」. <em>Phys. Rev. Lett.</em> 116 (2016): 011601. <a href="https://arxiv.org/abs/1510.00978" target="_blank" rel="noreferrer">arXiv:1510.00978</a>. 詳細版 <a href="https://arxiv.org/abs/1510.03435" target="_blank" rel="noreferrer">arXiv:1510.03435</a>.
+          </li>
+          <li id="ref-fkmns2016" data-cite="Fujimori ほか 2016">
+            Fujimori, Toshiaki, Syo Kamata, Tatsuhiro Misumi, Muneto Nitta, と Norisuke Sakai. 2016.「Non-Perturbative Contributions from Complexified Solutions in CP<sup>N−1</sup> Models」. <em>Phys. Rev. D</em> 94: 105002. <a href="https://arxiv.org/abs/1607.04205" target="_blank" rel="noreferrer">arXiv:1607.04205</a>.
+          </li>
+          <li id="ref-fkmns2018" data-cite="Fujimori ほか 2018">
+            Fujimori, Toshiaki, Syo Kamata, Tatsuhiro Misumi, Muneto Nitta, と Norisuke Sakai. 2018. 2 次元 CP<sup>N−1</sup> 模型におけるバイオンの寄与と IR リノーマロンの比較. <a href="https://arxiv.org/abs/1810.03768" target="_blank" rel="noreferrer">arXiv:1810.03768</a>.
+          </li>
+          <li id="ref-dsu2015" data-cite="Dunne ほか 2015">
+            Dunne, Gerald V., Mikhail Shifman, と Mithat Ünsal. 2015.「Infrared Renormalons versus Operator Product Expansion in Supersymmetric and Related Gauge Theories」. <em>Phys. Rev. Lett.</em> 114: 191601. <a href="https://arxiv.org/abs/1502.06680" target="_blank" rel="noreferrer">arXiv:1502.06680</a>.
+          </li>
+          <li id="ref-unsal2007" data-cite="Ünsal 2007">
+            Ünsal, Mithat. 2007.「Abelian Duality, Confinement, and Chiral Symmetry Breaking in QCD(adj)」. <em>Phys. Rev. Lett.</em> 100 (2008): 032005. <a href="https://arxiv.org/abs/0708.1772" target="_blank" rel="noreferrer">arXiv:0708.1772</a>.
+          </li>
+          <li id="ref-uy2008" data-cite="Ünsal と Yaffe 2008">
+            Ünsal, Mithat, と Laurence G. Yaffe. 2008.「Center-Stabilized Yang–Mills Theory: Confinement and Large N Volume Independence」. <em>Phys. Rev. D</em> 78: 065035. <a href="https://arxiv.org/abs/0803.0344" target="_blank" rel="noreferrer">arXiv:0803.0344</a>.
+          </li>
+          <li id="ref-amstt2019" data-cite="Ashie ほか 2019">
+            Ashie, Masahiro, Okuto Morikawa, Hiroshi Suzuki, Hiromasa Takaura, と Kengo Takeuchi. 2019.「Infrared Renormalon in SU(N) QCD(adj.) on ℝ³×S¹」. <em>PTEP</em> 2020: 023B01. <a href="https://arxiv.org/abs/1909.05489" target="_blank" rel="noreferrer">arXiv:1909.05489</a>.
+          </li>
+          <li id="ref-amst2020" data-cite="Ashie ほか 2020">
+            Ashie, Masahiro, Okuto Morikawa, Hiroshi Suzuki, と Hiromasa Takaura. 2020.「More on the Infrared Renormalon in SU(N) QCD(adj.) on ℝ³×S¹」. <em>PTEP</em> 2020. <a href="https://arxiv.org/abs/2005.07407" target="_blank" rel="noreferrer">arXiv:2005.07407</a>.
+          </li>
+          <li id="ref-dual2023" data-cite="arXiv:2303.16392">
+            「Renormalon Subtraction in OPE by Dual Space Approach: Nonlinear Sigma Model and QCD」. 2023. <a href="https://arxiv.org/abs/2303.16392" target="_blank" rel="noreferrer">arXiv:2303.16392</a>.
+          </li>
+          <li id="ref-du2015on" data-cite="Dunne と Ünsal 2015">
+            Dunne, Gerald V., と Mithat Ünsal. 2015.「Resurgence and Dynamics of O(N) and Grassmannian Sigma Models」. <a href="https://arxiv.org/abs/1505.07803" target="_blank" rel="noreferrer">arXiv:1505.07803</a>.
+          </li>
+          <li id="ref-lectint2024" data-cite="arXiv:2405.02224">
+            「Lectures on Resurgence in Integrable Field Theories」. 2024. <a href="https://arxiv.org/abs/2405.02224" target="_blank" rel="noreferrer">arXiv:2405.02224</a>.
+          </li>
+          <li id="ref-bw1969" data-cite="Bender と Wu 1969">
+            Bender, Carl M., と Tai Tsun Wu. 1969.「Anharmonic Oscillator」. <em>Phys. Rev.</em> 184: 1231–60.
+          </li>
+          <li id="ref-thooft1979" data-cite="'t Hooft 1979">
+            't Hooft, Gerard. 1979.「Can We Make Sense out of Quantum Chromodynamics?」. In <em>The Whys of Subnuclear Physics</em> (Erice 1977), 943–82. Plenum.
+          </li>
+          <li id="ref-ecalle1981" data-cite="Écalle 1981">
+            Écalle, Jean. 1981. <em>Les Fonctions Résurgentes</em>. Vols. 1–3. Publ. Math. Orsay.
+          </li>
+          <li id="ref-bzj1980" data-cite="Bogomolny 1980">
+            Bogomolny, E. B. 1980.「Calculation of Instanton–Anti-Instanton Contributions in Quantum Mechanics」. <em>Phys. Lett. B</em> 91: 431–35. あわせて Zinn-Justin, J. 1981. <em>Nucl. Phys. B</em> 192: 125–40.
+          </li>
+          <li id="ref-dyson1952" data-cite="Dyson 1952">
+            Dyson, Freeman J. 1952.「Divergence of Perturbation Theory in Quantum Electrodynamics」. <em>Phys. Rev.</em> 85: 631–32.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>
