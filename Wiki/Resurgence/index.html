@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>リサージェンスとQCD 講義ノート</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@500;700&family=BIZ+UDPGothic:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: 1カラムの講義ノート。左に細い節番号ガター、本文は約 40em。Borel 平面の図だけ幅いっぱい。 */
+:root {
+  --paper: #f6f7fa;      /* 方眼ノートに近い、わずかに青い白 */
+  --ink: #1c2233;
+  --muted: #5b6378;
+  --rule: #d9dde7;
+  --panel: #eceff5;
+  --accent: #2346b8;     /* 解析接続・積分路の青 */
+  --sing: #b13d63;       /* Borel 平面の特異点 */
+  --ok: #2c7a55;
+  --font-display: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-body: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #13161f; --ink: #e3e6ef; --muted: #9aa2b8; --rule: #2c3242; --panel: #1b2030;
+    --accent: #8ea8ff; --sing: #f08aac; --ok: #6fcf9e; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #13161f; --ink: #e3e6ef; --muted: #9aa2b8; --rule: #2c3242; --panel: #1b2030;
+  --accent: #8ea8ff; --sing: #f08aac; --ok: #6fcf9e; color-scheme: dark;
+}
+
+body {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.85;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 4rem;
+}
+.wrap { max-width: 46rem; margin: 0 auto; }
+header.title { padding-block: 3.5rem 2rem; border-bottom: 1px solid var(--rule); display: grid; gap: .6rem; }
+.eyebrow { font-family: var(--font-mono); font-size: .78rem; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.35; font-weight: 700; }
+h1 { font-size: clamp(1.9rem, 5vw, 2.6rem); margin: 0; }
+.lede { color: var(--muted); margin: 0; max-width: 38rem; }
+h2 { font-size: 1.55rem; margin: 3.5rem 0 1rem; display: flex; gap: .7rem; align-items: baseline; }
+h2 .no { font-family: var(--font-mono); font-size: .95rem; color: var(--accent); font-weight: 600; }
+h3 { font-size: 1.15rem; margin: 2.2rem 0 .6rem; }
+p { margin: .8rem 0; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+code, .mono { font-family: var(--font-mono); font-size: .88em; }
+ul, ol { padding-left: 1.4rem; }
+li { margin: .3rem 0; }
+mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; padding-block: .2rem; }
+
+nav.toc { margin-top: 2rem; display: grid; gap: .25rem; font-size: .95rem; }
+nav.toc a { text-decoration: none; color: var(--ink); display: flex; gap: .7rem; }
+nav.toc a span { font-family: var(--font-mono); color: var(--accent); min-width: 2rem; }
+nav.toc a:hover { color: var(--accent); }
+
+.box { background: var(--panel); border-radius: 6px; padding: .9rem 1.1rem; margin: 1.2rem 0; }
+.box > .label { font-family: var(--font-mono); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: .2rem; }
+.box.warn > .label { color: var(--sing); }
+.cite { font-size: .85em; color: var(--muted); }
+
+.tablewrap { overflow-x: auto; margin: 1.2rem 0; }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; min-width: 32rem; }
+th, td { text-align: left; padding: .5rem .6rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-family: var(--font-mono); font-size: .76rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+
+figure { margin: 1.6rem 0; }
+.figwrap { overflow-x: auto; }
+figure svg { display: block; width: 100%; min-width: 34rem; height: auto; }
+figcaption { font-size: .85rem; color: var(--muted); margin-top: .5rem; }
+svg .axis { stroke: var(--ink); stroke-width: 1.2; fill: none; }
+svg .tick { stroke: var(--muted); stroke-width: 1; }
+svg .lbl { fill: var(--muted); font-family: var(--font-mono); font-size: 12px; }
+svg .lbl-ink { fill: var(--ink); font-family: var(--font-body); font-size: 13px; }
+svg .ir { fill: var(--sing); }
+svg .uv { fill: none; stroke: var(--sing); stroke-width: 1.8; }
+svg .inst { fill: var(--accent); }
+svg .path { stroke: var(--accent); stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+svg .brk { stroke: var(--paper); stroke-width: 6; }
+
+.ex { border-top: 1px solid var(--rule); padding-top: 1.1rem; margin-top: 1.6rem; }
+.ex h3 { margin-top: 0; display: flex; gap: .6rem; align-items: baseline; flex-wrap: wrap; }
+.ex h3 .lvl { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .06em; color: var(--muted); border: 1px solid var(--rule); border-radius: 999px; padding: 0 .55rem; font-weight: 400; }
+details { margin-top: .8rem; }
+summary { cursor: pointer; color: var(--accent); font-family: var(--font-mono); font-size: .85rem; }
+details[open] > div { background: var(--panel); border-radius: 6px; padding: .4rem 1.1rem .6rem; margin-top: .5rem; }
+pre { background: var(--panel); border-radius: 6px; padding: .9rem 1rem; overflow-x: auto; font-size: .82rem; line-height: 1.6; }
+details[open] pre { background: var(--paper); }
+
+ol.refs { font-size: .9rem; display: grid; gap: .45rem; }
+ol.refs li { margin: 0; }
+footer { margin-top: 3rem; border-top: 1px solid var(--rule); padding-top: 1rem; font-size: .82rem; color: var(--muted); }
+</style>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], tags: 'ams' },
+  chtml: { scale: 1.0 },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+
+<style>body{margin:0}</style>
+</head>
+<body>
+<div class="wrap">
+<header class="title">
+  <span class="eyebrow">講義ノート · 演習問題つき</span>
+  <h1>リサージェンスとゲージ理論・QCD</h1>
+  <p class="lede">摂動級数は発散する。その発散の中に非摂動効果の情報が書き込まれている、というのがリサージェンス（resurgence）の主張です。このノートでは、Borel 和とトランスシリーズの基礎から始め、量子力学のインスタントン、ゲージ理論のリノーマロン、そして QCD における OPE・コンパクト化・バイオンまでを arXiv の原論文に沿って整理します。</p>
+  <nav class="toc" aria-label="目次">
+    <a href="#s0"><span>§0</span>このノートについて</a>
+    <a href="#s1"><span>§1</span>摂動級数はなぜ発散するか</a>
+    <a href="#s2"><span>§2</span>Borel 和と曖昧さ</a>
+    <a href="#s3"><span>§3</span>トランスシリーズとリサージェンス</a>
+    <a href="#s4"><span>§4</span>量子力学：インスタントンと Lefschetz シンブル</a>
+    <a href="#s5"><span>§5</span>ゲージ理論：インスタントンとリノーマロン</a>
+    <a href="#s6"><span>§6</span>QCD への応用</a>
+    <a href="#s7"><span>§7</span>演習問題</a>
+    <a href="#s8"><span>§8</span>参考文献（arXiv）</a>
+  </nav>
+</header>
+
+<!-- ============================================================ -->
+<h2 id="s0"><span class="no">§0</span>このノートについて</h2>
+<p><b>前提知識</b>：複素関数論（留数定理、分岐）、量子力学の経路積分、場の量子論の繰り込み群（β 関数、漸近的自由性）。</p>
+<p><b>規約</b>：§1–§4 では結合定数を $g$ とし、非摂動効果を $e^{-A/g}$ と書きます。§5–§6 のゲージ理論では $g^2$ を展開パラメータとし、Borel 変数 $t$ は $e^{-t/g^2}$ と対になるように取ります。β 関数は 1 ループで
+$$\mu\frac{dg}{d\mu} = -\frac{\beta_0}{16\pi^2}g^3,\qquad \beta_0 = \frac{11}{3}N - \frac{2}{3}n_f\ (\text{Dirac 基本表現}),$$
+とし、リノーマロンの位置は $u \equiv \beta_0 t/(16\pi^2)$ で表します。</p>
+<div class="box"><span class="label">読み方のガイド</span>
+入門としては Dorigoni <a href="#r-dorigoni">[3]</a> と Aniceto–Başar–Schiappa <a href="#r-abs">[4]</a> が数学的な道具を丁寧に扱っています。場の理論への応用の全体像は Dunne–Ünsal のレビュー <a href="#r-du-rev">[12]</a>、リノーマロンの標準的レビューは Beneke <a href="#r-beneke">[7]</a>、ラージ N と行列模型の側面は Mariño <a href="#r-marino">[5]</a> を参照してください。
+</div>
+
+<!-- ============================================================ -->
+<h2 id="s1"><span class="no">§1</span>摂動級数はなぜ発散するか</h2>
+<h3>Dyson の議論</h3>
+<p>QED の物理量を $e^2$ で展開した級数が有限の収束半径をもつなら、$e^2&lt;0$（同符号電荷が引き合う世界）でも解析的なはずです。しかしその世界では真空が電子・陽電子の塊を作って崩壊するので不安定です。したがって $e^2=0$ は特異点であり、収束半径はゼロ。これが Dyson（1952）の議論です。発散は偶然ではなく、<b>結合定数の符号を反転させたときの不安定性</b>という物理を反映しています。</p>
+
+<h3>0 次元の玩具模型</h3>
+<p>最も簡単な例として、0 次元の $\phi^4$「分配関数」
+$$Z(g)=\int_{-\infty}^{\infty}\frac{dx}{\sqrt{2\pi}}\,e^{-x^2/2-g x^4/4}=\sum_{n\ge0}c_n g^n,\qquad c_n=\Bigl(-\frac14\Bigr)^n\frac{(4n-1)!!}{n!}$$
+を考えます。厳密には $Z(g)=e^{1/(8g)}K_{1/4}\!\bigl(1/(8g)\bigr)/\sqrt{4\pi g}$ です。係数は
+$$c_n \;\xrightarrow{n\to\infty}\; \frac{(-4)^n\,\Gamma(n)}{\pi\sqrt2}\bigl(1+O(1/n)\bigr)$$
+と階乗的に増大します（$n=160$ で比が $0.9988$ になることを数値で確認しました）。ここで現れる $4=1/A$ の $A=1/4$ は偶然ではありません。$g&lt;0$ にすると $x^2=1/|g|$ に鞍点が現れ、その作用は $S=1/(4|g|)$ です。<b>大次数の振る舞い $A^{-n}\Gamma(n)$ の $A$ は、別の鞍点の作用</b>です。この対応が以下の議論全体の骨格になります。</p>
+
+<p>一般に、摂動係数は
+$$a_n \sim K\,A^{-n}\,\Gamma(n+b)\Bigl(1+\frac{c_1}{n}+\cdots\Bigr)$$
+という形をとり、$A$（非摂動的鞍点の作用）、$b$（ゆらぎの 1 ループ因子）、$K$（Stokes 定数）、$c_k$（非摂動セクターの摂動補正）がすべて「別のセクター」の情報を担っています。</p>
+
+<!-- ============================================================ -->
+<h2 id="s2"><span class="no">§2</span>Borel 和と曖昧さ</h2>
+<p>形式級数 $f(g)=\sum_{n\ge0}a_n g^{n+1}$ に対し、Borel 変換と Laplace 積分を
+$$\mathcal B[f](t)=\sum_{n\ge0}\frac{a_n}{n!}t^n,\qquad \mathcal S_\theta f(g)=\int_0^{e^{i\theta}\infty}dt\,e^{-t/g}\,\mathcal B[f](t)$$
+で定義します。$\int_0^\infty dt\,e^{-t/g}t^n=n!\,g^{n+1}$ なので、項ごとに見れば元の級数に戻ります。$a_n\sim n!$ でも $\mathcal B$ は有限の収束半径をもつので、解析接続して積分すれば有限の値が得られます。</p>
+
+<ul>
+  <li><b>交代級数</b>（$a_n\sim(-A)^{-n}n!$）：特異点は負の実軸上にあり、正の実軸に沿う積分は問題なく定義されます（Borel 総和可能）。0 次元模型は $g&gt;0$ でこの場合です。</li>
+  <li><b>非交代級数</b>（$a_n\sim A^{-n}n!$, $A&gt;0$）：特異点が正の実軸上の $t=A$ にあり、積分路が特異点にぶつかります。上（$\theta=0^+$）と下（$\theta=0^-$）から避ける二つの<b>横 Borel 和</b> $\mathcal S_\pm$ が異なる値を与えます。</li>
+</ul>
+<p>$a_n=K A^{-n}n!$ なら $\mathcal B(t)=KA/(A-t)$ で、留数定理より
+$$\mathcal S_{+}f-\mathcal S_{-}f = 2\pi i\,K A\,e^{-A/g},\qquad \operatorname{Im}\mathcal S_{\pm}f=\pm\pi K A\,e^{-A/g}.\tag{2.1}$$
+係数が実数なら $\mathcal S_-f=\overline{\mathcal S_+f}$ です。物理量は実数なのに、摂動論だけからは $e^{-A/g}$ の大きさの虚部が<b>曖昧さ</b>として残ります。この曖昧さの大きさは、ちょうど作用 $A$ の非摂動効果と同じオーダーです。正の実軸は <b>Stokes 線</b>と呼ばれます。</p>
+
+<!-- ============================================================ -->
+<h2 id="s3"><span class="no">§3</span>トランスシリーズとリサージェンス</h2>
+<p>曖昧さを解消するには、摂動級数だけでなく非摂動セクターも含めた<b>トランスシリーズ</b>
+$$F(g,\sigma)=\sum_{k\ge0}\sigma^k\,e^{-kA/g}\,g^{-k\beta}\,\Phi_k(g),\qquad \Phi_k(g)=\sum_{n\ge0}a^{(k)}_n g^n\tag{3.1}$$
+を考えます（一般には $\log g$ の冪も入ります）。各 $\Phi_k$ もまた発散級数です。$\sigma$ はトランスシリーズ・パラメータで、境界条件や物理的要請で決まります。</p>
+
+<h3>Stokes 現象</h3>
+<p>Écalle のリサージェンス理論によれば、横 Borel 和の違いは<b>Stokes 自己同型</b> $\mathfrak S$ で表されます：
+$$\mathcal S_+ = \mathcal S_-\circ\mathfrak S,\qquad \mathfrak S=\exp\Bigl(\sum_{\ell\ge1}\dot\Delta_{\ell A}\Bigr).$$
+$\dot\Delta_\omega=e^{-\omega/g}\Delta_\omega$ の $\Delta_\omega$ は<b>エイリアン微分</b>で、$t=\omega$ の特異点の情報を取り出す微分演算子です。最も簡単な場合、$\mathfrak S$ の作用はトランスシリーズ・パラメータのジャンプ
+$$\sigma\ \longrightarrow\ \sigma+S_1$$
+になります（$S_1$ が Stokes 定数）。$g$ の偏角が Stokes 線を横切るとき、$\sigma$ が不連続に変わってもトランスシリーズ全体の和は連続です。これが Stokes 現象です。</p>
+
+<h3>大次数関係（リサージェンス関係）</h3>
+<p>$\Phi_0$ の Borel 変換の $t=A$ での特異性は $\Phi_1$ そのもので決まります。Cauchy の定理と分散関係を使うと
+$$a^{(0)}_n \simeq \frac{S_1}{2\pi i}\sum_{h\ge0}\frac{\Gamma(n+\beta-h)}{A^{\,n+\beta-h}}\,a^{(1)}_h+\cdots\tag{3.2}$$
+が得られます。<b>摂動級数の大次数の係数が、1 インスタントン・セクターの摂動係数 $a^{(1)}_h$ をすべて含んでいる</b>。これがリサージェンス（「再び湧き出る」）という名前の由来です。詳細な導出と多数の例は <a href="#r-abs">[4]</a> の §2–§4 にあります。</p>
+
+<h3>中央値和と曖昧さの相殺</h3>
+<p>物理量を実数にするために $\sigma$ を $\pm$ に応じて $\sigma_\pm=\sigma_R\mp S_1/2$ と選ぶと、
+$$\operatorname{Im}\bigl[\mathcal S_\pm\Phi_0\bigr]+\operatorname{Im}\bigl[\sigma_\pm\,e^{-A/g}\,\mathcal S_\pm\Phi_1\bigr]=0\quad(\text{先頭次数})$$
+となり、虚部が相殺します。これが <b>Bogomolny–Zinn-Justin (BZJ) 機構</b>の一般形で、「摂動論の曖昧さ」と「非摂動セクターの曖昧さ」が互いに打ち消しあうことで、全体として意味のある実の答えが得られます。</p>
+
+<!-- ============================================================ -->
+<h2 id="s4"><span class="no">§4</span>量子力学：インスタントンと Lefschetz シンブル</h2>
+<h3>二重井戸ポテンシャル</h3>
+<p>$H=\tfrac12p^2+\tfrac12x^2(1-\sqrt g\,x)^2$ の基底エネルギー $E_0(g)=\sum_n E_n g^n$ は、Bender–Wu 以来の大次数解析により
+$$E_n\sim-\frac{3^{n+1}}{\pi}\,n!\Bigl(1-\frac{53}{18n}+\cdots\Bigr)$$
+となります <a href="#r-zjj">[6]</a>。非交代級数なので Borel 総和不可能で、(2.1) から $\operatorname{Im}\mathcal S_\pm E_0=\mp g^{-1}e^{-1/(3g)}$ という曖昧さが生じます。$1/3=2S_I$（$S_I=1/(6g)$ はインスタントン作用）なので、これは<b>インスタントン–反インスタントン対 $[I\bar I]$</b> の作用です。</p>
+<p>一方、$[I\bar I]$ 配位の寄与を計算すると、両者の間の引力のために準ゼロモード（分離 $\tau$）積分がそのままでは定義できません。BZJ の処方では $g\to-g$ で計算して解析接続し、
+$$E_{[I\bar I]}=\frac{1}{\pi g}e^{-1/(3g)}\Bigl[\ln\Bigl(-\frac2g\Bigr)+\gamma_E+O(g)\Bigr]$$
+を得ます（Zinn-Justin–Jentschura の規約 <a href="#r-zjj">[6]</a>）。$\ln(-1)=\pm i\pi$ の曖昧さは摂動論の曖昧さとちょうど逆符号で、両者は相殺します（演習 5）。</p>
+
+<div class="box"><span class="label">P/NP 関係</span>
+Dunne–Ünsal <a href="#r-du-wkb">[11]</a> は一様 WKB を使い、多くの 1 次元系で非摂動的なゆらぎ因子が摂動的エネルギー $E(B,g)$（$B$ は準位）だけから決まることを示しました。摂動論が非摂動効果を「すべて知っている」ことの、最も具体的な実例です。
+</div>
+
+<h3>Lefschetz シンブルと複素鞍点</h3>
+<p>有限次元積分 $Z=\int_{\mathbb R}dx\,e^{-S(x)/g}$ を考えます。$S$ の各鞍点 $z_\sigma$ から、勾配流
+$$\frac{dz}{ds}=\overline{\frac{\partial (S/g)}{\partial z}}$$
+で $\operatorname{Re}(S/g)$ が増加する方向に伸びる曲線が Lefschetz シンブル $\mathcal J_\sigma$ です。シンブル上では $\operatorname{Im}(S/g)$ が一定なので、積分は振動しません。元の積分路は
+$$\mathbb R=\sum_\sigma n_\sigma\,\mathcal J_\sigma,\qquad Z=\sum_\sigma n_\sigma\, e^{-S(z_\sigma)/g}\,\Phi_\sigma(g)$$
+と分解され、交差数 $n_\sigma$ は $\arg g$ を動かすと Stokes 線で不連続に変わります。<b>これが Stokes 現象の幾何学的な実体</b>で、$n_\sigma$ がトランスシリーズ・パラメータ $\sigma$ の役割を果たします <a href="#r-cdu">[10]</a>, <a href="#r-witten">[9]</a>。</p>
+<p>経路積分でも同じ構造があり、Behtash–Dunne–Schäfer–Sulejmanpasic–Ünsal <a href="#r-bdssu">[14]</a> は超対称量子力学で<b>実パラメータでも複素鞍点が不可欠</b>なこと、複素鞍点の多価性が「隠れた位相角（hidden topological angle）」として位相 $e^{\pm i\pi\zeta}$ を与えることを示しました。超対称性のある場合に基底エネルギーがゼロになるのは、実バイオンと複素バイオンの寄与が打ち消すためです。$\mathbb{CP}^{N-1}$ 量子力学での具体的な計算は Fujimori–Kamata–Misumi–Nitta–Sakai <a href="#r-fkmns">[15]</a> にあります。</p>
+
+<!-- ============================================================ -->
+<h2 id="s5"><span class="no">§5</span>ゲージ理論：インスタントンとリノーマロン</h2>
+<h3>二種類の発散の源</h3>
+<p>4 次元ゲージ理論では、摂動級数の階乗的発散に二つの源があります。</p>
+<ol>
+  <li><b>配位数の増大</b>：ファインマン図の数が $n!$ で増えることによるもの。これは $[I\bar I]$ のような有限作用の鞍点に対応し、BPST インスタントンの作用 $S_I=8\pi^2/g^2$ から、Borel 平面の $t=2\cdot8\pi^2=16\pi^2$ に特異点が現れます。</li>
+  <li><b>リノーマロン</b>：特定の図（例えばグルーオン伝播関数にフェルミオン・ループの鎖を挿入した「バブル鎖」）の運動量積分が、低運動量（IR）または高運動量（UV）領域から $n!$ を生むもの。半古典的な鞍点に対応しません。</li>
+</ol>
+
+<h3>リノーマロンの位置</h3>
+<p>次元 $d$ の演算子の凝縮 $\langle\mathcal O_d\rangle\propto\Lambda^d$ は、1 ループで
+$$\Lambda^d=\mu^d\exp\Bigl(-\frac{8\pi^2 d}{\beta_0 g^2}\Bigr)$$
+なので、$t=8\pi^2d/\beta_0$、すなわち $u=d/2$ に Borel 特異点が対応します。Adler 関数では IR リノーマロンが $u=2,3,\dots$（正の実軸、Borel 総和を妨げる）、UV リノーマロンが $u=-1,-2,\dots$（負の実軸）に現れます。一方、$[I\bar I]$ は $u=\beta_0$ にあります。</p>
+
+<figure>
+  <div class="figwrap">
+  <svg viewBox="0 0 640 230" role="img" aria-labelledby="borel-title">
+    <title id="borel-title">QCD の Borel 平面（u 平面）の模式図</title>
+    <!-- scale: u -> x = 120 + 60u for u in [-2,4]; break; u = beta0 drawn at x = 560 -->
+    <line class="axis" x1="20" y1="120" x2="620" y2="120"/>
+    <line class="axis" x1="120" y1="30" x2="120" y2="210"/>
+    <line class="brk" x1="440" y1="112" x2="452" y2="128"/>
+    <line class="tick" x1="436" y1="112" x2="444" y2="128"/>
+    <line class="tick" x1="448" y1="112" x2="456" y2="128"/>
+    <text class="lbl" x="126" y="42">Im u</text>
+    <text class="lbl" x="598" y="140">Re u</text>
+    <!-- ticks -->
+    <g>
+      <text class="lbl" x="116" y="140">0</text>
+      <text class="lbl" x="52" y="140">−1</text>
+      <text class="lbl" x="176" y="140">1</text>
+      <text class="lbl" x="236" y="140">2</text>
+      <text class="lbl" x="296" y="140">3</text>
+      <text class="lbl" x="356" y="140">4</text>
+      <text class="lbl" x="548" y="140">β₀</text>
+    </g>
+    <!-- UV renormalons -->
+    <circle class="uv" cx="60" cy="120" r="5"/>
+    <!-- IR renormalons -->
+    <circle class="ir" cx="240" cy="120" r="5.5"/>
+    <circle class="ir" cx="300" cy="120" r="5.5"/>
+    <circle class="ir" cx="360" cy="120" r="5.5"/>
+    <text class="lbl" x="400" y="125">…</text>
+    <!-- instanton–anti-instanton -->
+    <rect class="inst" x="553" y="114" width="12" height="12" transform="rotate(45 559 120)"/>
+    <!-- lateral paths -->
+    <path class="path" d="M120 120 Q 180 88 260 92 L 610 92"/>
+    <path class="path" d="M120 120 Q 180 152 260 148 L 610 148"/>
+    <text class="lbl" x="472" y="84">𝒮₊</text>
+    <text class="lbl" x="472" y="168">𝒮₋</text>
+    <!-- labels -->
+    <text class="lbl-ink" x="20" y="100">UV リノーマロン</text>
+    <text class="lbl-ink" x="200" y="200">IR リノーマロン u = 2, 3, …</text>
+    <text class="lbl-ink" x="500" y="200">[I Ī]  u = β₀</text>
+    <line class="tick" x1="250" y1="186" x2="240" y2="128"/>
+    <line class="tick" x1="548" y1="186" x2="558" y2="130"/>
+  </svg>
+  </div>
+  <figcaption>図 1. QCD の Adler 関数の Borel 平面（模式図、$u&gt;4$ は省略）。正の実軸上の特異点が上下の横 Borel 和 $\mathcal S_\pm$ の差を生む。純 SU(3) ゲージ理論では $\beta_0=11$ なので、$[I\bar I]$ は IR リノーマロン $u=2$ よりはるかに遠い。</figcaption>
+</figure>
+
+<div class="box warn"><span class="label">'t Hooft のリノーマロン問題</span>
+量子力学では Borel 平面の特異点はすべて半古典的な鞍点に対応し、BZJ 機構で曖昧さが相殺しました。ところが 4 次元 QCD では、原点に最も近い特異点（$u=2$ の IR リノーマロン）に対応する有限作用の古典解が知られていません。リノーマロンの曖昧さを打ち消す「非摂動セクター」は何か、というのが 't Hooft（1979）以来の問題です。
+</div>
+
+<!-- ============================================================ -->
+<h2 id="s6"><span class="no">§6</span>QCD への応用</h2>
+<h3>6.1 OPE と凝縮による曖昧さの相殺</h3>
+<p>Euclid 運動量 $Q$ での相関関数を演算子積展開（OPE）で書くと
+$$D(Q^2)=\sum_n r_n\,\alpha_s^{n+1}(Q)+C_{G}\frac{\langle \tfrac{\alpha_s}{\pi}G^2\rangle}{Q^4}+\cdots$$
+となります。$u=2$ のリノーマロンによる摂動部分の曖昧さは $\propto\Lambda^4/Q^4$ で、グルーオン凝縮の項とまったく同じ $Q$ 依存性をもちます。凝縮そのものが曖昧さをもつ（摂動部分の定義に依存する）と考えれば、和は曖昧さなく定義できます。これが QCD における「リサージェンス的」な見方で、OPE は QCD のトランスシリーズと見なせます <a href="#r-beneke">[7]</a>。</p>
+<ul>
+  <li><b>重クォークの極質量</b>には $u=1/2$ のリノーマロンがあり、$\delta m_{\rm pole}\sim\Lambda_{\rm QCD}$ の不定性をもちます。精密計算で $\overline{\rm MS}$ 質量や「リノーマロン・フリー」な質量定義が使われる理由です <a href="#r-beneke">[7]</a>。</li>
+  <li>リノーマロンを差し引いて OPE を改善する実践的な手法も研究されています（例：<a href="#r-dual">[22]</a>）。</li>
+  <li>Dunne–Shifman–Ünsal <a href="#r-dsu">[16]</a> は「リノーマロンと凝縮の共謀」を逆に使い、超対称性の程度が異なる理論で Borel 特異点の構造を予言しました。凝縮が消える理論では対応するリノーマロンも消えるはずです。</li>
+</ul>
+
+<h3>6.2 $\mathbb R^3\times S^1$ へのコンパクト化とバイオン</h3>
+<p>強結合の QCD を直接扱う代わりに、一方向を半径 $L$ の円にコンパクト化し、中心対称性を保ったまま（随伴フェルミオンの周期境界条件、または変形を加えて）$L\Lambda\ll1$ の弱結合領域に持っていく戦略があります。中心対称性が保たれていれば、小さい $L$ の物理が大きい $L$ の物理と相転移なしにつながる（<b>断熱連続性</b>）と期待されます <a href="#r-unsal">[17]</a>, <a href="#r-uy">[18]</a>。</p>
+<p>この領域では Polyakov ループの期待値がゲージ群を $U(1)^{N-1}$ に破り、BPST インスタントンは $N$ 個の<b>モノポール・インスタントン</b>（作用 $S_I/N$）に分解します。</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>配位</th><th>作用</th><th>Borel 位置 $t$</th><th>役割</th></tr></thead>
+  <tbody>
+    <tr><td>モノポール・インスタントン $\mathcal M_i$</td><td>$S_I/N$</td><td>—</td><td>フェルミオン・ゼロモードを伴う</td></tr>
+    <tr><td>磁気バイオン $[\mathcal M_i\bar{\mathcal M}_{i+1}]$</td><td>$2S_I/N$</td><td>—（磁荷をもつ）</td><td>質量ギャップと閉じ込め <a href="#r-unsal">[17]</a></td></tr>
+    <tr><td>中性バイオン $[\mathcal M_i\bar{\mathcal M}_i]$</td><td>$2S_I/N$</td><td>$16\pi^2/N$</td><td>虚部の曖昧さ、真空エネルギー</td></tr>
+    <tr><td>BPST $[I\bar I]$</td><td>$2S_I$</td><td>$16\pi^2$</td><td>4 次元の通常の寄与</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Argyres–Ünsal <a href="#r-au">[1]</a>, <a href="#r-au-prl">[2]</a> は、中性バイオンに伴う Borel 特異点が BPST の $[I\bar I]$ より<b>因子 $N$ だけ原点に近い</b>こと、そして 4 次元の IR リノーマロンと同じく $1/N$ でスケールすることを指摘し、両者が $L$ を変えるとつながるという描像を提案しました。これは 't Hooft の問題に対する半古典的な解答の候補です。</p>
+<div class="box warn"><span class="label">現状の注意</span>
+この同定は確立していません。Ashie–Morikawa–Suzuki–Takaura–Takeuchi <a href="#r-amstt">[19]</a>, <a href="#r-amst">[20]</a> は、$\mathbb Z_N$ ツイスト境界条件の $SU(N)$ QCD(adj.) を大 $\beta_0$ 近似で調べ、コンパクト化しても $u=2$ のリノーマロンが残ること、それがツイストされた KK 運動量をもつ W ボソンから来ることを示しました。つまりコンパクト化した理論でもリノーマロンはバイオンとは別に存在しうる、ということです。$\mathbb{CP}^{N-1}$ 模型についても、バイオンと IR リノーマロンの関係は Fujimori らの研究 <a href="#r-fkmns2">[21]</a> で検討されています。
+</div>
+
+<h3>6.3 2 次元模型という実験室</h3>
+<p>2 次元の $\mathbb{CP}^{N-1}$ 模型は、漸近的自由性、動的質量生成、インスタントン、θ 真空、リノーマロンを QCD と共有し、はるかに扱いやすい模型です。</p>
+<ul>
+  <li>Dunne–Ünsal <a href="#r-du-cpn">[8]</a> は $\mathbb R\times S^1$ 上で twisted 境界条件を課し、作用 $S_I/N$ のキンク・インスタントン、$2S_I/N$ のバイオンを分類し、リノーマロンの曖昧さと中性バイオンの曖昧さを結びつけました。</li>
+  <li>Mariño–Reis <a href="#r-mr">[13]</a> は可積分性（熱力学的 Bethe 仮説）を使い、O(N) 非線形シグマ模型、Gross–Neveu 模型、主カイラル場などで基底エネルギーの摂動級数を非常に高次まで厳密に計算しました。大次数の振る舞いはリノーマロンの予言と一致し、次の補正が β 関数の最初の二係数で決まることも確認されています。可積分場の理論でのリサージェンスの講義 <a href="#r-lect-int">[24]</a> も参照。</li>
+</ul>
+
+<h3>6.4 未解決の問題</h3>
+<ul>
+  <li>4 次元 QCD で IR リノーマロンに対応する非摂動セクターの正体（半古典的な配位なのか、それとも OPE の凝縮として以上の意味をもたないのか）。</li>
+  <li>経路積分のシンブル分解を場の理論で厳密に定義すること（無限次元の Picard–Lefschetz 理論）。</li>
+  <li>格子 QCD の高次摂動係数（数値的確率摂動論など）とリノーマロン予言の定量的な比較。</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="s7"><span class="no">§7</span>演習問題</h2>
+<p>難易度は <span class="mono">基礎</span>・<span class="mono">標準</span>・<span class="mono">発展</span> の 3 段階です。解答は折りたたんであります。</p>
+
+<div class="ex">
+<h3>演習 1. Euler 級数 <span class="lvl">基礎</span></h3>
+<p>$f(g)=\sum_{n\ge0}(-1)^n n!\,g^{n+1}$ について、</p>
+<ol type="a">
+  <li>形式的に $g^2f'(g)+f(g)=g$ を満たすことを示せ。</li>
+  <li>Borel 和が $\mathcal Sf(g)=\int_0^\infty dt\,\frac{e^{-t/g}}{1+t}$ であることを示し、これが (a) の微分方程式の解であることを確かめよ。</li>
+  <li>$g=0.1$ で級数を何項で打ち切ると誤差が最小になるか。その誤差の大きさを $e^{-1/g}$ と比べよ。</li>
+</ol>
+<details><summary>解答を表示</summary><div>
+<p>(a) $g^2f'=\sum(-1)^n n!(n+1)g^{n+2}=\sum_{m\ge1}(-1)^{m-1}m!\,g^{m+1}=-(f-g)$。</p>
+<p>(b) $\mathcal B(t)=\sum(-1)^nt^n=1/(1+t)$。$\mathcal Sf$ を $g$ で微分し、部分積分すると $g^2\partial_g\mathcal Sf=\int dt\,t\,e^{-t/g}/(1+t)=g-\mathcal Sf$。</p>
+<p>(c) 項の大きさ $n!\,g^{n+1}$ は $n\approx1/g=10$ で最小になります（最適打ち切り）。Stirling の公式から最小項は $\sim\sqrt{2\pi/g}\,e^{-1/g}$ 程度で、打ち切り誤差は非摂動的な大きさ $e^{-1/g}$ と同じオーダーです。<b>漸近級数の精度の限界は、非摂動効果の大きさそのもの</b>です。</p>
+</div></details>
+</div>
+
+<div class="ex">
+<h3>演習 2. 横 Borel 和と Stokes ジャンプ <span class="lvl">基礎</span></h3>
+<p>$f(g)=\sum_{n\ge0}n!\,g^{n+1}$ とする。</p>
+<ol type="a">
+  <li>$\mathcal S_+f-\mathcal S_-f=2\pi i\,e^{-1/g}$ を示せ。</li>
+  <li>$f$ は形式的に $g^2f'-f=-g$ を満たす。$e^{-1/g}$ が同次方程式の解であることを示し、一般解をトランスシリーズ $F=\mathcal S_\pm f+\sigma e^{-1/g}$ として書け。$\mathcal S_+$ と $\mathcal S_-$ で同じ関数を表すには $\sigma$ をどう変えればよいか。</li>
+  <li>一般の $a_n=KA^{-n}n!$ について (2.1) を導け。</li>
+</ol>
+<details><summary>解答を表示</summary><div>
+<p>(a) $\mathcal B(t)=1/(1-t)$。上の積分路から下の積分路を引くと $t=1$ を時計回りに一周する閉路になるので、差は $-2\pi i\,\mathrm{Res}_{t=1}\bigl[e^{-t/g}/(1-t)\bigr]=-2\pi i\,(-e^{-1/g})=2\pi i\,e^{-1/g}$。（数値でも $g=0.2$ で $0.04234i$ と一致することを確認できます。）</p>
+<p>(b) $g^2\partial_g e^{-1/g}=e^{-1/g}$。$F_\pm=\mathcal S_\pm f+\sigma_\pm e^{-1/g}$ が等しくなる条件は $\sigma_-=\sigma_++2\pi i$。つまり Stokes 線を横切るとき $\sigma$ が Stokes 定数 $S_1=2\pi i$ だけジャンプします。</p>
+<p>(c) $\mathcal B(t)=KA/(A-t)$、留数 $-KA\,e^{-A/g}$ に (a) と同じ議論を適用。</p>
+</div></details>
+</div>
+
+<div class="ex">
+<h3>演習 3. 0 次元 $\phi^4$ 理論 <span class="lvl">標準</span></h3>
+<p>§1 の $Z(g)$ について、</p>
+<ol type="a">
+  <li>$c_n=(-1/4)^n(4n-1)!!/n!$ を示し、比 $c_{n+1}/c_n\to-4n$ を確かめよ。</li>
+  <li>Borel 変換 $\sum c_nt^n/n!$ の特異点の位置を求め、$g&lt;0$ のときの鞍点 $x^2=1/|g|$ の作用と比べよ。</li>
+  <li>$g&lt;0$ で $Z$ を解析接続すると $\operatorname{Im}Z(-|g|\pm i0)\approx\mp\frac{1}{\sqrt2}e^{-1/(4|g|)}$ となる。分散関係を使って $c_n\simeq(-4)^n\Gamma(n)/(\pi\sqrt2)$ を導け。</li>
+</ol>
+<details><summary>解答を表示</summary><div>
+<p>(a) $\int dx\,x^{4n}e^{-x^2/2}/\sqrt{2\pi}=(4n-1)!!$ より。比は $-\frac14\frac{(4n+3)(4n+1)}{n+1}\to-4n$。</p>
+<p>(b) 収束半径は $1/4$、特異点は $t=-1/4$。$S(x)=x^2/2+gx^4/4$ は $x^2=-1/g$ で $S=-1/(4g)=+1/(4|g|)$。特異点の位置 $|t|$ が鞍点の作用に一致します。$g&gt;0$ では負の実軸上なので Borel 総和可能です。</p>
+<p>(c) $Z$ は負の実軸に切断をもつ。$c_n=\frac{1}{2\pi i}\oint\frac{Z(g)}{g^{n+1}}dg$ の積分路を切断に巻き付けると $c_n=\frac{1}{\pi}\int_{-\infty}^0\frac{\operatorname{Im}Z(g+i0)}{g^{n+1}}dg$。$g=-s$ を代入し $\int_0^\infty ds\,s^{-n-1}e^{-1/(4s)}=4^n\Gamma(n)$ を使うと、符号を含めて $c_n\simeq(-4)^n\Gamma(n)/(\pi\sqrt2)$。各鞍点（$x=\pm1/\sqrt{|g|}$）での 2 階微分は $-2$ で、それぞれの半シンブルが $\frac{i}{2}\cdot\frac{1}{\sqrt2}e^{-1/(4|g|)}$ を与えます。</p>
+</div></details>
+</div>
+
+<div class="ex">
+<h3>演習 4. 準ゼロモード積分と隠れた位相角 <span class="lvl">標準</span></h3>
+<p>$[I\bar I]$ の分離 $\tau$ についての積分の玩具模型として
+$$J(\lambda)=\int_0^\infty d\tau\,e^{-\epsilon\tau}\exp\bigl(\lambda e^{-\tau}\bigr),\qquad \epsilon&gt;0$$
+を考える（$\lambda&gt;0$ が引力、$\lambda&lt;0$ が斥力）。</p>
+<ol type="a">
+  <li>$\lambda=-\mu&lt;0$ のとき、$\mu\to\infty$ で $J\simeq\mu^{-\epsilon}\Gamma(\epsilon)$ を示せ。</li>
+  <li>$\mu\to\lambda e^{\pm i\pi}$ と解析接続して、引力の場合の実部・虚部を求めよ。</li>
+  <li>$\epsilon\to0$ で虚部が $\mp\pi$ に近づくことを示し、§4 の $\ln(-2/g)$ の虚部との関係を説明せよ。また $\epsilon$ をフェルミオンの寄与 $\zeta$ に置き換えたとき、位相 $e^{\mp i\pi\zeta}$ が何を意味するか論ぜよ。</li>
+</ol>
+<details><summary>解答を表示</summary><div>
+<p>(a) $x=e^{-\tau}$ とおくと $J=\int_0^1dx\,x^{\epsilon-1}e^{-\mu x}=\mu^{-\epsilon}\gamma(\epsilon,\mu)=\mu^{-\epsilon}\Gamma(\epsilon)+O(e^{-\mu})$。</p>
+<p>(b) $(-\lambda)^{-\epsilon}\to\lambda^{-\epsilon}e^{\mp i\pi\epsilon}$。$\operatorname{Re}=\lambda^{-\epsilon}\Gamma(\epsilon)\cos\pi\epsilon$、$\operatorname{Im}=\mp\lambda^{-\epsilon}\Gamma(\epsilon)\sin\pi\epsilon$。</p>
+<p>(c) $\Gamma(\epsilon)\sin\pi\epsilon\to\pi$。$\epsilon\to0$ で $\lambda^{-\epsilon}\Gamma(\epsilon)=1/\epsilon-\ln\lambda-\gamma_E+\cdots$ となり、発散する $1/\epsilon$（1 インスタントンの 2 乗に吸収）を除くと $-\ln(-\lambda)-\gamma_E$ が残ります。これが $\ln(-2/g)+\gamma_E$ の構造の起源で、虚部 $\pm i\pi$ が BZJ の曖昧さです。$\epsilon\to\zeta$（フェルミオン数）とした場合の位相 $e^{\mp i\pi\zeta}$ は、複素化した準ゼロモード積分が拾う<b>隠れた位相角</b>で、$\zeta=1$（超対称）では $\cos\pi\zeta=-1$ となって実部の符号が反転し、真空エネルギーへの寄与の相殺を説明します <a href="#r-bdssu">[14]</a>。</p>
+</div></details>
+</div>
+
+<div class="ex">
+<h3>演習 5. 二重井戸での曖昧さの相殺 <span class="lvl">標準</span></h3>
+<p>§4 の大次数公式 $E_n\sim-\frac{3^{n+1}}{\pi}n!$ と $[I\bar I]$ の寄与の式を使い、先頭次数で $\operatorname{Im}\bigl[\mathcal S_\pm E_0+E_{[I\bar I],\pm}\bigr]=0$ を確かめよ。ただし $E_0=g^{-1}\sum E_ng^{n+1}$ に注意し、$\ln(-2/g)=\ln(2/g)\pm i\pi$ とせよ。</p>
+<details><summary>解答を表示</summary><div>
+<p>(2.1) で $K=-3/\pi$、$A=1/3$ とすると $\pi KA=-1$。よって $\operatorname{Im}\mathcal S_\pm E_0=\mp g^{-1}e^{-1/(3g)}$。一方 $\operatorname{Im}E_{[I\bar I],\pm}=\frac{1}{\pi g}e^{-1/(3g)}\cdot(\pm\pi)=\pm g^{-1}e^{-1/(3g)}$。和はゼロです。このとき、<b>摂動級数の大次数の定数 $3/\pi$ と、1 インスタントン振幅の 2 乗の規格化が一致している</b>ことが本質で、(3.2) のリサージェンス関係の最も簡単な実例になっています。</p>
+</div></details>
+</div>
+
+<div class="ex">
+<h3>演習 6. 0 次元二重井戸のシンブル <span class="lvl">標準</span></h3>
+<p>$Z(g)=\int_{\mathbb R}dx\,e^{-V(x)/g}$、$V(x)=\frac12x^2(1-x)^2$ とする。</p>
+<ol type="a">
+  <li>鞍点、その作用、2 階微分を求めよ。</li>
+  <li>$x=0$ まわりの摂動級数の Borel 特異点が $t=1/32$ にあると予想される理由を述べよ。Borel 総和可能か。</li>
+  <li>$\arg g=0^\pm$ で積分路 $\mathbb R$ のシンブル分解がどう変わるか、図を描いて説明せよ。</li>
+</ol>
+<details><summary>解答を表示</summary><div>
+<p>(a) $V'=x(1-x)(1-2x)$ より鞍点は $x=0,\,1/2,\,1$。$V(0)=V(1)=0$、$V(1/2)=1/32$。$V''=(1-2x)^2-2x(1-x)$ より $V''(0)=V''(1)=1$、$V''(1/2)=-1/2$。</p>
+<p>(b) 摂動論の特異点は他の鞍点との作用差に現れます。$x=1/2$ との差 $1/32$ は正なので、正の実軸上に特異点があり、Borel 総和不可能です。（$x=1$ は作用差 0 なので Borel 平面の特異点を与えません。）</p>
+<p>(c) $g$ が実数のとき、$x=0$ から出る下降シンブル（$\mathcal J_0$）は実軸に沿って $x=1/2$ の鞍点に到達してしまいます（Stokes 線）。$\arg g$ を少しずらすと $\mathcal J_0$ は $x=1/2$ を上または下に避け、$\mathbb R=\mathcal J_0+\mathcal J_1\pm\mathcal J_{1/2}$ のように虚軸方向のシンブル $\mathcal J_{1/2}$ の寄与が符号を変えて現れます。$\mathcal J_{1/2}$ 上の積分は $\propto i\sqrt{4\pi g}\,e^{-1/(32g)}$ の純虚数で、$\mathcal S_\pm$ の虚部を打ち消します。この例は Cherman–Dorigoni–Ünsal <a href="#r-cdu">[10]</a> の議論の最も簡単な版です。</p>
+</div></details>
+</div>
+
+<div class="ex">
+<h3>演習 7. 凝縮とリノーマロンの位置 <span class="lvl">基礎</span></h3>
+<ol type="a">
+  <li>1 ループ β 関数から $\Lambda=\mu\,e^{-8\pi^2/(\beta_0g^2)}$ を導け。</li>
+  <li>次元 $d$ の凝縮に対応する Borel 特異点が $u=d/2$ にあることを示せ。</li>
+  <li>グルーオン凝縮（$d=4$）、重クォーク極質量（$\delta m\propto\Lambda$）はそれぞれ $u$ のいくつに対応するか。</li>
+</ol>
+<details><summary>解答を表示</summary><div>
+<p>(a) $d(1/g^2)/d\ln\mu=\beta_0/(8\pi^2)$ を積分し、$1/g^2(\Lambda)=0$ となる点を $\Lambda$ とする。</p>
+<p>(b) $\Lambda^d=\mu^de^{-8\pi^2d/(\beta_0g^2)}$ は $e^{-t/g^2}$ で $t=8\pi^2d/\beta_0$、$u=\beta_0t/(16\pi^2)=d/2$。</p>
+<p>(c) グルーオン凝縮は $u=2$、極質量は $u=1/2$。</p>
+</div></details>
+</div>
+
+<div class="ex">
+<h3>演習 8. バブル鎖とリノーマロン <span class="lvl">標準</span></h3>
+<p>バブル鎖の $n$ 次の寄与が、運動量積分
+$$I^{\rm IR}_n=\int_0^{\mu^2}\frac{dk^2}{\mu^2}\,\frac{k^2}{\mu^2}\Bigl[a\ln\frac{\mu^2}{k^2}\Bigr]^n,\qquad a=\frac{\beta_0g^2}{16\pi^2}$$
+で与えられるとする（低運動量で $k^2$ に比例する Adler 関数型の重み）。</p>
+<ol type="a">
+  <li>$I^{\rm IR}_n=a^n\,n!/2^{n+1}$ を示せ。</li>
+  <li>この級数の Borel 特異点が $u=2$ にあり、符号が交代しないことを示せ。</li>
+  <li>高運動量側 $I^{\rm UV}_n=\int_{\mu^2}^\infty\frac{dk^2\,\mu^2}{k^4}\bigl[-a\ln\frac{k^2}{\mu^2}\bigr]^n$ について同様に計算し、$u=-1$ の交代的な特異点を得よ。</li>
+</ol>
+<details><summary>解答を表示</summary><div>
+<p>(a) $k^2=\mu^2e^{-s}$ とおくと $I^{\rm IR}_n=\int_0^\infty ds\,e^{-2s}(as)^n=a^nn!/2^{n+1}$。</p>
+<p>(b) $\sum_n I_n^{\rm IR}$ の係数は $\frac12\bigl(\frac{\beta_0}{32\pi^2}\bigr)^nn!\,g^{2n}$。$g^2$ について Borel 変換すると $\propto1/(1-\beta_0t/(32\pi^2))$ で $t=32\pi^2/\beta_0$、すなわち $u=2$。係数はすべて正で非交代。運動量 $k\sim\mu e^{-n/2}$ という<b>低運動量</b>領域が $n$ 次を支配しており、摂動論が強結合領域を覗いていることがわかります。</p>
+<p>(c) $k^2=\mu^2e^{s}$ で $I^{\rm UV}_n=\int_0^\infty ds\,e^{-s}(-as)^n=(-a)^nn!$。$t=-16\pi^2/\beta_0$、$u=-1$。</p>
+</div></details>
+</div>
+
+<div class="ex">
+<h3>演習 9. 't Hooft の問題を数で見る <span class="lvl">基礎</span></h3>
+<ol type="a">
+  <li>純 $SU(N)$ ゲージ理論で、$[I\bar I]$ と $u=2$ の IR リノーマロンの Borel 平面での位置 $t$ を比べよ。$N=3$ ではどちらが原点に近いか。</li>
+  <li>$N\to\infty$（'t Hooft 結合 $\lambda=g^2N$ 固定）では、それぞれの非摂動効果の大きさ $e^{-t/g^2}$ はどう振る舞うか。</li>
+</ol>
+<details><summary>解答を表示</summary><div>
+<p>(a) $[I\bar I]$：$t=16\pi^2\approx158$。リノーマロン：$t=32\pi^2/\beta_0=96\pi^2/(11N)$、$N=3$ で $\approx28.7$。リノーマロンが 5 倍以上近い。$u$ で言えば $[I\bar I]$ は $u=\beta_0=11$。</p>
+<p>(b) $e^{-16\pi^2/g^2}=e^{-16\pi^2N/\lambda}$ は $N\to\infty$ で指数関数的に消えますが、リノーマロンの $e^{-96\pi^2/(11\lambda)}$ は $N$ によりません。ラージ N では<b>インスタントンは主要な非摂動効果になり得ない</b>のに、リノーマロンは残ります。</p>
+</div></details>
+</div>
+
+<div class="ex">
+<h3>演習 10. コンパクト化とバイオン <span class="lvl">発展</span></h3>
+<p>$SU(N)$ に $n_f$ 個の随伴 Weyl フェルミオンを加えた QCD(adj) を $\mathbb R^3\times S^1$ 上で考える。4 次元の 1 ループ係数は $\beta_0=\frac{N}{3}(11-2n_f)$ である。</p>
+<ol type="a">
+  <li>中性バイオンの Borel 位置 $t=16\pi^2/N$ を $u$ で表せ。$N$ に依存するか。</li>
+  <li>$n_f=1$（$\mathcal N=1$ SYM）, $2,3,4$ について $u$ を計算し、4 次元の $u=2$ と比べよ。</li>
+  <li>Ashie らの結果 <a href="#r-amstt">[19]</a> を踏まえ、「中性バイオン＝IR リノーマロン」という同定について論ぜよ（自由記述）。</li>
+</ol>
+<details><summary>解答を表示</summary><div>
+<p>(a) $u=\beta_0t/(16\pi^2)=\beta_0/N=(11-2n_f)/3$。$N$ に依存しないという点では IR リノーマロンと同じ性質です。</p>
+<p>(b) $n_f=1,2,3,4$ で $u=3,\ 7/3,\ 5/3,\ 1$。いずれも $u=2$ とは一致しません。小さい $L$ では有効理論の β 関数が 4 次元のものと異なることも考慮する必要があり、単純な数値の比較では同定は決まりません。</p>
+<p>(c) 考察のポイント：(i) Ashie らは大 $\beta_0$ 近似で、コンパクト化後もツイストされた KK 運動量をもつ W ボソンの寄与として $u=2$ のリノーマロンが残ることを示した。(ii) するとコンパクト化した理論の Borel 平面には、バイオン由来の特異点と摂動的なリノーマロンの両方が存在しうる。(iii) 超対称な場合には Dunne–Shifman–Ünsal <a href="#r-dsu">[16]</a> の議論との整合性も問題になる。結論は開いた問題です。</p>
+</div></details>
+</div>
+
+<div class="ex">
+<h3>演習 11. 重クォーク極質量の曖昧さ <span class="lvl">基礎</span></h3>
+<p>極質量 $m_{\rm pole}$ と $\overline{\rm MS}$ 質量 $\bar m$ の関係 $m_{\rm pole}=\bar m(1+\sum r_n\alpha_s^{n+1})$ に $u=1/2$ のリノーマロンがあるとき、極質量の曖昧さ $\delta m_{\rm pole}$ が $\bar m$ によらず $\Lambda_{\rm QCD}$ の程度であることを次元解析で示せ。トップクォーク質量の精密決定にとって何を意味するか。</p>
+<details><summary>解答を表示</summary><div>
+<p>$u=1/2$ の曖昧さは $\bar m\,e^{-8\pi^2/(\beta_0g^2(\bar m))}=\bar m\cdot\Lambda/\bar m=\Lambda$ に比例します。重クォークの質量がどれほど大きくても極質量は $O(\Lambda_{\rm QCD})$（数百 MeV 程度）より精密には定義できません。そのため精密計算では $\overline{\rm MS}$ 質量や、リノーマロンを持たない短距離質量が使われます <a href="#r-beneke">[7]</a>。</p>
+</div></details>
+</div>
+
+<div class="ex">
+<h3>演習 12. Borel–Padé 和の数値実験 <span class="lvl">発展</span></h3>
+<p>演習 3 の $Z(g)$ について、30 次までの係数から Borel 変換の Padé 近似を作り、Laplace 積分で $Z(g)$ を再構成せよ。$g=0.1,\,1,\,5$ で厳密解・単純な打ち切りと比較せよ。</p>
+<details><summary>解答を表示</summary><div>
+<pre><code>import mpmath as mp
+mp.mp.dps = 40
+N = 30
+c = [(mp.mpf(-1)/4)**n * mp.fac2(4*n-1) / mp.factorial(n) for n in range(N)]
+b = [c[n] / mp.factorial(n) for n in range(N)]          # Borel 係数
+p, q = mp.pade(b, N//2, N//2 - 1)
+B = lambda t: mp.polyval(p[::-1], t) / mp.polyval(q[::-1], t)
+
+def exact(g):
+    z = 1/(8*g)
+    return mp.e**z * mp.besselk(mp.mpf(1)/4, z) / mp.sqrt(4*mp.pi*g)
+
+for g in [mp.mpf('0.1'), mp.mpf(1), mp.mpf(5)]:
+    bp = mp.quad(lambda t: mp.e**(-t) * B(g*t), [0, mp.inf])  # Z = ∫dt e^{-t} B(g t)
+    trunc = sum(c[n]*g**n for n in range(6))
+    print(float(g), mp.nstr(bp, 12), mp.nstr(exact(g), 12), mp.nstr(trunc, 6))</code></pre>
+<p>実行結果：</p>
+<div class="tablewrap"><table>
+<thead><tr><th>$g$</th><th>Borel–Padé</th><th>厳密解</th><th>6 項打ち切り</th></tr></thead>
+<tbody>
+<tr><td>0.1</td><td>0.944501801674</td><td>0.944501801674</td><td>0.910452</td></tr>
+<tr><td>1</td><td>0.772052124751</td><td>0.772052177853</td><td>−5021.82</td></tr>
+<tr><td>5</td><td>0.595339193864</td><td>0.595411432969</td><td>−1.64×10⁷</td></tr>
+</tbody></table></div>
+<p>打ち切った級数は $g\gtrsim1$ でまったく意味をなさないのに、Borel–Padé は強結合 $g=5$ でも 4 桁の精度を保ちます。発展課題：$g&lt;0$ にして Padé 近似の極が正の実軸上に並ぶ様子を観察し、横 Borel 和の虚部が $\mp\frac{1}{\sqrt2}e^{-1/(4|g|)}$ に近づくことを確かめよ。</p>
+</div></details>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="s8"><span class="no">§8</span>参考文献（arXiv）</h2>
+<ol class="refs">
+  <li id="r-au">P. Argyres, M. Ünsal, “The semi-classical expansion and resurgence in gauge theories: new perturbative, instanton, bion, and renormalon effects,” JHEP 08 (2012) 063. <a href="https://arxiv.org/abs/1206.1890">arXiv:1206.1890</a></li>
+  <li id="r-au-prl">P. Argyres, M. Ünsal, “A semiclassical realization of infrared renormalons,” PRL 109 (2012) 121601. <a href="https://arxiv.org/abs/1204.1661">arXiv:1204.1661</a></li>
+  <li id="r-dorigoni">D. Dorigoni, “An introduction to resurgence, trans-series and alien calculus,” Annals Phys. 409 (2019) 167914. <a href="https://arxiv.org/abs/1411.3585">arXiv:1411.3585</a></li>
+  <li id="r-abs">I. Aniceto, G. Başar, R. Schiappa, “A primer on resurgent transseries and their asymptotics,” Phys. Rept. 809 (2019) 1. <a href="https://arxiv.org/abs/1802.10441">arXiv:1802.10441</a></li>
+  <li id="r-marino">M. Mariño, “Lectures on non-perturbative effects in large N gauge theories, matrix models and strings,” Fortsch. Phys. 62 (2014) 455. <a href="https://arxiv.org/abs/1206.6272">arXiv:1206.6272</a></li>
+  <li id="r-zjj">J. Zinn-Justin, U. D. Jentschura, “Multi-instantons and exact results I: conjectures, WKB expansions, and instanton interactions,” Annals Phys. 313 (2004) 197. <a href="https://arxiv.org/abs/quant-ph/0501136">arXiv:quant-ph/0501136</a></li>
+  <li id="r-beneke">M. Beneke, “Renormalons,” Phys. Rept. 317 (1999) 1. <a href="https://arxiv.org/abs/hep-ph/9807443">arXiv:hep-ph/9807443</a></li>
+  <li id="r-du-cpn">G. V. Dunne, M. Ünsal, “Resurgence and trans-series in quantum field theory: the CP(N−1) model,” JHEP 11 (2012) 170. <a href="https://arxiv.org/abs/1210.2423">arXiv:1210.2423</a>；続編 <a href="https://arxiv.org/abs/1210.3646">arXiv:1210.3646</a></li>
+  <li id="r-witten">E. Witten, “Analytic continuation of Chern–Simons theory.” <a href="https://arxiv.org/abs/1001.2933">arXiv:1001.2933</a></li>
+  <li id="r-cdu">A. Cherman, D. Dorigoni, M. Ünsal, “Decoding perturbation theory using resurgence: Stokes phenomena, new saddle points and Lefschetz thimbles.” <a href="https://arxiv.org/abs/1403.1277">arXiv:1403.1277</a></li>
+  <li id="r-du-wkb">G. V. Dunne, M. Ünsal, “Uniform WKB, multi-instantons, and resurgent trans-series,” PRD 89 (2014) 105009. <a href="https://arxiv.org/abs/1401.5202">arXiv:1401.5202</a></li>
+  <li id="r-du-rev">G. V. Dunne, M. Ünsal, “New nonperturbative methods in quantum field theory: from large-N orbifold equivalence to bions and resurgence,” Ann. Rev. Nucl. Part. Sci. 66 (2016) 245. <a href="https://arxiv.org/abs/1601.03414">arXiv:1601.03414</a>；関連 “What is QFT? Resurgent trans-series, Lefschetz thimbles, and new exact saddles” <a href="https://arxiv.org/abs/1511.05977">arXiv:1511.05977</a></li>
+  <li id="r-mr">M. Mariño, T. Reis, “Renormalons in integrable field theories,” JHEP 04 (2020) 160. <a href="https://arxiv.org/abs/1909.12134">arXiv:1909.12134</a></li>
+  <li id="r-bdssu">A. Behtash, G. V. Dunne, T. Schäfer, T. Sulejmanpasic, M. Ünsal, “Complexified path integrals, exact saddles and supersymmetry,” PRL 116 (2016) 011601. <a href="https://arxiv.org/abs/1510.00978">arXiv:1510.00978</a>；詳細版 <a href="https://arxiv.org/abs/1510.03435">arXiv:1510.03435</a></li>
+  <li id="r-fkmns">T. Fujimori, S. Kamata, T. Misumi, M. Nitta, N. Sakai, “Non-perturbative contributions from complexified solutions in CP<sup>N−1</sup> models,” PRD 94 (2016) 105002. <a href="https://arxiv.org/abs/1607.04205">arXiv:1607.04205</a></li>
+  <li id="r-dsu">G. V. Dunne, M. Shifman, M. Ünsal, “Infrared renormalons versus operator product expansion in supersymmetric and related gauge theories,” PRL 114 (2015) 191601. <a href="https://arxiv.org/abs/1502.06680">arXiv:1502.06680</a></li>
+  <li id="r-unsal">M. Ünsal, “Abelian duality, confinement, and chiral symmetry breaking in QCD(adj),” PRL 100 (2008) 032005. <a href="https://arxiv.org/abs/0708.1772">arXiv:0708.1772</a></li>
+  <li id="r-uy">M. Ünsal, L. G. Yaffe, “Center-stabilized Yang–Mills theory: confinement and large N volume independence,” PRD 78 (2008) 065035. <a href="https://arxiv.org/abs/0803.0344">arXiv:0803.0344</a></li>
+  <li id="r-amstt">M. Ashie, O. Morikawa, H. Suzuki, H. Takaura, K. Takeuchi, “Infrared renormalon in SU(N) QCD(adj.) on ℝ³×S¹,” PTEP 2020 023B01. <a href="https://arxiv.org/abs/1909.05489">arXiv:1909.05489</a></li>
+  <li id="r-amst">M. Ashie, O. Morikawa, H. Suzuki, H. Takaura, “More on the infrared renormalon in SU(N) QCD(adj.) on ℝ³×S¹,” PTEP 2020. <a href="https://arxiv.org/abs/2005.07407">arXiv:2005.07407</a></li>
+  <li id="r-fkmns2">T. Fujimori, S. Kamata, T. Misumi, M. Nitta, N. Sakai, bion contributions vs. infrared renormalons in the 2d CP<sup>N−1</sup> model. <a href="https://arxiv.org/abs/1810.03768">arXiv:1810.03768</a></li>
+  <li id="r-dual">“Renormalon subtraction in OPE by dual space approach: nonlinear sigma model and QCD.” <a href="https://arxiv.org/abs/2303.16392">arXiv:2303.16392</a></li>
+  <li id="r-dk">G. V. Dunne, M. Ünsal, “Resurgence and dynamics of O(N) and Grassmannian sigma models.” <a href="https://arxiv.org/abs/1505.07803">arXiv:1505.07803</a></li>
+  <li id="r-lect-int">“Lectures on resurgence in integrable field theories.” <a href="https://arxiv.org/abs/2405.02224">arXiv:2405.02224</a></li>
+</ol>
+<p class="cite">古典的文献：C. M. Bender, T. T. Wu, Phys. Rev. 184 (1969) 1231; Phys. Rev. D 7 (1973) 1620／G. 't Hooft, “Can we make sense out of quantum chromodynamics?” (Erice 1977, 1979)／J. Écalle, <i>Les fonctions résurgentes</i> (1981)／E. B. Bogomolny, Phys. Lett. B 91 (1980) 431; J. Zinn-Justin, Nucl. Phys. B 192 (1981) 125.</p>
+
+<footer>
+§1 の大次数の係数、演習 2 の Stokes ジャンプ、演習 4 の漸近形、演習 12 の数値は mpmath で検証済みです。§4 の $[I\bar I]$ の式の符号は文献の規約に依存するので、原論文 [6] で確認してください。
+</footer>
+</div>
+
+</body>
+</html>
