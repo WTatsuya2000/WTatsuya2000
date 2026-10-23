@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="グラディエントフロー入門 — はじめに・全体の構成">
+  <title>はじめに — グラディエントフロー入門</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="index.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">グラディエントフロー入門</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">グラディエントフロー入門 / arXiv 論文に基づく講義ノート</span>
+        <span class="chapter-number"></span><span class="chapter-title">はじめに</span>
+      </h1>
+
+      <p class="lead">
+        本ノートは原論文の翻訳ではなく、背景・仮定・計算の行間を補いながら、グラディエントフローの理論と格子QCDへの応用を再構成した講義ノートである。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>主な原論文</dt>
+          <dd><strong>Properties and uses of the Wilson flow in lattice QCD</strong> — M. Lüscher, <a href="https://arxiv.org/abs/1006.4518" target="_blank" rel="noreferrer">arXiv:1006.4518</a>；<strong>Perturbative analysis of the gradient flow in non-abelian gauge theories</strong> — M. Lüscher, P. Weisz, <a href="https://arxiv.org/abs/1101.0963" target="_blank" rel="noreferrer">arXiv:1101.0963</a></dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>Euclid \(D=4\)、反エルミート生成子、\(\hbar=c=1\)</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>状態</dt>
+          <dd>初版（全 7 章 + 付録 2）</dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>このノートの目的</h2>
+        <p>
+          グラディエントフロー（gradient flow, Wilson flow）は、ゲージ場を仮想的な「フロー時間」\(t\) に沿って
+          作用が減る方向へ滑らかに発展させる手法である。フロー時間 \(t>0\) の場は半径 \(\sqrt{8t}\) で平滑化された
+          <strong>繰り込まれた場</strong>とみなせ、格子QCDの多くの技術的問題に統一的な処方箋を与える。
+        </p>
+        <p>
+          本ノートは arXiv 上の原論文・レビューをもとに、定義・繰り込み性から、スケール設定・結合定数・トポロジー・
+          エネルギー運動量テンソル（EMT）・有限温度QCDへの応用までを再構成する。各章の末尾に、その章で引いた文献を置く。
+          演習問題 14 問（解答例付き）は付録 E、数値演習のコードは付録 C にある。
+        </p>
+
+        <div class="remark-box">
+          <div class="callout-head">
+            <span class="box-title">読み方</span>
+            <span class="box-kicker">How to read</span>
+          </div>
+          主線だけ追うなら本文と枠付きの式だけを読めばよい。「なぜ」「細部」の折りたたみは再現したいときに開く。
+          「原論文に書かれていること」と「自分の解釈」は callout の種類で分けてある。
+        </div>
+      </section>
+
+      <section>
+        <h2>なぜグラディエントフローか</h2>
+        <p>格子QCDや連続理論で次のような量を扱うとき、しばしば困難に出会う。</p>
+        <table>
+          <thead><tr><th>困難</th><th>例</th></tr></thead>
+          <tbody>
+            <tr><td>合成演算子の繰り込みと演算子混合</td><td>EMT \(T_{\mu\nu}\)、トポロジカル電荷密度 \(q(x)\)</td></tr>
+            <tr><td>格子正則化による対称性の破れ</td><td>並進対称性の破れ → \(T_{\mu\nu}\) が保存しない</td></tr>
+            <tr><td>紫外の揺らぎによるノイズ</td><td>トポロジカルチャージが整数にならない</td></tr>
+            <tr><td>物理スケールの精密な決定</td><td>格子間隔 \(a\) を fm 単位で決める（scale setting）</td></tr>
+          </tbody>
+        </table>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">原論文に書かれていること</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          フローは <a class="cite" href="#ref-nn2006"></a> が大 \(N\) ゲージ理論の Wilson ループの研究で導入した。
+          <a class="cite cite-bare" href="#ref-luscher2010"></a> は格子QCDでの性質と用途（スケール設定・トポロジカルセクター）をまとめ、
+          「フロー時間 \(t>0\) のゲージ場は滑らかな繰り込まれた場であり、その局所ゲージ不変量の期待値は
+          長さ \(\sqrt{t}\) 程度のスケールを探る物理量である」と述べた。
+          <a class="cite cite-bare" href="#ref-lw2011"></a> はフローしたゲージ場の相関関数が追加の繰り込みなしで有限であることを全次数で示した。
+        </div>
+
+        <div class="thm-box">
+          <div class="callout-head">
+            <span class="box-title">このノートの主張（一文）</span>
+            <span class="box-kicker">Claim</span>
+          </div>
+          フロー時間 \(t\) は新しい紫外カットオフのように働くが繰り込み可能性を壊さないので、
+          「格子 → フローした場（正則化非依存）→ 小フロー時間展開（摂動論）→ 繰り込まれた量」
+          という普遍的な経路で、格子上の多くの量を正しく定義できる。
+        </div>
+      </section>
+
+      <section>
+        <h2>全体の構成</h2>
+        <p>各章は独立に読めるように書いてある。第 2・3 章が基礎、第 4–7 章が応用である。</p>
+
+        <p class="toc-part">本文</p>
+        <ul class="toc-list">
+          <li><span class="toc-num">2</span><a href="02-definition.html">フローの定義と摂動論</a><span class="toc-note">最急降下・熱核・線形解</span></li>
+          <li><span class="toc-num">3</span><a href="03-renormalization.html">繰り込み性と基準スケール</a><span class="toc-note">Lüscher–Weisz・⟨E⟩・t₀・w₀</span></li>
+          <li><span class="toc-num">4</span><a href="04-lattice.html">格子上のフローと GF 結合定数</a><span class="toc-note">Wilson フロー・ステップスケーリング</span></li>
+          <li><span class="toc-num">5</span><a href="05-topology.html">トポロジカルチャージ</a><span class="toc-note">χ_t・冷却との比較・WV 公式</span></li>
+          <li><span class="toc-num">6</span><a href="06-emt.html">小フロー時間展開と EMT</a><span class="toc-note">Suzuki 公式・熱力学</span></li>
+          <li><span class="toc-num">7</span><a href="07-quarks.html">クォークのフローと発展的話題</a><span class="toc-note">カイラル対称性・RG・まとめ</span></li>
+        </ul>
+
+        <p class="toc-part">付録</p>
+        <ul class="toc-list">
+          <li><span class="toc-num">E</span><a href="E-exercises.html">演習問題と解答例</a><span class="toc-note">14 問（解析 13 + 数値 1）</span></li>
+          <li><span class="toc-num">C</span><a href="C-code.html">数値演習コード</a><span class="toc-note">2D U(1) Wilson フロー</span></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>前提知識と表記法</h2>
+        <p>
+          場の量子論（経路積分・繰り込み）、非可換ゲージ理論の基礎、格子ゲージ理論の初歩を前提とする。
+          Euclid 時空 \(D=4\)（次元正則化では \(D=4-2\epsilon\)）で考え、ゲージ群は \(SU(N)\)、
+          同じ添字は縮約する。規約は <a class="cite" href="#ref-luscher2010"></a> に従う。
+        </p>
+
+        <div class="def-box numbered-box" data-kind="definition" data-label="定義" id="def-conventions">
+          <div class="callout-head">
+            <span class="box-title" data-title="ゲージ場と作用の規約"></span>
+            <span class="box-kicker">Definition</span>
+          </div>
+          ゲージ場を反エルミート行列 \(A_\mu = A_\mu^a T^a\) で表す。生成子は
+          \(T^{a\dagger}=-T^a\)、\(\tr(T^aT^b)=-\tfrac12\delta^{ab}\)、\([T^a,T^b]=f^{abc}T^c\) を満たす。
+          場の強さと共変微分は \(F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu+[A_\mu,A_\nu]\)、
+          \(D_\mu X=\partial_\mu X+[A_\mu,X]\)。
+        </div>
+        <div class="equation" id="eq-action">
+          \[ S_{\mathrm{YM}}[A] = -\frac{1}{2g_0^2}\int \dd^Dx\,\tr\bigl(F_{\mu\nu}F_{\mu\nu}\bigr)
+            = \frac{1}{4g_0^2}\int \dd^Dx\, F^a_{\mu\nu}F^a_{\mu\nu} \]
+        </div>
+
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">規格化の違い</span>
+            <span class="box-kicker">Caution</span>
+          </div>
+          ゲージ場に \(g\) を含めるか、エルミート / 反エルミート生成子のどちらを使うかは論文ごとに異なる。
+          数値係数を使うときは、原論文（特に改訂版・erratum）で規格化を必ず確認すること。
+          第 6 章の EMT 公式だけは、\(G\) に \(g\) を含む規格化で書いている。
+        </div>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-nn2006" data-cite="Narayanan と Neuberger 2006">
+            Narayanan, R., と H. Neuberger. 2006.「Infinite N phase transitions in continuum Wilson loop operators」.
+            <a href="https://arxiv.org/abs/hep-th/0601210" target="_blank" rel="noreferrer">arXiv:hep-th/0601210</a>.
+          </li>
+          <li id="ref-luscher2010" data-cite="Lüscher 2010">
+            Lüscher, M.. 2010.「Properties and uses of the Wilson flow in lattice QCD」.
+            <a href="https://arxiv.org/abs/1006.4518" target="_blank" rel="noreferrer">arXiv:1006.4518</a>.
+          </li>
+          <li id="ref-lw2011" data-cite="Lüscher と Weisz 2011">
+            Lüscher, M., と P. Weisz. 2011.「Perturbative analysis of the gradient flow in non-abelian gauge theories」.
+            <a href="https://arxiv.org/abs/1101.0963" target="_blank" rel="noreferrer">arXiv:1101.0963</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

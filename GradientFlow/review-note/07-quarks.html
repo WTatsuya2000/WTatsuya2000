@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="クォーク場のフロー、繰り込み群、自明化写像、全体のまとめ">
+  <title>クォークのフローと発展的話題 — グラディエントフロー入門</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="07-quarks.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">グラディエントフロー入門</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">Lüscher 2013a / Endo ほか 2015 / Carosso ほか 2018 / Lüscher 2009 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">クォークのフローと発展的話題</span>
+      </h1>
+
+      <p class="lead">
+        本章では、クォーク場へのフローの拡張とカイラル対称性、フローの繰り込み群としての解釈、自明化写像、摂動計算の進展をまとめ、ノート全体を総括する。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>原論文</dt>
+          <dd><strong>Chiral symmetry and the Yang–Mills gradient flow</strong> — M. Lüscher, <a href="https://arxiv.org/abs/1302.5246" target="_blank" rel="noreferrer">arXiv:1302.5246</a></dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>\(\Delta=D_\mu D_\mu\)、\(D_\mu=\partial_\mu+B_\mu\)</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd><span class="tag">fermions</span> <span class="tag">RG</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>クォーク場のフロー</h2>
+        <p><a class="cite cite-bare" href="#ref-luscher2013a"></a> はクォーク場のフローを次で定めた（\(\Delta=D_\mu D_\mu\)、\(D_\mu=\partial_\mu+B_\mu\)）。</p>
+        <div class="equation boxed" id="eq-quark-flow">
+          \[ \partial_t\chi=\Delta\chi-\alpha_0\,\partial_\nu B_\nu\,\chi,\qquad
+            \partial_t\bar\chi=\bar\chi\overleftarrow\Delta+\alpha_0\,\bar\chi\,\partial_\nu B_\nu,\qquad
+            \chi|_{t=0}=\psi,\ \bar\chi|_{t=0}=\bar\psi \]
+          <span class="eq-tag">定義</span>
+        </div>
+
+        <div class="thm-box">
+          <div class="callout-head">
+            <span class="box-title">性質</span>
+            <span class="box-kicker">Result</span>
+          </div>
+          <ul>
+            <li>ゲージ場と違い、<strong>場の繰り込み</strong> \(\chi_R=Z_\chi^{1/2}\chi\) が 1 つ要る（\(Z_\chi\) は \(t\) に依存しない）。これを除けば相関関数は有限 <a class="cite" href="#ref-luscher2013a"></a>。</li>
+            <li>実用上は、\(\langle\bar\chi\overleftrightarrow{\Dslash}\chi\rangle\) などで規格化した「リング変数」\(\mathring\chi\) を使うと \(Z_\chi\) が相殺する <a class="cite" href="#ref-ms2014a"></a>。</li>
+            <li>フロー方程式はカイラル変換と可換なので、フローした場で作ったカイラル凝縮 \(\langle\bar\chi\chi\rangle\) は乗法的にしか繰り込まれない。カイラル対称性を破る Wilson フェルミオンでも、カイラル対称性に関わる量を構成できる <a class="cite" href="#ref-luscher2013a"></a> <a class="cite" href="#ref-whot2016"></a>。</li>
+          </ul>
+        </div>
+
+        <h3>主な応用</h3>
+        <ul>
+          <li>QCD のエネルギー運動量テンソル <a class="cite" href="#ref-ms2014a"></a>、\(N_f=2+1\) QCD 熱力学 <a class="cite" href="#ref-whot2016"></a>。</li>
+          <li><strong>軸性ベクトルカレント</strong>の普遍的な公式 <a class="cite" href="#ref-endo2015"></a>: 格子上に保存カレントがなくても、正しく規格化されたカレントが得られる。</li>
+          <li>有限温度での<strong>カイラル凝縮・カイラル感受率</strong> <a class="cite" href="#ref-whot2016"></a>。</li>
+          <li><strong>CP を破る演算子</strong>（クォーク電気双極子モーメント、Weinberg 演算子など）の繰り込み: 中性子 EDM の格子計算でフローにより混合を避ける研究が進んでいる。</li>
+          <li>重いクォーク・\(B\) 中間子混合の行列要素、パートン分布関数の格子計算への応用。</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>繰り込み群としてのフロー</h2>
+        <p>フローは半径 \(\sqrt{8t}\) の粗視化なので、Wilson 流の繰り込み群（ブロックスピン変換）との類似が期待される。</p>
+        <ul>
+          <li><a class="cite cite-bare" href="#ref-chn2018"></a>: フローを連続的な実空間繰り込み群変換とみなし、フローした演算子の比から異常次元（質量異常次元 \(\gamma_m\) など）を決める方法を提案し、多フレーバーの (近) 共形理論に適用した。</li>
+          <li><a class="cite cite-bare" href="#ref-af2018"></a>: フローと繰り込み群の関係をスカラー場理論で定式化した。</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>自明化写像</h2>
+        <p>
+          <a class="cite cite-bare" href="#ref-luscher2009"></a> は、ゲージ場の配位を作用 0 の（自明な）測度に写す写像を、適当に構成した作用に対するフローとして作れることを示し、
+          HMC アルゴリズムの改良（臨界減速の緩和）への応用を論じた。
+        </p>
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">機械学習との関係</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          この考え方は、近年の normalizing flow による格子場の生成法の源流の 1 つとみなせる。
+        </div>
+      </section>
+
+      <section>
+        <h2>摂動計算の進展とレビュー</h2>
+        <ul>
+          <li>3 ループの \(\langle E\rangle\) <a class="cite" href="#ref-hn2016"></a>、高次計算の手法 <a class="cite" href="#ref-artz2019"></a>、2 ループの EMT 係数 <a class="cite" href="#ref-hkl2018"></a>。いずれも \(t_0\) からの \(\alpha_s\) 決定や EMT の \(t\to0\) 外挿の精度向上に欠かせない。</li>
+          <li>レビュー: <a class="cite cite-bare" href="#ref-luscher2013b"></a>（将来の応用）、<a class="cite cite-bare" href="#ref-ramos2015"></a>（フローと繰り込み）。</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>全体のまとめ</h2>
+        <table>
+          <thead><tr><th>性質</th><th>内容</th><th>章</th></tr></thead>
+          <tbody>
+            <tr><td>定義</td><td>作用の最急降下 \(\partial_tB_\mu=D_\nu G_{\nu\mu}\)</td><td><a href="02-definition.html">2</a></td></tr>
+            <tr><td>平滑化</td><td>半径 \(\sqrt{8t}\) の熱核による紫外抑制</td><td><a href="02-definition.html">2</a></td></tr>
+            <tr><td>繰り込み性</td><td>フローしたゲージ場の相関関数は追加の繰り込みなしで有限</td><td><a href="03-renormalization.html">3</a></td></tr>
+            <tr><td>スケール設定</td><td>\(t_0\)、\(w_0\): 安価で高精度</td><td><a href="03-renormalization.html">3</a></td></tr>
+            <tr><td>結合定数</td><td>GF スキーム、ステップスケーリング、\(\alpha_s\)</td><td><a href="04-lattice.html">4</a></td></tr>
+            <tr><td>トポロジー</td><td>\(Q\)、\(\chi_t\) の繰り込まれた定義</td><td><a href="05-topology.html">5</a></td></tr>
+            <tr><td>小フロー時間展開</td><td>正則化非依存な繰り込まれた演算子の構成</td><td><a href="06-emt.html">6</a></td></tr>
+            <tr><td>EMT・熱力学</td><td>\(\varepsilon\)、\(p\)、\(s\) を 1 温度で直接計算</td><td><a href="06-emt.html">6</a></td></tr>
+            <tr><td>クォーク・RG</td><td>カイラル対称性を保つ構成、連続的 RG としての解釈</td><td>7</td></tr>
+          </tbody>
+        </table>
+
+        <div class="summary-box">
+          <div class="callout-head">
+            <span class="box-title">本質</span>
+            <span class="box-kicker">Summary</span>
+          </div>
+          フロー時間 \(t\) は新しい紫外カットオフのように働くが、繰り込み可能性を壊さない（\(t>0\) では物理量が有限で正則化非依存）。
+          格子QCDの多くの技術的問題を「格子 → フローした場 → 小フロー時間展開（摂動論）→ 繰り込まれた量」という普遍的な経路に置き換えられる。
+        </div>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-luscher2013a" data-cite="Lüscher 2013a">
+            Lüscher, M.. 2013.「Chiral symmetry and the Yang–Mills gradient flow」.
+            <a href="https://arxiv.org/abs/1302.5246" target="_blank" rel="noreferrer">arXiv:1302.5246</a>.
+          </li>
+          <li id="ref-ms2014a" data-cite="Makino と Suzuki 2014a">
+            Makino, H., と H. Suzuki. 2014.「Lattice energy-momentum tensor from the Yang–Mills gradient flow — inclusion of fermion fields」.
+            <a href="https://arxiv.org/abs/1403.4772" target="_blank" rel="noreferrer">arXiv:1403.4772</a>.
+          </li>
+          <li id="ref-whot2016" data-cite="Taniguchi ほか 2016">
+            Taniguchi, Y., ほか (WHOT-QCD Collaboration). 2016.「Exploring N<sub>f</sub>=2+1 QCD thermodynamics from the gradient flow」.
+            <a href="https://arxiv.org/abs/1609.01417" target="_blank" rel="noreferrer">arXiv:1609.01417</a>.
+          </li>
+          <li id="ref-endo2015" data-cite="Endo ほか 2015">
+            Endo, T., K. Hieda, D. Miura, と H. Suzuki. 2015.「Universal formula for the flavor non-singlet axial-vector current from the gradient flow」.
+            <a href="https://arxiv.org/abs/1502.01809" target="_blank" rel="noreferrer">arXiv:1502.01809</a>.
+          </li>
+          <li id="ref-chn2018" data-cite="Carosso ほか 2018">
+            Carosso, A., A. Hasenfratz, と E. T. Neil. 2018.「Nonperturbative renormalization of operators in near-conformal systems using gradient flows」.
+            <a href="https://arxiv.org/abs/1806.01385" target="_blank" rel="noreferrer">arXiv:1806.01385</a>.
+          </li>
+          <li id="ref-af2018" data-cite="Abe と Fukuma 2018">
+            Abe, Y., と M. Fukuma. 2018.「Gradient flow and the renormalization group」.
+            <a href="https://arxiv.org/abs/1805.12094" target="_blank" rel="noreferrer">arXiv:1805.12094</a>.
+          </li>
+          <li id="ref-luscher2009" data-cite="Lüscher 2009">
+            Lüscher, M.. 2009.「Trivializing maps, the Wilson flow and the HMC algorithm」.
+            <a href="https://arxiv.org/abs/0907.5491" target="_blank" rel="noreferrer">arXiv:0907.5491</a>.
+          </li>
+          <li id="ref-hn2016" data-cite="Harlander と Neumann 2016">
+            Harlander, R. V., と T. Neumann. 2016.「The perturbative QCD gradient flow to three loops」.
+            <a href="https://arxiv.org/abs/1606.03756" target="_blank" rel="noreferrer">arXiv:1606.03756</a>.
+          </li>
+          <li id="ref-artz2019" data-cite="Artz ほか 2019">
+            Artz, J., R. V. Harlander, F. Lange, T. Neumann, と M. Prausa. 2019.「Results and techniques for higher order calculations within the gradient-flow formalism」.
+            <a href="https://arxiv.org/abs/1905.00882" target="_blank" rel="noreferrer">arXiv:1905.00882</a>.
+          </li>
+          <li id="ref-hkl2018" data-cite="Harlander ほか 2018">
+            Harlander, R. V., Y. Kluth, と F. Lange. 2018.「The two-loop energy-momentum tensor within the gradient-flow formalism」.
+            <a href="https://arxiv.org/abs/1808.09837" target="_blank" rel="noreferrer">arXiv:1808.09837</a>.
+          </li>
+          <li id="ref-luscher2013b" data-cite="Lüscher 2013b">
+            Lüscher, M.. 2013.「Future applications of the Yang–Mills gradient flow in lattice QCD」.
+            <a href="https://arxiv.org/abs/1308.5598" target="_blank" rel="noreferrer">arXiv:1308.5598</a>.
+          </li>
+          <li id="ref-ramos2015" data-cite="Ramos 2015">
+            Ramos, A.. 2015.「The Yang–Mills gradient flow and renormalization」.
+            <a href="https://arxiv.org/abs/1506.00118" target="_blank" rel="noreferrer">arXiv:1506.00118</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

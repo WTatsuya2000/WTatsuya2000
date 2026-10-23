@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="小フロー時間展開、Suzuki のエネルギー運動量テンソル公式、熱力学">
+  <title>小フロー時間展開と EMT — グラディエントフロー入門</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="06-emt.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">グラディエントフロー入門</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">Suzuki 2013 / Makino と Suzuki 2014 / FlowQCD 2013 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">小フロー時間展開と EMT</span>
+      </h1>
+
+      <p class="lead">
+        本章では、フローした演算子を繰り込まれた演算子で展開する小フロー時間展開と、それを用いたエネルギー運動量テンソルの構成（Suzuki 公式）、有限温度の熱力学への応用をまとめる。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>原論文</dt>
+          <dd><strong>Energy-momentum tensor from the Yang–Mills gradient flow</strong> — H. Suzuki, <a href="https://arxiv.org/abs/1304.0533" target="_blank" rel="noreferrer">arXiv:1304.0533</a></dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>\(G\) に \(g\) を含む規格化、\(\overline{\mathrm{MS}}\)</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd><span class="tag">EMT</span> <span class="tag">thermodynamics</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>小フロー時間展開</h2>
+        <p>フローした局所演算子 \(\tilde O(t,x)\) は、\(t\to0\) で通常の（\(t=0\) の）繰り込まれた局所演算子で展開できる。</p>
+        <div class="equation boxed" id="eq-sft">
+          \[ \tilde O(t,x)=\sum_i c_i(t)\,O_i^R(x)+\Order{t}\qquad(t\to0) \]
+          <span class="eq-tag">主結果</span>
+        </div>
+
+        <p>
+          演算子積展開と同じ構造で、係数 \(c_i(t)\) は短距離（\(\mu\sim1/\sqrt{8t}\)）の物理なので、漸近自由性により摂動論で計算できる。
+          逆に解けば、繰り込まれた演算子を任意の正則化（格子を含む）で構成できる。
+        </p>
+        <div class="equation" id="eq-sft-inverse">
+          \[ O^R(x)=\lim_{t\to0}\sum_i \bigl(c^{-1}(t)\bigr)\,\tilde O_i(t,x) \]
+        </div>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">要点</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          格子が並進・カイラル対称性を破ることで起こる演算子混合を、正則化に依存しない形で回避できる。
+          自由スカラー場での最も簡単な例が <a class="internal-ref" href="E-exercises.html#ex-14">演習 E.14</a> にある。
+        </div>
+      </section>
+
+      <section>
+        <h2>Suzuki のエネルギー運動量テンソル公式</h2>
+        <p>
+          格子正則化は並進対称性を破るため、\(T_{\mu\nu}\) の構成と繰り込みは長年の難問だった。
+          <a class="cite cite-bare" href="#ref-suzuki2013"></a> は小フロー時間展開を使って次の公式を導いた（純 Yang–Mills、改訂版の係数）。
+        </p>
+        <div class="equation boxed" id="eq-suzuki">
+          \[ T^R_{\mu\nu}(x)=\lim_{t\to0}\Bigl\{\frac{1}{\alpha_U(t)}U_{\mu\nu}(t,x)
+            +\frac{\delta_{\mu\nu}}{4\alpha_E(t)}\bigl[E(t,x)-\langle E(t,x)\rangle_0\bigr]\Bigr\} \]
+          <span class="eq-tag">主結果</span>
+        </div>
+        <div class="equation" id="eq-UE">
+          \[ U_{\mu\nu}=G^a_{\mu\rho}G^a_{\nu\rho}-\frac14\delta_{\mu\nu}G^a_{\rho\sigma}G^a_{\rho\sigma},\qquad
+            E=\frac14G^a_{\mu\nu}G^a_{\mu\nu} \]
+        </div>
+        <div class="equation" id="eq-alphaUE">
+          \[ \alpha_U(t)=\bar g^2\bigl\{1+2b_0\bar s_1\bar g^2+\Order{\bar g^4}\bigr\},\qquad
+            \alpha_E(t)=\frac{1}{2b_0}\bigl\{1+2b_0\bar s_2\bar g^2+\Order{\bar g^4}\bigr\} \]
+        </div>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">係数（\(SU(3)\)、純ゲージ）</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          \(\bar g=\bar g(1/\sqrt{8t})\) は \(\overline{\mathrm{MS}}\) ランニング結合定数、\(b_0=\frac{1}{(4\pi)^2}\frac{11}{3}N\)、
+          \(\langle\cdot\rangle_0\) は真空期待値。
+          \(\bar s_1=\frac{7}{22}+\frac12\gamma_E-\ln2\simeq-0.0864\)、\(\bar s_2=\frac{21}{44}-\frac{b_1}{2b_0^2}=\frac{27}{484}\simeq0.0558\) <a class="cite" href="#ref-suzuki2013"></a>。
+          2 ループの係数は <a class="cite cite-bare" href="#ref-hkl2018"></a>、フェルミオンを含む場合は <a class="cite cite-bare" href="#ref-ms2014a"></a>、より簡単な処方は <a class="cite cite-bare" href="#ref-ms2014b"></a>。
+        </div>
+
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">規格化と改訂</span>
+            <span class="box-kicker">Caution</span>
+          </div>
+          この章の式はゲージ場 \(G\) に \(g\) を含む規格化で書いている。原論文は 1 ループ係数の誤りを訂正した改訂版（v6, erratum）があるので、
+          数値を使うときは改訂版を参照すること。
+        </div>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">\(\alpha_U\) と \(\alpha_E\) の次数が違う理由</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          \(U_{\mu\nu}\)（トレースレス部分）は古典 EMT にすでに現れるので \(\alpha_U\sim g^2\)。
+          一方トレース部分は古典的には共形不変性のため 0 で、量子的なトレースアノマリー \(T_{\mu\mu}\simeq2b_0E\) によってだけ生じる。
+          そのため \(1/\alpha_E\propto b_0\) で、\(\alpha_E\) は \(g^0\) から始まる（<a class="internal-ref" href="E-exercises.html#ex-11">演習 E.11</a>）。
+        </div>
+      </section>
+
+      <section>
+        <h2>熱力学への応用</h2>
+        <p>Euclid の \(T_{\mu\nu}\) から、エネルギー密度 \(\varepsilon\) と圧力 \(p\) は（真空期待値を差し引いて）</p>
+        <div class="equation" id="eq-thermo-def">
+          \[ \varepsilon=-\langle T_{00}\rangle_T,\qquad p=\langle T_{11}\rangle_T \]
+        </div>
+        <div class="equation boxed" id="eq-thermo">
+          \[ \varepsilon-3p=-\langle T_{\mu\mu}\rangle_T,\qquad \varepsilon+p=Ts=\langle T_{11}-T_{00}\rangle_T \]
+          <span class="eq-tag">主結果</span>
+        </div>
+
+        <ul>
+          <li><strong>トレースアノマリー</strong> \(\varepsilon-3p\) は \(E\) の項（\(\alpha_E\)）から、</li>
+          <li><strong>エントロピー密度</strong> \(s\) は \(U_{\mu\nu}\) の項（\(\alpha_U\)）から、</li>
+        </ul>
+        <p>
+          それぞれ <strong>1 つの温度で直接</strong>求まる。従来の積分法と違い、基準温度での値や \(\beta\) 関数が要らない（<a class="internal-ref" href="E-exercises.html#ex-12">演習 E.12</a>）。
+        </p>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">主な計算</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          <ul>
+            <li>FlowQCD <a class="cite" href="#ref-flowqcd2013"></a>: SU(3) 純ゲージ理論の状態方程式を初めてこの方法で計算し、積分法と整合。</li>
+            <li><a class="cite cite-bare" href="#ref-kitazawa2016"></a>: より詳細な連続極限と \(t\to0\) 外挿。</li>
+            <li><a class="cite cite-bare" href="#ref-shirogane2020"></a>: 一次相転移点での潜熱と圧力差。</li>
+            <li>WHOT-QCD <a class="cite" href="#ref-whot2016"></a>: \(N_f=2+1\) QCD への適用。</li>
+          </ul>
+        </div>
+
+        <div class="example-box">
+          <div class="callout-head">
+            <span class="box-title">解析手順（二重外挿）</span>
+            <span class="box-kicker">Checklist</span>
+          </div>
+          <ol>
+            <li>各 \(a\) と \(t\) で \(\langle T_{\mu\nu}\rangle\) を測る。</li>
+            <li>物理的な \(t\)（\(\sqrt{8t}\,T\) 固定）で \(a\to0\) の連続極限をとる。</li>
+            <li>連続極限の値を \(t\to0\) に外挿し、\(\Order{t}\) 項を除く。</li>
+          </ol>
+        </div>
+
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">フロー時間の窓</span>
+            <span class="box-kicker">Caution</span>
+          </div>
+          \(t\) が大きすぎると平滑化半径が \(1/T\) を超え（目安 \(\sqrt{8t}\lesssim1/(2T)\)）、
+          小さすぎると \(\Order{a^2/t}\) の格子アーティファクトが大きくなる。\(N_t\) が小さいほど窓は狭い。
+        </div>
+
+        <p>
+          そのほかの \(T_{\mu\nu}\) の応用として、粘性係数（\(T_{12}\) の相関関数）、比熱、ハドロン内部の圧力・応力分布、
+          静的クォーク間の応力テンソル分布（フラックスチューブの構造）などがある。
+        </p>
+
+        <div class="summary-box">
+          <div class="callout-head">
+            <span class="box-title">この章のまとめ</span>
+            <span class="box-kicker">Summary</span>
+          </div>
+          <ul>
+            <li>フローした演算子は小フロー時間展開 <a class="eq-ref" href="#eq-sft"></a> で繰り込まれた演算子に結びつく。</li>
+            <li>Suzuki 公式 <a class="eq-ref" href="#eq-suzuki"></a> で格子上でも正しく規格化された \(T_{\mu\nu}\) が得られる。</li>
+            <li>\(\varepsilon-3p\) と \(s\) を 1 温度で直接計算できる（<a class="eq-ref" href="#eq-thermo"></a>）。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-suzuki2013" data-cite="Suzuki 2013">
+            Suzuki, H.. 2013.「Energy-momentum tensor from the Yang–Mills gradient flow」.
+            <a href="https://arxiv.org/abs/1304.0533" target="_blank" rel="noreferrer">arXiv:1304.0533</a>.
+          </li>
+          <li id="ref-hkl2018" data-cite="Harlander ほか 2018">
+            Harlander, R. V., Y. Kluth, と F. Lange. 2018.「The two-loop energy-momentum tensor within the gradient-flow formalism」.
+            <a href="https://arxiv.org/abs/1808.09837" target="_blank" rel="noreferrer">arXiv:1808.09837</a>.
+          </li>
+          <li id="ref-ms2014a" data-cite="Makino と Suzuki 2014a">
+            Makino, H., と H. Suzuki. 2014.「Lattice energy-momentum tensor from the Yang–Mills gradient flow — inclusion of fermion fields」.
+            <a href="https://arxiv.org/abs/1403.4772" target="_blank" rel="noreferrer">arXiv:1403.4772</a>.
+          </li>
+          <li id="ref-ms2014b" data-cite="Makino と Suzuki 2014b">
+            Makino, H., と H. Suzuki. 2014.「Lattice energy-momentum tensor from the Yang–Mills gradient flow — a simpler prescription」.
+            <a href="https://arxiv.org/abs/1404.2758" target="_blank" rel="noreferrer">arXiv:1404.2758</a>.
+          </li>
+          <li id="ref-flowqcd2013" data-cite="Asakawa ほか 2013">
+            Asakawa, M., T. Hatsuda, E. Itou, M. Kitazawa, と H. Suzuki (FlowQCD). 2013.「Thermodynamics of SU(3) gauge theory from gradient flow on the lattice」.
+            <a href="https://arxiv.org/abs/1312.7492" target="_blank" rel="noreferrer">arXiv:1312.7492</a>.
+          </li>
+          <li id="ref-kitazawa2016" data-cite="Kitazawa ほか 2016">
+            Kitazawa, M., T. Iritani, M. Asakawa, T. Hatsuda, と H. Suzuki. 2016.「Equation of state for SU(3) gauge theory via the energy-momentum tensor under gradient flow」.
+            <a href="https://arxiv.org/abs/1610.07810" target="_blank" rel="noreferrer">arXiv:1610.07810</a>.
+          </li>
+          <li id="ref-shirogane2020" data-cite="Shirogane ほか 2020">
+            Shirogane, M., ほか. 2020.「Latent heat and pressure gap at the first-order deconfining phase transition of SU(3) Yang–Mills theory using the small flow-time expansion method」.
+            <a href="https://arxiv.org/abs/2011.10292" target="_blank" rel="noreferrer">arXiv:2011.10292</a>.
+          </li>
+          <li id="ref-whot2016" data-cite="Taniguchi ほか 2016">
+            Taniguchi, Y., ほか (WHOT-QCD Collaboration). 2016.「Exploring N<sub>f</sub>=2+1 QCD thermodynamics from the gradient flow」.
+            <a href="https://arxiv.org/abs/1609.01417" target="_blank" rel="noreferrer">arXiv:1609.01417</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

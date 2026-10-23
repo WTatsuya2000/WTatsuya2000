@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="格子上の Wilson フローとグラディエントフロー結合定数">
+  <title>格子上のフローと GF 結合定数 — グラディエントフロー入門</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="04-lattice.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">グラディエントフロー入門</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">Lüscher 2010 §3 & App. / Fodor ほか 2012 / Fritzsch と Ramos 2013 / ALPHA 2017 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">格子上のフローと GF 結合定数</span>
+      </h1>
+
+      <p class="lead">
+        本章では、格子上でのフローの定義（Wilson フロー）と数値積分、改良フローをまとめ、エネルギー密度から定義される非摂動的な結合定数とステップスケーリングを扱う。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>原論文</dt>
+          <dd><strong>The Yang–Mills gradient flow in finite volume</strong> — Z. Fodor ほか, <a href="https://arxiv.org/abs/1208.1051" target="_blank" rel="noreferrer">arXiv:1208.1051</a></dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>格子間隔 \(a\)、リンク \(U(x,\mu)\)</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd><span class="tag">lattice</span> <span class="tag">running coupling</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>Wilson フロー</h2>
+        <p>格子上ではリンク変数 \(U(x,\mu)\in SU(N)\) に対して、フローしたリンク \(V_t(x,\mu)\) を次で定める <a class="cite" href="#ref-luscher2010"></a>。</p>
+        <div class="equation boxed" id="eq-wilson-flow">
+          \[ \dot V_t(x,\mu)=-g_0^2\,\bigl\{\partial_{x,\mu}S_{\mathrm{W}}(V_t)\bigr\}\,V_t(x,\mu),\qquad V_0(x,\mu)=U(x,\mu) \]
+          <span class="eq-tag">定義</span>
+        </div>
+
+        <p>
+          \(S_{\mathrm{W}}\) は Wilson のプラケット作用、\(\partial_{x,\mu}\) はリンク \(V(x,\mu)\) に関する Lie 代数微分である。
+          右辺はステープル和 \(\Omega(x,\mu)\) を用いて、反エルミート・トレースレス部分への射影で書ける。
+        </p>
+        <div class="equation" id="eq-staple">
+          \[ g_0^2\,\partial_{x,\mu}S_{\mathrm{W}}(V)=\mathcal P_{\mathfrak{su}(N)}\bigl\{V(x,\mu)\,\Omega^\dagger(x,\mu)\bigr\} \]
+        </div>
+
+        <ul>
+          <li><strong>数値積分</strong>: \(SU(N)\) 多様体上の常微分方程式なので、群構造を保つ積分法が要る。<a class="cite cite-bare" href="#ref-luscher2010"></a> の付録にある 3 次の Lie 群 Runge–Kutta 法（RK3）が標準で、ステップ幅は格子単位で \(\epsilon=0.01\)–\(0.02\) 程度。</li>
+          <li><strong>作用の選択</strong>: フローに使う作用（Wilson、Symanzik など）と、測定に使う \(E\) の離散化（プラケット型・クローバー型）は独立に選べる。差は \(\Order{a^2}\) の格子アーティファクトとして現れる。</li>
+          <li><strong>Zeuthen フロー</strong>: <a class="cite cite-bare" href="#ref-rs2015"></a> はフロー方程式自体を改良し、フロー由来の \(\Order{a^2}\) アーティファクトを取り除いた。</li>
+        </ul>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">計算コストが小さい</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          フローは決定論的な微分方程式の積分なので、Monte Carlo 更新に比べて安い。各ステップで作用の微分を数回計算するだけである。
+          これが \(t_0\) や \(w_0\) が標準的な基準スケールになった理由の 1 つである。
+          2 次元 U(1) で実際にフローを書いてみる演習が <a class="internal-ref" href="E-exercises.html#ex-13">演習 E.13</a> にある。
+        </div>
+      </section>
+
+      <section>
+        <h2>グラディエントフロー結合定数</h2>
+        <p>第 3 章の展開を逆に使えば、非摂動的に定義された繰り込まれた結合定数が得られる。</p>
+        <div class="equation boxed" id="eq-gf-coupling">
+          \[ g^2_{\mathrm{GF}}(\mu)=\frac{128\pi^2}{3(N^2-1)}\,\frac{t^2\langle E(t)\rangle}{\mathcal N}\bigg|_{\mu=1/\sqrt{8t}} \]
+          <span class="eq-tag">主結果</span>
+        </div>
+
+        <p>\(\mathcal N\) は有限体積・境界条件による補正因子で、無限体積では \(\mathcal N=1\)。</p>
+
+        <h3>有限体積スキーム</h3>
+        <p>
+          体積 \(L^4\) の箱で \(\sqrt{8t}=cL\)（\(c\) は 0.2–0.5 程度の定数）と固定すると、\(g^2_{\mathrm{GF}}\) は箱の大きさ \(L\) だけの関数になり、
+          \(\mu=1/(cL)\) のランニング結合定数になる。周期境界条件での定式化は <a class="cite cite-bare" href="#ref-fodor2012"></a>、
+          Schrödinger 汎関数境界条件での定式化は <a class="cite cite-bare" href="#ref-fr2013"></a> による。
+        </p>
+
+        <h3>ステップスケーリングと \(\alpha_s\)</h3>
+        <p>\(L\to2L\) で結合定数がどう変わるかを、格子上で連続極限をとって求める。</p>
+        <div class="equation" id="eq-step-scaling">
+          \[ \sigma(u)=g^2(2L)\big|_{g^2(L)=u} \]
+        </div>
+
+        <p>
+          これを繰り返すと、低エネルギーから高エネルギーまで非摂動的につながる。
+          ALPHA コラボレーション <a class="cite" href="#ref-alpha2017"></a> は GF 結合定数（低エネルギー側）と SF 結合定数（高エネルギー側）を組み合わせて、
+          3 フレーバーQCDの \(\Lambda\) パラメータ、したがって \(\alpha_s(M_Z)\) を高精度で決めた。
+        </p>
+
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">利点と注意</span>
+            <span class="box-kicker">Caution</span>
+          </div>
+          \(E\) は体積平均された局所量なので統計誤差が小さいのが利点である。一方、\(c\) の選び方で格子アーティファクトと統計誤差の兼ね合いが変わり、
+          \(c\) ごとに別のスキームになる点に注意する。
+        </div>
+
+        <div class="summary-box">
+          <div class="callout-head">
+            <span class="box-title">この章のまとめ</span>
+            <span class="box-kicker">Summary</span>
+          </div>
+          <ul>
+            <li>格子上ではリンク変数に Wilson フロー <a class="eq-ref" href="#eq-wilson-flow"></a> を RK3 で適用する。</li>
+            <li>\(t^2\langle E\rangle\) から非摂動的な結合定数 <a class="eq-ref" href="#eq-gf-coupling"></a> が定義でき、ステップスケーリングで \(\alpha_s\) が決まる。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-luscher2010" data-cite="Lüscher 2010">
+            Lüscher, M.. 2010.「Properties and uses of the Wilson flow in lattice QCD」.
+            <a href="https://arxiv.org/abs/1006.4518" target="_blank" rel="noreferrer">arXiv:1006.4518</a>.
+          </li>
+          <li id="ref-rs2015" data-cite="Ramos と Sint 2015">
+            Ramos, A., と S. Sint. 2015.「Symanzik improvement of the gradient flow in lattice gauge theories」.
+            <a href="https://arxiv.org/abs/1508.05552" target="_blank" rel="noreferrer">arXiv:1508.05552</a>.
+          </li>
+          <li id="ref-fodor2012" data-cite="Fodor ほか 2012">
+            Fodor, Z., K. Holland, J. Kuti, D. Nógrádi, と C. H. Wong. 2012.「The Yang–Mills gradient flow in finite volume」.
+            <a href="https://arxiv.org/abs/1208.1051" target="_blank" rel="noreferrer">arXiv:1208.1051</a>.
+          </li>
+          <li id="ref-fr2013" data-cite="Fritzsch と Ramos 2013">
+            Fritzsch, P., と A. Ramos. 2013.「The gradient flow coupling in the Schrödinger functional」.
+            <a href="https://arxiv.org/abs/1301.4388" target="_blank" rel="noreferrer">arXiv:1301.4388</a>.
+          </li>
+          <li id="ref-alpha2017" data-cite="Bruno ほか 2017">
+            Bruno, M., ほか (ALPHA Collaboration). 2017.「QCD coupling from a nonperturbative determination of the three-flavor Λ parameter」.
+            <a href="https://arxiv.org/abs/1706.03821" target="_blank" rel="noreferrer">arXiv:1706.03821</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

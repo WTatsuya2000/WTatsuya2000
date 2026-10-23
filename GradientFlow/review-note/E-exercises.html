@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="グラディエントフロー入門の演習問題 14 問と解答例">
+  <title>演習問題と解答例 — グラディエントフロー入門</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="E-exercises.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">グラディエントフロー入門</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">付録 E / 演習 14 問（解析 13 + 数値 1）</span>
+        <span class="chapter-number"></span><span class="chapter-title">演習問題と解答例</span>
+      </h1>
+
+      <p class="lead">
+        本文の各章に対応する演習問題と解答例。問題番号は E.1–E.14 で、本文からはこの番号で参照している。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>対象</dt>
+          <dd>第 2–6 章の内容と付録 C の数値演習</dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>Euclid、反エルミート生成子</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>問題数</dt>
+          <dd>14（解答例付き）</dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>使い方</h2>
+        <p>
+          問題は本文の章ごとにまとめてある。各問の直後の「解答例」は折りたたんであるので、解いてから開く。
+          難易度は <span class="tag tag-neutral">基礎</span> <span class="tag tag-neutral">標準</span>
+          <span class="tag tag-neutral">発展</span> <span class="tag tag-neutral">数値</span> の 4 段階。
+          記法は第 1 章の規約（反エルミート生成子、\(S_{\mathrm{YM}}=\frac{1}{4g_0^2}\int F^aF^a\)、Euclid 4 次元）に従う。
+        </p>
+      </section>
+
+      <section>
+        <h2>フローの定義と摂動論</h2>
+        <p class="lead">対応: 第 2 章</p>
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習" id="ex-1">
+          <div class="callout-head">
+            <span class="box-title" data-title="熱核と平滑化半径"></span>
+            <span class="box-kicker">基礎 · Basic</span>
+          </div>
+          <p>\(D\) 次元の熱核 <span
+class="math inline">\(K_t(x)=(4\pi t)^{-D/2}e^{-x^2/4t}\)</span>
+について次を示せ。</p>
+<ol type="1">
+<li>\(\partial_tK_t=\partial^2K_t\)
+かつ \(\int d^Dx\,K_t(x)=1\)、<span
+class="math inline">\(\lim_{t\to0}K_t(x)=\delta^D(x)\)</span>。</li>
+<li>フーリエ変換が \(\tilde
+K_t(p)=e^{-tp^2}\) であり、半群性 <span
+class="math inline">\(K_t*K_s=K_{t+s}\)</span> が成り立つ。</li>
+<li>\(\langle x^2\rangle\equiv\int
+d^Dx\,x^2K_t(x)=2Dt\)。したがって <span
+class="math inline">\(D=4\)</span> で平滑化半径は <span
+class="math inline">\(\sqrt{8t}\)</span> である。</li>
+</ol>
+        </div>
+
+        <details class="derivation-box">
+          <summary>解答例: 演習 E.1</summary>
+          <ol type="1">
+<li><span
+class="math inline">\(\partial_tK_t=\bigl(-\frac{D}{2t}+\frac{x^2}{4t^2}\bigr)K_t\)</span>。一方
+\(\partial_\mu
+K_t=-\frac{x_\mu}{2t}K_t\), <span
+class="math inline">\(\partial^2K_t=\bigl(-\frac{D}{2t}+\frac{x^2}{4t^2}\bigr)K_t\)</span>。よって一致。規格化はガウス積分
+\(\int d^Dx\,e^{-x^2/4t}=(4\pi
+t)^{D/2}\) から。\(t\to0\) で幅
+\(\to0\)、積分は 1 のままなので <span
+class="math inline">\(\delta\)</span> 関数に収束。</li>
+<li>ガウス関数のフーリエ変換で \(\tilde
+K_t(p)=e^{-tp^2}\)。畳み込みはフーリエ空間で積になり <span
+class="math inline">\(e^{-tp^2}e^{-sp^2}=e^{-(t+s)p^2}\)</span>。</li>
+<li>各成分は分散 \(2t\)
+の正規分布なので \(\langle
+x_\mu^2\rangle=2t\)、和をとって <span
+class="math inline">\(2Dt\)</span>。<span
+class="math inline">\(D=4\)</span> で <span
+class="math inline">\(\sqrt{\langle
+x^2\rangle}=\sqrt{8t}\)</span>。</li>
+</ol>
+        </details>
+
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習" id="ex-2">
+          <div class="callout-head">
+            <span class="box-title" data-title="フローした自由スカラー場の紫外有限性"></span>
+            <span class="box-kicker">基礎 · Basic</span>
+          </div>
+          <p>質量 \(m\) の自由スカラー場 <span
+class="math inline">\(\langle\tilde\phi(p)\tilde\phi(q)\rangle=(2\pi)^D\delta(p+q)/(p^2+m^2)\)</span>
+を熱方程式でフローする。</p>
+<ol type="1">
+<li><span
+class="math inline">\(\langle\phi(t,x)\phi(s,y)\rangle\)</span>
+を運動量積分で表せ。</li>
+<li>\(D=4\), <span
+class="math inline">\(m=0\)</span> のとき <span
+class="math inline">\(\langle\phi(t,x)^2\rangle=\dfrac{1}{32\pi^2t}\)</span>
+を示せ。</li>
+<li>\(t\to0\) で何が起こるか。<span
+class="math inline">\(t\)</span>
+が紫外カットオフとして働くことを説明せよ。</li>
+</ol>
+        </div>
+
+        <details class="derivation-box">
+          <summary>解答例: 演習 E.2</summary>
+          <ol type="1">
+<li><span
+class="math inline">\(\phi(t,x)=\int_pe^{ipx}e^{-tp^2}\tilde\phi(p)\)</span>
+より <span
+class="math inline">\(\langle\phi(t,x)\phi(s,y)\rangle=\int\frac{d^Dp}{(2\pi)^D}\frac{e^{ip(x-y)}e^{-(t+s)p^2}}{p^2+m^2}\)</span>。</li>
+<li>\(x=y\), <span
+class="math inline">\(s=t\)</span>, <span
+class="math inline">\(m=0\)</span>, <span
+class="math inline">\(D=4\)</span>：<span
+class="math inline">\(d^4p=2\pi^2p^3dp\)</span> より <span
+class="math display">\[\frac{2\pi^2}{(2\pi)^4}\int_0^\infty
+dp\,p\,e^{-2tp^2}=\frac{1}{8\pi^2}\cdot\frac{1}{4t}=\frac{1}{32\pi^2t}.\]</span></li>
+<li>\(t\to0\) で <span
+class="math inline">\(1/t\)</span> で発散する。これは通常の <span
+class="math inline">\(\langle\phi(x)^2\rangle\)</span> の2次発散 <span
+class="math inline">\(\Lambda^2\)</span> に対応し、 <span
+class="math inline">\(1/t\leftrightarrow\Lambda^2\)</span>（正確には
+<span
+class="math inline">\(1/(8t)\sim\mu^2\)</span>）の対応がある。<span
+class="math inline">\(t&gt;0\)</span> では指数因子 <span
+class="math inline">\(e^{-2tp^2}\)</span> が
+高運動量を切るので有限。</li>
+</ol>
+        </details>
+
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習" id="ex-3">
+          <div class="callout-head">
+            <span class="box-title" data-title="ゲージ共変性と \(\alpha_0\) 項"></span>
+            <span class="box-kicker">標準 · Standard</span>
+          </div>
+          <ol type="1">
+<li>\(\alpha_0=0\) のフロー方程式 <span
+class="math inline">\(\partial_tB_\mu=D_\nu G_{\nu\mu}\)</span>
+は、\(t\) に依存しないゲージ変換 <span
+class="math inline">\(B_\mu\to\Lambda
+B_\mu\Lambda^{-1}+\Lambda\partial_\mu\Lambda^{-1}\)</span>
+の下で共変であることを示せ。</li>
+<li>\(B_\mu\) が <span
+class="math inline">\(\alpha_0=0\)</span> の解のとき、<span
+class="math inline">\(\partial_t\Lambda=-\alpha_0(\partial_\nu
+B^\Lambda_\nu)\Lambda\)</span> （<span
+class="math inline">\(B^\Lambda\)</span> は <span
+class="math inline">\(\Lambda\)</span> で変換した場）を満たす <span
+class="math inline">\(t\)</span> 依存ゲージ変換で得られる <span
+class="math inline">\(B^\Lambda_\mu\)</span> が、 <span
+class="math inline">\(\alpha_0\)</span>
+項付きのフロー方程式を満たすことを示せ（符号は規約に依存するので、整合する規約を自分で定めてよい）。</li>
+<li>したがってゲージ不変量の期待値は <span
+class="math inline">\(\alpha_0\)</span>
+に依存しないことを結論せよ。</li>
+</ol>
+        </div>
+
+        <details class="derivation-box">
+          <summary>解答例: 演習 E.3</summary>
+          <ol type="1">
+<li>\(B^\Lambda_\mu=\Lambda
+B_\mu\Lambda^{-1}+\Lambda\partial_\mu\Lambda^{-1}\) のとき <span
+class="math inline">\(G^\Lambda_{\mu\nu}=\Lambda
+G_{\mu\nu}\Lambda^{-1}\)</span>, <span
+class="math inline">\(D^\Lambda_\nu(\Lambda X\Lambda^{-1})=\Lambda(D_\nu
+X)\Lambda^{-1}\)</span>。よって 右辺は <span
+class="math inline">\(\Lambda(D_\nu
+G_{\nu\mu})\Lambda^{-1}\)</span>。左辺は <span
+class="math inline">\(\Lambda\)</span> が <span
+class="math inline">\(t\)</span> に依存しないので <span
+class="math inline">\(\partial_tB^\Lambda_\mu=\Lambda(\partial_tB_\mu)\Lambda^{-1}\)</span>。両辺が一致。</li>
+<li><span
+class="math inline">\(\omega\equiv\dot\Lambda\Lambda^{-1}\)</span>
+とおくと \(\partial_t(\Lambda
+B_\mu\Lambda^{-1})=\Lambda(\partial_tB_\mu)\Lambda^{-1}+[\omega,\Lambda
+B_\mu\Lambda^{-1}]\), <span
+class="math inline">\(\partial_t(\Lambda\partial_\mu\Lambda^{-1})=[\omega,\Lambda\partial_\mu\Lambda^{-1}]-\partial_\mu\omega\)</span>。足し合わせて
+<span
+class="math display">\[\partial_tB^\Lambda_\mu=\Lambda(\partial_tB_\mu)\Lambda^{-1}-D^\Lambda_\mu\omega
+.\]</span> 第1項は (1) と同様に <span
+class="math inline">\(D^\Lambda_\nu G^\Lambda_{\nu\mu}\)</span>
+に等しい。\(\omega=-\alpha_0\partial_\nu
+B^\Lambda_\nu\) と選べば <span
+class="math inline">\(\partial_tB^\Lambda_\mu=D^\Lambda_\nu
+G^\Lambda_{\nu\mu}+\alpha_0D^\Lambda_\mu\partial_\nu
+B^\Lambda_\nu\)</span>。</li>
+<li>\(\alpha_0\ne0\) の解は <span
+class="math inline">\(\alpha_0=0\)</span> の解の（<span
+class="math inline">\(t\)</span>
+依存）ゲージ変換なので、ゲージ不変な汎関数の値は同じ。期待値も <span
+class="math inline">\(\alpha_0\)</span> に依存しない。</li>
+</ol>
+        </details>
+
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習" id="ex-4">
+          <div class="callout-head">
+            <span class="box-title" data-title="作用の単調減少"></span>
+            <span class="box-kicker">基礎 · Basic</span>
+          </div>
+          <p>\(\alpha_0=0\) のとき <span
+class="math inline">\(\dfrac{d}{dt}S_{\rm YM}[B_t]\le0\)</span>
+を示せ。等号が成り立つのはどのような場合か。 さらに、<span
+class="math inline">\(\alpha_0\neq0\)</span>
+でも同じ結論が成り立つ理由を述べよ。</p>
+        </div>
+
+        <details class="derivation-box">
+          <summary>解答例: 演習 E.4</summary>
+          <p>\(\frac{d}{dt}S=\int d^Dx\,\frac{\delta
+S}{\delta B^a_\mu}\partial_tB^a_\mu\)。<span
+class="math inline">\(\alpha_0=0\)</span> では <span
+class="math inline">\(\partial_tB^a_\mu=-g_0^2\delta S/\delta
+B^a_\mu\)</span> なので <span
+class="math inline">\(\frac{dS}{dt}=-g_0^2\int(\delta S/\delta
+B^a_\mu)^2\le0\)</span>。 等号は \(D_\nu
+G_{\nu\mu}=0\)、つまり \(B_t\)
+が古典的運動方程式の解（停留点）のとき。 <span
+class="math inline">\(\alpha_0\neq0\)</span>
+では解がゲージ変換で結ばれ（演習 E.3）、<span
+class="math inline">\(S\)</span> はゲージ不変なので <span
+class="math inline">\(S[B_t]\)</span>
+は同じ関数になり、やはり単調減少。</p>
+        </details>
+
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習" id="ex-5">
+          <div class="callout-head">
+            <span class="box-title" data-title="線形化したフロー方程式"></span>
+            <span class="box-kicker">標準 · Standard</span>
+          </div>
+          <ol type="1">
+<li>フロー方程式を \(B\)
+の1次まで展開すると <span
+class="math inline">\(\partial_tB_\mu=\partial^2B_\mu+(\alpha_0-1)\partial_\mu\partial_\nu
+B_\nu\)</span> となることを示せ。</li>
+<li>その解が \[\tilde
+B_\mu(t,p)=\Bigl[P^T_{\mu\nu}(p)\,e^{-tp^2}+P^L_{\mu\nu}(p)\,e^{-\alpha_0tp^2}\Bigr]\tilde
+A_\nu(p),\quad
+P^T=\delta_{\mu\nu}-\frac{p_\mu p_\nu}{p^2},\ P^L=\frac{p_\mu
+p_\nu}{p^2}\] であることを示せ。</li>
+<li>線形近似の場の強さ \(\tilde
+G_{\mu\nu}\) が \(\alpha_0\)
+に依存しないことを確かめよ。</li>
+</ol>
+        </div>
+
+        <details class="derivation-box">
+          <summary>解答例: 演習 E.5</summary>
+          <ol type="1">
+<li>\(D_\nu
+G_{\nu\mu}=\partial_\nu(\partial_\nu B_\mu-\partial_\mu
+B_\nu)+O(B^2)\), \(D_\mu\partial_\nu
+B_\nu=\partial_\mu\partial_\nu B_\nu+O(B^2)\)。</li>
+<li>フーリエ空間で \(\partial_t\tilde
+B_\mu=-[p^2\delta_{\mu\nu}+(\alpha_0-1)p_\mu p_\nu]\tilde
+B_\nu=-p^2[P^T+\alpha_0P^L]_{\mu\nu}\tilde B_\nu\)。 <span
+class="math inline">\(P^{T,L}\)</span>
+は直交射影子なので指数関数は各射影子ごとに <span
+class="math inline">\(e^{-tp^2}\)</span>, <span
+class="math inline">\(e^{-\alpha_0tp^2}\)</span> となる。</li>
+<li>\(\tilde G_{\mu\nu}=i(p_\mu\tilde
+B_\nu-p_\nu\tilde B_\mu)\) で、<span
+class="math inline">\(P^L\)</span> 部分は <span
+class="math inline">\(p_\nu\)</span> に比例するので反対称化で消える。
+よって \(\tilde G_{\mu\nu}=i(p_\mu
+P^T_{\nu\rho}-p_\nu P^T_{\mu\rho})e^{-tp^2}\tilde A_\rho\) は
+\(\alpha_0\) に依らない。</li>
+</ol>
+        </details>
+      </section>
+
+      <section>
+        <h2>エネルギー密度と基準スケール</h2>
+        <p class="lead">対応: 第 3 章</p>
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習" id="ex-6">
+          <div class="callout-head">
+            <span class="box-title" data-title="\(\langle E\rangle\) の木レベル計算"></span>
+            <span class="box-kicker">標準 · Standard</span>
+          </div>
+          <p><span
+class="math inline">\(E=\frac14G^a_{\mu\nu}G^a_{\mu\nu}\)</span>
+の期待値を \(g_0^2\) の最低次で計算し、
+\[\langle
+E(t)\rangle=\frac{3(N^2-1)g_0^2}{128\pi^2t^2}+O(g_0^4)\]
+を示せ。ゲージ固定パラメータ \(\xi\)
+の一般共変ゲージ \(\langle\tilde A^a_\mu\tilde
+A^b_\nu\rangle=g_0^2\delta^{ab}\bigl[P^T_{\mu\nu}+\xi
+P^L_{\mu\nu}\bigr]/p^2\)
+を使っても結果が変わらないことも確かめよ。また、<span
+class="math inline">\(D\)</span> 次元での結果を書け。</p>
+        </div>
+
+        <details class="derivation-box">
+          <summary>解答例: 演習 E.6</summary>
+          <p>最低次では \(G^a_{\mu\nu}=\partial_\mu
+B^a_\nu-\partial_\nu B^a_\mu\), <span
+class="math inline">\(\tilde B=e^{-tp^2}P^T\tilde
+A+\cdots\)</span>（\(P^L\) は消える）。
+\[\langle
+G^a_{\mu\nu}G^a_{\mu\nu}\rangle=\int_p
+e^{-2tp^2}\,(N^2-1)\,g_0^2\,\frac{2(p^2\delta_{\nu\rho}-p_\nu
+p_\rho)P^T_{\nu\rho}}{p^2}
+=2(D-1)(N^2-1)g_0^2\int_pe^{-2tp^2}.\] <span
+class="math inline">\(\xi P^L\)</span> 部分は <span
+class="math inline">\(p^2\delta_{\nu\rho}-p_\nu p_\rho\)</span>
+に縮約すると 0 なので \(\xi\)
+に依らない。 <span
+class="math inline">\(\int\frac{d^Dp}{(2\pi)^D}e^{-2tp^2}=(8\pi
+t)^{-D/2}\)</span> より \[\langle
+E\rangle=\frac{(D-1)(N^2-1)g_0^2}{2(8\pi t)^{D/2}}\ \xrightarrow{D=4}\
+\frac{3(N^2-1)g_0^2}{2\cdot64\pi^2t^2}=\frac{3(N^2-1)g_0^2}{128\pi^2t^2}.\]</p>
+        </details>
+
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習" id="ex-7">
+          <div class="callout-head">
+            <span class="box-title" data-title="\(t_0\) における結合定数とスケール"></span>
+            <span class="box-kicker">基礎 · Basic</span>
+          </div>
+          <p>\(SU(3)\) で <span
+class="math inline">\(t^2\langle
+E\rangle=\frac{3}{4\pi}\alpha(1+k_1\alpha)\)</span>, <span
+class="math inline">\(k_1=1.0978+0.0075N_f\)</span> とする。</p>
+<ol type="1">
+<li>\(N_f=0\) と <span
+class="math inline">\(N_f=3\)</span> で <span
+class="math inline">\(k_1\)</span> の値を <span
+class="math inline">\(c_1\)</span> の式から再現せよ。</li>
+<li>1ループの式を信じて <span
+class="math inline">\(t=t_0\)</span>（<span
+class="math inline">\(t^2\langle E\rangle=0.3\)</span>）での <span
+class="math inline">\(\alpha\)</span> を <span
+class="math inline">\(N_f=0\)</span>
+で求めよ。結果から何がわかるか。</li>
+<li>\(\sqrt{t_0}=0.1465\) fm
+のとき、対応するエネルギースケール <span
+class="math inline">\(\mu=1/\sqrt{8t_0}\)</span> を GeV 単位で求めよ
+（\(\hbar c=0.1973\) GeV fm）。</li>
+</ol>
+        </div>
+
+        <details class="derivation-box">
+          <summary>解答例: 演習 E.7</summary>
+          <ol type="1">
+<li>\(k_1=4\pi c_1\)。<span
+class="math inline">\(N=3\)</span>：<span
+class="math inline">\(\frac{11}{3}\gamma_E+\frac{52}{9}-3\ln3=2.1165+5.7778-3.2958=4.5985\)</span>、<span
+class="math inline">\(\times3=13.795\)</span>、 <span
+class="math inline">\(/16\pi^2\times4\pi=13.795/(4\pi)=1.0978\)</span>。フレーバー部分：<span
+class="math inline">\(\frac23\gamma_E+\frac49-\frac43\ln2=0.3848+0.4444-0.9242=-0.0950\)</span>、
+<span
+class="math inline">\(-N_f\times(-0.0950)/(4\pi)=+0.0076N_f\)</span>。よって
+\(N_f=0\): <span
+class="math inline">\(1.0978\)</span>, <span
+class="math inline">\(N_f=3\)</span>: <span
+class="math inline">\(\approx1.120\)</span>。</li>
+<li><span
+class="math inline">\(0.3=\frac{3}{4\pi}\alpha(1+1.0978\alpha)\Rightarrow1.0978\alpha^2+\alpha-1.2566=0\Rightarrow\alpha\simeq0.71\)</span>。
+1ループ補正 \(k_1\alpha\approx0.78\) が
+1 と同程度なので摂動論は信頼できない。<span
+class="math inline">\(t_0\)</span> は <strong>非摂動的に</strong>
+定義された
+ハドロンスケールであり、だからこそ格子で決める意味がある。</li>
+<li><span
+class="math inline">\(\sqrt{8t_0}=2.828\times0.1465=0.414\)</span>
+fm、\(\mu=0.1973/0.414\simeq0.48\)
+GeV。</li>
+</ol>
+        </details>
+
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習" id="ex-8">
+          <div class="callout-head">
+            <span class="box-title" data-title="\(t_0\) と \(w_0\)"></span>
+            <span class="box-kicker">標準 · Standard</span>
+          </div>
+          <p>\(F(t)\equiv t^2\langle
+E(t)\rangle\) とする。</p>
+<ol type="1">
+<li>1ループのランニング <span
+class="math inline">\(\alpha(\mu)=\dfrac{1}{4\pi
+b_0\ln(\mu^2/\Lambda^2)}\)</span>, <span
+class="math inline">\(\mu=1/\sqrt{8t}\)</span> と木レベルの <span
+class="math inline">\(F=\frac{3}{4\pi}\alpha\)</span> を用いて、<span
+class="math inline">\(t\,dF/dt\)</span> を <span
+class="math inline">\(\alpha\)</span> で表せ。</li>
+<li>格子上で \(F_{\rm
+lat}(t)=F(t)\bigl[1+c\,a^2/t+O(a^4)\bigr]\) と書けるとき、<span
+class="math inline">\(F\)</span> と <span
+class="math inline">\(t\,dF/dt\)</span> の
+格子アーティファクトの大きさを比較せよ。<span
+class="math inline">\(w_0\)</span>
+が「より局所的な」スケールである意味を議論せよ。</li>
+</ol>
+        </div>
+
+        <details class="derivation-box">
+          <summary>解答例: 演習 E.8</summary>
+          <ol type="1">
+<li>\(\mu^2=1/(8t)\) より <span
+class="math inline">\(t\frac{d}{dt}=-\mu^2\frac{d}{d\mu^2}\)</span>。<span
+class="math inline">\(\mu^2\frac{d\alpha}{d\mu^2}=-4\pi
+b_0\alpha^2\)</span> なので <span
+class="math inline">\(t\frac{dF}{dt}=\frac{3}{4\pi}\cdot4\pi
+b_0\alpha^2=3b_0\alpha^2\)</span>（木レベル+1ループランニング）。
+このように \(tdF/dt\) は <span
+class="math inline">\(F\)</span> と異なる関数だが、どちらも <span
+class="math inline">\(t\)</span> の単調関数なので基準値で <span
+class="math inline">\(t\)</span> を定義できる。</li>
+<li>\(t\frac{d}{dt}F_{\rm
+lat}=tF&#39;\,(1+ca^2/t)-cF\,a^2/t=tF&#39;\Bigl[1+\frac{ca^2}{t}\Bigl(1-\frac{F}{tF&#39;}\Bigr)\Bigr]\)。
+相対的な格子アーティファクトは \(F\)
+では \(ca^2/t\)、<span
+class="math inline">\(tF&#39;\)</span> では <span
+class="math inline">\(ca^2/t\,(1-F/tF&#39;)\)</span> となり、 <span
+class="math inline">\(F\)</span> と <span
+class="math inline">\(tF&#39;\)</span>
+の比に応じて部分的に打ち消し合う（この単純なモデルでは <span
+class="math inline">\(F/tF&#39;=1/(4\pi b_0\alpha)\)</span>）。
+より本質的には、\(F(t)\)
+は熱核で平滑化していても短距離（<span
+class="math inline">\(a^2/t\)</span>
+の大きい領域）の寄与を含むのに対し、 その対数微分は <span
+class="math inline">\(t\)</span>
+の近傍での変化だけで決まる「より局所的な」量である。 実際、BMW
+<a class="cite" href="#ref-bmw2012"></a> は \(w_0\) の方が <span
+class="math inline">\(t_0\)</span> より <span
+class="math inline">\(a^2\)</span>
+依存性が小さいことを数値的に示した。</li>
+</ol>
+        </details>
+      </section>
+
+      <section>
+        <h2>トポロジー</h2>
+        <p class="lead">対応: 第 5 章</p>
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習" id="ex-9">
+          <div class="callout-head">
+            <span class="box-title" data-title="トポロジカルチャージ"></span>
+            <span class="box-kicker">標準 · Standard</span>
+          </div>
+          <ol type="1">
+<li><span
+class="math inline">\(\epsilon_{\mu\nu\rho\sigma}\operatorname{tr}(F_{\mu\nu}F_{\rho\sigma})=\partial_\mu
+K_\mu\)</span> と書けることを示し、 Chern–Simons カレント <span
+class="math inline">\(K_\mu\)</span> を求めよ。</li>
+<li>双対場 \(\tilde
+F_{\mu\nu}=\frac12\epsilon_{\mu\nu\rho\sigma}F_{\rho\sigma}\)
+を用いて \(S_{\rm
+YM}\ge\dfrac{8\pi^2}{g_0^2}|Q|\) を示せ。等号条件を述べよ。</li>
+<li>フローは作用を減少させる。インスタントン（半径 <span
+class="math inline">\(\rho\)</span>）が格子上でフローによってどうなりうるか、
+\(\rho\sim a\) の場合と <span
+class="math inline">\(\rho\gg a\)</span>
+の場合に分けて定性的に議論せよ。</li>
+</ol>
+        </div>
+
+        <details class="derivation-box">
+          <summary>解答例: 演習 E.9</summary>
+          <ol type="1">
+<li><span
+class="math inline">\(\epsilon_{\mu\nu\rho\sigma}\operatorname{tr}(F_{\mu\nu}F_{\rho\sigma})=4\epsilon_{\mu\nu\rho\sigma}\partial_\mu\operatorname{tr}\bigl(A_\nu\partial_\rho
+A_\sigma+\frac23A_\nu A_\rho A_\sigma\bigr)\)</span>。 すなわち <span
+class="math inline">\(K_\mu=4\epsilon_{\mu\nu\rho\sigma}\operatorname{tr}(A_\nu\partial_\rho
+A_\sigma+\frac23A_\nu A_\rho A_\sigma)\)</span>。 （<span
+class="math inline">\(\operatorname{tr}(A\wedge A\wedge A\wedge
+A)=0\)</span> を巡回性と \(\epsilon\)
+の反対称性から使う。）</li>
+<li>\(0\le\int(F^a_{\mu\nu}\mp\tilde
+F^a_{\mu\nu})^2=2\int F^aF^a\mp2\int F^a\tilde F^a\)。 <span
+class="math inline">\(\int F^a\tilde F^a=\frac12\int\epsilon
+F^aF^a=32\pi^2Q\)</span> より \(\frac14\int
+F^aF^a\ge8\pi^2|Q|\)、つまり \(S_{\rm
+YM}\ge8\pi^2|Q|/g_0^2\)。等号は <span
+class="math inline">\(F=\pm\tilde F\)</span>（(反)自己双対）。</li>
+<li>連続理論ではインスタントンの作用 <span
+class="math inline">\(8\pi^2/g_0^2\)</span> はスケール不変で、フローは
+\(Q\) を保つ。格子上では 作用が <span
+class="math inline">\(\rho/a\)</span> に依存し（Wilson 作用では <span
+class="math inline">\(\rho\)</span> が小さいほど作用が下がる）、フローで
+\(\rho\) が縮み、 <span
+class="math inline">\(\rho\sim a\)</span>
+になると格子の「穴」をすり抜けて消える（<span
+class="math inline">\(Q\)</span> が変わる）。<span
+class="math inline">\(\rho\gg a\)</span> のインスタントンは <span
+class="math inline">\(\sqrt{8t}\ll\rho\)</span>
+の範囲ではほぼ安定。\(a\to0\)
+でこのような事象は抑制され、トポロジカルセクターが分離する
+<a class="cite" href="#ref-luscher2010"></a>。</li>
+</ol>
+        </details>
+
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習" id="ex-10">
+          <div class="callout-head">
+            <span class="box-title" data-title="Witten–Veneziano 公式"></span>
+            <span class="box-kicker">基礎 · Basic</span>
+          </div>
+          <p>\(f_\pi=92.4\) MeV, <span
+class="math inline">\(m_\eta=547.9\)</span> MeV, <span
+class="math inline">\(m_{\eta&#39;}=957.8\)</span> MeV, <span
+class="math inline">\(m_K=495.7\)</span> MeV, <span
+class="math inline">\(N_f=3\)</span> として <span
+class="math inline">\(\chi_t^{\rm
+YM}=\frac{f_\pi^2}{2N_f}(m_\eta^2+m_{\eta&#39;}^2-2m_K^2)\)</span>
+を計算し、\(\chi_t^{1/4}\) を MeV
+単位で求めよ。</p>
+        </div>
+
+        <details class="derivation-box">
+          <summary>解答例: 演習 E.10</summary>
+          <p><span
+class="math inline">\(m_\eta^2+m_{\eta&#39;}^2-2m_K^2=0.3002+0.9174-0.4914=0.7262\)</span>
+GeV\(^2\)。 <span
+class="math inline">\(f_\pi^2/6=0.008538/6=1.423\times10^{-3}\)</span>
+GeV\(^2\)。積は <span
+class="math inline">\(1.033\times10^{-3}\)</span> GeV<span
+class="math inline">\(^4\)</span>、<span
+class="math inline">\(\chi_t^{1/4}\simeq0.179\)</span> GeV <span
+class="math inline">\(\approx180\)</span> MeV。 格子の SU(3)
+純ゲージ理論の値（<span
+class="math inline">\(\chi_t^{1/4}\approx190\)</span> MeV
+程度）と同程度であり、大 \(N\)
+展開がよく機能していることを示す。</p>
+        </details>
+      </section>
+
+      <section>
+        <h2>エネルギー運動量テンソルと熱力学</h2>
+        <p class="lead">対応: 第 6 章</p>
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習" id="ex-11">
+          <div class="callout-head">
+            <span class="box-title" data-title="Suzuki の EMT 公式の構造"></span>
+            <span class="box-kicker">標準 · Standard</span>
+          </div>
+          <ol type="1">
+<li>\(U_{\mu\nu}\)
+がトレースレスであることを確かめ、Suzuki の公式から <span
+class="math inline">\(T^R_{\mu\mu}=\lim_{t\to0}\frac{1}{\alpha_E(t)}[E(t,x)-\langle
+E\rangle_0]\)</span> を導け。</li>
+<li>\(SU(3)\) で <span
+class="math inline">\(b_1=\frac{1}{(4\pi)^4}\bigl(\frac{34}{3}N^2\bigr)\)</span>
+として \(\bar
+s_2=\frac{21}{44}-\frac{b_1}{2b_0^2}=\frac{27}{484}\)
+を確かめよ。また \(\bar
+s_1=\frac{7}{22}+\frac{\gamma_E}{2}-\ln2\) を数値で求めよ。</li>
+<li>\(\alpha_U\) は <span
+class="math inline">\(O(g^2)\)</span> から、<span
+class="math inline">\(\alpha_E\)</span> は <span
+class="math inline">\(O(g^0)\)</span>
+から始まる。この違いの物理的理由を、 トレースアノマリー <span
+class="math inline">\(T_{\mu\mu}\propto\beta(g)F^aF^a\)</span>
+と関連づけて説明せよ。</li>
+</ol>
+        </div>
+
+        <details class="derivation-box">
+          <summary>解答例: 演習 E.11</summary>
+          <ol type="1">
+<li><span
+class="math inline">\(U_{\mu\mu}=G^a_{\mu\rho}G^a_{\mu\rho}-\frac{4}{4}G^aG^a=0\)</span>。よって
+<span
+class="math inline">\(T^R_{\mu\mu}=\lim\frac{4}{4\alpha_E}(E-\langle
+E\rangle_0)\)</span>。</li>
+<li>\(b_0=\frac{11}{(4\pi)^2}\), <span
+class="math inline">\(b_1=\frac{102}{(4\pi)^4}\)</span>（<span
+class="math inline">\(N=3\)</span>, <span
+class="math inline">\(N_f=0\)</span>）。<span
+class="math inline">\(\frac{b_1}{2b_0^2}=\frac{102}{2\cdot121}=\frac{51}{121}\)</span>。
+<span
+class="math inline">\(\frac{21}{44}-\frac{51}{121}=\frac{231-204}{484}=\frac{27}{484}\simeq0.0558\)</span>。
+\(\bar
+s_1=0.31818+0.28861-0.69315\simeq-0.0864\)。</li>
+<li><span
+class="math inline">\(U_{\mu\nu}\)</span>（トレースレス部分）は古典的にも存在する：古典
+EMT は \(\frac{1}{g^2}\times\)（<span
+class="math inline">\(F\)</span> の2次形式）なので、 <span
+class="math inline">\(G\)</span> に <span
+class="math inline">\(g\)</span> を含む規格化では係数は <span
+class="math inline">\(1/g^2\)</span>、すなわち <span
+class="math inline">\(\alpha_U\sim
+g^2\)</span>。一方トレース部分は古典的には 0（共形不変性）で、
+量子的なトレースアノマリー <span
+class="math inline">\(T_{\mu\mu}=-\frac{\beta(g)}{2g^3}F^aF^a\)</span>（<span
+class="math inline">\(F\)</span> は <span
+class="math inline">\(g\)</span> を含む規格化、<span
+class="math inline">\(\beta=-b_0g^3+\cdots\)</span>） すなわち <span
+class="math inline">\(T_{\mu\mu}\simeq\frac{b_0}{2}F^aF^a=2b_0E\)</span>
+によってのみ生じる。そのため <span
+class="math inline">\(1/\alpha_E\propto b_0\)</span> となり、<span
+class="math inline">\(\alpha_E=O(g^0)\)</span> から始まる。</li>
+</ol>
+        </details>
+
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習" id="ex-12">
+          <div class="callout-head">
+            <span class="box-title" data-title="熱力学と Stefan–Boltzmann 極限"></span>
+            <span class="box-kicker">基礎 · Basic</span>
+          </div>
+          <ol type="1">
+<li>\(\varepsilon=-\langle
+T_{00}\rangle\), \(p=\langle
+T_{11}\rangle\)（Euclid, 等方性 <span
+class="math inline">\(\langle T_{11}\rangle=\langle
+T_{22}\rangle=\langle T_{33}\rangle\)</span>）から <span
+class="math inline">\(\varepsilon-3p=-\langle
+T_{\mu\mu}\rangle\)</span>, <span
+class="math inline">\(\varepsilon+p=\langle
+T_{11}-T_{00}\rangle\)</span> を示せ。</li>
+<li>熱力学関係式 \(s=\partial p/\partial
+T\), \(\varepsilon=Ts-p\) から
+\(\varepsilon+p=Ts\) を確かめよ。</li>
+<li>自由な \(SU(3)\) グルーオン気体の
+\(p/T^4\), <span
+class="math inline">\(\varepsilon/T^4\)</span>, <span
+class="math inline">\(s/T^3\)</span> を求めよ（偏極自由度に注意）。</li>
+<li>有限温度で EMT を測るとき、なぜ <span
+class="math inline">\(\sqrt{8t}\lesssim1/(2T)\)</span>
+程度に制限されるのか。<span
+class="math inline">\(N_t\)</span>（時間方向格子点数）との関係で説明せよ。</li>
+</ol>
+        </div>
+
+        <details class="derivation-box">
+          <summary>解答例: 演習 E.12</summary>
+          <ol type="1">
+<li>\(\langle T_{\mu\mu}\rangle=\langle
+T_{00}\rangle+3\langle T_{11}\rangle=-\varepsilon+3p\)。また
+\(\langle
+T_{11}-T_{00}\rangle=p+\varepsilon\)。</li>
+<li>\(\varepsilon=Ts-p\)
+そのもの（自由エネルギー密度 \(f=-p\),
+\(s=-\partial f/\partial T\)）。</li>
+<li>自由度 \(2\times(N^2-1)=16\)。<span
+class="math inline">\(p=16\cdot\frac{\pi^2}{90}T^4\)</span>：<span
+class="math inline">\(p/T^4=\frac{8\pi^2}{45}\simeq1.755\)</span>、
+\(\varepsilon=3p\)：<span
+class="math inline">\(\varepsilon/T^4\simeq5.26\)</span>、<span
+class="math inline">\(s/T^3=4p/T^4\simeq7.02\)</span>。</li>
+<li>時間方向の長さは <span
+class="math inline">\(1/T=N_ta\)</span>。平滑化半径 <span
+class="math inline">\(\sqrt{8t}\)</span> が <span
+class="math inline">\(1/(2T)\)</span>
+を超えると、周期境界の両側の場が混ざり、 小フロー時間展開（<span
+class="math inline">\(T\)</span> に依らない係数 <span
+class="math inline">\(c_i(t)\)</span>）の前提が崩れる。よって <span
+class="math inline">\(\sqrt{8t}\lesssim N_ta/2\)</span>。 一方 <span
+class="math inline">\(t\gg a^2\)</span> も必要なので、<span
+class="math inline">\(N_t\)</span>
+が小さい（高温・粗い格子）ほど窓が狭くなる <a class="cite" href="#ref-whot2016"></a>。</li>
+</ol>
+        </details>
+
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習" id="ex-14">
+          <div class="callout-head">
+            <span class="box-title" data-title="小フロー時間展開の1次計算（発展）"></span>
+            <span class="box-kicker">発展 · Advanced</span>
+          </div>
+          <p>自由スカラー場の合成演算子 <span
+class="math inline">\(\phi(t,x)^2\)</span> を考える（<span
+class="math inline">\(D=4\)</span>, 質量 <span
+class="math inline">\(m\)</span>）。</p>
+<ol type="1">
+<li>\(\langle\phi(t,x)^2\rangle\) を
+\(t\to0\) で展開し、 <span
+class="math inline">\(\langle\phi(t,x)^2\rangle=\frac{1}{32\pi^2t}+\frac{m^2}{16\pi^2}\bigl[\ln(2m^2t)+\gamma_E\bigr]+O(t)\)</span>
+を示せ （ヒント：\(\int_0^\infty du\,e^{-u}\ln
+u=-\gamma_E\)、指数積分の展開）。</li>
+<li>次元正則化 \(\overline{\rm MS}\) の
+<span
+class="math inline">\(\langle[\phi^2]_R(\mu)\rangle=\frac{m^2}{16\pi^2}\bigl[\ln(m^2/\mu^2)-1\bigr]\)</span>
+を用いて、 \(\phi(t,x)^2=c_1(t)\,\mathbb
+1+c_2(t)[\phi^2]_R(\mu)+O(t)\) の係数 <span
+class="math inline">\(c_1,c_2\)</span> を（この次数で）決定せよ。</li>
+<li>この結果が、第 6 章
+の「フローした演算子は繰り込まれた演算子と恒等演算子の線形結合で書ける」という主張の
+最も簡単な例になっていることを説明せよ。</li>
+</ol>
+<hr />
+        </div>
+
+        <details class="derivation-box">
+          <summary>解答例: 演習 E.14</summary>
+          <ol type="1">
+<li><span
+class="math inline">\(\langle\phi(t,x)^2\rangle=\frac{1}{8\pi^2}\int_0^\infty
+dp\,\frac{p^3e^{-2tp^2}}{p^2+m^2}\)</span>。<span
+class="math inline">\(u=p^2\)</span> として <span
+class="math inline">\(=\frac{1}{16\pi^2}\int_0^\infty
+du\,\frac{u\,e^{-2tu}}{u+m^2}=\frac{1}{16\pi^2}\Bigl[\frac{1}{2t}-m^2e^{2tm^2}E_1(2tm^2)\Bigr]\)</span>。
+\(E_1(z)=-\gamma_E-\ln z+O(z)\) より
+<span
+class="math inline">\(=\frac{1}{32\pi^2t}+\frac{m^2}{16\pi^2}\bigl[\ln(2m^2t)+\gamma_E\bigr]+O(t)\)</span>。</li>
+<li><span
+class="math inline">\(\langle\phi(t)^2\rangle=c_1(t)+c_2(t)\frac{m^2}{16\pi^2}[\ln(m^2/\mu^2)-1]\)</span>。<span
+class="math inline">\(m^2\ln m^2\)</span> の係数比較で <span
+class="math inline">\(c_2=1+O(\lambda)\)</span>（自由場では厳密に 1）。
+残りを比較して <span
+class="math display">\[c_1(t)=\frac{1}{32\pi^2t}+\frac{m^2}{16\pi^2}\bigl[\ln(2\mu^2t)+\gamma_E+1\bigr].\]</span>
+（\(m^2\) を含む <span
+class="math inline">\(c_1\)</span> の項は、厳密には <span
+class="math inline">\(m^2\mathbb 1\)</span>
+という次元2の演算子との混合と読む。）</li>
+<li>フローした <span
+class="math inline">\(\phi^2\)</span>（有限・正則化非依存）が、恒等演算子（<span
+class="math inline">\(1/t\)</span> の発散的係数を持つ）と繰り込まれた
+\([\phi^2]_R\) の
+線形結合で書け、係数は短距離の量（<span
+class="math inline">\(\ln(\mu^2t)\)</span>）にのみ依存する。相互作用がある場合、係数は
+\(\mu\sim1/\sqrt{8t}\) での
+摂動論で計算でき、これがゲージ理論の EMT 公式（第 6
+章）と同じ論理構造である。</li>
+</ol>
+        </details>
+      </section>
+
+      <section>
+        <h2>数値演習</h2>
+        <p class="lead">対応: 第 4・5 章、付録 C</p>
+        <div class="example-box numbered-box" data-kind="exercise" data-label="演習" id="ex-13">
+          <div class="callout-head">
+            <span class="box-title" data-title="2次元 U(1) の Wilson フローとトポロジー"></span>
+            <span class="box-kicker">数値 · Numerics</span>
+          </div>
+          <p>2次元 U(1) 格子ゲージ理論（作用 <span
+class="math inline">\(S=\beta\sum_x(1-\cos\theta_p(x))\)</span>）について：</p>
+<ol type="1">
+<li>リンク角 \(\theta_\mu(x)\) に対する
+Wilson フロー方程式 <span
+class="math inline">\(\dot\theta_\mu(x)=-\beta^{-1}\partial
+S/\partial\theta_\mu(x)\)</span> を具体的に書け。</li>
+<li>Metropolis 法で配位を生成し、フローを適用して <span
+class="math inline">\(Q_{\sin}=\frac{1}{2\pi}\sum_x\sin\theta_p(x)\)</span>
+の値がフロー時間とともに整数に近づくことを確かめよ。</li>
+<li>幾何学的定義 \(Q_{\rm
+geo}=\frac{1}{2\pi}\sum_x\arg e^{i\theta_p(x)}\) と比較し、 <span
+class="math inline">\(t=0\)</span> での <span
+class="math inline">\(Q_{\rm geo}\)</span> とフロー後の <span
+class="math inline">\(Q\)</span>
+が異なる配位があればその理由を考えよ。</li>
+<li>（発展）\(\beta\) を大きくして
+\(\chi_t a^2=\langle Q^2\rangle/V\)
+を測り、連続極限の値 \(\chi_t
+a^2\to1/(4\pi^2\beta)\) と比べよ。</li>
+</ol>
+        </div>
+
+        <details class="derivation-box">
+          <summary>解答例: 演習 E.13</summary>
+          <ol type="1">
+<li><p>0 方向を \(\hat1\), 1 方向を
+\(\hat2\) として <span
+class="math inline">\(\theta_p(x)=\theta_1(x)+\theta_2(x+\hat1)-\theta_1(x+\hat2)-\theta_2(x)\)</span>。
+<span
+class="math display">\[\dot\theta_1(x)=-\bigl[\sin\theta_p(x)-\sin\theta_p(x-\hat2)\bigr],\qquad
+\dot\theta_2(x)=-\bigl[\sin\theta_p(x-\hat1)-\sin\theta_p(x)\bigr].\]</span>
+U(1) は可換で群多様体が平坦（角度の空間）なので、通常の Runge–Kutta
+で積分してよい。</p></li>
+<li><p>解答例コード 付録 C。\(L=16\),
+\(\beta=2\), 12配位の実行例：</p>
+<pre><code># 整数からのずれ  &lt;|Q_sin - round(Q_sin)|&gt;  (フローで 0 に近づく)
+t =  0.0:  0.3162
+t =  0.5:  0.2303
+t =  1.0:  0.0879
+t =  2.0:  0.0117
+t =  4.0:  0.0059</code></pre>
+<p>フロー時間 \(t\gtrsim2\)（平滑化半径
+\(\sqrt{4t}\approx3a\), 2次元なので
+\(\sqrt{2Dt}=\sqrt{4t}\)）で <span
+class="math inline">\(Q_{\sin}\)</span> はほぼ整数になる。</p></li>
+<li><p>実行例の一部の配位で \(Q_{\rm
+geo}(t=0)\) とフロー後の \(Q\)
+が 1 だけ異なる。これは <span
+class="math inline">\(\theta_p\approx\pm\pi\)</span> 付近の
+格子サイズの「転位（dislocation）」で、作用が小さく、フローで消える（または生じる）紫外の構造である。
+<span
+class="math inline">\(\beta\to\infty\)</span>（連続極限）でこのような配位は
+\(e^{-2\beta}\)
+のように抑制され、両者は一致する。</p></li>
+<li><p>\(\beta=1/(e^2a^2)\)
+で連続極限の <span
+class="math inline">\(\chi_t=e^2/(4\pi^2)\)</span>、すなわち <span
+class="math inline">\(\chi_ta^2\to1/(4\pi^2\beta)\)</span>。 <span
+class="math inline">\(\beta\)</span> を大きくすると Metropolis での
+\(Q\)
+の自己相関時間が急増する（トポロジーの凍結の 2
+次元版）ことにも注意。</p></li>
+</ol>
+        </details>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-luscher2010" data-cite="Lüscher 2010">
+            Lüscher, M.. 2010.「Properties and uses of the Wilson flow in lattice QCD」.
+            <a href="https://arxiv.org/abs/1006.4518" target="_blank" rel="noreferrer">arXiv:1006.4518</a>.
+          </li>
+          <li id="ref-bmw2012" data-cite="Borsanyi ほか 2012">
+            Borsanyi, S., ほか (BMW Collaboration). 2012.「High-precision scale setting in lattice QCD」.
+            <a href="https://arxiv.org/abs/1203.4469" target="_blank" rel="noreferrer">arXiv:1203.4469</a>.
+          </li>
+          <li id="ref-whot2016" data-cite="Taniguchi ほか 2016">
+            Taniguchi, Y., ほか (WHOT-QCD Collaboration). 2016.「Exploring N<sub>f</sub>=2+1 QCD thermodynamics from the gradient flow」.
+            <a href="https://arxiv.org/abs/1609.01417" target="_blank" rel="noreferrer">arXiv:1609.01417</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

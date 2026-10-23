@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="フローした場の有限性、エネルギー密度、基準スケール t0 と w0">
+  <title>繰り込み性と基準スケール — グラディエントフロー入門</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="03-renormalization.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">グラディエントフロー入門</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">Lüscher と Weisz 2011 / Lüscher 2010 §2–3 / Borsanyi ほか 2012 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">繰り込み性と基準スケール</span>
+      </h1>
+
+      <p class="lead">
+        本章では、フローした場が追加の繰り込みなしで有限であること（Lüscher–Weisz）を述べ、その代表例であるエネルギー密度 ⟨E⟩ の摂動展開と、それを用いた基準スケール t₀・w₀ をまとめる。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>原論文</dt>
+          <dd><strong>Perturbative analysis of the gradient flow in non-abelian gauge theories</strong> — M. Lüscher, P. Weisz, <a href="https://arxiv.org/abs/1101.0963" target="_blank" rel="noreferrer">arXiv:1101.0963</a></dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>\(\overline{\mathrm{MS}}\)、\(q=1/\sqrt{8t}\)</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd><span class="tag">renormalization</span> <span class="tag">scale setting</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>フローした場は有限である</h2>
+
+        <div class="thm-box numbered-box" data-kind="result" data-label="定理" id="thm-lw">
+          <div class="callout-head">
+            <span class="box-title" data-title="Lüscher–Weisz の有限性定理"></span>
+            <span class="box-kicker">Theorem</span>
+          </div>
+          \(t>0\) におけるフローしたゲージ場 \(B_\mu(t,x)\) の任意のゲージ不変な相関関数は、
+          裸の結合定数を通常どおり繰り込めば（例えば \(\overline{\mathrm{MS}}\) で \(g_0\to g\)）、
+          <strong>追加の繰り込みなしで有限</strong>である。\(x\) が一致する点（合成演算子）でも成り立つ。<a class="cite" href="#ref-lw2011"></a>
+        </div>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">証明の筋道（原論文）</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          <ol>
+            <li>Lagrange 乗数場 \(L_\mu(t,x)\) を導入し、フロー方程式を \((D+1)\) 次元の局所作用 <a class="eq-ref" href="#eq-bulk-action"></a> として扱う。</li>
+            <li>拡張した理論は \((D+1)\) 次元の BRS 対称性をもつ。</li>
+            <li>冪数えから、\(t>0\) の「バルク」には局所的な counterterm が許されず、必要な counterterm は境界 \(t=0\)（元の \(D\) 次元理論）のものだけである。</li>
+          </ol>
+        </div>
+        <div class="equation" id="eq-bulk-action">
+          \[ S_{\mathrm{fl}}=-2\int_0^\infty \dd t\int \dd^Dx\,\tr\bigl\{L_\mu\bigl(\partial_tB_\mu-D_\nu G_{\nu\mu}-\alpha_0D_\mu\partial_\nu B_\nu\bigr)\bigr\} \]
+        </div>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">帰結</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          \(E(t,x)\) や \(q(t,x)\) のようなフローした合成演算子は繰り込まれた有限量なので、
+          \(\sqrt{8t}\) を物理単位で固定すれば格子間隔 \(a\to0\) の連続極限が存在する。
+          ただしクォーク場のフローでは場の繰り込み \(Z_\chi\) が 1 つ要る（第 7 章）。
+        </div>
+      </section>
+
+      <section>
+        <h2>エネルギー密度の摂動展開</h2>
+        <p>フローした場のエネルギー密度を次で定める。</p>
+        <div class="equation" id="eq-E">
+          \[ E(t,x) = -\frac12\tr\bigl\{G_{\mu\nu}(t,x)G_{\mu\nu}(t,x)\bigr\}=\frac14 G^a_{\mu\nu}G^a_{\mu\nu} \]
+        </div>
+
+        <h3>木レベルの計算</h3>
+        <p>出発点は第 2 章の線形解（\(\alpha_0\) によらない横波部分だけが効く）である。</p>
+        <div class="equation" id="eq-linear-ch3">
+          \[ \tilde B_\mu(t,p)=\ee^{-tp^2}P^T_{\mu\nu}\tilde A_\nu(p)+(\text{縦波})+\Order{A^2} \]
+        </div>
+        <div class="derivation-head">
+          <span class="box-kicker">Derivation — 木レベルの ⟨E⟩</span>
+          <button class="steps-toggle" type="button" data-controls="der-tree-E">理由をすべて開く</button>
+        </div>
+        <dl class="derivation-goal">
+          <div><dt>出発</dt><dd>線形解 <a class="eq-ref" href="#eq-linear-ch3"></a> と自由伝播関数</dd></div>
+          <div><dt>目標</dt><dd><a class="eq-ref" href="#eq-E-pert"></a> の最低次 \(3(N^2-1)g_0^2/(128\pi^2t^2)\)</dd></div>
+          <div><dt>方針</dt><dd>最低次では \(G\) は \(B\) の 1 次なので、2 点関数を運動量積分 1 回に帰着させる</dd></div>
+        </dl>
+
+        <ol class="derivation" id="der-tree-E">
+          <li>
+            <div class="step-body">
+              <p class="step-action">最低次の \(G\) を線形解で書く（縦波は落ちる）</p>
+              <div class="equation" data-unnumbered>
+                \[ \tilde G^a_{\mu\nu}=\ii\bigl(p_\mu P^T_{\nu\rho}-p_\nu P^T_{\mu\rho}\bigr)\ee^{-tp^2}\tilde A^a_\rho+\Order{g_0} \]
+              </div>
+              <details class="step-why">
+                <summary>なぜ</summary>
+                <div>縦波 \(P^L\) 部分は \(p_\nu\) に比例し、反対称化で消える。</div>
+              </details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">2 点関数を縮約し、ローレンツ添字の和をとる</p>
+              <div class="equation" data-unnumbered>
+                \[ \langle G^a_{\mu\nu}G^a_{\mu\nu}\rangle=2(D-1)(N^2-1)\,g_0^2\int\frac{\dd^Dp}{(2\pi)^D}\ee^{-2tp^2} \]
+              </div>
+              <details class="step-why">
+                <summary>なぜ</summary>
+                <div>\(2(p^2\delta_{\nu\rho}-p_\nu p_\rho)P^T_{\nu\rho}/p^2=2(D-1)\)。ゲージ固定パラメータ \(\xi\) の項（\(\xi P^L\)）は縮約で 0 になるのでゲージ非依存。</div>
+              </details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">Gauss 積分 \(\int \dd^Dp\,(2\pi)^{-D}\ee^{-2tp^2}=(8\pi t)^{-D/2}\) を実行して \(D=4\) とおく</p>
+              <div class="equation" data-unnumbered>
+                \[ \langle E\rangle=\frac{(D-1)(N^2-1)g_0^2}{2(8\pi t)^{D/2}}\ \xrightarrow{D=4}\ \frac{3(N^2-1)g_0^2}{128\pi^2t^2} \]
+              </div>
+            </div>
+          </li>
+        </ol>
+
+        <h3>1 ループの結果</h3>
+        <p>1 ループの計算 <a class="cite" href="#ref-luscher2010"></a> を含めると次の展開になる。</p>
+        <div class="equation boxed" id="eq-E-pert">
+          \[ \langle E(t)\rangle=\frac{3(N^2-1)}{128\pi^2t^2}\,g^2(q)\,\bigl\{1+c_1 g^2(q)+\Order{g^4}\bigr\},\qquad q=\frac{1}{\sqrt{8t}} \]
+          <span class="eq-tag">主結果</span>
+        </div>
+        <div class="equation" id="eq-c1">
+          \[ c_1=\frac{1}{16\pi^2}\Bigl\{N\Bigl(\frac{11}{3}\gamma_E+\frac{52}{9}-3\ln3\Bigr)
+            -N_f\Bigl(\frac23\gamma_E+\frac49-\frac43\ln2\Bigr)\Bigr\} \]
+        </div>
+
+        <p>
+          \(g\) は \(\overline{\mathrm{MS}}\) 結合定数、\(\gamma_E\) は Euler 定数。\(SU(3)\) で \(\alpha=g^2/4\pi\) を用いると
+        </p>
+        <div class="equation" id="eq-E-alpha">
+          \[ t^2\langle E(t)\rangle=\frac{3}{4\pi}\,\alpha(q)\,\bigl\{1+k_1\alpha(q)+\Order{\alpha^2}\bigr\},\qquad k_1=1.0978+0.0075\,N_f \]
+        </div>
+
+        <p>
+          2・3 ループの係数は <a class="cite cite-bare" href="#ref-hn2016"></a> が計算した。\(t^2\langle E\rangle\) は無次元で、小さい \(t\) では
+          \(\alpha\) に比例して小さく、\(t\) とともに単調に増える（数値は <a class="internal-ref" href="E-exercises.html#ex-7">演習 E.7</a>）。
+        </p>
+      </section>
+
+      <section>
+        <h2>基準スケール \(t_0\) と \(w_0\)</h2>
+
+        <div class="def-box numbered-box" data-kind="definition" data-label="定義" id="def-t0">
+          <div class="callout-head">
+            <span class="box-title" data-title="基準スケール \(t_0\)"></span>
+            <span class="box-kicker">Definition</span>
+          </div>
+          \(t^2\langle E(t)\rangle\big|_{t=t_0}=0.3\) で \(t_0\) を定める <a class="cite" href="#ref-luscher2010"></a>。
+          値 0.3 は、\(\sqrt{8t_0}\) が格子間隔より十分大きく、かつ有限体積効果が小さい（ハドロンスケール程度）ように選ばれている。
+        </div>
+
+        <div class="def-box numbered-box" data-kind="definition" data-label="定義" id="def-w0">
+          <div class="callout-head">
+            <span class="box-title" data-title="基準スケール \(w_0\)"></span>
+            <span class="box-kicker">Definition</span>
+          </div>
+          \(t\,\dfrac{\dd}{\dd t}\bigl\{t^2\langle E(t)\rangle\bigr\}\Big|_{t=w_0^2}=0.3\) で \(w_0\) を定める <a class="cite" href="#ref-bmw2012"></a>。
+        </div>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">なぜ \(w_0\) を使うのか</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          \(t^2\langle E\rangle\) は格子アーティファクトの大きい小さな \(t\) の寄与を累積的に含むが、
+          その対数微分は \(t\) の近傍の情報だけで決まる。そのため \(w_0\) は \(a^2\) 依存性が小さい（<a class="internal-ref" href="E-exercises.html#ex-8">演習 E.8</a>）。
+        </div>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">物理単位での値（BMW, \(N_f=2+1\)）</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          \(\sqrt{t_0}=0.1465(21)(13)\,\mathrm{fm}\)、\(w_0=0.1755(18)(04)\,\mathrm{fm}\) <a class="cite" href="#ref-bmw2012"></a>。
+        </div>
+
+        <div class="example-box">
+          <div class="callout-head">
+            <span class="box-title">スケール設定の手順</span>
+            <span class="box-kicker">Checklist</span>
+          </div>
+          <ol>
+            <li>物理量（例: \(f_\pi\)、\(M_\Omega\)）で \(\sqrt{t_0}\) や \(w_0\) を一度 fm 単位で決める。</li>
+            <li>以後は各アンサンブルで \(t_0/a^2\)（または \(w_0/a\)）を測れば、格子間隔 \(a\) が安価かつ高精度で決まる。</li>
+          </ol>
+        </div>
+
+        <div class="summary-box">
+          <div class="callout-head">
+            <span class="box-title">この章のまとめ</span>
+            <span class="box-kicker">Summary</span>
+          </div>
+          <ul>
+            <li>フローしたゲージ場の相関関数は追加の繰り込みなしで有限（<a class="box-ref" href="#thm-lw"></a>）。</li>
+            <li>\(t^2\langle E\rangle\) は摂動的に \(\alpha(1/\sqrt{8t})\) に比例する（<a class="eq-ref" href="#eq-E-pert"></a>）。</li>
+            <li>\(t^2\langle E\rangle=0.3\) などの条件で、安価で高精度な基準スケール \(t_0\)、\(w_0\) が定まる。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-luscher2010" data-cite="Lüscher 2010">
+            Lüscher, M.. 2010.「Properties and uses of the Wilson flow in lattice QCD」.
+            <a href="https://arxiv.org/abs/1006.4518" target="_blank" rel="noreferrer">arXiv:1006.4518</a>.
+          </li>
+          <li id="ref-lw2011" data-cite="Lüscher と Weisz 2011">
+            Lüscher, M., と P. Weisz. 2011.「Perturbative analysis of the gradient flow in non-abelian gauge theories」.
+            <a href="https://arxiv.org/abs/1101.0963" target="_blank" rel="noreferrer">arXiv:1101.0963</a>.
+          </li>
+          <li id="ref-bmw2012" data-cite="Borsanyi ほか 2012">
+            Borsanyi, S., ほか (BMW Collaboration). 2012.「High-precision scale setting in lattice QCD」.
+            <a href="https://arxiv.org/abs/1203.4469" target="_blank" rel="noreferrer">arXiv:1203.4469</a>.
+          </li>
+          <li id="ref-hn2016" data-cite="Harlander と Neumann 2016">
+            Harlander, R. V., と T. Neumann. 2016.「The perturbative QCD gradient flow to three loops」.
+            <a href="https://arxiv.org/abs/1606.03756" target="_blank" rel="noreferrer">arXiv:1606.03756</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

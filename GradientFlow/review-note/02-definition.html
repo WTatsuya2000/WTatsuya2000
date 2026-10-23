@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="グラディエントフローの定義、基本性質、摂動論">
+  <title>フローの定義と摂動論 — グラディエントフロー入門</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="02-definition.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">グラディエントフロー入門</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">Lüscher 2010 §2 / Lüscher と Weisz 2011 §2 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">フローの定義と摂動論</span>
+      </h1>
+
+      <p class="lead">
+        本章では、グラディエントフローを作用の最急降下として定義し、ゲージ場の場合のフロー方程式、その基本性質、熱核を伝播関数とする摂動展開をまとめる。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>原論文</dt>
+          <dd><strong>Properties and uses of the Wilson flow in lattice QCD</strong> — M. Lüscher, <a href="https://arxiv.org/abs/1006.4518" target="_blank" rel="noreferrer">arXiv:1006.4518</a></dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>Euclid、反エルミート生成子</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd><span class="tag">gauge theory</span> <span class="tag">heat kernel</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>作用の最急降下</h2>
+        <p>
+          場 \(\phi\) と作用 \(S[\phi]\) に対し、グラディエントフローは作用の汎関数微分の逆向きに場を動かす。
+          \(t\) は物理的な時間ではなく、最急降下のパラメータである（次元は長さの 2 乗）。
+        </p>
+        <div class="equation" id="eq-gf-general">
+          \[ \partial_t \phi(t,x) = -\frac{\delta S[\phi_t]}{\delta \phi(t,x)},\qquad \phi(0,x)=\phi(x) \]
+        </div>
+
+        <p>
+          自由スカラー場 \(S=\tfrac12\int(\partial\phi)^2\) なら \(\partial_t\phi=\partial^2\phi\)、すなわち
+          <strong>熱方程式</strong>になる。その解は熱核 \(K_t\) との畳み込みで書ける。
+        </p>
+        <div class="equation" id="eq-heat-kernel">
+          \[ \phi(t,x)=\int \dd^Dy\, K_t(x-y)\,\phi(y),\qquad
+            K_t(x)=\frac{\ee^{-x^2/4t}}{(4\pi t)^{D/2}},\qquad
+            \tilde K_t(p)=\ee^{-tp^2} \]
+        </div>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">平滑化半径 \(\sqrt{8t}\)</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          熱核は幅 \(\langle x^2\rangle_{K_t}=2Dt\) のガウス関数なので、\(D=4\) では半径 \(\sqrt{8t}\) で場がぼかされる（<a class="internal-ref" href="E-exercises.html#ex-1">演習 E.1</a>）。
+          運動量空間では因子 \(\ee^{-tp^2}\) が \(p\gtrsim1/\sqrt t\) のモードを指数関数的に抑える。
+          これが「フローした場は紫外有限」の直観的な理由である。
+        </div>
+      </section>
+
+      <section>
+        <h2>Yang–Mills グラディエントフロー</h2>
+        <p><a class="cite cite-bare" href="#ref-luscher2010"></a> に従い、フローしたゲージ場 \(B_\mu(t,x)\) を次で定める。</p>
+
+        <div class="def-box numbered-box" data-kind="definition" data-label="定義" id="def-flow">
+          <div class="callout-head">
+            <span class="box-title" data-title="Yang–Mills グラディエントフロー"></span>
+            <span class="box-kicker">Definition</span>
+          </div>
+          初期条件 \(B_\mu(0,x)=A_\mu(x)\) のもとで <a class="eq-ref" href="#eq-flow"></a> を解く。
+          \(G_{\mu\nu}=\partial_\mu B_\nu-\partial_\nu B_\mu+[B_\mu,B_\nu]\)、\(D_\mu=\partial_\mu+[B_\mu,\,\cdot\,]\) とする。
+        </div>
+        <div class="equation boxed" id="eq-flow">
+          \[ \partial_t B_\mu = D_\nu G_{\nu\mu} + \alpha_0\, D_\mu \partial_\nu B_\nu \]
+          <span class="eq-tag">定義</span>
+        </div>
+
+        <ul>
+          <li>第 1 項は \(D_\nu G_{\nu\mu} = -g_0^2\,\delta S_{\mathrm{YM}}[B]/\delta B_\mu\)（行列として）で、作用の最急降下そのもの。</li>
+          <li>第 2 項（パラメータ \(\alpha_0\)）はフロー時間に依存するゲージ変換を生成するだけで、ゲージ不変量には効かない（<a class="internal-ref" href="E-exercises.html#ex-3">演習 E.3</a>、<a class="internal-ref" href="E-exercises.html#ex-5">演習 E.5</a>）。摂動論では \(\alpha_0=1\) が便利。</li>
+        </ul>
+
+        <div class="thm-box numbered-box" data-kind="result" data-label="性質" id="prop-flow">
+          <div class="callout-head">
+            <span class="box-title" data-title="フローの基本性質"></span>
+            <span class="box-kicker">Properties</span>
+          </div>
+          <ol>
+            <li><strong>ゲージ共変性</strong>（\(\alpha_0=0\)）: \(A\to A^\Lambda=\Lambda A\Lambda^{-1}+\Lambda\partial\Lambda^{-1}\) なら、同じ \(t\) 非依存の \(\Lambda\) で \(B_t\to B_t^\Lambda\)。</li>
+            <li><strong>作用の単調減少</strong>: <a class="eq-ref" href="#eq-monotone"></a>。\(t\to\infty\) で古典解（作用の極小）に向かう（<a class="internal-ref" href="E-exercises.html#ex-4">演習 E.4</a>）。</li>
+            <li><strong>局所性</strong>: \(t\) について 1 階、\(x\) について 2 階の非線形熱方程式なので、\(B_\mu(t,x)\) は主に \(|y-x|\lesssim\sqrt{8t}\) の \(A_\mu(y)\) で決まる。</li>
+          </ol>
+        </div>
+        <div class="equation" id="eq-monotone">
+          \[ \frac{\dd}{\dd t}S_{\mathrm{YM}}[B_t] = -g_0^2\int \dd^Dx\,\Bigl(\frac{\delta S_{\mathrm{YM}}}{\delta B^a_\mu}\Bigr)^2\le 0
+            \qquad (\alpha_0=0) \]
+        </div>
+      </section>
+
+      <section>
+        <h2>摂動論と熱核</h2>
+        <p>\(\alpha_0=1\) とすると、フロー方程式は線形部分が熱方程式になり、残りは \(B\) の 2 次以上の項 \(R_\mu\) にまとまる。</p>
+        <div class="equation" id="eq-flow-expanded">
+          \[ \partial_t B_\mu = \partial_\nu\partial_\nu B_\mu + R_\mu,\qquad
+            R_\mu = 2[B_\nu,\partial_\nu B_\mu]-[B_\nu,\partial_\mu B_\nu]+[B_\nu,[B_\nu,B_\mu]] \]
+        </div>
+
+        <details class="derivation-box">
+          <summary>細部: \(\alpha_0=1\) のフロー方程式を熱方程式 + 非線形項 \(R_\mu\) にする</summary>
+          <p>
+            \(D_\nu G_{\nu\mu}\) を展開すると \(\partial^2B_\mu-\partial_\mu\partial_\nu B_\nu+[\partial_\nu B_\nu,B_\mu]+2[B_\nu,\partial_\nu B_\mu]-[B_\nu,\partial_\mu B_\nu]+[B_\nu,[B_\nu,B_\mu]]\)。
+            これに \(D_\mu\partial_\nu B_\nu=\partial_\mu\partial_\nu B_\nu+[B_\mu,\partial_\nu B_\nu]\) を足すと、
+            \(\partial_\mu\partial_\nu B_\nu\) と \([B_\mu,\partial_\nu B_\nu]\) 型の項が打ち消し合う。
+            一般の \(\alpha_0\) では \((\alpha_0-1)\partial_\mu\partial_\nu B_\nu+(\alpha_0-1)[B_\mu,\partial_\nu B_\nu]\) が残る。
+          </p>
+        </details>
+
+        <p>これを積分形に直し、反復代入で \(A\) のべきに展開する。</p>
+        <div class="equation" id="eq-integral">
+          \[ B_\mu(t,x)=\int \dd^Dy\,\Bigl\{K_t(x-y)A_\mu(y)+\int_0^t \dd s\,K_{t-s}(x-y)R_\mu(s,y)\Bigr\} \]
+        </div>
+
+        <h3>線形化したフローの解</h3>
+        <div class="derivation-head">
+          <span class="box-kicker">Derivation — 線形化したフロー</span>
+          <button class="steps-toggle" type="button" data-controls="der-linear">理由をすべて開く</button>
+        </div>
+        <dl class="derivation-goal">
+          <div><dt>出発</dt><dd>フロー方程式 <a class="eq-ref" href="#eq-flow"></a>（一般の \(\alpha_0\)）</dd></div>
+          <div><dt>目標</dt><dd>線形解 <a class="eq-ref" href="#eq-linear"></a></dd></div>
+          <div><dt>方針</dt><dd>\(B\) の 1 次まで展開し、運動量空間で横波・縦波の射影子に分けて指数関数を解く</dd></div>
+        </dl>
+
+        <ol class="derivation" id="der-linear">
+          <li>
+            <div class="step-body">
+              <p class="step-action">右辺を \(B\) の 1 次まで展開する</p>
+              <div class="equation" data-unnumbered>
+                \[ \partial_t B_\mu = \partial^2 B_\mu + (\alpha_0-1)\,\partial_\mu\partial_\nu B_\nu + \Order{B^2} \]
+              </div>
+              <details class="step-why">
+                <summary>なぜ</summary>
+                <div>\(D_\nu G_{\nu\mu}=\partial_\nu(\partial_\nu B_\mu-\partial_\mu B_\nu)+\Order{B^2}\)、\(D_\mu\partial_\nu B_\nu=\partial_\mu\partial_\nu B_\nu+\Order{B^2}\)。</div>
+              </details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">Fourier 変換し、横波・縦波の射影子 \(P^T,P^L\) で書き直す</p>
+              <div class="equation" data-unnumbered>
+                \[ \partial_t \tilde B_\mu = -p^2\bigl[P^T_{\mu\nu}+\alpha_0 P^L_{\mu\nu}\bigr]\tilde B_\nu,\qquad P^T_{\mu\nu}=\delta_{\mu\nu}-\frac{p_\mu p_\nu}{p^2},\ P^L_{\mu\nu}=\frac{p_\mu p_\nu}{p^2} \]
+              </div>
+              <details class="step-why">
+                <summary>なぜ</summary>
+                <div>\(\partial_\mu\to\ii p_\mu\) とすると \(p^2\delta_{\mu\nu}+(\alpha_0-1)p_\mu p_\nu=p^2(P^T+\alpha_0P^L)_{\mu\nu}\)。</div>
+              </details>
+            </div>
+          </li>
+          <li>
+            <div class="step-body">
+              <p class="step-action">射影子ごとに指数関数を解く</p>
+              <div class="equation" data-unnumbered>
+                \[ \tilde B_\mu(t,p)=\bigl[P^T_{\mu\nu}\,\ee^{-tp^2}+P^L_{\mu\nu}\,\ee^{-\alpha_0tp^2}\bigr]\tilde A_\nu(p)+\Order{A^2} \]
+              </div>
+              <details class="step-why">
+                <summary>なぜ</summary>
+                <div>\(P^T\) と \(P^L\) は互いに直交する射影子（\(P^TP^L=0\)、\((P^{T,L})^2=P^{T,L}\)）なので、行列の指数関数は各射影子の上で独立に効く。</div>
+              </details>
+            </div>
+          </li>
+        </ol>
+        <div class="equation boxed" id="eq-linear">
+          \[ \tilde B_\mu(t,p)=\Bigl[\Bigl(\delta_{\mu\nu}-\frac{p_\mu p_\nu}{p^2}\Bigr)\ee^{-tp^2}+\frac{p_\mu p_\nu}{p^2}\ee^{-\alpha_0tp^2}\Bigr]\tilde A_\nu(p)+\Order{A^2} \]
+          <span class="eq-tag">線形解</span>
+        </div>
+
+        <p>場の強さでは縦波部分が反対称化で消えるので、線形近似の \(\tilde G_{\mu\nu}\) は \(\alpha_0\) に依存しない（<a class="internal-ref" href="E-exercises.html#ex-5">演習 E.5</a>）。</p>
+
+        <h3>ファインマン則</h3>
+        <p>通常の Yang–Mills のファインマン則に次の 2 つが加わる。</p>
+        <ul>
+          <li><strong>熱核伝播関数</strong>（フロー線）: \(\theta(t-s)\,\ee^{-(t-s)p^2}\)。矢印付きの二重線で描く。</li>
+          <li><strong>フロー頂点</strong>: \(R_\mu\) から来る 3 点・4 点頂点。フロー時間で積分する。</li>
+        </ul>
+        <p>Feynman ゲージ \(\langle\tilde A^a_\mu(p)\tilde A^b_\nu(q)\rangle=g_0^2\delta^{ab}\delta_{\mu\nu}(2\pi)^D\delta(p+q)/p^2\) では、木レベルで</p>
+        <div class="equation" id="eq-tree-propagator">
+          \[ \langle B^a_\mu(t,x)B^b_\nu(s,y)\rangle = g_0^2\delta^{ab}\delta_{\mu\nu}\int\!\frac{\dd^Dp}{(2\pi)^D}\,
+            \frac{\ee^{\ii p(x-y)}}{p^2}\,\ee^{-(t+s)p^2}+\cdots \]
+        </div>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">同一点の積が定義できる</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          <a class="eq-ref" href="#eq-tree-propagator"></a> は \(t+s>0\) なら \(x=y\) でも有限である。
+          正則化なしで合成演算子（同一点の場の積）が定義できることが、以降のすべての応用の土台になる（<a class="internal-ref" href="E-exercises.html#ex-2">演習 E.2</a>）。
+        </div>
+
+        <div class="summary-box">
+          <div class="callout-head">
+            <span class="box-title">この章のまとめ</span>
+            <span class="box-kicker">Summary</span>
+          </div>
+          <ul>
+            <li>フローは作用の最急降下で、線形部分は熱方程式（<a class="eq-ref" href="#eq-flow"></a>）。</li>
+            <li>場は半径 \(\sqrt{8t}\) で平滑化され、高運動量は \(\ee^{-tp^2}\) で抑えられる。</li>
+            <li>\(\alpha_0\) 項はゲージ変換にすぎず、ゲージ不変量に影響しない（<a class="eq-ref" href="#eq-linear"></a>）。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-nn2006" data-cite="Narayanan と Neuberger 2006">
+            Narayanan, R., と H. Neuberger. 2006.「Infinite N phase transitions in continuum Wilson loop operators」.
+            <a href="https://arxiv.org/abs/hep-th/0601210" target="_blank" rel="noreferrer">arXiv:hep-th/0601210</a>.
+          </li>
+          <li id="ref-luscher2010" data-cite="Lüscher 2010">
+            Lüscher, M.. 2010.「Properties and uses of the Wilson flow in lattice QCD」.
+            <a href="https://arxiv.org/abs/1006.4518" target="_blank" rel="noreferrer">arXiv:1006.4518</a>.
+          </li>
+          <li id="ref-lw2011" data-cite="Lüscher と Weisz 2011">
+            Lüscher, M., と P. Weisz. 2011.「Perturbative analysis of the gradient flow in non-abelian gauge theories」.
+            <a href="https://arxiv.org/abs/1101.0963" target="_blank" rel="noreferrer">arXiv:1101.0963</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

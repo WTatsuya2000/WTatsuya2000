@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="2D U(1) Wilson フローの数値演習コード">
+  <title>数値演習コード — グラディエントフロー入門</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="C-code.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">グラディエントフロー入門</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">付録 C / 演習 E.13 の解答例</span>
+        <span class="chapter-number"></span><span class="chapter-title">数値演習コード</span>
+      </h1>
+
+      <p class="lead">
+        2 次元 U(1) 格子ゲージ理論の Wilson フローを numpy で実装し、トポロジカルチャージの振る舞いを調べるコードと実行例。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>ファイル</dt>
+          <dd><code>code/wilson_flow_u1_2d.py</code>（このノートと同じ内容）</dd>
+        </div>
+        <div>
+          <dt>必要環境</dt>
+          <dd>Python 3 + numpy</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd><span class="tag">numerics</span> <span class="tag">U(1)</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>モデルとフロー方程式</h2>
+        <p>
+          2 次元 U(1) 格子ゲージ理論で Wilson フローを実装し、トポロジカルチャージがフロー時間とともに整数に近づくことを確かめる
+          （<a class="internal-ref" href="E-exercises.html#ex-13">演習 E.13</a> の解答例）。リンク変数を \(U_\mu(x)=\ee^{\ii\theta_\mu(x)}\) と書く。
+        </p>
+        <div class="equation" id="eq-u1-action">
+          \[ S=\beta\sum_x\bigl[1-\cos\theta_p(x)\bigr],\qquad
+             \theta_p(x)=\theta_1(x)+\theta_2(x+\hat1)-\theta_1(x+\hat2)-\theta_2(x) \]
+        </div>
+        <div class="equation boxed" id="eq-u1-flow">
+          \[ \dot\theta_1(x)=-\bigl[\sin\theta_p(x)-\sin\theta_p(x-\hat2)\bigr],\qquad
+             \dot\theta_2(x)=-\bigl[\sin\theta_p(x-\hat1)-\sin\theta_p(x)\bigr] \]
+          <span class="eq-tag">フロー方程式</span>
+        </div>
+        <p>トポロジカルチャージは 2 通りに定義して比べる。</p>
+        <div class="equation" id="eq-u1-Q">
+          \[ Q_{\mathrm{geo}}=\frac{1}{2\pi}\sum_x\arg\ee^{\ii\theta_p(x)}\ (\in\mathbb Z),\qquad
+             Q_{\sin}=\frac{1}{2\pi}\sum_x\sin\theta_p(x) \]
+        </div>
+        <div class="remark-box">
+          <div class="callout-head">
+            <span class="box-title">積分法</span>
+            <span class="box-kicker">Remark</span>
+          </div>
+          U(1) は可換で、角度の空間は平坦なので、通常の 4 次 Runge–Kutta 法で積分してよい。
+          \(SU(N)\) では群構造を保つ積分法（第 4 章の RK3）が要る。2 次元では平滑化半径は \(\sqrt{2Dt}=\sqrt{4t}\)。
+        </div>
+      </section>
+
+      <section>
+        <h2>コード</h2>
+        <p>numpy だけで動く。<code>python3 wilson_flow_u1_2d.py --L 16 --beta 2.0 --nconf 20</code> で数秒。</p>
+<pre><code>#!/usr/bin/env python3
+&quot;&quot;&quot;2次元 U(1) 格子ゲージ理論の Wilson フロー（演習 13 の解答例）.
+
+リンク変数 U_mu(x) = exp(i theta_mu(x)) を Metropolis 法で生成し,
+Wilson フローを適用してトポロジカルチャージがどのように整数に近づくかを調べる.
+
+  作用      S = beta * sum_x [1 - cos theta_p(x)]
+  プラケット theta_p(x) = theta_1(x) + theta_2(x+1) - theta_1(x+2) - theta_2(x)
+  フロー    d theta_mu(x)/dt = -(1/beta) dS/d theta_mu(x)   (g_0^2 = 1/beta)
+  トポロジー Q_geo = (1/2pi) sum_x arg(exp(i theta_p))       (常に整数)
+            Q_sin = (1/2pi) sum_x sin theta_p              (場の理論的定義)
+
+使い方:  python3 wilson_flow_u1_2d.py [--L 16] [--beta 2.0] [--nconf 20]
+&quot;&quot;&quot;
+import argparse
+
+import numpy as np
+
+
+def plaquette(theta):
+    &quot;&quot;&quot;theta[mu, x1, x2] からプラケット角 theta_p(x) を返す.&quot;&quot;&quot;
+    t1, t2 = theta
+    return t1 + np.roll(t2, -1, axis=0) - np.roll(t1, -1, axis=1) - t2
+
+
+def force(theta):
+    &quot;&quot;&quot;-(1/beta) dS/d theta_mu(x) を返す（フロー方程式の右辺）.&quot;&quot;&quot;
+    s = np.sin(plaquette(theta))
+    f1 = -(s - np.roll(s, 1, axis=1))  # theta_1(x) は p(x) に +, p(x-2) に - で入る
+    f2 = -(np.roll(s, 1, axis=0) - s)  # theta_2(x) は p(x-1) に +, p(x) に - で入る
+    return np.stack([f1, f2])
+
+
+def flow_step(theta, eps):
+    &quot;&quot;&quot;4次 Runge-Kutta の 1 ステップ（U(1) は可換なので角度で普通に積分してよい）.&quot;&quot;&quot;
+    k1 = force(theta)
+    k2 = force(theta + 0.5 * eps * k1)
+    k3 = force(theta + 0.5 * eps * k2)
+    k4 = force(theta + eps * k3)
+    return theta + eps / 6.0 * (k1 + 2 * k2 + 2 * k3 + k4)
+
+
+def observables(theta):
+    p = plaquette(theta)
+    q_geo = np.sum(np.angle(np.exp(1j * p))) / (2 * np.pi)
+    q_sin = np.sum(np.sin(p)) / (2 * np.pi)
+    energy = np.mean(1.0 - np.cos(p))  # 格子単位の作用密度 ~ (a^2/2) F_12^2
+    return q_geo, q_sin, energy
+
+
+def metropolis_sweep(theta, beta, rng, delta=1.0):
+    &quot;&quot;&quot;チェッカーボードではなく単純な逐次更新（教育用なので速度は二の次）.&quot;&quot;&quot;
+    _, L, _ = theta.shape
+    for mu in range(2):
+        for x in range(L):
+            for y in range(L):
+                old = theta[mu, x, y]
+                new = old + rng.uniform(-delta, delta)
+                # このリンクを含む 2 枚のプラケットだけで作用差を計算
+                if mu == 0:
+                    plaqs = [(x, y, +1), (x, (y - 1) % L, -1)]
+                else:
+                    plaqs = [((x - 1) % L, y, +1), (x, y, -1)]
+                ds = 0.0
+                for (px, py, sign) in plaqs:
+                    tp = (theta[0, px, py] + theta[1, (px + 1) % L, py]
+                          - theta[0, px, (py + 1) % L] - theta[1, px, py])
+                    tp_new = tp + sign * (new - old)
+                    ds += beta * (np.cos(tp) - np.cos(tp_new))
+                if ds &lt; 0 or rng.random() &lt; np.exp(-ds):
+                    theta[mu, x, y] = new
+    return theta
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument(&quot;--L&quot;, type=int, default=16)
+    ap.add_argument(&quot;--beta&quot;, type=float, default=2.0)
+    ap.add_argument(&quot;--nconf&quot;, type=int, default=20)
+    ap.add_argument(&quot;--ntherm&quot;, type=int, default=200)
+    ap.add_argument(&quot;--nskip&quot;, type=int, default=20)
+    ap.add_argument(&quot;--eps&quot;, type=float, default=0.02)
+    ap.add_argument(&quot;--tmax&quot;, type=float, default=4.0)
+    ap.add_argument(&quot;--seed&quot;, type=int, default=1)
+    args = ap.parse_args()
+
+    rng = np.random.default_rng(args.seed)
+    theta = rng.uniform(-np.pi, np.pi, size=(2, args.L, args.L))
+    for _ in range(args.ntherm):
+        metropolis_sweep(theta, args.beta, rng)
+
+    t_report = [0.0, 0.5, 1.0, 2.0, args.tmax]
+    nsteps = int(round(args.tmax / args.eps))
+    print(f&quot;# L={args.L} beta={args.beta}  (平滑化半径 sqrt(4t) in 2D)&quot;)
+    print(&quot;# conf  &quot; + &quot;  &quot;.join(f&quot;Q_sin(t={t:g})&quot; for t in t_report) + &quot;  Q_geo(t=0)&quot;)
+    dist = []
+    for c in range(args.nconf):
+        for _ in range(args.nskip):
+            metropolis_sweep(theta, args.beta, rng)
+        phi = theta.copy()
+        q0_geo, q, _ = observables(phi)
+        row = [q]
+        for n in range(1, nsteps + 1):
+            phi = flow_step(phi, args.eps)
+            t = n * args.eps
+            if any(abs(t - tr) &lt; 1e-9 for tr in t_report[1:]):
+                row.append(observables(phi)[1])
+        dist.append(row)
+        print(f&quot;{c:5d}  &quot; + &quot;  &quot;.join(f&quot;{v:12.4f}&quot; for v in row) + f&quot;  {q0_geo:10.1f}&quot;)
+
+    dist = np.array(dist)
+    print(&quot;\n# 整数からのずれ  &lt;|Q_sin - round(Q_sin)|&gt;  (フローで 0 に近づく)&quot;)
+    for j, t in enumerate(t_report):
+        dev = np.mean(np.abs(dist[:, j] - np.round(dist[:, j])))
+        print(f&quot;t = {t:4.1f}:  {dev:.4f}&quot;)
+    print(f&quot;# chi_t * V = &lt;Q^2&gt; (t={args.tmax:g}) = {np.mean(np.round(dist[:, -1])**2):.3f}&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+      </section>
+
+      <section>
+        <h2>実行例と読み方</h2>
+        <p>\(L=16\)、\(\beta=2\)、12 配位での出力（整数からのずれの平均）。</p>
+<pre><code># 整数からのずれ  &lt;|Q_sin - round(Q_sin)|&gt;  (フローで 0 に近づく)
+t =  0.0:  0.3162
+t =  0.5:  0.2303
+t =  1.0:  0.0879
+t =  2.0:  0.0117
+t =  4.0:  0.0059</code></pre>
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">読み取れること</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          \(t\gtrsim2\)（平滑化半径 \(\approx3a\)）で \(Q_{\sin}\) はほぼ整数になる。
+          一部の配位では \(t=0\) の \(Q_{\mathrm{geo}}\) とフロー後の \(Q\) が 1 だけ違う。\(\theta_p\approx\pm\pi\) 付近の格子サイズの転位が
+          フローで消える（または生じる）ためで、\(\beta\to\infty\) では抑制される。
+        </div>
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">発展課題での注意</span>
+            <span class="box-kicker">Caution</span>
+          </div>
+          連続極限の値は \(\chi_ta^2\to1/(4\pi^2\beta)\)。\(\beta\) を大きくすると Metropolis での \(Q\) の自己相関時間が急増する
+          （トポロジーの凍結の 2 次元版）ので、配位の間隔 <code>--nskip</code> を十分にとること。
+        </div>
+      </section>
+
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>

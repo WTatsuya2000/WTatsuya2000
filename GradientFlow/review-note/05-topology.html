@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="フローによるトポロジカルチャージと感受率の定義">
+  <title>トポロジカルチャージ — グラディエントフロー入門</title>
+  <link rel="stylesheet" href="ds.css">
+  <link rel="stylesheet" href="main.css">
+  <script>try{if(localStorage.getItem("research-note-nav")==="collapsed")document.documentElement.dataset.nav="collapsed"}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-page="05-topology.html">
+  <div class="topbar">
+    <span class="nav-brand"><a href="index.html">グラディエントフロー入門</a></span>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="検索（/）" autocomplete="off" aria-label="ノート内を検索">
+      <div id="search-results" hidden></div>
+    </div>
+    <span class="spacer"></span>
+    <button id="width-toggle" class="utility-button" type="button">幅 標準</button>
+  </div>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="章立て">
+      <p class="sidebar-title">目次</p>
+      <nav id="book-nav"></nav>
+    </aside>
+
+    <main class="article">
+      <h1>
+        <span class="chapter-label">Lüscher 2010 §5 / Bonati と D'Elia 2014 / Alexandrou ほか 2015 に対応</span>
+        <span class="chapter-number"></span><span class="chapter-title">トポロジカルチャージ</span>
+      </h1>
+
+      <p class="lead">
+        本章では、トポロジカルチャージの連続理論での性質と格子上での困難を確認し、フローによる繰り込まれた定義、冷却との比較、物理への応用をまとめる。
+      </p>
+
+      <dl class="paper-meta">
+        <div class="meta-wide">
+          <dt>原論文</dt>
+          <dd><strong>Properties and uses of the Wilson flow in lattice QCD</strong> — M. Lüscher, <a href="https://arxiv.org/abs/1006.4518" target="_blank" rel="noreferrer">arXiv:1006.4518</a></dd>
+        </div>
+        <div>
+          <dt>規約</dt>
+          <dd>\(\epsilon_{0123}=1\)、反エルミート生成子</dd>
+        </div>
+        <div>
+          <dt>更新</dt>
+          <dd>2026-10-23</dd>
+        </div>
+        <div>
+          <dt>タグ</dt>
+          <dd><span class="tag">topology</span> <span class="tag">instanton</span></dd>
+        </div>
+      </dl>
+
+      <details class="mobile-toc" open>
+        <summary>このページの内容</summary>
+        <nav id="mobile-toc"></nav>
+      </details>
+
+      <section>
+        <h2>連続理論のトポロジカルチャージ</h2>
+        <div class="equation" id="eq-Q">
+          \[ Q=\int \dd^4x\,q(x),\qquad
+            q(x)=-\frac{1}{32\pi^2}\epsilon_{\mu\nu\rho\sigma}\tr\bigl\{F_{\mu\nu}F_{\rho\sigma}\bigr\}
+            =\frac{1}{64\pi^2}\epsilon_{\mu\nu\rho\sigma}F^a_{\mu\nu}F^a_{\rho\sigma} \]
+        </div>
+
+        <p>滑らかな場では \(Q\) は整数で、作用には次の下限がある（等号は (反) 自己双対解 = インスタントン）。</p>
+        <div class="equation boxed" id="eq-bps">
+          \[ S_{\mathrm{YM}}\ge \frac{8\pi^2}{g_0^2}\,|Q| \]
+          <span class="eq-tag">下限</span>
+        </div>
+
+        <details class="derivation-box">
+          <summary>細部: \(\int(F\mp\tilde F)^2\ge0\) から作用の下限 <a class="eq-ref" href="#eq-bps"></a> を出す</summary>
+          <p>
+            双対場 \(\tilde F_{\mu\nu}=\tfrac12\epsilon_{\mu\nu\rho\sigma}F_{\rho\sigma}\) について
+            \(0\le\int(F^a\mp\tilde F^a)^2=2\int F^aF^a\mp2\int F^a\tilde F^a\)。
+            \(\int F^a\tilde F^a=32\pi^2Q\) なので \(\tfrac14\int F^aF^a\ge8\pi^2|Q|\)。詳しくは <a class="internal-ref" href="E-exercises.html#ex-9">演習 E.9</a>。
+          </p>
+        </details>
+      </section>
+
+      <section>
+        <h2>格子上の問題とフローによる解決</h2>
+        <p>
+          格子上で \(q(x)\) を素朴に離散化すると、紫外の揺らぎのため \(Q\) は整数にならない。さらに \(q(x)\) には乗法的繰り込みと、
+          より低次元の演算子との加法的混合が生じ、トポロジカル感受率 \(\chi_t=\langle Q^2\rangle/V\) は接触項の発散を含みうる。
+        </p>
+
+        <div class="thm-box">
+          <div class="callout-head">
+            <span class="box-title">フローを適用すると</span>
+            <span class="box-kicker">Result</span>
+          </div>
+          <ul>
+            <li>フローした \(q(t,x)\) は第 3 章の定理により繰り込まれた有限量。\(\chi_t(t)=\langle Q(t)^2\rangle/V\) は \(t>0\) で有限で、連続極限で \(t\) に依存しない（連続理論では \(Q\) はフロー不変）。</li>
+            <li>数値的にも、\(\sqrt{8t}\sim0.3\,\mathrm{fm}\) 程度のフローで \(Q(t)\) の分布が整数値に鋭いピークをもつ。</li>
+          </ul>
+        </div>
+
+        <div class="paper-box">
+          <div class="callout-head">
+            <span class="box-title">原論文に書かれていること</span>
+            <span class="box-kicker">In the paper</span>
+          </div>
+          <a class="cite cite-bare" href="#ref-luscher2010"></a> は、格子間隔 \(a\to0\) でトポロジカルセクターがどのように分離していくか
+          （格子サイズの小さなインスタントンが格子アーティファクトとして消えていく様子）をフローを使って論じた。
+        </div>
+
+        <h3>冷却・スメアリングとの関係</h3>
+        <p>
+          古くから使われる冷却法（作用の局所的な最小化）や APE・stout スメアリングとフローは、数値的にはほぼ同じ結果を与え、
+          対応 \(t\leftrightarrow n_{\mathrm{cool}}\) が知られている <a class="cite" href="#ref-bd2014"></a> <a class="cite" href="#ref-aaj2015"></a>。
+        </p>
+
+        <div class="interpretation-box">
+          <div class="callout-head">
+            <span class="box-title">フローを選ぶ理由</span>
+            <span class="box-kicker">My reading</span>
+          </div>
+          数値的に同等でも、フローは<strong>繰り込み性が証明されている</strong>点で理論的に優れている。
+          冷却で得た \(\chi_t\) の連続極限を正当化するには、フローとの対応を経由するのが筋がよい。
+        </div>
+      </section>
+
+      <section>
+        <h2>物理への応用</h2>
+
+        <h3>Witten–Veneziano 公式</h3>
+        <p>大 \(N\) では、純ゲージ理論の \(\chi_t\) が \(\eta'\) 質量と結びつく。</p>
+        <div class="equation" id="eq-wv">
+          \[ \chi_t^{\mathrm{YM}}\simeq\frac{f_\pi^2}{2N_f}\bigl(m_{\eta}^2+m_{\eta'}^2-2m_K^2\bigr)\qquad(f_\pi\simeq92\,\mathrm{MeV}) \]
+        </div>
+
+        <p>これは \(\chi_t^{1/4}\approx180\,\mathrm{MeV}\) を予言し、フローを用いた格子計算と整合する（<a class="internal-ref" href="E-exercises.html#ex-10">演習 E.10</a>）。</p>
+
+        <h3>そのほかの応用</h3>
+        <ul>
+          <li><strong>有限温度の \(\chi_t(T)\)</strong>: アクシオン暗黒物質の質量・残存量の評価に必要。</li>
+          <li><strong>\(\theta\) 依存性</strong>、\(Q\) の分布の非ガウス性の研究。</li>
+          <li><strong>トポロジーの凍結</strong>: 細かい格子では Monte Carlo が \(Q\) セクター間を移れなくなる。フローは凍結の診断にも使われる。</li>
+        </ul>
+
+        <div class="caution-box">
+          <div class="callout-head">
+            <span class="box-title">トポロジーの凍結</span>
+            <span class="box-kicker">Caution</span>
+          </div>
+          \(a\to0\) で \(Q\) の自己相関時間は急速に伸びる。フローで \(Q\) をきれいに測れても、
+          アンサンブルが \(Q\) について十分にサンプルされているかは別問題である。
+        </div>
+
+        <div class="summary-box">
+          <div class="callout-head">
+            <span class="box-title">この章のまとめ</span>
+            <span class="box-kicker">Summary</span>
+          </div>
+          <ul>
+            <li>フローした \(q(t,x)\) は繰り込まれた量で、\(Q\) と \(\chi_t\) に正則化非依存な定義を与える。</li>
+            <li>冷却・スメアリングと数値的に同等だが、理論的な裏付けがある。</li>
+            <li>\(\chi_t\) は Witten–Veneziano 公式 <a class="eq-ref" href="#eq-wv"></a> を通じて \(\eta'\) 質量と結びつく。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="references" id="refs">
+        <h2>参考文献</h2>
+        <ol>
+          <li id="ref-luscher2010" data-cite="Lüscher 2010">
+            Lüscher, M.. 2010.「Properties and uses of the Wilson flow in lattice QCD」.
+            <a href="https://arxiv.org/abs/1006.4518" target="_blank" rel="noreferrer">arXiv:1006.4518</a>.
+          </li>
+          <li id="ref-bd2014" data-cite="Bonati と D'Elia 2014">
+            Bonati, C., と M. D'Elia. 2014.「Comparison of the gradient flow with cooling in SU(3) pure gauge theory」.
+            <a href="https://arxiv.org/abs/1401.2441" target="_blank" rel="noreferrer">arXiv:1401.2441</a>.
+          </li>
+          <li id="ref-aaj2015" data-cite="Alexandrou ほか 2015">
+            Alexandrou, C., A. Athenodorou, と K. Jansen. 2015.「Topological charge using cooling and the gradient flow」.
+            <a href="https://arxiv.org/abs/1509.04259" target="_blank" rel="noreferrer">arXiv:1509.04259</a>.
+          </li>
+        </ol>
+      </section>
+
+      <nav id="chapter-nav" class="chapter-nav" aria-label="前後の章"></nav>
+      <footer id="page-footer" class="page-footer"></footer>
+    </main>
+
+    <aside class="page-toc-col" aria-label="このページの内容">
+      <p class="toc-title">このページの内容</p>
+      <nav id="page-toc"></nav>
+    </aside>
+  </div>
+</body>
+</html>
