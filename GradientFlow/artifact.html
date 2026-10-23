@@ -1,0 +1,1729 @@
+<title>グラディエントフロー入門</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column (~42em) with a sticky section bar; notes, exercises, code stacked as chapters */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --fg:#1b2230; --muted:#5a6475; --rule:#d9dee6;
+  --accent:#1f4f8f; --accent-soft:#e6edf7; --code-bg:#eef1f5;
+  --font-display:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --font-body:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a1f28; --fg:#e3e7ee; --muted:#9aa3b2; --rule:#2c3340;
+  --accent:#8db4ec; --accent-soft:#1f2b3d; --code-bg:#1e242e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a1f28; --fg:#e3e7ee; --muted:#9aa3b2; --rule:#2c3340;
+  --accent:#8db4ec; --accent-soft:#1f2b3d; --code-bg:#1e242e; color-scheme:dark}
+html{scroll-padding-top:4rem}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:1rem;line-height:1.85;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--rule);
+  margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding-inline:max(16px,env(safe-area-inset-left,0px))}
+.bar nav{max-width:46rem;margin:0 auto;display:flex;gap:.25rem 1.25rem;flex-wrap:wrap;align-items:baseline;padding-block:.6rem}
+.bar .brand{font-family:var(--font-display);font-weight:800;margin-right:auto}
+.bar a{color:var(--muted);text-decoration:none;font-size:.9rem;letter-spacing:.04em}
+.bar a:hover,.bar a:focus-visible{color:var(--accent)}
+main{max-width:46rem;margin:0 auto;padding-block:2rem 4rem;display:grid;gap:3rem}
+main>section{min-width:0}
+.chapter-label{font-size:.75rem;letter-spacing:.18em;color:var(--accent);font-weight:700;margin:0 0 .25rem}
+h1,h2,h3{font-family:var(--font-display);line-height:1.35;text-wrap:balance;font-weight:800}
+h1{font-size:2rem;margin:.2rem 0 1rem}
+h2{font-size:1.45rem;margin:2.6rem 0 .8rem;padding-top:.6rem;border-top:1px solid var(--rule)}
+h3{font-size:1.15rem;margin:2rem 0 .5rem;font-weight:600}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+p,li{max-width:42em}
+blockquote{margin:1.2rem 0;padding:.8rem 1rem;background:var(--accent-soft);border-radius:6px;color:var(--fg)}
+blockquote p{margin:.3rem 0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+code{font-family:var(--font-mono);font-size:.86em;background:var(--code-bg);padding:.08em .35em;border-radius:4px}
+pre{background:var(--code-bg);padding:1rem;border-radius:6px;overflow-x:auto;line-height:1.55}
+pre code{background:none;padding:0;font-size:.82rem}
+.table-wrap{overflow-x:auto;margin:1rem 0}
+table{border-collapse:collapse;font-size:.92rem;font-variant-numeric:tabular-nums}
+th,td{border-bottom:1px solid var(--rule);padding:.45rem .7rem;text-align:left;vertical-align:top}
+th{font-weight:700;color:var(--muted);font-size:.82rem;letter-spacing:.05em}
+mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%;padding-block:.2rem}
+mjx-container{color:var(--fg)}
+.code-note{color:var(--muted);font-size:.92rem}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+<script>
+window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]],tags:"none"},svg:{fontCache:"global"},options:{enableMenu:false}};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg-full.js" defer></script>
+<header class="bar"><nav aria-label="章">
+<span class="brand">グラディエントフロー入門</span>
+<a href="#notes">講義ノート</a><a href="#exercises">演習問題</a><a href="#解答例">解答例</a><a href="#code">数値演習コード</a>
+</nav></header>
+<main>
+<section id="notes"><p class="chapter-label">LECTURE NOTES</p>
+<h1
+id="グラディエントフロー入門--ゲージ理論と格子qcdへの応用">グラディエントフロー入門
+― ゲージ理論と格子QCDへの応用</h1>
+<blockquote>
+<p>本ノートは arXiv 上の原論文・レビュー（末尾の参考文献
+[1]–[27]）をもとに、 グラディエントフロー（gradient flow, Wilson
+flow）の基礎と、ゲージ理論・QCDにおける
+代表的な応用をまとめた講義ノートです。演習問題は <a
+href="#exercises"><code>exercises.md</code></a> にあります。</p>
+<p><strong>前提知識</strong>:
+場の量子論（経路積分・繰り込み）、非可換ゲージ理論の基礎、格子ゲージ理論の初歩。</p>
+</blockquote>
+<hr />
+<h2 id="目次">目次</h2>
+<ol start="0" type="1">
+<li><a
+href="#0-導入なぜグラディエントフローか">導入：なぜグラディエントフローか</a></li>
+<li><a
+href="#1-グラディエントフローの定義">グラディエントフローの定義</a></li>
+<li><a href="#2-摂動論と熱核">摂動論と熱核</a></li>
+<li><a
+href="#3-繰り込み性フローした場は有限である">繰り込み性：フローした場は有限である</a></li>
+<li><a
+href="#4-エネルギー密度と基準スケール-t_0-w_0">エネルギー密度と基準スケール
+<span class="math inline">\(t_0\)</span>, <span
+class="math inline">\(w_0\)</span></a></li>
+<li><a href="#5-格子上のフロー">格子上のフロー</a></li>
+<li><a
+href="#6-グラディエントフロー結合定数とステップスケーリング">グラディエントフロー結合定数とステップスケーリング</a></li>
+<li><a href="#7-トポロジカルチャージ">トポロジカルチャージ</a></li>
+<li><a
+href="#8-小フロー時間展開とエネルギー運動量テンソル">小フロー時間展開とエネルギー運動量テンソル</a></li>
+<li><a
+href="#9-クォーク場のフローとqcdへの拡張">クォーク場のフローとQCDへの拡張</a></li>
+<li><a
+href="#10-繰り込み群としてのフローその他の話題">繰り込み群としてのフロー・その他の話題</a></li>
+<li><a href="#11-まとめ">まとめ</a></li>
+<li><a href="#12-参考文献arxiv">参考文献（arXiv）</a></li>
+</ol>
+<hr />
+<h2 id="記法">記法</h2>
+<p>Euclid 時空 <span class="math inline">\(D=4\)</span>（次元正則化では
+<span class="math inline">\(D=4-2\epsilon\)</span>）で考える。ゲージ群は
+<span class="math inline">\(SU(N)\)</span>。 Lüscher [2,4]
+に従い、ゲージ場を <strong>反エルミート</strong> 行列で表す：</p>
+<p><span class="math display">\[
+A_\mu(x) = A_\mu^a(x)\,T^a,\qquad T^{a\dagger}=-T^a,\qquad
+\operatorname{tr}(T^aT^b) = -\tfrac12\delta^{ab},\qquad
+[T^a,T^b]=f^{abc}T^c .
+\]</span></p>
+<p>場の強さと共変微分：</p>
+<p><span class="math display">\[
+F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu+[A_\mu,A_\nu],\qquad
+D_\mu X = \partial_\mu X + [A_\mu, X].
+\]</span></p>
+<p>Yang–Mills 作用（結合定数 <span class="math inline">\(g_0\)</span>
+は場の外に出す規格化）：</p>
+<p><span class="math display">\[
+S_{\rm YM}[A] = -\frac{1}{2g_0^2}\int
+d^Dx\,\operatorname{tr}\bigl(F_{\mu\nu}F_{\mu\nu}\bigr)
+=\frac{1}{4g_0^2}\int d^Dx\,F^a_{\mu\nu}F^a_{\mu\nu}.
+\]</span></p>
+<hr />
+<h2 id="0-導入なぜグラディエントフローか">0.
+導入：なぜグラディエントフローか</h2>
+<p>格子QCDや連続理論で次のような量を扱うとき、しばしば困難に出会う。</p>
+<div class="table-wrap">
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>困難</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>合成演算子の繰り込みと演算子混合</td>
+<td>エネルギー運動量テンソル <span
+class="math inline">\(T_{\mu\nu}\)</span>、トポロジカル電荷密度 <span
+class="math inline">\(q(x)\)</span></td>
+</tr>
+<tr class="even">
+<td>格子正則化による対称性の破れ</td>
+<td>並進対称性の破れ → <span class="math inline">\(T_{\mu\nu}\)</span>
+が保存しない</td>
+</tr>
+<tr class="odd">
+<td>紫外の揺らぎによるノイズ</td>
+<td>トポロジカルチャージが整数にならない</td>
+</tr>
+<tr class="even">
+<td>物理スケールの精密な決定</td>
+<td>格子間隔 <span class="math inline">\(a\)</span> を fm
+単位で決める（scale setting）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>グラディエントフロー</strong> は、ゲージ場を「仮想的な 5
+番目の時間」<span class="math inline">\(t\)</span>（フロー時間, 次元
+<span class="math inline">\([\text{長さ}]^2\)</span>）に沿って
+作用を減少させる方向に滑らかに発展させる手法である。</p>
+<ul>
+<li>Narayanan–Neuberger [1] が大 <span class="math inline">\(N\)</span>
+ゲージ理論の Wilson ループの研究で導入し、</li>
+<li>Lüscher [2,3]
+が格子QCDにおける性質と用途（スケール設定・トポロジー・自明化写像）を体系化し、</li>
+<li>Lüscher–Weisz [4] が
+<strong>「フローした場の相関関数は追加の繰り込みなしで有限」</strong>
+であることを全次数で示した。</li>
+</ul>
+<p>これにより、フロー時間 <span class="math inline">\(t&gt;0\)</span>
+の場は「半径 <span class="math inline">\(\sqrt{8t}\)</span>
+で平滑化された、繰り込まれた場」とみなせ、
+上の困難のほとんどに統一的な処方箋を与える。</p>
+<hr />
+<h2 id="1-グラディエントフローの定義">1. グラディエントフローの定義</h2>
+<h3 id="11-一般論作用の最急降下">1.1 一般論：作用の最急降下</h3>
+<p>場 <span class="math inline">\(\phi\)</span> と作用 <span
+class="math inline">\(S[\phi]\)</span>
+に対し、グラディエントフローは</p>
+<p><span class="math display">\[
+\partial_t \phi(t,x) = -\frac{\delta S[\phi_t]}{\delta \phi(t,x)},\qquad
+\phi(0,x)=\phi(x)
+\]</span></p>
+<p>で定義される。<span class="math inline">\(t\)</span>
+は物理的な時間ではなく、作用の「最急降下」のパラメータである。</p>
+<p><strong>例（自由スカラー場）</strong>: <span
+class="math inline">\(S=\frac12\int(\partial\phi)^2\)</span> なら <span
+class="math inline">\(\partial_t\phi=\partial^2\phi\)</span>、すなわち
+<strong>熱方程式</strong> である。解は</p>
+<p><span class="math display">\[
+\phi(t,x)=\int d^Dy\, K_t(x-y)\,\phi(y),\qquad
+K_t(x)=\frac{e^{-x^2/4t}}{(4\pi t)^{D/2}},\qquad
+\tilde K_t(p)=e^{-tp^2}.
+\]</span></p>
+<p>熱核 <span class="math inline">\(K_t\)</span> は幅 <span
+class="math inline">\(\langle x^2\rangle_{K_t}=2Dt\)</span>
+のガウス関数なので、<span class="math inline">\(D=4\)</span> では
+<strong>平滑化半径 <span
+class="math inline">\(\sqrt{8t}\)</span></strong> で場がぼかされる（演習
+1）。運動量空間では <span class="math inline">\(e^{-tp^2}\)</span>
+により <span class="math inline">\(p\gtrsim 1/\sqrt{t}\)</span>
+のモードが指数関数的に抑制される。これが「フローした場は紫外有限」の直観的理由である。</p>
+<h3 id="12-yangmills-グラディエントフロー">1.2 Yang–Mills
+グラディエントフロー</h3>
+<p>Lüscher [2] に従い、フローしたゲージ場 <span
+class="math inline">\(B_\mu(t,x)\)</span> を</p>
+<p><span class="math display">\[
+\boxed{\;
+\partial_t B_\mu = D_\nu G_{\nu\mu} + \alpha_0\, D_\mu \partial_\nu
+B_\nu ,\qquad
+B_\mu(0,x)=A_\mu(x)
+\;}
+\]</span></p>
+<p>で定義する。ここで</p>
+<p><span class="math display">\[
+G_{\mu\nu}=\partial_\mu B_\nu-\partial_\nu B_\mu+[B_\mu,B_\nu],\qquad
+D_\mu = \partial_\mu + [B_\mu,\,\cdot\,].
+\]</span></p>
+<ul>
+<li>右辺第1項は <span class="math inline">\(D_\nu G_{\nu\mu} =
+-g_0^2\,\delta S_{\rm YM}[B]/\delta
+B_\mu\)</span>（行列としての意味で）であり、作用の最急降下そのもの。</li>
+<li>第2項（パラメータ <span class="math inline">\(\alpha_0\)</span>）は
+<strong>フロー時間に依存するゲージ変換</strong> を生成するだけの項で、
+ゲージ不変量には影響しない（演習 3, 5）。摂動論では <span
+class="math inline">\(\alpha_0=1\)</span>
+とすると線形部分が単純な熱方程式になり便利。</li>
+</ul>
+<p><strong>性質</strong></p>
+<ol type="1">
+<li><strong>ゲージ共変性</strong>（<span
+class="math inline">\(\alpha_0=0\)</span>）：<span
+class="math inline">\(A\to A^\Lambda=\Lambda
+A\Lambda^{-1}+\Lambda\partial\Lambda^{-1}\)</span> なら <span
+class="math inline">\(B_t\to B_t^\Lambda\)</span>（同じ <span
+class="math inline">\(t\)</span> 非依存の <span
+class="math inline">\(\Lambda\)</span>）。</li>
+<li><strong>作用の単調減少</strong>（<span
+class="math inline">\(\alpha_0=0\)</span>）： <span
+class="math display">\[
+\frac{d}{dt}S_{\rm YM}[B_t] = -g_0^2\int d^Dx\,\Bigl(\frac{\delta S_{\rm
+YM}}{\delta B^a_\mu}\Bigr)^2\le 0 .
+\]</span> よって <span class="math inline">\(t\to\infty\)</span>
+でフローは古典解（作用の極小、例えばインスタントン近傍や純ゲージ）に向かう（演習
+4）。</li>
+<li><strong>局所性</strong>：フロー方程式は <span
+class="math inline">\(t\)</span> について1階、<span
+class="math inline">\(x\)</span>
+について2階の偏微分方程式（非線形熱方程式）なので、 <span
+class="math inline">\(B_\mu(t,x)\)</span> は主に <span
+class="math inline">\(|y-x|\lesssim\sqrt{8t}\)</span> の <span
+class="math inline">\(A_\mu(y)\)</span> で決まる。</li>
+</ol>
+<hr />
+<h2 id="2-摂動論と熱核">2. 摂動論と熱核</h2>
+<p><span class="math inline">\(\alpha_0=1\)</span>
+とすると、フロー方程式は</p>
+<p><span class="math display">\[
+\partial_t B_\mu = \partial_\nu\partial_\nu B_\mu + R_\mu,\qquad
+R_\mu = 2[B_\nu,\partial_\nu B_\mu]-[B_\nu,\partial_\mu
+B_\nu]+[B_\nu,[B_\nu,B_\mu]]
+\]</span></p>
+<p>と書ける（<span class="math inline">\(R_\mu\)</span> は <span
+class="math inline">\(B\)</span> について2次以上。<span
+class="math inline">\(\alpha_0=1\)</span> では <span
+class="math inline">\([B_\mu,\partial_\nu B_\nu]\)</span>
+型の項が相殺する）。積分形</p>
+<p><span class="math display">\[
+B_\mu(t,x)=\int d^Dy\,\Bigl\{K_t(x-y)A_\mu(y)+\int_0^t
+ds\,K_{t-s}(x-y)R_\mu(s,y)\Bigr\}
+\]</span></p>
+<p>を反復して解く。一般の <span class="math inline">\(\alpha_0\)</span>
+では線形部分の解は（演習 5）</p>
+<p><span class="math display">\[
+\tilde B_\mu(t,p)=\Bigl[\Bigl(\delta_{\mu\nu}-\frac{p_\mu
+p_\nu}{p^2}\Bigr)e^{-tp^2}
++\frac{p_\mu p_\nu}{p^2}e^{-\alpha_0tp^2}\Bigr]\tilde A_\nu(p)+O(A^2).
+\]</span></p>
+<p><strong>ファインマン則</strong>としては、通常の Yang–Mills
+のファインマン則に加えて</p>
+<ul>
+<li><strong>熱核伝播関数</strong>（フロー線）：<span
+class="math inline">\(\theta(t-s)\,e^{-(t-s)p^2}\)</span>（矢印付きの二重線で描く）</li>
+<li><strong>フロー頂点</strong>：<span
+class="math inline">\(R_\mu\)</span> から来る 3 点・4
+点頂点（フロー時間で積分）</li>
+</ul>
+<p>が加わる。Lüscher–Weisz [4] はこれを <span
+class="math inline">\((D+1)\)</span> 次元の局所場の理論（Lagrange 乗数場
+<span class="math inline">\(L_\mu(t,x)\)</span>
+を導入）として定式化した。</p>
+<p><strong>例：フローしたゲージ場の 2 点関数（木レベル）</strong></p>
+<p>Feynman ゲージ <span class="math inline">\(\langle\tilde
+A^a_\mu(p)\tilde
+A^b_\nu(q)\rangle=g_0^2\delta^{ab}\delta_{\mu\nu}(2\pi)^D\delta(p+q)/p^2\)</span>
+のとき</p>
+<p><span class="math display">\[
+\langle B^a_\mu(t,x)B^b_\nu(s,y)\rangle =
+g_0^2\delta^{ab}\int\!\frac{d^Dp}{(2\pi)^D}\,
+\frac{e^{ip(x-y)}}{p^2}\,e^{-(t+s)p^2}\delta_{\mu\nu}+\cdots
+\]</span></p>
+<p><span class="math inline">\(t+s&gt;0\)</span> なら <span
+class="math inline">\(x=y\)</span>
+でも有限。<strong>同一点の積（合成演算子）が正則化なしで定義できる</strong>
+ことが本質的に重要である（演習 2）。</p>
+<hr />
+<h2 id="3-繰り込み性フローした場は有限である">3.
+繰り込み性：フローした場は有限である</h2>
+<p><strong>定理（Lüscher–Weisz [4]）</strong>： <span
+class="math inline">\(t&gt;0\)</span> におけるフローしたゲージ場 <span
+class="math inline">\(B_\mu(t,x)\)</span>
+の任意の（ゲージ不変な）相関関数は、 裸の結合定数 <span
+class="math inline">\(g_0\)</span> を通常どおり繰り込めば（例えば <span
+class="math inline">\(\overline{\rm MS}\)</span> スキームで <span
+class="math inline">\(g_0\to g\)</span>）、
+<strong>追加の繰り込みなしで有限</strong> である。これは <span
+class="math inline">\(x\)</span>
+が一致する点（合成演算子）でも成り立つ。</p>
+<p>証明のアイデア：</p>
+<ol type="1">
+<li>Lagrange 乗数場 <span class="math inline">\(L_\mu\)</span>
+を導入して、フロー方程式を <span class="math inline">\((D+1)\)</span>
+次元の局所作用 <span class="math display">\[
+S_{\rm fl}=-2\int_0^\infty dt\int
+d^Dx\,\operatorname{tr}\bigl\{L_\mu(\partial_tB_\mu-D_\nu
+G_{\nu\mu}-\alpha_0D_\mu\partial_\nu B_\nu)\bigr\}
+\]</span> として扱う。</li>
+<li>この拡張された理論は <span class="math inline">\(D+1\)</span> 次元の
+BRS 対称性をもつ。</li>
+<li>冪数え（power counting）の議論から、<span
+class="math inline">\(t&gt;0\)</span> の「バルク」には局所的な
+counterterm が許されず、 必要な counterterm は境界 <span
+class="math inline">\(t=0\)</span>（すなわち元の <span
+class="math inline">\(D\)</span> 次元理論）のものだけである。</li>
+</ol>
+<p><strong>帰結</strong>：<span class="math inline">\(E(t,x)\)</span> や
+<span class="math inline">\(q(t,x)\)</span> のような
+<strong>フローした合成演算子は繰り込まれた有限量</strong> であり、
+格子間隔 <span class="math inline">\(a\to0\)</span> の連続極限が（<span
+class="math inline">\(\sqrt{8t}\)</span>
+を物理単位で固定すれば）存在する。
+ただし、クォーク場のフローでは場の繰り込み <span
+class="math inline">\(Z_\chi\)</span> が1つ必要になる（§9）。</p>
+<hr />
+<h2 id="4-エネルギー密度と基準スケール-t_0-w_0">4.
+エネルギー密度と基準スケール <span class="math inline">\(t_0\)</span>,
+<span class="math inline">\(w_0\)</span></h2>
+<h3 id="41-エネルギー密度の摂動展開">4.1 エネルギー密度の摂動展開</h3>
+<p><span class="math display">\[
+E(t,x) =
+-\frac12\operatorname{tr}\bigl\{G_{\mu\nu}(t,x)G_{\mu\nu}(t,x)\bigr\}=\frac14
+G^a_{\mu\nu}G^a_{\mu\nu}
+\]</span></p>
+<p>と定義する。木レベル（演習 6）と1ループ（Lüscher [2]）の結果は</p>
+<p><span class="math display">\[
+\boxed{\;
+\langle E(t)\rangle=\frac{3(N^2-1)}{128\pi^2t^2}\,g^2(q)\,\bigl\{1+c_1
+g^2(q)+O(g^4)\bigr\},\qquad q=\frac{1}{\sqrt{8t}}
+\;}
+\]</span></p>
+<p><span class="math display">\[
+c_1=\frac{1}{16\pi^2}\Bigl\{N\Bigl(\frac{11}{3}\gamma_E+\frac{52}{9}-3\ln3\Bigr)
+-N_f\Bigl(\frac23\gamma_E+\frac49-\frac43\ln2\Bigr)\Bigr\}
+\]</span></p>
+<p>（<span class="math inline">\(g\)</span> は <span
+class="math inline">\(\overline{\rm MS}\)</span> 結合定数、<span
+class="math inline">\(\gamma_E\)</span> は Euler 定数）。<span
+class="math inline">\(SU(3)\)</span> で <span
+class="math inline">\(\alpha=g^2/4\pi\)</span> を用いると</p>
+<p><span class="math display">\[
+t^2\langle
+E(t)\rangle=\frac{3}{4\pi}\,\alpha(q)\,\bigl\{1+k_1\alpha(q)+O(\alpha^2)\bigr\},\qquad
+k_1=1.0978+0.0075\,N_f .
+\]</span></p>
+<p>2ループ・3ループの係数は Harlander–Neumann [21] で計算されている。
+<span class="math inline">\(t^2\langle E\rangle\)</span>
+は無次元で、短距離（小さい <span class="math inline">\(t\)</span>）では
+<span class="math inline">\(\alpha\)</span> に比例して小さく、<span
+class="math inline">\(t\)</span> とともに単調増加する。</p>
+<h3 id="42-基準スケール-t_0">4.2 基準スケール <span
+class="math inline">\(t_0\)</span></h3>
+<p><span class="math inline">\(t^2\langle E\rangle\)</span>
+は繰り込まれた有限量で、格子上でも統計精度よく測れる。そこで Lüscher [2]
+は</p>
+<p><span class="math display">\[
+\boxed{\;t^2\langle E(t)\rangle\big|_{t=t_0}=0.3\;}
+\]</span></p>
+<p>で基準スケール <span class="math inline">\(t_0\)</span>
+を定義した。値 0.3 は、<span class="math inline">\(\sqrt{8t_0}\)</span>
+が格子間隔より十分大きく、かつ有限体積効果が小さい
+（ハドロンスケール程度）ように選ばれている。</p>
+<h3 id="43-基準スケール-w_0">4.3 基準スケール <span
+class="math inline">\(w_0\)</span></h3>
+<p>BMW コラボレーション [8]
+は、有限格子間隔の影響を受けにくい量として</p>
+<p><span class="math display">\[
+\boxed{\;t\frac{d}{dt}\bigl\{t^2\langle
+E(t)\rangle\bigr\}\Big|_{t=w_0^2}=0.3\;}
+\]</span></p>
+<p>で <span class="math inline">\(w_0\)</span> を定義した。<span
+class="math inline">\(t^2\langle E\rangle\)</span> そのものは小さい
+<span class="math inline">\(t\)</span>
+の領域（格子アーティファクトが大きい）からの寄与を
+累積的に含むが、その対数微分はより局所的な <span
+class="math inline">\(t\)</span> の情報だけを用いる。 物理単位では（BMW
+[8] の <span class="math inline">\(N_f=2+1\)</span> の値）</p>
+<p><span class="math display">\[
+\sqrt{t_0}=0.1465(21)(13)\ {\rm fm},\qquad w_0=0.1755(18)(04)\ {\rm fm}.
+\]</span></p>
+<p><strong>スケール設定の手順</strong> 1. 物理量（例: <span
+class="math inline">\(f_\pi\)</span>, <span
+class="math inline">\(M_\Omega\)</span>）で <span
+class="math inline">\(\sqrt{t_0}\)</span> や <span
+class="math inline">\(w_0\)</span> を一度 fm 単位で決める。 2.
+以後、各アンサンブルで <span
+class="math inline">\(t_0/a^2\)</span>（または <span
+class="math inline">\(w_0/a\)</span>）を測れば、格子間隔 <span
+class="math inline">\(a\)</span> が安価かつ高精度で決まる。</p>
+<hr />
+<h2 id="5-格子上のフロー">5. 格子上のフロー</h2>
+<h3 id="51-wilson-フロー">5.1 Wilson フロー</h3>
+<p>格子上ではリンク変数 <span class="math inline">\(U(x,\mu)\in
+SU(N)\)</span> に対し、フローしたリンク <span
+class="math inline">\(V_t(x,\mu)\)</span> を</p>
+<p><span class="math display">\[
+\dot V_t(x,\mu)=-g_0^2\,\bigl\{\partial_{x,\mu}S_{\rm
+W}(V_t)\bigr\}\,V_t(x,\mu),\qquad V_0(x,\mu)=U(x,\mu)
+\]</span></p>
+<p>で定義する [2]。ここで <span class="math inline">\(S_{\rm W}\)</span>
+は Wilson のプラケット作用、<span
+class="math inline">\(\partial_{x,\mu}\)</span> はリンク <span
+class="math inline">\(V(x,\mu)\)</span> に関する Lie 代数微分。これを
+<strong>Wilson フロー</strong> と呼ぶ。右辺はステープル和 <span
+class="math inline">\(\Omega\)</span> を用いて</p>
+<p><span class="math display">\[
+g_0^2\,\partial_{x,\mu}S_{\rm W}(V)=\mathcal
+P_{\mathfrak{su}(N)}\bigl\{V(x,\mu)\,\Omega^\dagger(x,\mu)\bigr\}
+\]</span></p>
+<p>（反エルミート・トレースレス部分への射影）と書ける。</p>
+<ul>
+<li><strong>数値積分</strong>：<span
+class="math inline">\(SU(N)\)</span>
+多様体上の常微分方程式なので、群構造を保つ積分法が必要。 Lüscher [2]
+の付録にある <strong>3次 Runge–Kutta（Lie 群版, RK3）</strong>
+が標準的に使われる。 典型的なステップ幅は <span
+class="math inline">\(\epsilon=0.01\)</span>–<span
+class="math inline">\(0.02\)</span>（格子単位）。</li>
+<li><strong>作用の選択</strong>：フローに使う作用（Wilson,
+Symanzik/tree-level improved など）と、測定に使う <span
+class="math inline">\(E\)</span> の離散化
+（プラケット型・クローバー型）は独立に選べる。その差は <span
+class="math inline">\(O(a^2)\)</span>
+の格子アーティファクトとして現れる。</li>
+<li><strong>Zeuthen フロー</strong>：Ramos–Sint [17]
+はフロー方程式自体を改良し、 <span class="math inline">\(O(a^2)\)</span>
+のフロー由来のアーティファクトを除去した。</li>
+</ul>
+<h3 id="52-計算コスト">5.2 計算コスト</h3>
+<p>フローは決定論的な微分方程式の積分なので、Monte Carlo
+更新に比べて安価
+（各ステップで作用の微分を数回計算するだけ）。測定コストとしてほぼ無視できる程度であり、
+これが <span class="math inline">\(t_0\)</span> や <span
+class="math inline">\(w_0\)</span>
+が「標準的な基準スケール」となった理由の1つである。</p>
+<hr />
+<h2 id="6-グラディエントフロー結合定数とステップスケーリング">6.
+グラディエントフロー結合定数とステップスケーリング</h2>
+<p>§4.1
+の展開を逆に使えば、<strong>非摂動的に定義された繰り込まれた結合定数</strong>
+が得られる：</p>
+<p><span class="math display">\[
+g^2_{\rm GF}(\mu)=\frac{128\pi^2}{3(N^2-1)}\,\frac{t^2\langle
+E(t)\rangle}{\mathcal N}\Big|_{\mu=1/\sqrt{8t}} .
+\]</span></p>
+<p><span class="math inline">\(\mathcal N\)</span>
+は有限体積・境界条件による補正因子（無限体積では <span
+class="math inline">\(\mathcal N=1\)</span>）。</p>
+<p><strong>有限体積スキーム</strong>：体積 <span
+class="math inline">\(L^4\)</span> の箱で <span
+class="math inline">\(\sqrt{8t}=cL\)</span>（<span
+class="math inline">\(c\)</span> は 0.2–0.5 程度の定数）と固定すると、
+<span class="math inline">\(g_{\rm GF}^2\)</span> は箱のサイズ <span
+class="math inline">\(L\)</span> だけの関数になり、<span
+class="math inline">\(\mu=1/(cL)\)</span>
+のランニング結合定数を与える。</p>
+<ul>
+<li>Fodor ら [9]：周期境界条件での GF 結合定数</li>
+<li>Fritzsch–Ramos [10]：Schrödinger 汎関数境界条件での GF 結合定数</li>
+</ul>
+<p><strong>ステップスケーリング</strong>：<span
+class="math inline">\(L\to 2L\)</span> で結合定数がどう変わるか（step
+scaling function <span
+class="math inline">\(\sigma(u)=g^2(2L)|_{g^2(L)=u}\)</span>）
+を格子上で連続極限をとって求め、それを繰り返して低エネルギーから高エネルギーまで非摂動的につなぐ。
+ALPHA コラボレーション [18] は GF 結合定数（低エネルギー側）と SF
+結合定数（高エネルギー側）を組み合わせて、 3フレーバーQCDの <span
+class="math inline">\(\Lambda\)</span> パラメータ、したがって <span
+class="math inline">\(\alpha_s(M_Z)\)</span> を高精度で決定した。</p>
+<p>GF 結合定数は統計誤差が小さい（<span class="math inline">\(E\)</span>
+は体積平均された局所量なので）ことが大きな利点である。
+また、多フレーバー理論の（近）共形性の研究でも広く使われる。</p>
+<hr />
+<h2 id="7-トポロジカルチャージ">7. トポロジカルチャージ</h2>
+<h3 id="71-連続理論">7.1 連続理論</h3>
+<p><span class="math display">\[
+Q=\int d^4x\,q(x),\qquad
+q(x)=-\frac{1}{32\pi^2}\epsilon_{\mu\nu\rho\sigma}\operatorname{tr}\bigl\{F_{\mu\nu}F_{\rho\sigma}\bigr\}
+=\frac{1}{64\pi^2}\epsilon_{\mu\nu\rho\sigma}F^a_{\mu\nu}F^a_{\rho\sigma}
+\]</span></p>
+<p>は滑らかな場に対して整数値をとり、<span class="math inline">\(S_{\rm
+YM}\ge 8\pi^2|Q|/g_0^2\)</span>
+を満たす（等号は（反）自己双対解＝インスタントン、演習 9）。</p>
+<h3 id="72-格子上の問題とフローによる解決">7.2
+格子上の問題とフローによる解決</h3>
+<p>格子上で <span class="math inline">\(q(x)\)</span>
+を素朴に離散化すると、紫外の揺らぎのため <span
+class="math inline">\(Q\)</span> は整数にならず、 さらに <span
+class="math inline">\(q(x)\)</span>
+には乗法的繰り込みと、より低次元の演算子との加法的混合が生じる。
+また、トポロジカル感受率 <span class="math inline">\(\chi_t=\langle
+Q^2\rangle/V\)</span> は接触項による発散を含みうる。</p>
+<p>フローを適用すると：</p>
+<ul>
+<li>フローした <span class="math inline">\(q(t,x)\)</span> は §3 により
+<strong>繰り込まれた有限量</strong>。<span
+class="math inline">\(\chi_t(t)=\langle Q(t)^2\rangle/V\)</span> は
+<span class="math inline">\(t&gt;0\)</span>
+で定義された有限量で、連続極限で <span class="math inline">\(t\)</span>
+に依存しない（<span class="math inline">\(Q\)</span>
+は連続理論ではフロー不変）。</li>
+<li>数値的にも、<span class="math inline">\(\sqrt{8t}\sim0.3\)</span> fm
+程度のフローで <span class="math inline">\(Q(t)\)</span>
+の分布がほぼ整数値に鋭くピークをもつ。</li>
+<li>Lüscher [2] は、格子間隔 <span class="math inline">\(a\to0\)</span>
+でトポロジカルセクターがどのように分離していくか（「小さな」インスタントンが
+格子アーティファクトとして消えていく様子）をフローを使って議論した。</li>
+</ul>
+<p><strong>冷却（cooling）との関係</strong>：古くから使われる冷却法（作用を局所的に最小化）や各種スメアリング（APE,
+stout）と フローは数値的にはほぼ同等の結果を与え、対応関係 <span
+class="math inline">\(t\leftrightarrow n_{\rm cool}\)</span>
+が知られている [19,20]。 しかしフローは
+<strong>繰り込み性が証明されている</strong> 点で理論的に優れている。</p>
+<h3 id="73-物理への応用">7.3 物理への応用</h3>
+<ul>
+<li><strong>Witten–Veneziano 公式</strong>：大 <span
+class="math inline">\(N\)</span> で純ゲージ理論の <span
+class="math inline">\(\chi_t\)</span> が <span
+class="math inline">\(\eta&#39;\)</span> 質量を与える： <span
+class="math display">\[
+\chi_t^{\rm
+YM}\simeq\frac{f_\pi^2}{2N_f}\bigl(m_{\eta}^2+m_{\eta&#39;}^2-2m_K^2\bigr)\quad(f_\pi\simeq92\
+{\rm MeV}).
+\]</span> これは <span
+class="math inline">\(\chi_t^{1/4}\approx180\)</span> MeV
+程度を予言し、フローを用いた格子計算と整合する（演習 10）。</li>
+<li><strong>有限温度の <span
+class="math inline">\(\chi_t(T)\)</span></strong>：アクシオン暗黒物質の質量・残存量の評価に必須。</li>
+<li><strong><span class="math inline">\(\theta\)</span> 真空・<span
+class="math inline">\(\theta\)</span> 依存性</strong>、<span
+class="math inline">\(Q\)</span> の分布の非ガウス性の研究。</li>
+<li><strong>トポロジーの凍結（topology
+freezing）</strong>：細かい格子ではモンテカルロが <span
+class="math inline">\(Q\)</span> セクター間を移れなくなる。
+フローは凍結の診断にも使われる。</li>
+</ul>
+<hr />
+<h2 id="8-小フロー時間展開とエネルギー運動量テンソル">8.
+小フロー時間展開とエネルギー運動量テンソル</h2>
+<h3 id="81-小フロー時間展開">8.1 小フロー時間展開</h3>
+<p>フローした局所演算子 <span class="math inline">\(\tilde
+O(t,x)\)</span> は、<span class="math inline">\(t\to0\)</span>
+で通常の（<span class="math inline">\(t=0\)</span>
+の）繰り込まれた局所演算子で展開できる：</p>
+<p><span class="math display">\[
+\tilde O(t,x)=\sum_i c_i(t)\,O_i^R(x)+O(t)\qquad(t\to0).
+\]</span></p>
+<p>これは演算子積展開（OPE）と同様の構造で、係数 <span
+class="math inline">\(c_i(t)\)</span> は短距離（<span
+class="math inline">\(\mu\sim1/\sqrt{8t}\)</span>）の物理なので
+<strong>漸近自由性により摂動論で計算できる</strong>。これを逆に解けば、</p>
+<p><span class="math display">\[
+O^R(x)=\lim_{t\to0}\sum_i \bigl(c^{-1}(t)\bigr)\tilde O_i(t,x)
+\]</span></p>
+<p>として、<strong>任意の正則化（格子を含む）で <span
+class="math inline">\(O^R\)</span> を構成できる</strong>。
+格子の対称性の破れ（並進・カイラル）に起因する演算子混合の問題を、普遍的な形で回避できるのがポイント。</p>
+<h3 id="82-suzuki-のエネルギー運動量テンソル公式">8.2 Suzuki
+のエネルギー運動量テンソル公式</h3>
+<p>格子正則化は並進対称性を破るため、<span
+class="math inline">\(T_{\mu\nu}\)</span>
+の構成（とその繰り込み）は長年の難問だった。 Suzuki [6]
+は小フロー時間展開を使って次の公式を導いた（純 Yang–Mills,
+改訂版の係数）：</p>
+<p><span class="math display">\[
+\boxed{\;
+T^R_{\mu\nu}(x)=\lim_{t\to0}\Bigl\{\frac{1}{\alpha_U(t)}U_{\mu\nu}(t,x)
++\frac{\delta_{\mu\nu}}{4\alpha_E(t)}\bigl[E(t,x)-\langle
+E(t,x)\rangle_0\bigr]\Bigr\}
+\;}
+\]</span></p>
+<p><span class="math display">\[
+U_{\mu\nu}(t,x)=G^a_{\mu\rho}G^a_{\nu\rho}-\frac14\delta_{\mu\nu}G^a_{\rho\sigma}G^a_{\rho\sigma},\qquad
+E(t,x)=\frac14G^a_{\mu\nu}G^a_{\mu\nu},
+\]</span></p>
+<p><span class="math display">\[
+\alpha_U(t)=\bar g^2\bigl\{1+2b_0\bar s_1\bar g^2+O(\bar
+g^4)\bigr\},\qquad
+\alpha_E(t)=\frac{1}{2b_0}\bigl\{1+2b_0\bar s_2\bar g^2+O(\bar
+g^4)\bigr\}.
+\]</span></p>
+<p>ここで <span class="math inline">\(\bar g=\bar
+g(1/\sqrt{8t})\)</span> は <span class="math inline">\(\overline{\rm
+MS}\)</span> ランニング結合定数、<span
+class="math inline">\(b_0=\frac{1}{(4\pi)^2}\frac{11}{3}N\)</span>、
+<span class="math inline">\(\langle\cdot\rangle_0\)</span>
+は真空期待値。<span class="math inline">\(SU(3)\)</span> では <span
+class="math inline">\(\bar
+s_1=\frac{7}{22}+\frac12\gamma_E-\ln2\simeq-0.0864\)</span>, <span
+class="math inline">\(\bar
+s_2=\frac{21}{44}-\frac{b_1}{2b_0^2}=\frac{27}{484}\simeq0.0558\)</span>。
+（ここでのゲージ場は <span class="math inline">\(G\)</span> に <span
+class="math inline">\(g\)</span> を含む規格化。<span
+class="math inline">\(U_{\mu\nu}\)</span> はトレースレス、<span
+class="math inline">\(E\)</span> がトレース部分を担う。）</p>
+<p>2ループの係数は Harlander–Kluth–Lange [22]
+で計算された。フェルミオンを含む場合は Makino–Suzuki [7]。</p>
+<h3 id="83-応用熱力学">8.3 応用：熱力学</h3>
+<p>Euclid の <span class="math inline">\(T_{\mu\nu}\)</span>
+を用いると、エネルギー密度 <span
+class="math inline">\(\varepsilon\)</span> と圧力 <span
+class="math inline">\(p\)</span> は</p>
+<p><span class="math display">\[
+\varepsilon=-\langle T_{00}\rangle_T,\qquad p=\langle
+T_{11}\rangle_T\quad(\text{真空期待値を差し引いたもの})
+\]</span></p>
+<p>なので</p>
+<p><span class="math display">\[
+\varepsilon-3p=-\langle T_{\mu\mu}\rangle_T,\qquad
+\varepsilon+p=Ts=\langle T_{11}-T_{00}\rangle_T.
+\]</span></p>
+<ul>
+<li><strong>トレースアノマリー</strong> <span
+class="math inline">\(\varepsilon-3p\)</span> は <span
+class="math inline">\(E\)</span> の項（<span
+class="math inline">\(\alpha_E\)</span>）から、</li>
+<li><strong>エントロピー密度</strong> <span
+class="math inline">\(s\)</span> は <span
+class="math inline">\(U_{\mu\nu}\)</span> の項（<span
+class="math inline">\(\alpha_U\)</span>）から</li>
+</ul>
+<p>それぞれ <strong>1回の温度で直接</strong> 求まる。従来の積分法（<span
+class="math inline">\(T\)</span> について積分する方法）と異なり、
+基準温度での値や <span class="math inline">\(\beta\)</span>
+関数を必要としない。</p>
+<ul>
+<li>FlowQCD [11]：SU(3)
+純ゲージ理論の状態方程式を初めてこの方法で計算し、積分法と整合。</li>
+<li>Kitazawa ら [16]：より詳細な連続極限・<span
+class="math inline">\(t\to0\)</span> 外挿。</li>
+<li>Shirogane ら [27]：一次相転移点での潜熱と圧力差。</li>
+<li>WHOT-QCD（Taniguchi ら）[13]：<span
+class="math inline">\(N_f=2+1\)</span> QCD への適用。</li>
+</ul>
+<p><strong>実際の解析手順</strong>（double extrapolation）： 1. 各 <span
+class="math inline">\(a\)</span> と <span
+class="math inline">\(t\)</span> で <span class="math inline">\(\langle
+T_{\mu\nu}\rangle\)</span> を測る。 2. 固定した物理的 <span
+class="math inline">\(t\)</span>（<span
+class="math inline">\(\sqrt{8t}\,T\)</span> 固定）で <span
+class="math inline">\(a\to0\)</span> の連続極限をとる。 3.
+連続極限の値を <span class="math inline">\(t\to0\)</span>
+に外挿する（<span class="math inline">\(O(t)\)</span> 項の除去）。</p>
+<p><span class="math inline">\(t\)</span> が大きすぎると平滑化半径が
+<span class="math inline">\(1/T\)</span> を超えてしまう（<span
+class="math inline">\(\sqrt{8t}\lesssim 1/(2T)\)</span> 程度が目安）。
+また <span class="math inline">\(t\)</span> が小さすぎると <span
+class="math inline">\(O(a^2/t)\)</span>
+の格子アーティファクトが大きくなる。この「窓」を確保することが実際上の鍵である。</p>
+<p><strong>その他の <span class="math inline">\(T_{\mu\nu}\)</span>
+の応用</strong>：粘性係数（<span class="math inline">\(T_{12}\)</span>
+の相関関数）、比熱、ハドロン内部の圧力・応力分布、
+静的クォーク間の応力テンソル分布（フラックスチューブの構造）など。</p>
+<hr />
+<h2 id="9-クォーク場のフローとqcdへの拡張">9.
+クォーク場のフローとQCDへの拡張</h2>
+<p>Lüscher [5] はクォーク場のフローを</p>
+<p><span class="math display">\[
+\partial_t\chi=\Delta\chi-\alpha_0\,\partial_\nu B_\nu\,\chi,\qquad
+\partial_t\bar\chi=\bar\chi\overleftarrow\Delta+\alpha_0\,\bar\chi\,\partial_\nu
+B_\nu,\qquad
+\chi|_{t=0}=\psi,\ \bar\chi|_{t=0}=\bar\psi
+\]</span></p>
+<p>で定義した（<span class="math inline">\(\Delta=D_\mu D_\mu\)</span>,
+<span
+class="math inline">\(D_\mu=\partial_\mu+B_\mu\)</span>）。性質：</p>
+<ul>
+<li>ゲージ場の場合と異なり、<strong>場の繰り込み</strong> <span
+class="math inline">\(\chi_R=Z_\chi^{1/2}\chi\)</span> が必要（<span
+class="math inline">\(Z_\chi\)</span> は <span
+class="math inline">\(t\)</span> に依存しない）。
+これを除けばフローした場の相関関数は有限 [5]。</li>
+<li>実用上は、<span
+class="math inline">\(\langle\bar\chi\overleftrightarrow{D\!\!\!/}\chi\rangle\)</span>
+などで規格化した「リング変数」<span
+class="math inline">\(\mathring\chi\)</span> を使うと <span
+class="math inline">\(Z_\chi\)</span> が相殺する（Makino–Suzuki
+[7]）。</li>
+<li><strong>カイラル対称性</strong>：フロー方程式はカイラル変換と可換。そのため、フローした場から作ったカイラル凝縮
+<span class="math inline">\(\langle\bar\chi\chi\rangle\)</span>
+は（<span class="math inline">\(\chi\)</span>
+の規格化を除き）乗法的にしか繰り込まれず、
+格子上でカイラル対称性を破る作用（Wilson
+フェルミオン）を使っても、カイラル対称性に関する量を構成できる
+[5,13]。</li>
+</ul>
+<p><strong>主な応用</strong></p>
+<ul>
+<li>QCD のエネルギー運動量テンソル（Makino–Suzuki [7]）、<span
+class="math inline">\(N_f=2+1\)</span> QCD 熱力学（WHOT-QCD
+[13]）。</li>
+<li><strong>軸性ベクトルカレント</strong>
+の普遍的公式（Endo–Hieda–Miura–Suzuki
+[15]）：格子上で保存カレントがなくとも正しく規格化されたカレントが得られる。</li>
+<li><strong>カイラル凝縮・カイラル感受率</strong> の有限温度での計算
+[13]。</li>
+<li><strong>CP
+非保存演算子</strong>（クォーク電気双極子モーメント、Weinberg
+演算子など）の繰り込み： 中性子 EDM
+の計算で、フローを用いて混合を回避する研究が盛ん。</li>
+<li><strong>重いクォーク・<span class="math inline">\(B\)</span>
+中間子混合の行列要素</strong>、<strong>PDF（パートン分布関数）</strong>
+の格子計算への応用。</li>
+</ul>
+<hr />
+<h2 id="10-繰り込み群としてのフローその他の話題">10.
+繰り込み群としてのフロー・その他の話題</h2>
+<h3 id="101-フローと繰り込み群">10.1 フローと繰り込み群</h3>
+<p>フローは半径 <span class="math inline">\(\sqrt{8t}\)</span>
+の「粗視化」なので、Wilson
+流の繰り込み群（ブロックスピン変換）との類似が自然に期待される。</p>
+<ul>
+<li>Carosso–Hasenfratz–Neil
+[14]：フローを連続的な実空間繰り込み群変換とみなし、
+フローした演算子の比から異常次元（例: 質量異常次元 <span
+class="math inline">\(\gamma_m\)</span>）を決定する方法を提案。
+多フレーバー（近）共形理論に適用。</li>
+<li>Abe–Fukuma
+[26]：フローと繰り込み群の関係を（スカラー場理論で）定式化。</li>
+</ul>
+<h3 id="102-自明化写像trivializing-map">10.2 自明化写像（trivializing
+map）</h3>
+<p>Lüscher [3] は、ゲージ場の配位を作用 0 の（自明な）測度に写す写像
+<span class="math inline">\(\mathcal F_t\)</span> を、
+「フロー（ただし作用は <span class="math inline">\(S\)</span>
+ではなく適当に構成した <span class="math inline">\(\tilde
+S_t\)</span>）」として構成しうることを示し、 HMC
+アルゴリズムの改良（臨界減速の緩和）への応用を議論した。
+この考え方は近年の機械学習（normalizing
+flow）による格子場の生成法の源流の1つでもある。</p>
+<h3 id="103-摂動計算の進展">10.3 摂動計算の進展</h3>
+<ul>
+<li>3ループの <span class="math inline">\(\langle
+E\rangle\)</span>（Harlander–Neumann [21]）</li>
+<li>高次計算の手法（Artz ら [23]）</li>
+<li>2ループの EMT 係数（Harlander–Kluth–Lange [22]）</li>
+</ul>
+<p>これらは <span class="math inline">\(t_0\)</span> からの <span
+class="math inline">\(\alpha_s\)</span> 決定や EMT の <span
+class="math inline">\(t\to0\)</span> 外挿の精度向上に不可欠。</p>
+<h3 id="104-レビュー">10.4 レビュー</h3>
+<ul>
+<li>Lüscher, <em>Future applications of the Yang–Mills gradient flow in
+lattice QCD</em> [12]</li>
+<li>Ramos, <em>The Yang–Mills gradient flow and renormalization</em>
+[25]</li>
+</ul>
+<hr />
+<h2 id="11-まとめ">11. まとめ</h2>
+<div class="table-wrap">
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>性質</th>
+<th>内容</th>
+<th>主要文献</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>定義</td>
+<td>作用の最急降下: <span class="math inline">\(\partial_tB_\mu=D_\nu
+G_{\nu\mu}\)</span></td>
+<td>[1,2]</td>
+</tr>
+<tr class="even">
+<td>平滑化</td>
+<td>半径 <span class="math inline">\(\sqrt{8t}\)</span>
+の熱核による紫外抑制</td>
+<td>[2]</td>
+</tr>
+<tr class="odd">
+<td>繰り込み性</td>
+<td>フローしたゲージ場の相関関数は追加の繰り込みなしで有限</td>
+<td>[4,5]</td>
+</tr>
+<tr class="even">
+<td>スケール設定</td>
+<td><span class="math inline">\(t_0\)</span>, <span
+class="math inline">\(w_0\)</span>：安価・高精度</td>
+<td>[2,8]</td>
+</tr>
+<tr class="odd">
+<td>結合定数</td>
+<td>GF スキームの結合定数、ステップスケーリング、<span
+class="math inline">\(\alpha_s\)</span></td>
+<td>[9,10,18]</td>
+</tr>
+<tr class="even">
+<td>トポロジー</td>
+<td><span class="math inline">\(Q\)</span>, <span
+class="math inline">\(\chi_t\)</span> の繰り込まれた定義</td>
+<td>[2,19,20]</td>
+</tr>
+<tr class="odd">
+<td>小フロー時間展開</td>
+<td>正則化非依存な繰り込まれた演算子の構成</td>
+<td>[6,7,15]</td>
+</tr>
+<tr class="even">
+<td>EMT・熱力学</td>
+<td><span class="math inline">\(\varepsilon\)</span>, <span
+class="math inline">\(p\)</span>, <span class="math inline">\(s\)</span>
+を1温度で直接計算</td>
+<td>[6,11,13,16,27]</td>
+</tr>
+<tr class="odd">
+<td>繰り込み群</td>
+<td>連続的な実空間 RG としての解釈</td>
+<td>[14,26]</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>本質</strong>：フロー時間 <span
+class="math inline">\(t\)</span>
+は新しい「紫外カットオフ」の役割を果たすが、それは
+<strong>繰り込み可能性を壊さない</strong> （<span
+class="math inline">\(t&gt;0\)</span>
+では物理量が有限・正則化非依存）。格子QCDの多くの技術的問題を、 「格子 →
+フローした場（正則化非依存）→ 小フロー時間展開（摂動論）→
+繰り込まれた量」 という普遍的な経路に置き換えることができる。</p>
+<hr />
+<h2 id="12-参考文献arxiv">12. 参考文献（arXiv）</h2>
+<ol type="1">
+<li>R. Narayanan, H. Neuberger, <em>Infinite N phase transitions in
+continuum Wilson loop operators</em>, <a
+href="https://arxiv.org/abs/hep-th/0601210">hep-th/0601210</a></li>
+<li>M. Lüscher, <em>Properties and uses of the Wilson flow in lattice
+QCD</em>, <a
+href="https://arxiv.org/abs/1006.4518">arXiv:1006.4518</a></li>
+<li>M. Lüscher, <em>Trivializing maps, the Wilson flow and the HMC
+algorithm</em>, <a
+href="https://arxiv.org/abs/0907.5491">arXiv:0907.5491</a></li>
+<li>M. Lüscher, P. Weisz, <em>Perturbative analysis of the gradient flow
+in non-abelian gauge theories</em>, <a
+href="https://arxiv.org/abs/1101.0963">arXiv:1101.0963</a></li>
+<li>M. Lüscher, <em>Chiral symmetry and the Yang–Mills gradient
+flow</em>, <a
+href="https://arxiv.org/abs/1302.5246">arXiv:1302.5246</a></li>
+<li>H. Suzuki, <em>Energy-momentum tensor from the Yang–Mills gradient
+flow</em>, <a
+href="https://arxiv.org/abs/1304.0533">arXiv:1304.0533</a></li>
+<li>H. Makino, H. Suzuki, <em>Lattice energy-momentum tensor from the
+Yang–Mills gradient flow — inclusion of fermion fields</em>, <a
+href="https://arxiv.org/abs/1403.4772">arXiv:1403.4772</a></li>
+<li>S. Borsanyi et al. (BMW), <em>High-precision scale setting in
+lattice QCD</em>, <a
+href="https://arxiv.org/abs/1203.4469">arXiv:1203.4469</a></li>
+<li>Z. Fodor, K. Holland, J. Kuti, D. Nógrádi, C. H. Wong, <em>The
+Yang–Mills gradient flow in finite volume</em>, <a
+href="https://arxiv.org/abs/1208.1051">arXiv:1208.1051</a></li>
+<li>P. Fritzsch, A. Ramos, <em>The gradient flow coupling in the
+Schrödinger functional</em>, <a
+href="https://arxiv.org/abs/1301.4388">arXiv:1301.4388</a></li>
+<li>M. Asakawa, T. Hatsuda, E. Itou, M. Kitazawa, H. Suzuki (FlowQCD),
+<em>Thermodynamics of SU(3) gauge theory from gradient flow on the
+lattice</em>, <a
+href="https://arxiv.org/abs/1312.7492">arXiv:1312.7492</a></li>
+<li>M. Lüscher, <em>Future applications of the Yang–Mills gradient flow
+in lattice QCD</em>, <a
+href="https://arxiv.org/abs/1308.5598">arXiv:1308.5598</a></li>
+<li>Y. Taniguchi et al. (WHOT-QCD), <em>Exploring <span
+class="math inline">\(N_f=2+1\)</span> QCD thermodynamics from the
+gradient flow</em>, <a
+href="https://arxiv.org/abs/1609.01417">arXiv:1609.01417</a></li>
+<li>A. Carosso, A. Hasenfratz, E. T. Neil, <em>Nonperturbative
+renormalization of operators in near-conformal systems using gradient
+flows</em>, <a
+href="https://arxiv.org/abs/1806.01385">arXiv:1806.01385</a></li>
+<li>T. Endo, K. Hieda, D. Miura, H. Suzuki, <em>Universal formula for
+the flavor non-singlet axial-vector current from the gradient flow</em>,
+<a href="https://arxiv.org/abs/1502.01809">arXiv:1502.01809</a></li>
+<li>M. Kitazawa, T. Iritani, M. Asakawa, T. Hatsuda, H. Suzuki,
+<em>Equation of state for SU(3) gauge theory via the energy-momentum
+tensor under gradient flow</em>, <a
+href="https://arxiv.org/abs/1610.07810">arXiv:1610.07810</a></li>
+<li>A. Ramos, S. Sint, <em>Symanzik improvement of the gradient flow in
+lattice gauge theories</em>, <a
+href="https://arxiv.org/abs/1508.05552">arXiv:1508.05552</a></li>
+<li>M. Bruno et al. (ALPHA), <em>QCD coupling from a nonperturbative
+determination of the three-flavor Λ parameter</em>, <a
+href="https://arxiv.org/abs/1706.03821">arXiv:1706.03821</a></li>
+<li>C. Bonati, M. D’Elia, <em>Comparison of the gradient flow with
+cooling in SU(3) pure gauge theory</em>, <a
+href="https://arxiv.org/abs/1401.2441">arXiv:1401.2441</a></li>
+<li>C. Alexandrou, A. Athenodorou, K. Jansen, <em>Topological charge
+using cooling and the gradient flow</em>, <a
+href="https://arxiv.org/abs/1509.04259">arXiv:1509.04259</a></li>
+<li>R. V. Harlander, T. Neumann, <em>The perturbative QCD gradient flow
+to three loops</em>, <a
+href="https://arxiv.org/abs/1606.03756">arXiv:1606.03756</a></li>
+<li>R. V. Harlander, Y. Kluth, F. Lange, <em>The two-loop
+energy-momentum tensor within the gradient-flow formalism</em>, <a
+href="https://arxiv.org/abs/1808.09837">arXiv:1808.09837</a></li>
+<li>J. Artz, R. V. Harlander, F. Lange, T. Neumann, M. Prausa,
+<em>Results and techniques for higher order calculations within the
+gradient-flow formalism</em>, <a
+href="https://arxiv.org/abs/1905.00882">arXiv:1905.00882</a></li>
+<li>H. Makino, H. Suzuki, <em>Lattice energy-momentum tensor from the
+Yang–Mills gradient flow — a simpler prescription</em>, <a
+href="https://arxiv.org/abs/1404.2758">arXiv:1404.2758</a></li>
+<li>A. Ramos, <em>The Yang–Mills gradient flow and renormalization</em>,
+<a href="https://arxiv.org/abs/1506.00118">arXiv:1506.00118</a></li>
+<li>Y. Abe, M. Fukuma, <em>Gradient flow and the renormalization
+group</em>, <a
+href="https://arxiv.org/abs/1805.12094">arXiv:1805.12094</a></li>
+<li>M. Shirogane et al., <em>Latent heat and pressure gap at the
+first-order deconfining phase transition of SU(3) Yang–Mills theory
+using the small flow-time expansion method</em>, <a
+href="https://arxiv.org/abs/2011.10292">arXiv:2011.10292</a></li>
+</ol>
+<blockquote>
+<p><strong>注意</strong>: 式の規格化（ゲージ場に <span
+class="math inline">\(g\)</span>
+を含めるか、反エルミート/エルミート生成子など）は論文ごとに異なる。
+数値係数を用いる際は、必ず原論文（特に改訂版・erratum）で規格化を確認すること。</p>
+</blockquote>
+
+</section>
+<section id="exercises"><p class="chapter-label">EXERCISES</p>
+<h1
+id="グラディエントフロー入門--演習問題と解答例">グラディエントフロー入門
+― 演習問題と解答例</h1>
+<p>講義ノート <a href="#notes"><code>lecture_notes.md</code></a>
+に対応する演習問題です。記法はノートと同じ （反エルミート生成子 <span
+class="math inline">\(\operatorname{tr}(T^aT^b)=-\frac12\delta^{ab}\)</span>、<span
+class="math inline">\(S_{\rm YM}=\frac{1}{4g_0^2}\int
+F^aF^a\)</span>、Euclid 4次元）。 文献番号 [n]
+はノート末尾の参考文献を指します。</p>
+<p>難易度：★ 基礎 / ★★ 標準 / ★★★ 発展 / 💻 数値演習</p>
+<hr />
+<h2 id="問題">問題</h2>
+<h3 id="演習-1--熱核と平滑化半径">演習 1 ★ 熱核と平滑化半径</h3>
+<p><span class="math inline">\(D\)</span> 次元の熱核 <span
+class="math inline">\(K_t(x)=(4\pi t)^{-D/2}e^{-x^2/4t}\)</span>
+について次を示せ。</p>
+<ol type="1">
+<li><span class="math inline">\(\partial_tK_t=\partial^2K_t\)</span>
+かつ <span class="math inline">\(\int d^Dx\,K_t(x)=1\)</span>、<span
+class="math inline">\(\lim_{t\to0}K_t(x)=\delta^D(x)\)</span>。</li>
+<li>フーリエ変換が <span class="math inline">\(\tilde
+K_t(p)=e^{-tp^2}\)</span> であり、半群性 <span
+class="math inline">\(K_t*K_s=K_{t+s}\)</span> が成り立つ。</li>
+<li><span class="math inline">\(\langle x^2\rangle\equiv\int
+d^Dx\,x^2K_t(x)=2Dt\)</span>。したがって <span
+class="math inline">\(D=4\)</span> で平滑化半径は <span
+class="math inline">\(\sqrt{8t}\)</span> である。</li>
+</ol>
+<h3 id="演習-2--フローした自由スカラー場の紫外有限性">演習 2 ★
+フローした自由スカラー場の紫外有限性</h3>
+<p>質量 <span class="math inline">\(m\)</span> の自由スカラー場 <span
+class="math inline">\(\langle\tilde\phi(p)\tilde\phi(q)\rangle=(2\pi)^D\delta(p+q)/(p^2+m^2)\)</span>
+を熱方程式でフローする。</p>
+<ol type="1">
+<li><span
+class="math inline">\(\langle\phi(t,x)\phi(s,y)\rangle\)</span>
+を運動量積分で表せ。</li>
+<li><span class="math inline">\(D=4\)</span>, <span
+class="math inline">\(m=0\)</span> のとき <span
+class="math inline">\(\langle\phi(t,x)^2\rangle=\dfrac{1}{32\pi^2t}\)</span>
+を示せ。</li>
+<li><span class="math inline">\(t\to0\)</span> で何が起こるか。<span
+class="math inline">\(t\)</span>
+が紫外カットオフとして働くことを説明せよ。</li>
+</ol>
+<h3 id="演習-3--ゲージ共変性と-alpha_0-項">演習 3 ★★ ゲージ共変性と
+<span class="math inline">\(\alpha_0\)</span> 項</h3>
+<ol type="1">
+<li><span class="math inline">\(\alpha_0=0\)</span> のフロー方程式 <span
+class="math inline">\(\partial_tB_\mu=D_\nu G_{\nu\mu}\)</span>
+は、<span class="math inline">\(t\)</span> に依存しないゲージ変換 <span
+class="math inline">\(B_\mu\to\Lambda
+B_\mu\Lambda^{-1}+\Lambda\partial_\mu\Lambda^{-1}\)</span>
+の下で共変であることを示せ。</li>
+<li><span class="math inline">\(B_\mu\)</span> が <span
+class="math inline">\(\alpha_0=0\)</span> の解のとき、<span
+class="math inline">\(\partial_t\Lambda=-\alpha_0(\partial_\nu
+B^\Lambda_\nu)\Lambda\)</span> （<span
+class="math inline">\(B^\Lambda\)</span> は <span
+class="math inline">\(\Lambda\)</span> で変換した場）を満たす <span
+class="math inline">\(t\)</span> 依存ゲージ変換で得られる <span
+class="math inline">\(B^\Lambda_\mu\)</span> が、 <span
+class="math inline">\(\alpha_0\)</span>
+項付きのフロー方程式を満たすことを示せ（符号は規約に依存するので、整合する規約を自分で定めてよい）。</li>
+<li>したがってゲージ不変量の期待値は <span
+class="math inline">\(\alpha_0\)</span>
+に依存しないことを結論せよ。</li>
+</ol>
+<h3 id="演習-4--作用の単調減少">演習 4 ★ 作用の単調減少</h3>
+<p><span class="math inline">\(\alpha_0=0\)</span> のとき <span
+class="math inline">\(\dfrac{d}{dt}S_{\rm YM}[B_t]\le0\)</span>
+を示せ。等号が成り立つのはどのような場合か。 さらに、<span
+class="math inline">\(\alpha_0\neq0\)</span>
+でも同じ結論が成り立つ理由を述べよ。</p>
+<h3 id="演習-5--線形化したフロー方程式">演習 5 ★★
+線形化したフロー方程式</h3>
+<ol type="1">
+<li>フロー方程式を <span class="math inline">\(B\)</span>
+の1次まで展開すると <span
+class="math inline">\(\partial_tB_\mu=\partial^2B_\mu+(\alpha_0-1)\partial_\mu\partial_\nu
+B_\nu\)</span> となることを示せ。</li>
+<li>その解が <span class="math display">\[\tilde
+B_\mu(t,p)=\Bigl[P^T_{\mu\nu}(p)\,e^{-tp^2}+P^L_{\mu\nu}(p)\,e^{-\alpha_0tp^2}\Bigr]\tilde
+A_\nu(p),\quad
+P^T=\delta_{\mu\nu}-\frac{p_\mu p_\nu}{p^2},\ P^L=\frac{p_\mu
+p_\nu}{p^2}\]</span> であることを示せ。</li>
+<li>線形近似の場の強さ <span class="math inline">\(\tilde
+G_{\mu\nu}\)</span> が <span class="math inline">\(\alpha_0\)</span>
+に依存しないことを確かめよ。</li>
+</ol>
+<h3 id="演習-6--langle-erangle-の木レベル計算">演習 6 ★★ <span
+class="math inline">\(\langle E\rangle\)</span> の木レベル計算</h3>
+<p><span
+class="math inline">\(E=\frac14G^a_{\mu\nu}G^a_{\mu\nu}\)</span>
+の期待値を <span class="math inline">\(g_0^2\)</span> の最低次で計算し、
+<span class="math display">\[\langle
+E(t)\rangle=\frac{3(N^2-1)g_0^2}{128\pi^2t^2}+O(g_0^4)\]</span>
+を示せ。ゲージ固定パラメータ <span class="math inline">\(\xi\)</span>
+の一般共変ゲージ <span class="math inline">\(\langle\tilde A^a_\mu\tilde
+A^b_\nu\rangle=g_0^2\delta^{ab}\bigl[P^T_{\mu\nu}+\xi
+P^L_{\mu\nu}\bigr]/p^2\)</span>
+を使っても結果が変わらないことも確かめよ。また、<span
+class="math inline">\(D\)</span> 次元での結果を書け。</p>
+<h3 id="演習-7--t_0-における結合定数とスケール">演習 7 ★ <span
+class="math inline">\(t_0\)</span> における結合定数とスケール</h3>
+<p><span class="math inline">\(SU(3)\)</span> で <span
+class="math inline">\(t^2\langle
+E\rangle=\frac{3}{4\pi}\alpha(1+k_1\alpha)\)</span>, <span
+class="math inline">\(k_1=1.0978+0.0075N_f\)</span> とする。</p>
+<ol type="1">
+<li><span class="math inline">\(N_f=0\)</span> と <span
+class="math inline">\(N_f=3\)</span> で <span
+class="math inline">\(k_1\)</span> の値を <span
+class="math inline">\(c_1\)</span> の式から再現せよ。</li>
+<li>1ループの式を信じて <span
+class="math inline">\(t=t_0\)</span>（<span
+class="math inline">\(t^2\langle E\rangle=0.3\)</span>）での <span
+class="math inline">\(\alpha\)</span> を <span
+class="math inline">\(N_f=0\)</span>
+で求めよ。結果から何がわかるか。</li>
+<li><span class="math inline">\(\sqrt{t_0}=0.1465\)</span> fm
+のとき、対応するエネルギースケール <span
+class="math inline">\(\mu=1/\sqrt{8t_0}\)</span> を GeV 単位で求めよ
+（<span class="math inline">\(\hbar c=0.1973\)</span> GeV fm）。</li>
+</ol>
+<h3 id="演習-8--t_0-と-w_0">演習 8 ★★ <span
+class="math inline">\(t_0\)</span> と <span
+class="math inline">\(w_0\)</span></h3>
+<p><span class="math inline">\(F(t)\equiv t^2\langle
+E(t)\rangle\)</span> とする。</p>
+<ol type="1">
+<li>1ループのランニング <span
+class="math inline">\(\alpha(\mu)=\dfrac{1}{4\pi
+b_0\ln(\mu^2/\Lambda^2)}\)</span>, <span
+class="math inline">\(\mu=1/\sqrt{8t}\)</span> と木レベルの <span
+class="math inline">\(F=\frac{3}{4\pi}\alpha\)</span> を用いて、<span
+class="math inline">\(t\,dF/dt\)</span> を <span
+class="math inline">\(\alpha\)</span> で表せ。</li>
+<li>格子上で <span class="math inline">\(F_{\rm
+lat}(t)=F(t)\bigl[1+c\,a^2/t+O(a^4)\bigr]\)</span> と書けるとき、<span
+class="math inline">\(F\)</span> と <span
+class="math inline">\(t\,dF/dt\)</span> の
+格子アーティファクトの大きさを比較せよ。<span
+class="math inline">\(w_0\)</span>
+が「より局所的な」スケールである意味を議論せよ。</li>
+</ol>
+<h3 id="演習-9--トポロジカルチャージ">演習 9 ★★
+トポロジカルチャージ</h3>
+<ol type="1">
+<li><span
+class="math inline">\(\epsilon_{\mu\nu\rho\sigma}\operatorname{tr}(F_{\mu\nu}F_{\rho\sigma})=\partial_\mu
+K_\mu\)</span> と書けることを示し、 Chern–Simons カレント <span
+class="math inline">\(K_\mu\)</span> を求めよ。</li>
+<li>双対場 <span class="math inline">\(\tilde
+F_{\mu\nu}=\frac12\epsilon_{\mu\nu\rho\sigma}F_{\rho\sigma}\)</span>
+を用いて <span class="math inline">\(S_{\rm
+YM}\ge\dfrac{8\pi^2}{g_0^2}|Q|\)</span> を示せ。等号条件を述べよ。</li>
+<li>フローは作用を減少させる。インスタントン（半径 <span
+class="math inline">\(\rho\)</span>）が格子上でフローによってどうなりうるか、
+<span class="math inline">\(\rho\sim a\)</span> の場合と <span
+class="math inline">\(\rho\gg a\)</span>
+の場合に分けて定性的に議論せよ。</li>
+</ol>
+<h3 id="演習-10--wittenveneziano-公式">演習 10 ★ Witten–Veneziano
+公式</h3>
+<p><span class="math inline">\(f_\pi=92.4\)</span> MeV, <span
+class="math inline">\(m_\eta=547.9\)</span> MeV, <span
+class="math inline">\(m_{\eta&#39;}=957.8\)</span> MeV, <span
+class="math inline">\(m_K=495.7\)</span> MeV, <span
+class="math inline">\(N_f=3\)</span> として <span
+class="math inline">\(\chi_t^{\rm
+YM}=\frac{f_\pi^2}{2N_f}(m_\eta^2+m_{\eta&#39;}^2-2m_K^2)\)</span>
+を計算し、<span class="math inline">\(\chi_t^{1/4}\)</span> を MeV
+単位で求めよ。</p>
+<h3 id="演習-11--suzuki-の-emt-公式の構造">演習 11 ★★ Suzuki の EMT
+公式の構造</h3>
+<ol type="1">
+<li><span class="math inline">\(U_{\mu\nu}\)</span>
+がトレースレスであることを確かめ、Suzuki の公式から <span
+class="math inline">\(T^R_{\mu\mu}=\lim_{t\to0}\frac{1}{\alpha_E(t)}[E(t,x)-\langle
+E\rangle_0]\)</span> を導け。</li>
+<li><span class="math inline">\(SU(3)\)</span> で <span
+class="math inline">\(b_1=\frac{1}{(4\pi)^4}\bigl(\frac{34}{3}N^2\bigr)\)</span>
+として <span class="math inline">\(\bar
+s_2=\frac{21}{44}-\frac{b_1}{2b_0^2}=\frac{27}{484}\)</span>
+を確かめよ。また <span class="math inline">\(\bar
+s_1=\frac{7}{22}+\frac{\gamma_E}{2}-\ln2\)</span> を数値で求めよ。</li>
+<li><span class="math inline">\(\alpha_U\)</span> は <span
+class="math inline">\(O(g^2)\)</span> から、<span
+class="math inline">\(\alpha_E\)</span> は <span
+class="math inline">\(O(g^0)\)</span>
+から始まる。この違いの物理的理由を、 トレースアノマリー <span
+class="math inline">\(T_{\mu\mu}\propto\beta(g)F^aF^a\)</span>
+と関連づけて説明せよ。</li>
+</ol>
+<h3 id="演習-12--熱力学と-stefanboltzmann-極限">演習 12 ★ 熱力学と
+Stefan–Boltzmann 極限</h3>
+<ol type="1">
+<li><span class="math inline">\(\varepsilon=-\langle
+T_{00}\rangle\)</span>, <span class="math inline">\(p=\langle
+T_{11}\rangle\)</span>（Euclid, 等方性 <span
+class="math inline">\(\langle T_{11}\rangle=\langle
+T_{22}\rangle=\langle T_{33}\rangle\)</span>）から <span
+class="math inline">\(\varepsilon-3p=-\langle
+T_{\mu\mu}\rangle\)</span>, <span
+class="math inline">\(\varepsilon+p=\langle
+T_{11}-T_{00}\rangle\)</span> を示せ。</li>
+<li>熱力学関係式 <span class="math inline">\(s=\partial p/\partial
+T\)</span>, <span class="math inline">\(\varepsilon=Ts-p\)</span> から
+<span class="math inline">\(\varepsilon+p=Ts\)</span> を確かめよ。</li>
+<li>自由な <span class="math inline">\(SU(3)\)</span> グルーオン気体の
+<span class="math inline">\(p/T^4\)</span>, <span
+class="math inline">\(\varepsilon/T^4\)</span>, <span
+class="math inline">\(s/T^3\)</span> を求めよ（偏極自由度に注意）。</li>
+<li>有限温度で EMT を測るとき、なぜ <span
+class="math inline">\(\sqrt{8t}\lesssim1/(2T)\)</span>
+程度に制限されるのか。<span
+class="math inline">\(N_t\)</span>（時間方向格子点数）との関係で説明せよ。</li>
+</ol>
+<h3 id="演習-13--2次元-u1-の-wilson-フローとトポロジー">演習 13 💻 2次元
+U(1) の Wilson フローとトポロジー</h3>
+<p>2次元 U(1) 格子ゲージ理論（作用 <span
+class="math inline">\(S=\beta\sum_x(1-\cos\theta_p(x))\)</span>）について：</p>
+<ol type="1">
+<li>リンク角 <span class="math inline">\(\theta_\mu(x)\)</span> に対する
+Wilson フロー方程式 <span
+class="math inline">\(\dot\theta_\mu(x)=-\beta^{-1}\partial
+S/\partial\theta_\mu(x)\)</span> を具体的に書け。</li>
+<li>Metropolis 法で配位を生成し、フローを適用して <span
+class="math inline">\(Q_{\sin}=\frac{1}{2\pi}\sum_x\sin\theta_p(x)\)</span>
+の値がフロー時間とともに整数に近づくことを確かめよ。</li>
+<li>幾何学的定義 <span class="math inline">\(Q_{\rm
+geo}=\frac{1}{2\pi}\sum_x\arg e^{i\theta_p(x)}\)</span> と比較し、 <span
+class="math inline">\(t=0\)</span> での <span
+class="math inline">\(Q_{\rm geo}\)</span> とフロー後の <span
+class="math inline">\(Q\)</span>
+が異なる配位があればその理由を考えよ。</li>
+<li>（発展）<span class="math inline">\(\beta\)</span> を大きくして
+<span class="math inline">\(\chi_t a^2=\langle Q^2\rangle/V\)</span>
+を測り、連続極限の値 <span class="math inline">\(\chi_t
+a^2\to1/(4\pi^2\beta)\)</span> と比べよ。</li>
+</ol>
+<h3 id="演習-14--小フロー時間展開の1次計算発展">演習 14 ★★★
+小フロー時間展開の1次計算（発展）</h3>
+<p>自由スカラー場の合成演算子 <span
+class="math inline">\(\phi(t,x)^2\)</span> を考える（<span
+class="math inline">\(D=4\)</span>, 質量 <span
+class="math inline">\(m\)</span>）。</p>
+<ol type="1">
+<li><span class="math inline">\(\langle\phi(t,x)^2\rangle\)</span> を
+<span class="math inline">\(t\to0\)</span> で展開し、 <span
+class="math inline">\(\langle\phi(t,x)^2\rangle=\frac{1}{32\pi^2t}+\frac{m^2}{16\pi^2}\bigl[\ln(2m^2t)+\gamma_E\bigr]+O(t)\)</span>
+を示せ （ヒント：<span class="math inline">\(\int_0^\infty du\,e^{-u}\ln
+u=-\gamma_E\)</span>、指数積分の展開）。</li>
+<li>次元正則化 <span class="math inline">\(\overline{\rm MS}\)</span> の
+<span
+class="math inline">\(\langle[\phi^2]_R(\mu)\rangle=\frac{m^2}{16\pi^2}\bigl[\ln(m^2/\mu^2)-1\bigr]\)</span>
+を用いて、 <span class="math inline">\(\phi(t,x)^2=c_1(t)\,\mathbb
+1+c_2(t)[\phi^2]_R(\mu)+O(t)\)</span> の係数 <span
+class="math inline">\(c_1,c_2\)</span> を（この次数で）決定せよ。</li>
+<li>この結果が、ノート §8.1
+の「フローした演算子は繰り込まれた演算子と恒等演算子の線形結合で書ける」という主張の
+最も簡単な例になっていることを説明せよ。</li>
+</ol>
+<hr />
+<h2 id="解答例">解答例</h2>
+<h3 id="解答-1">解答 1</h3>
+<ol type="1">
+<li><span
+class="math inline">\(\partial_tK_t=\bigl(-\frac{D}{2t}+\frac{x^2}{4t^2}\bigr)K_t\)</span>。一方
+<span class="math inline">\(\partial_\mu
+K_t=-\frac{x_\mu}{2t}K_t\)</span>, <span
+class="math inline">\(\partial^2K_t=\bigl(-\frac{D}{2t}+\frac{x^2}{4t^2}\bigr)K_t\)</span>。よって一致。規格化はガウス積分
+<span class="math inline">\(\int d^Dx\,e^{-x^2/4t}=(4\pi
+t)^{D/2}\)</span> から。<span class="math inline">\(t\to0\)</span> で幅
+<span class="math inline">\(\to0\)</span>、積分は 1 のままなので <span
+class="math inline">\(\delta\)</span> 関数に収束。</li>
+<li>ガウス関数のフーリエ変換で <span class="math inline">\(\tilde
+K_t(p)=e^{-tp^2}\)</span>。畳み込みはフーリエ空間で積になり <span
+class="math inline">\(e^{-tp^2}e^{-sp^2}=e^{-(t+s)p^2}\)</span>。</li>
+<li>各成分は分散 <span class="math inline">\(2t\)</span>
+の正規分布なので <span class="math inline">\(\langle
+x_\mu^2\rangle=2t\)</span>、和をとって <span
+class="math inline">\(2Dt\)</span>。<span
+class="math inline">\(D=4\)</span> で <span
+class="math inline">\(\sqrt{\langle
+x^2\rangle}=\sqrt{8t}\)</span>。</li>
+</ol>
+<h3 id="解答-2">解答 2</h3>
+<ol type="1">
+<li><span
+class="math inline">\(\phi(t,x)=\int_pe^{ipx}e^{-tp^2}\tilde\phi(p)\)</span>
+より <span
+class="math inline">\(\langle\phi(t,x)\phi(s,y)\rangle=\int\frac{d^Dp}{(2\pi)^D}\frac{e^{ip(x-y)}e^{-(t+s)p^2}}{p^2+m^2}\)</span>。</li>
+<li><span class="math inline">\(x=y\)</span>, <span
+class="math inline">\(s=t\)</span>, <span
+class="math inline">\(m=0\)</span>, <span
+class="math inline">\(D=4\)</span>：<span
+class="math inline">\(d^4p=2\pi^2p^3dp\)</span> より <span
+class="math display">\[\frac{2\pi^2}{(2\pi)^4}\int_0^\infty
+dp\,p\,e^{-2tp^2}=\frac{1}{8\pi^2}\cdot\frac{1}{4t}=\frac{1}{32\pi^2t}.\]</span></li>
+<li><span class="math inline">\(t\to0\)</span> で <span
+class="math inline">\(1/t\)</span> で発散する。これは通常の <span
+class="math inline">\(\langle\phi(x)^2\rangle\)</span> の2次発散 <span
+class="math inline">\(\Lambda^2\)</span> に対応し、 <span
+class="math inline">\(1/t\leftrightarrow\Lambda^2\)</span>（正確には
+<span
+class="math inline">\(1/(8t)\sim\mu^2\)</span>）の対応がある。<span
+class="math inline">\(t&gt;0\)</span> では指数因子 <span
+class="math inline">\(e^{-2tp^2}\)</span> が
+高運動量を切るので有限。</li>
+</ol>
+<h3 id="解答-3">解答 3</h3>
+<ol type="1">
+<li><span class="math inline">\(B^\Lambda_\mu=\Lambda
+B_\mu\Lambda^{-1}+\Lambda\partial_\mu\Lambda^{-1}\)</span> のとき <span
+class="math inline">\(G^\Lambda_{\mu\nu}=\Lambda
+G_{\mu\nu}\Lambda^{-1}\)</span>, <span
+class="math inline">\(D^\Lambda_\nu(\Lambda X\Lambda^{-1})=\Lambda(D_\nu
+X)\Lambda^{-1}\)</span>。よって 右辺は <span
+class="math inline">\(\Lambda(D_\nu
+G_{\nu\mu})\Lambda^{-1}\)</span>。左辺は <span
+class="math inline">\(\Lambda\)</span> が <span
+class="math inline">\(t\)</span> に依存しないので <span
+class="math inline">\(\partial_tB^\Lambda_\mu=\Lambda(\partial_tB_\mu)\Lambda^{-1}\)</span>。両辺が一致。</li>
+<li><span
+class="math inline">\(\omega\equiv\dot\Lambda\Lambda^{-1}\)</span>
+とおくと <span class="math inline">\(\partial_t(\Lambda
+B_\mu\Lambda^{-1})=\Lambda(\partial_tB_\mu)\Lambda^{-1}+[\omega,\Lambda
+B_\mu\Lambda^{-1}]\)</span>, <span
+class="math inline">\(\partial_t(\Lambda\partial_\mu\Lambda^{-1})=[\omega,\Lambda\partial_\mu\Lambda^{-1}]-\partial_\mu\omega\)</span>。足し合わせて
+<span
+class="math display">\[\partial_tB^\Lambda_\mu=\Lambda(\partial_tB_\mu)\Lambda^{-1}-D^\Lambda_\mu\omega
+.\]</span> 第1項は (1) と同様に <span
+class="math inline">\(D^\Lambda_\nu G^\Lambda_{\nu\mu}\)</span>
+に等しい。<span class="math inline">\(\omega=-\alpha_0\partial_\nu
+B^\Lambda_\nu\)</span> と選べば <span
+class="math inline">\(\partial_tB^\Lambda_\mu=D^\Lambda_\nu
+G^\Lambda_{\nu\mu}+\alpha_0D^\Lambda_\mu\partial_\nu
+B^\Lambda_\nu\)</span>。</li>
+<li><span class="math inline">\(\alpha_0\ne0\)</span> の解は <span
+class="math inline">\(\alpha_0=0\)</span> の解の（<span
+class="math inline">\(t\)</span>
+依存）ゲージ変換なので、ゲージ不変な汎関数の値は同じ。期待値も <span
+class="math inline">\(\alpha_0\)</span> に依存しない。</li>
+</ol>
+<h3 id="解答-4">解答 4</h3>
+<p><span class="math inline">\(\frac{d}{dt}S=\int d^Dx\,\frac{\delta
+S}{\delta B^a_\mu}\partial_tB^a_\mu\)</span>。<span
+class="math inline">\(\alpha_0=0\)</span> では <span
+class="math inline">\(\partial_tB^a_\mu=-g_0^2\delta S/\delta
+B^a_\mu\)</span> なので <span
+class="math inline">\(\frac{dS}{dt}=-g_0^2\int(\delta S/\delta
+B^a_\mu)^2\le0\)</span>。 等号は <span class="math inline">\(D_\nu
+G_{\nu\mu}=0\)</span>、つまり <span class="math inline">\(B_t\)</span>
+が古典的運動方程式の解（停留点）のとき。 <span
+class="math inline">\(\alpha_0\neq0\)</span>
+では解がゲージ変換で結ばれ（演習 3）、<span
+class="math inline">\(S\)</span> はゲージ不変なので <span
+class="math inline">\(S[B_t]\)</span>
+は同じ関数になり、やはり単調減少。</p>
+<h3 id="解答-5">解答 5</h3>
+<ol type="1">
+<li><span class="math inline">\(D_\nu
+G_{\nu\mu}=\partial_\nu(\partial_\nu B_\mu-\partial_\mu
+B_\nu)+O(B^2)\)</span>, <span class="math inline">\(D_\mu\partial_\nu
+B_\nu=\partial_\mu\partial_\nu B_\nu+O(B^2)\)</span>。</li>
+<li>フーリエ空間で <span class="math inline">\(\partial_t\tilde
+B_\mu=-[p^2\delta_{\mu\nu}+(\alpha_0-1)p_\mu p_\nu]\tilde
+B_\nu=-p^2[P^T+\alpha_0P^L]_{\mu\nu}\tilde B_\nu\)</span>。 <span
+class="math inline">\(P^{T,L}\)</span>
+は直交射影子なので指数関数は各射影子ごとに <span
+class="math inline">\(e^{-tp^2}\)</span>, <span
+class="math inline">\(e^{-\alpha_0tp^2}\)</span> となる。</li>
+<li><span class="math inline">\(\tilde G_{\mu\nu}=i(p_\mu\tilde
+B_\nu-p_\nu\tilde B_\mu)\)</span> で、<span
+class="math inline">\(P^L\)</span> 部分は <span
+class="math inline">\(p_\nu\)</span> に比例するので反対称化で消える。
+よって <span class="math inline">\(\tilde G_{\mu\nu}=i(p_\mu
+P^T_{\nu\rho}-p_\nu P^T_{\mu\rho})e^{-tp^2}\tilde A_\rho\)</span> は
+<span class="math inline">\(\alpha_0\)</span> に依らない。</li>
+</ol>
+<h3 id="解答-6">解答 6</h3>
+<p>最低次では <span class="math inline">\(G^a_{\mu\nu}=\partial_\mu
+B^a_\nu-\partial_\nu B^a_\mu\)</span>, <span
+class="math inline">\(\tilde B=e^{-tp^2}P^T\tilde
+A+\cdots\)</span>（<span class="math inline">\(P^L\)</span> は消える）。
+<span class="math display">\[\langle
+G^a_{\mu\nu}G^a_{\mu\nu}\rangle=\int_p
+e^{-2tp^2}\,(N^2-1)\,g_0^2\,\frac{2(p^2\delta_{\nu\rho}-p_\nu
+p_\rho)P^T_{\nu\rho}}{p^2}
+=2(D-1)(N^2-1)g_0^2\int_pe^{-2tp^2}.\]</span> <span
+class="math inline">\(\xi P^L\)</span> 部分は <span
+class="math inline">\(p^2\delta_{\nu\rho}-p_\nu p_\rho\)</span>
+に縮約すると 0 なので <span class="math inline">\(\xi\)</span>
+に依らない。 <span
+class="math inline">\(\int\frac{d^Dp}{(2\pi)^D}e^{-2tp^2}=(8\pi
+t)^{-D/2}\)</span> より <span class="math display">\[\langle
+E\rangle=\frac{(D-1)(N^2-1)g_0^2}{2(8\pi t)^{D/2}}\ \xrightarrow{D=4}\
+\frac{3(N^2-1)g_0^2}{2\cdot64\pi^2t^2}=\frac{3(N^2-1)g_0^2}{128\pi^2t^2}.\]</span></p>
+<h3 id="解答-7">解答 7</h3>
+<ol type="1">
+<li><span class="math inline">\(k_1=4\pi c_1\)</span>。<span
+class="math inline">\(N=3\)</span>：<span
+class="math inline">\(\frac{11}{3}\gamma_E+\frac{52}{9}-3\ln3=2.1165+5.7778-3.2958=4.5985\)</span>、<span
+class="math inline">\(\times3=13.795\)</span>、 <span
+class="math inline">\(/16\pi^2\times4\pi=13.795/(4\pi)=1.0978\)</span>。フレーバー部分：<span
+class="math inline">\(\frac23\gamma_E+\frac49-\frac43\ln2=0.3848+0.4444-0.9242=-0.0950\)</span>、
+<span
+class="math inline">\(-N_f\times(-0.0950)/(4\pi)=+0.0076N_f\)</span>。よって
+<span class="math inline">\(N_f=0\)</span>: <span
+class="math inline">\(1.0978\)</span>, <span
+class="math inline">\(N_f=3\)</span>: <span
+class="math inline">\(\approx1.120\)</span>。</li>
+<li><span
+class="math inline">\(0.3=\frac{3}{4\pi}\alpha(1+1.0978\alpha)\Rightarrow1.0978\alpha^2+\alpha-1.2566=0\Rightarrow\alpha\simeq0.71\)</span>。
+1ループ補正 <span class="math inline">\(k_1\alpha\approx0.78\)</span> が
+1 と同程度なので摂動論は信頼できない。<span
+class="math inline">\(t_0\)</span> は <strong>非摂動的に</strong>
+定義された
+ハドロンスケールであり、だからこそ格子で決める意味がある。</li>
+<li><span
+class="math inline">\(\sqrt{8t_0}=2.828\times0.1465=0.414\)</span>
+fm、<span class="math inline">\(\mu=0.1973/0.414\simeq0.48\)</span>
+GeV。</li>
+</ol>
+<h3 id="解答-8">解答 8</h3>
+<ol type="1">
+<li><span class="math inline">\(\mu^2=1/(8t)\)</span> より <span
+class="math inline">\(t\frac{d}{dt}=-\mu^2\frac{d}{d\mu^2}\)</span>。<span
+class="math inline">\(\mu^2\frac{d\alpha}{d\mu^2}=-4\pi
+b_0\alpha^2\)</span> なので <span
+class="math inline">\(t\frac{dF}{dt}=\frac{3}{4\pi}\cdot4\pi
+b_0\alpha^2=3b_0\alpha^2\)</span>（木レベル+1ループランニング）。
+このように <span class="math inline">\(tdF/dt\)</span> は <span
+class="math inline">\(F\)</span> と異なる関数だが、どちらも <span
+class="math inline">\(t\)</span> の単調関数なので基準値で <span
+class="math inline">\(t\)</span> を定義できる。</li>
+<li><span class="math inline">\(t\frac{d}{dt}F_{\rm
+lat}=tF&#39;\,(1+ca^2/t)-cF\,a^2/t=tF&#39;\Bigl[1+\frac{ca^2}{t}\Bigl(1-\frac{F}{tF&#39;}\Bigr)\Bigr]\)</span>。
+相対的な格子アーティファクトは <span class="math inline">\(F\)</span>
+では <span class="math inline">\(ca^2/t\)</span>、<span
+class="math inline">\(tF&#39;\)</span> では <span
+class="math inline">\(ca^2/t\,(1-F/tF&#39;)\)</span> となり、 <span
+class="math inline">\(F\)</span> と <span
+class="math inline">\(tF&#39;\)</span>
+の比に応じて部分的に打ち消し合う（この単純なモデルでは <span
+class="math inline">\(F/tF&#39;=1/(4\pi b_0\alpha)\)</span>）。
+より本質的には、<span class="math inline">\(F(t)\)</span>
+は熱核で平滑化していても短距離（<span
+class="math inline">\(a^2/t\)</span>
+の大きい領域）の寄与を含むのに対し、 その対数微分は <span
+class="math inline">\(t\)</span>
+の近傍での変化だけで決まる「より局所的な」量である。 実際、BMW [8] は
+<span class="math inline">\(w_0\)</span> の方が <span
+class="math inline">\(t_0\)</span> より <span
+class="math inline">\(a^2\)</span> 依存性が小さいことを数値的に示した。
+### 解答 9</li>
+<li><span
+class="math inline">\(\epsilon_{\mu\nu\rho\sigma}\operatorname{tr}(F_{\mu\nu}F_{\rho\sigma})=4\epsilon_{\mu\nu\rho\sigma}\partial_\mu\operatorname{tr}\bigl(A_\nu\partial_\rho
+A_\sigma+\frac23A_\nu A_\rho A_\sigma\bigr)\)</span>。 すなわち <span
+class="math inline">\(K_\mu=4\epsilon_{\mu\nu\rho\sigma}\operatorname{tr}(A_\nu\partial_\rho
+A_\sigma+\frac23A_\nu A_\rho A_\sigma)\)</span>。 （<span
+class="math inline">\(\operatorname{tr}(A\wedge A\wedge A\wedge
+A)=0\)</span> を巡回性と <span class="math inline">\(\epsilon\)</span>
+の反対称性から使う。）</li>
+<li><span class="math inline">\(0\le\int(F^a_{\mu\nu}\mp\tilde
+F^a_{\mu\nu})^2=2\int F^aF^a\mp2\int F^a\tilde F^a\)</span>。 <span
+class="math inline">\(\int F^a\tilde F^a=\frac12\int\epsilon
+F^aF^a=32\pi^2Q\)</span> より <span class="math inline">\(\frac14\int
+F^aF^a\ge8\pi^2|Q|\)</span>、つまり <span class="math inline">\(S_{\rm
+YM}\ge8\pi^2|Q|/g_0^2\)</span>。等号は <span
+class="math inline">\(F=\pm\tilde F\)</span>（(反)自己双対）。</li>
+<li>連続理論ではインスタントンの作用 <span
+class="math inline">\(8\pi^2/g_0^2\)</span> はスケール不変で、フローは
+<span class="math inline">\(Q\)</span> を保つ。格子上では 作用が <span
+class="math inline">\(\rho/a\)</span> に依存し（Wilson 作用では <span
+class="math inline">\(\rho\)</span> が小さいほど作用が下がる）、フローで
+<span class="math inline">\(\rho\)</span> が縮み、 <span
+class="math inline">\(\rho\sim a\)</span>
+になると格子の「穴」をすり抜けて消える（<span
+class="math inline">\(Q\)</span> が変わる）。<span
+class="math inline">\(\rho\gg a\)</span> のインスタントンは <span
+class="math inline">\(\sqrt{8t}\ll\rho\)</span>
+の範囲ではほぼ安定。<span class="math inline">\(a\to0\)</span>
+でこのような事象は抑制され、トポロジカルセクターが分離する [2]。</li>
+</ol>
+<h3 id="解答-10">解答 10</h3>
+<p><span
+class="math inline">\(m_\eta^2+m_{\eta&#39;}^2-2m_K^2=0.3002+0.9174-0.4914=0.7262\)</span>
+GeV<span class="math inline">\(^2\)</span>。 <span
+class="math inline">\(f_\pi^2/6=0.008538/6=1.423\times10^{-3}\)</span>
+GeV<span class="math inline">\(^2\)</span>。積は <span
+class="math inline">\(1.033\times10^{-3}\)</span> GeV<span
+class="math inline">\(^4\)</span>、<span
+class="math inline">\(\chi_t^{1/4}\simeq0.179\)</span> GeV <span
+class="math inline">\(\approx180\)</span> MeV。 格子の SU(3)
+純ゲージ理論の値（<span
+class="math inline">\(\chi_t^{1/4}\approx190\)</span> MeV
+程度）と同程度であり、大 <span class="math inline">\(N\)</span>
+展開がよく機能していることを示す。</p>
+<h3 id="解答-11">解答 11</h3>
+<ol type="1">
+<li><span
+class="math inline">\(U_{\mu\mu}=G^a_{\mu\rho}G^a_{\mu\rho}-\frac{4}{4}G^aG^a=0\)</span>。よって
+<span
+class="math inline">\(T^R_{\mu\mu}=\lim\frac{4}{4\alpha_E}(E-\langle
+E\rangle_0)\)</span>。</li>
+<li><span class="math inline">\(b_0=\frac{11}{(4\pi)^2}\)</span>, <span
+class="math inline">\(b_1=\frac{102}{(4\pi)^4}\)</span>（<span
+class="math inline">\(N=3\)</span>, <span
+class="math inline">\(N_f=0\)</span>）。<span
+class="math inline">\(\frac{b_1}{2b_0^2}=\frac{102}{2\cdot121}=\frac{51}{121}\)</span>。
+<span
+class="math inline">\(\frac{21}{44}-\frac{51}{121}=\frac{231-204}{484}=\frac{27}{484}\simeq0.0558\)</span>。
+<span class="math inline">\(\bar
+s_1=0.31818+0.28861-0.69315\simeq-0.0864\)</span>。</li>
+<li><span
+class="math inline">\(U_{\mu\nu}\)</span>（トレースレス部分）は古典的にも存在する：古典
+EMT は <span class="math inline">\(\frac{1}{g^2}\times\)</span>（<span
+class="math inline">\(F\)</span> の2次形式）なので、 <span
+class="math inline">\(G\)</span> に <span
+class="math inline">\(g\)</span> を含む規格化では係数は <span
+class="math inline">\(1/g^2\)</span>、すなわち <span
+class="math inline">\(\alpha_U\sim
+g^2\)</span>。一方トレース部分は古典的には 0（共形不変性）で、
+量子的なトレースアノマリー <span
+class="math inline">\(T_{\mu\mu}=-\frac{\beta(g)}{2g^3}F^aF^a\)</span>（<span
+class="math inline">\(F\)</span> は <span
+class="math inline">\(g\)</span> を含む規格化、<span
+class="math inline">\(\beta=-b_0g^3+\cdots\)</span>） すなわち <span
+class="math inline">\(T_{\mu\mu}\simeq\frac{b_0}{2}F^aF^a=2b_0E\)</span>
+によってのみ生じる。そのため <span
+class="math inline">\(1/\alpha_E\propto b_0\)</span> となり、<span
+class="math inline">\(\alpha_E=O(g^0)\)</span> から始まる。</li>
+</ol>
+<h3 id="解答-12">解答 12</h3>
+<ol type="1">
+<li><span class="math inline">\(\langle T_{\mu\mu}\rangle=\langle
+T_{00}\rangle+3\langle T_{11}\rangle=-\varepsilon+3p\)</span>。また
+<span class="math inline">\(\langle
+T_{11}-T_{00}\rangle=p+\varepsilon\)</span>。</li>
+<li><span class="math inline">\(\varepsilon=Ts-p\)</span>
+そのもの（自由エネルギー密度 <span class="math inline">\(f=-p\)</span>,
+<span class="math inline">\(s=-\partial f/\partial T\)</span>）。</li>
+<li>自由度 <span class="math inline">\(2\times(N^2-1)=16\)</span>。<span
+class="math inline">\(p=16\cdot\frac{\pi^2}{90}T^4\)</span>：<span
+class="math inline">\(p/T^4=\frac{8\pi^2}{45}\simeq1.755\)</span>、
+<span class="math inline">\(\varepsilon=3p\)</span>：<span
+class="math inline">\(\varepsilon/T^4\simeq5.26\)</span>、<span
+class="math inline">\(s/T^3=4p/T^4\simeq7.02\)</span>。</li>
+<li>時間方向の長さは <span
+class="math inline">\(1/T=N_ta\)</span>。平滑化半径 <span
+class="math inline">\(\sqrt{8t}\)</span> が <span
+class="math inline">\(1/(2T)\)</span>
+を超えると、周期境界の両側の場が混ざり、 小フロー時間展開（<span
+class="math inline">\(T\)</span> に依らない係数 <span
+class="math inline">\(c_i(t)\)</span>）の前提が崩れる。よって <span
+class="math inline">\(\sqrt{8t}\lesssim N_ta/2\)</span>。 一方 <span
+class="math inline">\(t\gg a^2\)</span> も必要なので、<span
+class="math inline">\(N_t\)</span>
+が小さい（高温・粗い格子）ほど窓が狭くなる [13]。</li>
+</ol>
+<h3 id="解答-13">解答 13</h3>
+<ol type="1">
+<li><p>0 方向を <span class="math inline">\(\hat1\)</span>, 1 方向を
+<span class="math inline">\(\hat2\)</span> として <span
+class="math inline">\(\theta_p(x)=\theta_1(x)+\theta_2(x+\hat1)-\theta_1(x+\hat2)-\theta_2(x)\)</span>。
+<span
+class="math display">\[\dot\theta_1(x)=-\bigl[\sin\theta_p(x)-\sin\theta_p(x-\hat2)\bigr],\qquad
+\dot\theta_2(x)=-\bigl[\sin\theta_p(x-\hat1)-\sin\theta_p(x)\bigr].\]</span>
+U(1) は可換で群多様体が平坦（角度の空間）なので、通常の Runge–Kutta
+で積分してよい。</p></li>
+<li><p>解答例コード <a
+href="#code"><code>code/wilson_flow_u1_2d.py</code></a>。<span
+class="math inline">\(L=16\)</span>, <span
+class="math inline">\(\beta=2\)</span>, 12配位の実行例：</p>
+<pre><code># 整数からのずれ  &lt;|Q_sin - round(Q_sin)|&gt;  (フローで 0 に近づく)
+t =  0.0:  0.3162
+t =  0.5:  0.2303
+t =  1.0:  0.0879
+t =  2.0:  0.0117
+t =  4.0:  0.0059</code></pre>
+<p>フロー時間 <span class="math inline">\(t\gtrsim2\)</span>（平滑化半径
+<span class="math inline">\(\sqrt{4t}\approx3a\)</span>, 2次元なので
+<span class="math inline">\(\sqrt{2Dt}=\sqrt{4t}\)</span>）で <span
+class="math inline">\(Q_{\sin}\)</span> はほぼ整数になる。</p></li>
+<li><p>実行例の一部の配位で <span class="math inline">\(Q_{\rm
+geo}(t=0)\)</span> とフロー後の <span class="math inline">\(Q\)</span>
+が 1 だけ異なる。これは <span
+class="math inline">\(\theta_p\approx\pm\pi\)</span> 付近の
+格子サイズの「転位（dislocation）」で、作用が小さく、フローで消える（または生じる）紫外の構造である。
+<span
+class="math inline">\(\beta\to\infty\)</span>（連続極限）でこのような配位は
+<span class="math inline">\(e^{-2\beta}\)</span>
+のように抑制され、両者は一致する。</p></li>
+<li><p><span class="math inline">\(\beta=1/(e^2a^2)\)</span>
+で連続極限の <span
+class="math inline">\(\chi_t=e^2/(4\pi^2)\)</span>、すなわち <span
+class="math inline">\(\chi_ta^2\to1/(4\pi^2\beta)\)</span>。 <span
+class="math inline">\(\beta\)</span> を大きくすると Metropolis での
+<span class="math inline">\(Q\)</span>
+の自己相関時間が急増する（トポロジーの凍結の 2
+次元版）ことにも注意。</p></li>
+</ol>
+<h3 id="解答-14">解答 14</h3>
+<ol type="1">
+<li><span
+class="math inline">\(\langle\phi(t,x)^2\rangle=\frac{1}{8\pi^2}\int_0^\infty
+dp\,\frac{p^3e^{-2tp^2}}{p^2+m^2}\)</span>。<span
+class="math inline">\(u=p^2\)</span> として <span
+class="math inline">\(=\frac{1}{16\pi^2}\int_0^\infty
+du\,\frac{u\,e^{-2tu}}{u+m^2}=\frac{1}{16\pi^2}\Bigl[\frac{1}{2t}-m^2e^{2tm^2}E_1(2tm^2)\Bigr]\)</span>。
+<span class="math inline">\(E_1(z)=-\gamma_E-\ln z+O(z)\)</span> より
+<span
+class="math inline">\(=\frac{1}{32\pi^2t}+\frac{m^2}{16\pi^2}\bigl[\ln(2m^2t)+\gamma_E\bigr]+O(t)\)</span>。</li>
+<li><span
+class="math inline">\(\langle\phi(t)^2\rangle=c_1(t)+c_2(t)\frac{m^2}{16\pi^2}[\ln(m^2/\mu^2)-1]\)</span>。<span
+class="math inline">\(m^2\ln m^2\)</span> の係数比較で <span
+class="math inline">\(c_2=1+O(\lambda)\)</span>（自由場では厳密に 1）。
+残りを比較して <span
+class="math display">\[c_1(t)=\frac{1}{32\pi^2t}+\frac{m^2}{16\pi^2}\bigl[\ln(2\mu^2t)+\gamma_E+1\bigr].\]</span>
+（<span class="math inline">\(m^2\)</span> を含む <span
+class="math inline">\(c_1\)</span> の項は、厳密には <span
+class="math inline">\(m^2\mathbb 1\)</span>
+という次元2の演算子との混合と読む。）</li>
+<li>フローした <span
+class="math inline">\(\phi^2\)</span>（有限・正則化非依存）が、恒等演算子（<span
+class="math inline">\(1/t\)</span> の発散的係数を持つ）と繰り込まれた
+<span class="math inline">\([\phi^2]_R\)</span> の
+線形結合で書け、係数は短距離の量（<span
+class="math inline">\(\ln(\mu^2t)\)</span>）にのみ依存する。相互作用がある場合、係数は
+<span class="math inline">\(\mu\sim1/\sqrt{8t}\)</span> での
+摂動論で計算でき、これがゲージ理論の EMT
+公式（§8.2）と同じ論理構造である。</li>
+</ol>
+
+</section>
+<section id="code"><p class="chapter-label">CODE</p>
+<h1>演習 13 解答例：2次元 U(1) Wilson フロー</h1>
+<p class="code-note">numpy だけで動くスクリプトです。<code>python3 wilson_flow_u1_2d.py --L 16 --beta 2.0 --nconf 20</code> で実行できます（数秒）。</p>
+<pre><code>#!/usr/bin/env python3
+&quot;&quot;&quot;2次元 U(1) 格子ゲージ理論の Wilson フロー（演習 13 の解答例）.
+
+リンク変数 U_mu(x) = exp(i theta_mu(x)) を Metropolis 法で生成し,
+Wilson フローを適用してトポロジカルチャージがどのように整数に近づくかを調べる.
+
+  作用      S = beta * sum_x [1 - cos theta_p(x)]
+  プラケット theta_p(x) = theta_1(x) + theta_2(x+1) - theta_1(x+2) - theta_2(x)
+  フロー    d theta_mu(x)/dt = -(1/beta) dS/d theta_mu(x)   (g_0^2 = 1/beta)
+  トポロジー Q_geo = (1/2pi) sum_x arg(exp(i theta_p))       (常に整数)
+            Q_sin = (1/2pi) sum_x sin theta_p              (場の理論的定義)
+
+使い方:  python3 wilson_flow_u1_2d.py [--L 16] [--beta 2.0] [--nconf 20]
+&quot;&quot;&quot;
+import argparse
+
+import numpy as np
+
+
+def plaquette(theta):
+    &quot;&quot;&quot;theta[mu, x1, x2] からプラケット角 theta_p(x) を返す.&quot;&quot;&quot;
+    t1, t2 = theta
+    return t1 + np.roll(t2, -1, axis=0) - np.roll(t1, -1, axis=1) - t2
+
+
+def force(theta):
+    &quot;&quot;&quot;-(1/beta) dS/d theta_mu(x) を返す（フロー方程式の右辺）.&quot;&quot;&quot;
+    s = np.sin(plaquette(theta))
+    f1 = -(s - np.roll(s, 1, axis=1))  # theta_1(x) は p(x) に +, p(x-2) に - で入る
+    f2 = -(np.roll(s, 1, axis=0) - s)  # theta_2(x) は p(x-1) に +, p(x) に - で入る
+    return np.stack([f1, f2])
+
+
+def flow_step(theta, eps):
+    &quot;&quot;&quot;4次 Runge-Kutta の 1 ステップ（U(1) は可換なので角度で普通に積分してよい）.&quot;&quot;&quot;
+    k1 = force(theta)
+    k2 = force(theta + 0.5 * eps * k1)
+    k3 = force(theta + 0.5 * eps * k2)
+    k4 = force(theta + eps * k3)
+    return theta + eps / 6.0 * (k1 + 2 * k2 + 2 * k3 + k4)
+
+
+def observables(theta):
+    p = plaquette(theta)
+    q_geo = np.sum(np.angle(np.exp(1j * p))) / (2 * np.pi)
+    q_sin = np.sum(np.sin(p)) / (2 * np.pi)
+    energy = np.mean(1.0 - np.cos(p))  # 格子単位の作用密度 ~ (a^2/2) F_12^2
+    return q_geo, q_sin, energy
+
+
+def metropolis_sweep(theta, beta, rng, delta=1.0):
+    &quot;&quot;&quot;チェッカーボードではなく単純な逐次更新（教育用なので速度は二の次）.&quot;&quot;&quot;
+    _, L, _ = theta.shape
+    for mu in range(2):
+        for x in range(L):
+            for y in range(L):
+                old = theta[mu, x, y]
+                new = old + rng.uniform(-delta, delta)
+                # このリンクを含む 2 枚のプラケットだけで作用差を計算
+                if mu == 0:
+                    plaqs = [(x, y, +1), (x, (y - 1) % L, -1)]
+                else:
+                    plaqs = [((x - 1) % L, y, +1), (x, y, -1)]
+                ds = 0.0
+                for (px, py, sign) in plaqs:
+                    tp = (theta[0, px, py] + theta[1, (px + 1) % L, py]
+                          - theta[0, px, (py + 1) % L] - theta[1, px, py])
+                    tp_new = tp + sign * (new - old)
+                    ds += beta * (np.cos(tp) - np.cos(tp_new))
+                if ds &lt; 0 or rng.random() &lt; np.exp(-ds):
+                    theta[mu, x, y] = new
+    return theta
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument(&quot;--L&quot;, type=int, default=16)
+    ap.add_argument(&quot;--beta&quot;, type=float, default=2.0)
+    ap.add_argument(&quot;--nconf&quot;, type=int, default=20)
+    ap.add_argument(&quot;--ntherm&quot;, type=int, default=200)
+    ap.add_argument(&quot;--nskip&quot;, type=int, default=20)
+    ap.add_argument(&quot;--eps&quot;, type=float, default=0.02)
+    ap.add_argument(&quot;--tmax&quot;, type=float, default=4.0)
+    ap.add_argument(&quot;--seed&quot;, type=int, default=1)
+    args = ap.parse_args()
+
+    rng = np.random.default_rng(args.seed)
+    theta = rng.uniform(-np.pi, np.pi, size=(2, args.L, args.L))
+    for _ in range(args.ntherm):
+        metropolis_sweep(theta, args.beta, rng)
+
+    t_report = [0.0, 0.5, 1.0, 2.0, args.tmax]
+    nsteps = int(round(args.tmax / args.eps))
+    print(f&quot;# L={args.L} beta={args.beta}  (平滑化半径 sqrt(4t) in 2D)&quot;)
+    print(&quot;# conf  &quot; + &quot;  &quot;.join(f&quot;Q_sin(t={t:g})&quot; for t in t_report) + &quot;  Q_geo(t=0)&quot;)
+    dist = []
+    for c in range(args.nconf):
+        for _ in range(args.nskip):
+            metropolis_sweep(theta, args.beta, rng)
+        phi = theta.copy()
+        q0_geo, q, _ = observables(phi)
+        row = [q]
+        for n in range(1, nsteps + 1):
+            phi = flow_step(phi, args.eps)
+            t = n * args.eps
+            if any(abs(t - tr) &lt; 1e-9 for tr in t_report[1:]):
+                row.append(observables(phi)[1])
+        dist.append(row)
+        print(f&quot;{c:5d}  &quot; + &quot;  &quot;.join(f&quot;{v:12.4f}&quot; for v in row) + f&quot;  {q0_geo:10.1f}&quot;)
+
+    dist = np.array(dist)
+    print(&quot;\n# 整数からのずれ  &lt;|Q_sin - round(Q_sin)|&gt;  (フローで 0 に近づく)&quot;)
+    for j, t in enumerate(t_report):
+        dev = np.mean(np.abs(dist[:, j] - np.round(dist[:, j])))
+        print(f&quot;t = {t:4.1f}:  {dev:.4f}&quot;)
+    print(f&quot;# chi_t * V = &lt;Q^2&gt; (t={args.tmax:g}) = {np.mean(np.round(dist[:, -1])**2):.3f}&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+</section>
+</main>
