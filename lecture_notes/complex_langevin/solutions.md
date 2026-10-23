@@ -1,6 +1,6 @@
 # 演習問題の解答
 
-問題文は [`exercises.md`](exercises.md)。数値は `code/cl_toy_models.py` を乱数種 12345 で実行したもの。
+問題文は [`exercises.md`](exercises.md)。数値は `code/cl_toy_models.py` を乱数種 12345 で実行したもの（どのモデルを続けて走らせるかで乱数列が変わるため、値は統計誤差の範囲で異なり得る）。
 
 ---
 
